@@ -4,5 +4,7 @@
   "initialVersions": {
     "@pzerelles/headlessui-svelte": "2.0.0-next.0"
   },
-  "changesets": []
+  "changesets": [
+    "tidy-singers-think"
+  ]
 }
