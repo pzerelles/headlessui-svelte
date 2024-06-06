@@ -12,7 +12,7 @@ const getAddMessage = async (changeset, options) => {
 /**
  * @type {NonNullable<import('@changesets/types').CommitFunctions["getVersionMessage"]>}
  */
-const getVersionMessage = async (releasePlan, options) => {
+/*const getVersionMessage = async (releasePlan, options) => {
   const skipCI = options?.skipCI === "version" || options?.skipCI === true
   const publishableReleases = releasePlan.releases.filter((release) => release.type !== "none")
   const numPackagesReleased = publishableReleases.length
@@ -26,9 +26,9 @@ const getVersionMessage = async (releasePlan, options) => {
     ${releasesLines}
     ${skipCI ? `\n[skip ci]\n` : ""}
 `
-}
+}*/
 
 exports.default = {
   getAddMessage,
-  getVersionMessage,
+  //getVersionMessage,
 }
