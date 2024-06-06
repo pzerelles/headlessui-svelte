@@ -6,11 +6,7 @@
   import type { SvelteHTMLElements } from "svelte/elements"
   import Label from "../label/Label.svelte"
 
-  let { children, ...props }: LegendProps = $props()
+  let { ...props }: LegendProps = $props()
 </script>
 
-<Label as="div" {...props}>
-  {#if children}
-    {@render children()}
-  {/if}
-</Label>
+<Label as="div" {...props} />

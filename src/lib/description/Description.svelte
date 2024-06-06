@@ -82,7 +82,5 @@
 </script>
 
 <svelte:element this={as ?? DEFAULT_DESCRIPTION_TAG} {...ourProps} {...theirProps}>
-  {#if children}
-    {@render children(slot)}
-  {/if}
+  {#if children}{@render children(slot)}{/if}
 </svelte:element>

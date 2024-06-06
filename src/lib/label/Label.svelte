@@ -98,7 +98,7 @@
     }
 
     if (current instanceof HTMLLabelElement) {
-      let target = document.getElementById(current.htmlFor)
+      let target = document.getElementById(current.getAttribute("htmlFor") ?? "")
       if (target) {
         // Bail if the target element is disabled
         let actuallyDisabled = target.getAttribute("disabled")
@@ -150,7 +150,5 @@
 </script>
 
 <svelte:element this={as ?? (htmlFor ? DEFAULT_LABEL_TAG : "div")} {...ourProps} {...theirProps}>
-  {#if children}
-    {@render children(slot)}
-  {/if}
+  {#if children}{@render children(slot)}{/if}
 </svelte:element>

@@ -157,7 +157,5 @@
   {...ownProps}
   {...theirProps}
 >
-  {#if children}
-    {@render children(slot)}
-  {/if}
+  {#if children}{@render children(slot)}{/if}
 </svelte:element>

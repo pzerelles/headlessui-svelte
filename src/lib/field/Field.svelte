@@ -53,7 +53,5 @@
 </script>
 
 <svelte:element this={as ?? DEFAULT_FIELD_TAG} {...ourProps} {...theirProps}>
-  {#if children}
-    {@render children(slot)}
-  {/if}
+  {#if children}{@render children(slot)}{/if}
 </svelte:element>
