@@ -4,7 +4,7 @@
   import FormResolver from "./FormResolver.svelte"
   import HoistFormFields from "./HoistFormFields.svelte"
   import Hidden, { HiddenFeatures } from "./Hidden.svelte"
-  import { compact } from "$lib/utils/object.js"
+  import { compact } from "../utils/object.js"
 
   let {
     data,

@@ -1,8 +1,20 @@
 <script lang="ts" context="module">
-  import { getDisabledContext } from "$lib/utils/disabled.js"
-  import { getIdContext, htmlid } from "$lib/utils/id.js"
-  import { stateFromSlot } from "$lib/utils/state.js"
+  import type { SvelteHTMLElements } from "svelte/elements"
   import { getContext, setContext, untrack, type Snippet } from "svelte"
+
+  export type DescriptionProps<TTag extends keyof SvelteHTMLElements = typeof DEFAULT_DESCRIPTION_TAG> =
+    SvelteHTMLElements[TTag] & {
+      as?: TTag
+      children?: Snippet<
+        [
+          {
+            disabled: boolean
+          },
+        ]
+      >
+    }
+
+  const DEFAULT_DESCRIPTION_TAG = "p" as const
 
   export type DescriptionContext = {
     describedBy?: string
@@ -44,20 +56,10 @@
   }
 </script>
 
-<script lang="ts" generics="TTag extends keyof svelteHTML.IntrinsicElements">
-  const DEFAULT_DESCRIPTION_TAG = "p" as const
-
-  type DescriptionProps<TTag extends keyof svelteHTML.IntrinsicElements = typeof DEFAULT_DESCRIPTION_TAG> =
-    svelteHTML.IntrinsicElements[TTag] & {
-      as?: TTag
-      children?: Snippet<
-        [
-          {
-            disabled: boolean
-          },
-        ]
-      >
-    }
+<script lang="ts" generics="TTag extends keyof SvelteHTMLElements">
+  import { htmlid } from "../utils/id.js"
+  import { stateFromSlot } from "../utils/state.js"
+  import { getDisabledContext } from "../utils/disabled.js"
 
   const internalId = htmlid()
   const providedDisabled = getDisabledContext()

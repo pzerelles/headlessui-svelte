@@ -1,16 +1,8 @@
-<script lang="ts" generics="TTag extends keyof svelteHTML.IntrinsicElements">
-  import { createDescriptionContext } from "$lib/description/Description.svelte"
-  import { createLabelContext } from "$lib/label/Label.svelte"
-  import { getDisabledContext } from "$lib/utils/disabled.js"
-  import { createIdContext } from "$lib/utils/id.js"
-  import { stateFromSlot } from "$lib/utils/state.js"
-  import { nanoid } from "nanoid"
-  import { getContext, setContext, type Snippet } from "svelte"
+<script lang="ts" context="module">
+  import type { SvelteHTMLElements } from "svelte/elements"
 
-  const DEFAULT_FIELD_TAG = "div" as const
-
-  type FieldProps<TTag extends keyof svelteHTML.IntrinsicElements = typeof DEFAULT_FIELD_TAG> =
-    svelteHTML.IntrinsicElements[TTag] & {
+  export type FieldProps<TTag extends keyof SvelteHTMLElements = typeof DEFAULT_FIELD_TAG> =
+    SvelteHTMLElements[TTag] & {
       as?: TTag
       disabled?: boolean
       children?: Snippet<
@@ -21,6 +13,18 @@
         ]
       >
     }
+
+  const DEFAULT_FIELD_TAG = "div" as const
+</script>
+
+<script lang="ts" generics="TTag extends keyof SvelteHTMLElements">
+  import { createDescriptionContext } from "../description/Description.svelte"
+  import { createLabelContext } from "../label/Label.svelte"
+  import { getDisabledContext } from "../utils/disabled.js"
+  import { createIdContext } from "../utils/id.js"
+  import { stateFromSlot } from "../utils/state.js"
+  import { nanoid } from "nanoid"
+  import { setContext, type Snippet } from "svelte"
 
   let { as, disabled: ownDisabled = false, children, ...theirProps }: FieldProps<TTag> = $props()
 

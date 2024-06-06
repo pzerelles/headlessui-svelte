@@ -1,5 +1,22 @@
 <script lang="ts" context="module">
+  import type { SvelteHTMLElements } from "svelte/elements"
   import { setContext, untrack } from "svelte"
+
+  export type LabelProps<TTag extends keyof SvelteHTMLElements = typeof DEFAULT_LABEL_TAG> =
+    SvelteHTMLElements[TTag] & {
+      as?: TTag
+      passive?: boolean
+      htmlFor?: string
+      children?: Snippet<
+        [
+          {
+            disabled: boolean
+          },
+        ]
+      >
+    }
+
+  const DEFAULT_LABEL_TAG = "label" as const
 
   export type LabelContext = {
     labelledBy?: string
@@ -9,8 +26,7 @@
 
   export const createLabelContext = () => {
     let labelledBy = $state<string | undefined>()
-
-    setContext<LabelContext>("Label", {
+    const context: LabelContext = {
       get labelledBy() {
         return labelledBy
       },
@@ -25,10 +41,12 @@
             .join(" ")
         )
       },
-    })
+    }
+
+    return setContext("Label", context)
   }
 
-  export const getLabelContext = () => getContext<LabelContext>("Label")
+  export const getLabelContext = () => getContext<LabelContext | undefined>("Label")
 
   const validateLabelContext = () => {
     const context = getLabelContext()
@@ -41,27 +59,11 @@
   }
 </script>
 
-<script lang="ts" generics="TTag extends keyof svelteHTML.IntrinsicElements">
+<script lang="ts" generics="TTag extends keyof SvelteHTMLElements">
   import { getContext, type Snippet } from "svelte"
   import { getIdContext, htmlid } from "../utils/id.js"
-  import { getDisabledContext } from "$lib/utils/disabled.js"
-  import { stateFromSlot } from "$lib/utils/state.js"
-
-  const DEFAULT_LABEL_TAG = "label" as const
-
-  type LabelProps<TTag extends keyof svelteHTML.IntrinsicElements = typeof DEFAULT_LABEL_TAG> =
-    svelteHTML.IntrinsicElements[TTag] & {
-      as?: TTag
-      passive?: boolean
-      htmlFor?: string
-      children?: Snippet<
-        [
-          {
-            disabled: boolean
-          },
-        ]
-      >
-    }
+  import { getDisabledContext } from "../utils/disabled.js"
+  import { stateFromSlot } from "../utils/state.js"
 
   const internalId = htmlid()
   const context = validateLabelContext()

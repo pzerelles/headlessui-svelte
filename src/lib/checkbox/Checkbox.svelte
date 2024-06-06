@@ -1,21 +1,10 @@
-<script lang="ts" generics="TTag extends keyof svelteHTML.IntrinsicElements, TType">
-  import { getContext, tick, type Snippet } from "svelte"
-  import { createHover } from "svelte-interactions"
-  import { attemptSubmit } from "../utils/form.js"
-  import { getIdContext, htmlid } from "../utils/id.js"
-  import { createActivePress } from "../actions/activePress.svelte.js"
-  import { createFocusRing } from "$lib/actions/focusRing.svelte.js"
-  import FormFields from "$lib/internal/FormFields.svelte"
-  import { getLabelContext } from "$lib/label/Label.svelte"
-  import { getDisabledContext } from "$lib/utils/disabled.js"
-  import { stateFromSlot } from "$lib/utils/state.js"
+<script lang="ts" context="module">
+  import type { SvelteHTMLElements } from "svelte/elements"
 
-  const DEFAULT_CHECKBOX_TAG = "div" as const
-
-  type CheckboxProps<
+  export type CheckboxProps<
     TType = string,
-    TTag extends keyof svelteHTML.IntrinsicElements = typeof DEFAULT_CHECKBOX_TAG,
-  > = svelteHTML.IntrinsicElements[TTag] & {
+    TTag extends keyof SvelteHTMLElements = typeof DEFAULT_CHECKBOX_TAG,
+  > = SvelteHTMLElements[TTag] & {
     as?: TTag
     value?: TType
     disabled?: boolean
@@ -41,6 +30,21 @@
       ]
     >
   }
+
+  const DEFAULT_CHECKBOX_TAG = "div" as const
+</script>
+
+<script lang="ts" generics="TTag extends keyof SvelteHTMLElements, TType">
+  import { tick, type Snippet } from "svelte"
+  import { createHover } from "svelte-interactions"
+  import { attemptSubmit } from "../utils/form.js"
+  import { getIdContext, htmlid } from "../utils/id.js"
+  import { createActivePress } from "../actions/activePress.svelte.js"
+  import { createFocusRing } from "../actions/focusRing.svelte.js"
+  import FormFields from "../internal/FormFields.svelte"
+  import { getLabelContext } from "../label/Label.svelte"
+  import { getDisabledContext } from "../utils/disabled.js"
+  import { stateFromSlot } from "../utils/state.js"
 
   const internalId = htmlid()
   const providedId = getIdContext()
@@ -69,7 +73,7 @@
   const fr = createFocusRing({ autoFocus })
 
   const labelContext = getLabelContext()
-  const { labelledBy } = $derived(labelContext)
+  const labelledBy = $derived(labelContext?.labelledBy)
 
   let changing = $state(false)
 
