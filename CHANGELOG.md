@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.0.1-next.1](https://github.com/pzerelles/headlessui-svelte/compare/v2.0.0-next.1...v2.0.1-next.1) (2024-06-06)
+
+
+### Bug Fixes
+
+* add publish to release process ([e7b4fd3](https://github.com/pzerelles/headlessui-svelte/commit/e7b4fd36c91772eeac58f85080b43cdcd215ac44))
+* update README.md ([6dff84c](https://github.com/pzerelles/headlessui-svelte/commit/6dff84c0359689d40e30a2ad7ccfffc33f17629d))
+
 ## 2.0.0-next.1 (2024-06-06)
 
 
