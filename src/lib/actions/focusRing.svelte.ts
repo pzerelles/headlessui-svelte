@@ -1,9 +1,9 @@
 import type { Action } from "svelte/action"
 import { isFocusVisible, useFocusVisibleListener } from "../utils/focusVisible.svelte.js"
 
-export const createFocusRing = ({ autoFocus = false, within }: { autoFocus?: boolean; within?: boolean } = {}) => {
+export const createFocusRing = ({ autofocus = false, within }: { autofocus?: boolean; within?: boolean } = {}) => {
   let focused = $state(false)
-  let focusVisible = $state(autoFocus || isFocusVisible())
+  let focusVisible = $state(autofocus || isFocusVisible())
 
   useFocusVisibleListener((isFocusVisible) => {
     focusVisible = isFocusVisible

@@ -11,7 +11,7 @@
     indeterminate?: boolean
     checked?: boolean
     defaultChecked?: boolean
-    autoFocus?: boolean
+    autofocus?: boolean
     form?: string
     name?: string
     onchange?: (checked: boolean) => void
@@ -58,7 +58,7 @@
     indeterminate = false,
     defaultChecked,
     checked = $bindable(defaultChecked ?? false),
-    autoFocus,
+    autofocus,
     form,
     name,
     onchange,
@@ -70,7 +70,7 @@
 
   const { hoverAction: hover, isHovered } = $derived(createHover({ isDisabled: disabled }))
   const ap = $derived(createActivePress({ disabled }))
-  const fr = createFocusRing({ autoFocus })
+  const fr = createFocusRing({ autofocus })
 
   const labelContext = getLabelContext()
   const labelledBy = $derived(labelContext?.labelledBy)
@@ -109,16 +109,10 @@
     focus: fr.focusVisible,
     active: ap.pressed,
     hover: $isHovered,
-    autofocus: autoFocus ?? false,
+    autofocus: autofocus ?? false,
     disabled,
     indeterminate,
   })
-
-  const states = $derived(
-    Object.entries(slot)
-      .filter(([, value]) => value)
-      .map(([key]) => key)
-  )
 
   const ownProps = $derived({
     id,

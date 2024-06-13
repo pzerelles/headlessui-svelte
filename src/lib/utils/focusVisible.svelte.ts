@@ -27,7 +27,7 @@ export interface FocusVisibleProps {
   /** Whether the element is a text input. */
   isTextInput?: boolean
   /** Whether the element will be auto focused. */
-  autoFocus?: boolean
+  autofocus?: boolean
 }
 
 export interface FocusVisibleResult {
@@ -309,8 +309,8 @@ function isKeyboardFocusEvent(isTextInput: boolean, modality: Modality, e: Handl
  * Manages focus visible state for the page, and subscribes individual components for updates.
  */
 /*export function useFocusVisible(props: FocusVisibleProps = {}): FocusVisibleResult {
-  let { isTextInput, autoFocus } = props
-  let [isFocusVisibleState, setFocusVisible] = useState(autoFocus || isFocusVisible())
+  let { isTextInput, autofocus } = props
+  let [isFocusVisibleState, setFocusVisible] = useState(autofocus || isFocusVisible())
   useFocusVisibleListener(
     (isFocusVisible) => {
       setFocusVisible(isFocusVisible)
