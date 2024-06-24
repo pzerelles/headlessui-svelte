@@ -19,12 +19,12 @@
 
 <script lang="ts" generics="TTag extends keyof SvelteHTMLElements">
   import { setContext, type Snippet } from "svelte"
-  import { getDisabledContext } from "../utils/disabled.js"
+  import { useDisabled } from "../internal/disabled.js"
   import { createLabelContext } from "../label/Label.svelte"
 
   let { as, disabled: ownDisabled = false, children, ...theirProps }: FieldsetProps<TTag> = $props()
 
-  const providedDisabled = getDisabledContext()
+  const providedDisabled = useDisabled()
   const disabled = $derived(providedDisabled?.disabled || ownDisabled)
 
   setContext("Disabled", {

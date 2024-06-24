@@ -1,59 +1,74 @@
 <script lang="ts" context="module">
   import type { SvelteHTMLElements } from "svelte/elements"
+  import type { EnsureArray, Props } from "$lib/utils/types.js"
+  import type { ByComparator } from "$lib/hooks/use-by-comparator.js"
 
-  export type CheckboxProps<
-    TType = string,
-    TTag extends keyof SvelteHTMLElements = typeof DEFAULT_CHECKBOX_TAG,
-  > = SvelteHTMLElements[TTag] & {
-    as?: TTag
-    value?: TType
-    disabled?: boolean
-    indeterminate?: boolean
-    checked?: boolean
-    defaultChecked?: boolean
-    autofocus?: boolean
-    form?: string
-    name?: string
-    onchange?: (checked: boolean) => void
-    children?: Snippet<
-      [
-        {
-          checked: boolean
-          changing: boolean
-          focus: boolean
-          active: boolean
-          hover: boolean
-          autofocus: boolean
-          disabled: boolean
-          indeterminate: boolean
-        },
-      ]
-    >
+  const DEFAULT_COMBOBOX_TAG = "svelte:fragment" as const
+  type ComboboxRenderPropArg<TValue, TActive = TValue> = {
+    open: boolean
+    disabled: boolean
+    activeIndex: number | null
+    activeOption: TActive | null
+    value: TValue
   }
 
-  const DEFAULT_CHECKBOX_TAG = "div" as const
+  export type CheckboxProps<
+    TValue,
+    TMultiple extends boolean | undefined,
+    TTag extends keyof SvelteHTMLElements = typeof DEFAULT_COMBOBOX_TAG,
+  > = Props<
+    TTag,
+    ComboboxRenderPropArg<NoInfer<TValue>>,
+    "value" | "defaultValue" | "multiple" | "onChange" | "by",
+    {
+      value?: TMultiple extends true ? EnsureArray<TValue> : TValue
+      defaultValue?: TMultiple extends true ? EnsureArray<NoInfer<TValue>> : NoInfer<TValue>
+
+      onChange?(value: TMultiple extends true ? EnsureArray<NoInfer<TValue>> : NoInfer<TValue> | null): void
+      by?: ByComparator<TMultiple extends true ? EnsureArray<NoInfer<TValue>>[number] : NoInfer<TValue>>
+
+      /** @deprecated The `<Combobox />` is now nullable default */
+      nullable?: boolean
+
+      multiple?: TMultiple
+      disabled?: boolean
+      form?: string
+      name?: string
+      immediate?: boolean
+      virtual?: {
+        options: NoInfer<TValue>[]
+        disabled?: (value: NoInfer<TValue>) => boolean
+      } | null
+
+      onClose?(): void
+
+      __demoMode?: boolean
+    }
+  >
 </script>
 
 <script lang="ts" generics="TTag extends keyof SvelteHTMLElements, TType">
-  import { tick, type Snippet } from "svelte"
-  import { createHover } from "svelte-interactions"
-  import { attemptSubmit } from "../utils/form.js"
-  import { getIdContext, htmlid } from "../utils/id.js"
-  import { createActivePress } from "../actions/activePress.svelte.js"
-  import { createFocusRing } from "../actions/focusRing.svelte.js"
-  import FormFields from "../internal/FormFields.svelte"
-  import { getLabelContext } from "../label/Label.svelte"
   import { useDisabled } from "../internal/disabled.js"
-  import { stateFromSlot } from "../utils/state.js"
 
-  const internalId = htmlid()
-  const providedId = getIdContext()
   const providedDisabled = useDisabled()
-
   let {
-    id = providedId || `headlessui-checkbox-${internalId}`,
     as,
-    value,
+    value: controlledValue,
+    defaultValue: _defaultValue,
+    onChange: controlledOnChange,
+    form,
+    name,
+    by,
+    disabled = ownDisabled = false,
+    onClose,
+    __demoMode = false,
+    multiple = false,
+    immediate = false,
+    virtual = null,
+    // Deprecated, but let's pluck it from the props such that it doesn't end up
+    // on the `Fragment`
+    nullable: _nullable,
+    ...theirProps
     disabled: ownDisabled = false,
     indeterminate = false,
     defaultChecked,

@@ -20,7 +20,7 @@
 <script lang="ts" generics="TTag extends keyof SvelteHTMLElements">
   import { createDescriptionContext } from "../description/Description.svelte"
   import { createLabelContext } from "../label/Label.svelte"
-  import { getDisabledContext } from "../utils/disabled.js"
+  import { useDisabled } from "../internal/disabled.js"
   import { createIdContext } from "../utils/id.js"
   import { stateFromSlot } from "../utils/state.js"
   import { nanoid } from "nanoid"
@@ -34,7 +34,7 @@
   createLabelContext()
   createDescriptionContext()
 
-  const providedDisabled = getDisabledContext()
+  const providedDisabled = useDisabled()
   const disabled = $derived(providedDisabled?.disabled || ownDisabled)
 
   setContext("Disabled", {

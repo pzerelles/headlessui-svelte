@@ -59,10 +59,10 @@
 <script lang="ts" generics="TTag extends keyof SvelteHTMLElements">
   import { htmlid } from "../utils/id.js"
   import { stateFromSlot } from "../utils/state.js"
-  import { getDisabledContext } from "../utils/disabled.js"
+  import { useDisabled } from "../internal/disabled.js"
 
   const internalId = htmlid()
-  const providedDisabled = getDisabledContext()
+  const providedDisabled = useDisabled()
 
   let { as, id = `headlessui-description-${internalId}`, children, ...theirProps }: DescriptionProps<TTag> = $props()
 

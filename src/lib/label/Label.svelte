@@ -62,13 +62,13 @@
 <script lang="ts" generics="TTag extends keyof SvelteHTMLElements">
   import { getContext, type Snippet } from "svelte"
   import { getIdContext, htmlid } from "../utils/id.js"
-  import { getDisabledContext } from "../utils/disabled.js"
+  import { useDisabled } from "../internal/disabled.js"
   import { stateFromSlot } from "../utils/state.js"
 
   const internalId = htmlid()
   const context = validateLabelContext()
   const providedHtmlFor = getIdContext()
-  const providedDisabled = getDisabledContext()
+  const providedDisabled = useDisabled()
 
   let {
     as,

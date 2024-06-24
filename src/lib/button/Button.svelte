@@ -24,18 +24,14 @@
 </script>
 
 <script lang="ts" generics="TTag extends keyof SvelteHTMLElements, TType">
-  import { tick, type Snippet } from "svelte"
+  import type { Snippet } from "svelte"
   import { createHover } from "svelte-interactions"
-  import { attemptSubmit } from "../utils/form.js"
-  import { getIdContext, htmlid } from "../utils/id.js"
   import { createActivePress } from "../actions/activePress.svelte.js"
   import { createFocusRing } from "../actions/focusRing.svelte.js"
-  import FormFields from "../internal/FormFields.svelte"
-  import { getLabelContext } from "../label/Label.svelte"
-  import { getDisabledContext } from "../utils/disabled.js"
+  import { useDisabled } from "../internal/disabled.js"
   import { stateFromSlot } from "../utils/state.js"
 
-  const providedDisabled = getDisabledContext()
+  const providedDisabled = useDisabled()
 
   let {
     as,
