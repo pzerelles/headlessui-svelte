@@ -1,4 +1,7 @@
 <script lang="ts" context="module">
+  import type { HTMLElementType, Props } from "$lib/utils/types.js"
+  import type { SvelteHTMLElements } from "svelte/elements"
+
   export enum HiddenFeatures {
     // The default, no features.
     None = 1 << 0,
@@ -9,34 +12,32 @@
     // Whether it should be completely hidden, even to assistive technologies.
     Hidden = 1 << 2,
   }
-</script>
-
-<script lang="ts">
-  import { onMount } from "svelte"
-
-  import type { HTMLInputAttributes } from "svelte/elements"
 
   const DEFAULT_VISUALLY_HIDDEN_TAG = "div" as const
 
-  type HiddenProps = Omit<HTMLInputAttributes, "style"> & {
-    as?: string
-    features?: HiddenFeatures
-    ref?: (el: HTMLElement) => void
-  }
+  type HiddenRenderPropArg = {}
+  type HiddenPropsWeControl = never
+  export type HiddenProps<TTag extends keyof SvelteHTMLElements = typeof DEFAULT_VISUALLY_HIDDEN_TAG> = Props<
+    TTag,
+    HiddenRenderPropArg,
+    HiddenPropsWeControl,
+    { features?: HiddenFeatures; ref?: HTMLElementType<TTag> | null }
+  >
+</script>
 
-  let { as = "div", features = HiddenFeatures.None, ref: applyRef, ...theirProps }: HiddenProps = $props()
-
-  let ref = $state<HTMLElement>()
-
-  onMount(() => {
-    applyRef?.(ref!)
-  })
+<script lang="ts" generics="TTag extends keyof SvelteHTMLElements">
+  let {
+    as = DEFAULT_VISUALLY_HIDDEN_TAG as TTag,
+    ref = $bindable(),
+    features = HiddenFeatures.None,
+    ...theirProps
+  }: HiddenProps<TTag> = $props()
 
   let ourProps = {
     "aria-hidden":
       (features & HiddenFeatures.Focusable) === HiddenFeatures.Focusable
         ? true
-        : theirProps["aria-hidden"] ?? undefined,
+        : theirProps["aria-hidden" as keyof typeof theirProps] ?? undefined,
     hidden: (features & HiddenFeatures.Hidden) === HiddenFeatures.Hidden ? true : undefined,
     style: [
       "position: fixed",
@@ -58,4 +59,4 @@
   }
 </script>
 
-<svelte:element this={as} {...theirProps} {...ourProps} bind:this={ref} />
+<svelte:element this={as} bind:this={ref} {...ourProps} {...theirProps} />

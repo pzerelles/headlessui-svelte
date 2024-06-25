@@ -1,14 +1,14 @@
 import type { Action } from "svelte/action"
 import { disposables } from "../utils/disposables.js"
-import { getOwnerDocument } from "../utils/dom.js"
+import { getOwnerDocument } from "../utils/owner.js"
 
 // Only the necessary props from a DOMRect
 type Rect = { left: number; right: number; top: number; bottom: number }
 
 function pointerRectFromPointerEvent(event: PointerEvent): Rect {
   // Center of the pointer geometry
-  let offsetX = event.width / 2
-  let offsetY = event.height / 2
+  const offsetX = event.width / 2
+  const offsetY = event.height / 2
 
   return {
     top: event.clientY - offsetY,
@@ -60,28 +60,30 @@ export const createActivePress = ({ disabled }: { disabled?: boolean }) => {
 
       // Setup global handlers to catch events on elements that are not the current element
       {
-        let owner = getOwnerDocument(event.currentTarget as Element | null | undefined)
+        const owner = getOwnerDocument(event.currentTarget as Element | null | undefined)
 
-        // `pointerup` on any element means that we are no longer pressing the current element
-        d.addEventListener(owner, "pointerup", reset, false)
+        if (owner) {
+          // `pointerup` on any element means that we are no longer pressing the current element
+          d.addEventListener(owner, "pointerup", reset, false)
 
-        // `pointerleave` isn't called consistently (if at all) on iOS Safari, so we use `pointermove` instead
-        // to determine if we are still "pressing". We also compare the pointer position to the target element
-        // so that we can tell if the pointer is still over the element or not.
-        d.addEventListener(
-          owner,
-          "pointermove",
-          (event: PointerEvent) => {
-            if (currentTarget) {
-              let pointerRect = pointerRectFromPointerEvent(event)
-              pressed = areRectsOverlapping(pointerRect, currentTarget.getBoundingClientRect())
-            }
-          },
-          false
-        )
+          // `pointerleave` isn't called consistently (if at all) on iOS Safari, so we use `pointermove` instead
+          // to determine if we are still "pressing". We also compare the pointer position to the target element
+          // so that we can tell if the pointer is still over the element or not.
+          d.addEventListener(
+            owner,
+            "pointermove",
+            (event: PointerEvent) => {
+              if (currentTarget) {
+                const pointerRect = pointerRectFromPointerEvent(event)
+                pressed = areRectsOverlapping(pointerRect, currentTarget.getBoundingClientRect())
+              }
+            },
+            false
+          )
 
-        // Whenever the browser decides to fire a `pointercancel` event, we should abort
-        d.addEventListener(owner, "pointercancel", reset, false)
+          // Whenever the browser decides to fire a `pointercancel` event, we should abort
+          d.addEventListener(owner, "pointercancel", reset, false)
+        }
       }
     }
 

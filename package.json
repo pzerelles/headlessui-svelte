@@ -63,6 +63,7 @@
     "vitest": "^1.6.0"
   },
   "dependencies": {
+    "esm-env": "^1.0.0",
     "nanoid": "^5.0.7",
     "svelte-interactions": "^0.2.0"
   },
