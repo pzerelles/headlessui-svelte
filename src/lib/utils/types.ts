@@ -1,12 +1,19 @@
+/* eslint-disable @typescript-eslint/no-empty-object-type */
 // A unique placeholder we can use as a default. This is nice because we can use this instead of
 // defaulting to null / never / ... and possibly collide with actual data.
 
 import type { Snippet } from "svelte"
-import type { SvelteHTMLElements } from "svelte/elements"
+import type { HTMLAttributes, SvelteHTMLElements } from "svelte/elements"
 
 // Ideally we use a unique symbol here.
-let __ = "1D45E01E-AF44-47C4-988A-19A94EBAF55C" as const
+const __ = "1D45E01E-AF44-47C4-988A-19A94EBAF55C" as const
 export type __ = typeof __
+
+export type ElementType = keyof SvelteHTMLElements
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type HTMLElementType<T extends keyof SvelteHTMLElements> =
+  SvelteHTMLElements[T] extends HTMLAttributes<infer U> ? U : never
 
 export type Expand<T> = T extends infer O ? { [K in keyof O]: O[K] } : never
 
@@ -18,7 +25,7 @@ type PropsWeControl = "as" | "children" | "class"
 
 // Resolve the props of the component, but ensure to omit certain props that we control
 type CleanProps<TTag extends keyof SvelteHTMLElements, TOmittableProps extends PropertyKey = never> = Omit<
-  PropsOf<TTag>,
+  SvelteHTMLElements[TTag],
   TOmittableProps | PropsWeControl
 >
 
@@ -26,7 +33,6 @@ type CleanProps<TTag extends keyof SvelteHTMLElements, TOmittableProps extends P
 type OurProps<TTag extends keyof SvelteHTMLElements, TSlot> = {
   as?: TTag
   children?: Snippet<[TSlot]>
-  refName?: string
 }
 
 type HasProperty<T extends object, K extends PropertyKey> = T extends never ? never : K extends keyof T ? true : never
@@ -62,4 +68,4 @@ export type XOR<T, U> = T | U extends __
         ? (Without<T, U> & U) | (Without<U, T> & T)
         : T | U
 
-export type EnsureArray<T> = T extends any[] ? T : Expand<T>[]
+export type EnsureArray<T> = T extends unknown[] ? T : Expand<T>[]
