@@ -5,6 +5,8 @@
     "@pzerelles/headlessui-svelte": "2.0.0-next.0"
   },
   "changesets": [
-    "tidy-singers-think"
+    "five-donuts-collect",
+    "tidy-singers-think",
+    "wet-waves-report"
   ]
 }
