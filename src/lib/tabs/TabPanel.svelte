@@ -25,7 +25,7 @@
   import { createFocusRing } from "$lib/actions/focusRing.svelte.js"
   import Hidden from "$lib/internal/Hidden.svelte"
   import { stateFromSlot } from "$lib/utils/state.js"
-  import type { MutableRefObject } from "$lib/utils/ref.js"
+  import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
   import { onMount } from "svelte"
 
   const internalId = useId()
@@ -43,7 +43,7 @@
   const actions = useActions("Tab.Panel")
 
   let internalPanelRef = $state<HTMLElement>()
-  const panelRef = $derived<MutableRefObject<HTMLElement>>({ current: internalPanelRef })
+  const panelRef = $derived<MutableRefObject<HTMLElement | undefined>>({ current: internalPanelRef })
 
   onMount(() => actions.registerPanel(panelRef))
 

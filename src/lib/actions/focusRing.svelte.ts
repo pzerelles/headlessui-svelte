@@ -10,10 +10,10 @@ export const createFocusRing = ({ autofocus = false, within }: { autofocus?: boo
   })
 
   const focusRingAction: Action<HTMLElement> = (node) => {
-    const handleFocus = (e: FocusEvent) => {
+    const handleFocus = () => {
       focused = true
     }
-    const handleBlur = (e: FocusEvent) => {
+    const handleBlur = () => {
       focused = false
     }
 

@@ -1,3 +1,5 @@
+import type { Props } from "./types.js"
+
 export enum RenderFeatures {
   /** No features at all */
   None = 0,
@@ -39,3 +41,40 @@ export type PropsForFeatures<T extends RenderFeatures> = Expand<
     | PropsForFeature<T, RenderFeatures.RenderStrategy, { unmount?: boolean }>
   >
 >
+
+export function mergeProps<T extends Props<any, any>[]>(...listOfProps: T) {
+  if (listOfProps.length === 0) return {}
+  if (listOfProps.length === 1) return listOfProps[0]
+
+  let target: Props<any, any> = {}
+
+  let eventHandlers: Record<string, ((...args: any[]) => void | undefined)[]> = {}
+
+  for (let props of listOfProps) {
+    for (let prop in props) {
+      // Merge event listeners
+      if (prop.startsWith("on") && typeof props[prop] === "function") {
+        eventHandlers[prop] ??= []
+        eventHandlers[prop].push(props[prop])
+      } else {
+        // Override incoming prop
+        target[prop] = props[prop]
+      }
+    }
+  }
+
+  // Merge event handlers
+  for (let eventName in eventHandlers) {
+    Object.assign(target, {
+      [eventName](...args: any[]) {
+        let handlers = eventHandlers[eventName]
+
+        for (let handler of handlers) {
+          handler?.(...args)
+        }
+      },
+    })
+  }
+
+  return target
+}

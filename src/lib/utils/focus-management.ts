@@ -187,13 +187,13 @@ function isSelectableElement(element: Element | null): element is HTMLInputEleme
 
 export function sortByDomNode<T>(
   nodes: T[],
-  resolveKey: (item: T) => HTMLElement | undefined = (i) => i as HTMLElement | undefined
+  resolveKey: (item: T) => HTMLElement | null | undefined = (i) => i as HTMLElement | null | undefined
 ): T[] {
   return nodes.slice().sort((aItem, zItem) => {
     const a = resolveKey(aItem)
     const z = resolveKey(zItem)
 
-    if (a === undefined || z === undefined) return 0
+    if (!a || !z) return 0
 
     const position = a.compareDocumentPosition(z)
 

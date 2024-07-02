@@ -13,7 +13,7 @@ export type ElementType = keyof SvelteHTMLElements
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type HTMLElementType<T extends keyof SvelteHTMLElements> =
-  SvelteHTMLElements[T] extends HTMLAttributes<infer U> ? U : never
+  SvelteHTMLElements[T] extends HTMLAttributes<infer U> ? (U extends HTMLElement ? U : never) : never
 
 export type Expand<T> = T extends infer O ? { [K in keyof O]: O[K] } : never
 
@@ -68,4 +68,5 @@ export type XOR<T, U> = T | U extends __
         ? (Without<T, U> & U) | (Without<U, T> & T)
         : T | U
 
-export type EnsureArray<T> = T extends unknown[] ? T : Expand<T>[]
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type EnsureArray<T> = T extends any[] ? T : Expand<T>[]

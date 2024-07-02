@@ -37,7 +37,7 @@
   import { useResolveButtonType } from "$lib/hooks/use-resolve-button-type.svelte.js"
   import type { SvelteHTMLElements } from "svelte/elements"
   import { stateFromSlot } from "$lib/utils/state.js"
-  import type { MutableRefObject } from "$lib/utils/ref.js"
+  import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
   import { onMount } from "svelte"
 
   const internalId = useId()
@@ -55,7 +55,7 @@
   const actions = useActions("Tab")
 
   let internalTabRef = $state<HTMLElement>()
-  const tabRef = $derived<MutableRefObject<HTMLElement>>({ current: internalTabRef })
+  const tabRef = $derived<MutableRefObject<HTMLElement | undefined>>({ current: internalTabRef })
 
   onMount(() => actions.registerTab(tabRef))
 
@@ -71,14 +71,14 @@
     let result = cb()
     if (result === FocusResult.Success && activation === "auto") {
       let newTab = getOwnerDocument(internalTabRef)?.activeElement
-      let idx = data.tabs.findIndex((tab) => tab === newTab)
+      let idx = data.tabs.findIndex((tab) => tab.current === newTab)
       if (idx !== -1) actions.change(idx)
     }
     return result
   })
 
   const handleKeyDown = (event: KeyboardEvent) => {
-    let list = tabs.filter(Boolean) as HTMLElement[]
+    let list = tabs.map((tab) => tab.current).filter(Boolean) as HTMLElement[]
 
     if (event.key === " " || event.key === "Enter") {
       event.preventDefault()
@@ -157,13 +157,22 @@
     disabled,
   } satisfies TabRenderPropArg)
 
+  const resolvedType = useResolveButtonType({
+    get props() {
+      return { type: theirProps.type, as }
+    },
+    get ref() {
+      return tabRef
+    },
+  })
+
   const ourProps = $derived({
     onkeydown: handleKeyDown,
     onmousedown: handleMouseDown,
     onclick: handleSelection,
     id,
     role: "tab",
-    type: useResolveButtonType({ type: theirProps.type, as }, tabRef),
+    type: resolvedType.type,
     "aria-controls": panels[myIndex]?.current?.id,
     "aria-selected": selected,
     tabIndex: selected ? 0 : -1,

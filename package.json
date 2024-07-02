@@ -1,6 +1,6 @@
 {
   "name": "@pzerelles/headlessui-svelte",
-  "version": "2.1.0-next.1",
+  "version": "2.1.1-next.1",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build && npm run package",
@@ -43,6 +43,7 @@
     "@types/eslint": "^8.56.10",
     "@types/node": "^20.14.8",
     "autoprefixer": "^10.4.19",
+    "clsx": "^2.1.1",
     "eslint": "^9.5.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-svelte": "^2.41.0",
@@ -53,7 +54,7 @@
     "prettier-plugin-svelte": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.14",
     "publint": "^0.1.16",
-    "svelte": "5.0.0-next.165",
+    "svelte": "5.0.0-next.176",
     "svelte-check": "^3.8.2",
     "tailwindcss": "^3.4.4",
     "tslib": "^2.6.3",
@@ -63,6 +64,7 @@
     "vitest": "^1.6.0"
   },
   "dependencies": {
+    "@skeletonlabs/floating-ui-svelte": "^0.3.1",
     "esm-env": "^1.0.0",
     "nanoid": "^5.0.7",
     "svelte-interactions": "^0.2.0"

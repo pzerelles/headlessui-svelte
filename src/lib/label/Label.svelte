@@ -46,7 +46,21 @@
     return setContext("Label", context)
   }
 
-  export const getLabelContext = () => getContext<LabelContext | undefined>("Label")
+  export const getLabelContext = (alwaysAvailableIds?: (string | undefined | null)[]) => {
+    const context = getContext<LabelContext | undefined>("Label")
+    if ((alwaysAvailableIds?.length ?? 0) > 0) {
+      return (
+        context &&
+        ({
+          ...context,
+          get labelledBy() {
+            return [context?.labelledBy, ...alwaysAvailableIds!].filter(Boolean).join(" ")
+          },
+        } satisfies LabelContext)
+      )
+    }
+    return context
+  }
 
   const validateLabelContext = () => {
     const context = getLabelContext()

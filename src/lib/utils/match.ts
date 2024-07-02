@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export function match<TValue extends string | number = string, TReturnValue = unknown>(
   value: TValue,
-  lookup: Record<TValue, TReturnValue | ((...args: unknown[]) => TReturnValue)>,
-  ...args: unknown[]
+  lookup: Record<TValue, TReturnValue | ((...args: any[]) => TReturnValue)>,
+  ...args: any[]
 ): TReturnValue {
   if (value in lookup) {
     const returnValue = lookup[value]

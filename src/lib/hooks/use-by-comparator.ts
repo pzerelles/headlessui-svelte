@@ -13,7 +13,7 @@ function defaultBy<T>(a: T, z: T) {
 export function useByComparator<T>(by: ByComparator<T> = defaultBy) {
   return (a: T, z: T) => {
     if (typeof by === "string") {
-      let property = by as keyof T
+      const property = by as keyof T
       return a?.[property] === z?.[property]
     }
 

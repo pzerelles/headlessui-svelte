@@ -1,4 +1,5 @@
-import type { MutableRefObject } from "$lib/utils/ref.js"
+import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
+import { untrack } from "svelte"
 
 function resolveType<TTag>(props: { type?: string; as?: TTag }) {
   if (props.type) return props.type
@@ -9,21 +10,17 @@ function resolveType<TTag>(props: { type?: string; as?: TTag }) {
   return undefined
 }
 
-export function useResolveButtonType<TTag>(props: { type?: string; as?: TTag }, ref: MutableRefObject<HTMLElement>) {
-  let type = $state(resolveType(props))
+export function useResolveButtonType<TTag>(options: {
+  props: { type?: string; as?: TTag }
+  ref: MutableRefObject<HTMLElement | null | undefined>
+}) {
+  const { props, ref } = $derived(options)
 
-  $effect(() => {
-    type = resolveType(props)
-  })
-
-  $effect(() => {
-    if (type) return
-    if (!ref.current) return
-
-    if (ref.current instanceof HTMLButtonElement && !ref.current.hasAttribute("type")) {
-      type = "button"
-    }
-  })
-
-  return type
+  return {
+    get type() {
+      return ref.current && ref.current instanceof HTMLButtonElement && !ref.current.hasAttribute("type")
+        ? "button"
+        : resolveType(props)
+    },
+  }
 }

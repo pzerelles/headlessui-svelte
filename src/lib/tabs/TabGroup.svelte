@@ -28,8 +28,8 @@
     info: { isControlled: boolean }
     selectedIndex: number
 
-    tabs: MutableRefObject<HTMLElement>[]
-    panels: MutableRefObject<HTMLElement>[]
+    tabs: MutableRefObject<HTMLElement | undefined>[]
+    panels: MutableRefObject<HTMLElement | undefined>[]
   }
 
   type TabsDataContext = StateDefinition & {
@@ -48,8 +48,8 @@
   }
 
   type TabsActionsContext = {
-    registerTab: (tab: MutableRefObject<HTMLElement>) => () => void
-    registerPanel: (panel: MutableRefObject<HTMLElement>) => () => void
+    registerTab: (tab: MutableRefObject<HTMLElement | undefined>) => () => void
+    registerPanel: (panel: MutableRefObject<HTMLElement | undefined>) => () => void
     change: (index: number) => void
   }
 
@@ -66,7 +66,7 @@
 
 <script lang="ts" generics="TTag extends ElementType">
   import StableCollection from "$lib/utils/StableCollection.svelte"
-  import type { MutableRefObject } from "$lib/utils/ref.js"
+  import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
 
   enum Direction {
     Forwards,
@@ -95,7 +95,7 @@
         return _state.panels
       },
       setSelectedIndex(index: number) {
-        if (index === _state.selectedIndex) return
+        if (index === _state.selectedIndex) return _state
         let tabs = sortByDomNode(_state.tabs, (tab) => tab.current)
         let panels = sortByDomNode(_state.panels, (panel) => panel.current)
 
@@ -127,7 +127,8 @@
           // lazy loading tabs and there's
           // nothing to focus on yet
           if (focusableTabs.length === 0) {
-            return nextState
+            _state = nextState
+            return _state
           }
 
           let nextSelectedIndex = match(direction, {
@@ -136,10 +137,11 @@
               tabs.findIndex((tab) => $state.is(tab, focusableTabs[focusableTabs.length - 1])),
           })
 
-          return {
+          _state = {
             ...nextState,
             selectedIndex: nextSelectedIndex === -1 ? _state.selectedIndex : nextSelectedIndex,
           }
+          return _state
         }
 
         // Middle
@@ -147,14 +149,18 @@
         let after = tabs.slice(index)
 
         let next = [...after, ...before].find((tab) => focusableTabs.some((_tab) => $state.is(_tab, tab)))
-        if (!next) return nextState
+        if (!next) {
+          _state = nextState
+          return _state
+        }
 
         let selectedIndex = tabs.findIndex((tab) => $state.is(tab, next)) ?? _state.selectedIndex
         if (selectedIndex === -1) selectedIndex = _state.selectedIndex
 
         _state = { ...nextState, selectedIndex }
+        return _state
       },
-      registerTab(tab: MutableRefObject<HTMLElement>) {
+      registerTab(tab: MutableRefObject<HTMLElement | undefined>) {
         if (_state.tabs.some((_tab) => $state.is(_tab, tab))) return _state
 
         _state.tabs = sortByDomNode([..._state.tabs, tab], (tab) => tab.current)
@@ -170,17 +176,22 @@
           const selectedIndex = _state.tabs.findIndex((tab) => $state.is(tab, activeTab))
           if (selectedIndex !== _state.selectedIndex) _state.selectedIndex = selectedIndex
         }
+
+        return _state
       },
-      unregisterTab(tab: MutableRefObject<HTMLElement>) {
+      unregisterTab(tab: MutableRefObject<HTMLElement | undefined>) {
         _state.tabs = _state.tabs.filter((_tab) => !$state.is(_tab, tab))
+        return _state
       },
-      registerPanel(panel: MutableRefObject<HTMLElement>) {
+      registerPanel(panel: MutableRefObject<HTMLElement | undefined>) {
         if (_state.panels.some((_panel) => $state.is(_panel, panel))) return _state
         _state.panels = sortByDomNode([..._state.panels, panel], (panel) => panel.current)
+        return _state
       },
-      unregisterPanel(panel: MutableRefObject<HTMLElement>) {
+      unregisterPanel(panel: MutableRefObject<HTMLElement | undefined>) {
         console.log("unregisterPanel", panel)
         _state.panels = _state.panels.filter((_panel) => !$state.is(_panel, panel))
+        return _state
       },
     }
   }
@@ -238,12 +249,12 @@
 
   const realSelectedIndex = $derived(isControlled ? selectedIndex! : _state.selectedIndex)
 
-  const registerTab = (tab: MutableRefObject<HTMLElement>) => {
+  const registerTab = (tab: MutableRefObject<HTMLElement | undefined>) => {
     _state.registerTab(tab)
     return () => _state.unregisterTab(tab)
   }
 
-  const registerPanel = (panel: MutableRefObject<HTMLElement>) => {
+  const registerPanel = (panel: MutableRefObject<HTMLElement | undefined>) => {
     _state.registerPanel(panel)
     return () => _state.unregisterPanel(panel)
   }

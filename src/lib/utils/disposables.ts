@@ -1,6 +1,22 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { microTask } from "./microTask.js"
 
-export type Disposables = ReturnType<typeof disposables>
+export type Disposables = {
+  addEventListener: <TEventName extends keyof WindowEventMap>(
+    element: HTMLElement | Window | Document,
+    name: TEventName,
+    listener: (event: WindowEventMap[TEventName]) => any,
+    options?: boolean | AddEventListenerOptions
+  ) => () => void
+  requestAnimationFrame: (...args: Parameters<typeof requestAnimationFrame>) => () => void
+  nextFrame: (...args: Parameters<typeof requestAnimationFrame>) => () => void
+  setTimeout: (...args: Parameters<typeof setTimeout>) => () => void
+  microTask: (...args: Parameters<typeof microTask>) => () => void
+  style: (node: HTMLElement, property: string, value: string) => () => void
+  group: (cb: (d: Disposables) => void) => () => void
+  add: (cb: () => void) => () => void
+  dispose: () => void
+}
 
 /**
  * Disposables are a way to manage event handlers and functions like
@@ -15,37 +31,33 @@ export type Disposables = ReturnType<typeof disposables>
  * pending disposables in that collection.
  */
 export function disposables() {
-  let _disposables: Function[] = []
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  const _disposables: Function[] = []
 
-  let api = {
-    addEventListener<TEventName extends keyof WindowEventMap>(
-      element: HTMLElement | Window | Document,
-      name: TEventName,
-      listener: (event: WindowEventMap[TEventName]) => any,
-      options?: boolean | AddEventListenerOptions
-    ) {
+  const api: Disposables = {
+    addEventListener(element, name, listener, options?) {
       element.addEventListener(name, listener as any, options)
       return api.add(() => element.removeEventListener(name, listener as any, options))
     },
 
-    requestAnimationFrame(...args: Parameters<typeof requestAnimationFrame>) {
-      let raf = requestAnimationFrame(...args)
+    requestAnimationFrame(...args) {
+      const raf = requestAnimationFrame(...args)
       return api.add(() => cancelAnimationFrame(raf))
     },
 
-    nextFrame(...args: Parameters<typeof requestAnimationFrame>) {
+    nextFrame(...args) {
       return api.requestAnimationFrame(() => {
         return api.requestAnimationFrame(...args)
       })
     },
 
-    setTimeout(...args: Parameters<typeof setTimeout>) {
-      let timer = setTimeout(...args)
+    setTimeout(...args) {
+      const timer = setTimeout(...args)
       return api.add(() => clearTimeout(timer))
     },
 
-    microTask(...args: Parameters<typeof microTask>) {
-      let task = { current: true }
+    microTask(...args) {
+      const task = { current: true }
       microTask(() => {
         if (task.current) {
           args[0]()
@@ -56,30 +68,30 @@ export function disposables() {
       })
     },
 
-    style(node: HTMLElement, property: string, value: string) {
-      let previous = node.style.getPropertyValue(property)
+    style(node, property, value) {
+      const previous = node.style.getPropertyValue(property)
       Object.assign(node.style, { [property]: value })
       return this.add(() => {
         Object.assign(node.style, { [property]: previous })
       })
     },
 
-    group(cb: (d: typeof this) => void) {
-      let d = disposables()
+    group(cb) {
+      const d = disposables()
       cb(d)
       return this.add(() => d.dispose())
     },
 
-    add(cb: () => void) {
+    add(cb) {
       // Ensure we don't add the same callback twice
       if (!_disposables.includes(cb)) {
         _disposables.push(cb)
       }
 
       return () => {
-        let idx = _disposables.indexOf(cb)
+        const idx = _disposables.indexOf(cb)
         if (idx >= 0) {
-          for (let dispose of _disposables.splice(idx, 1)) {
+          for (const dispose of _disposables.splice(idx, 1)) {
             dispose()
           }
         }
@@ -87,7 +99,7 @@ export function disposables() {
     },
 
     dispose() {
-      for (let dispose of _disposables.splice(0)) {
+      for (const dispose of _disposables.splice(0)) {
         dispose()
       }
     },
@@ -95,3 +107,5 @@ export function disposables() {
 
   return api
 }
+
+export { disposables as useDisposables }
