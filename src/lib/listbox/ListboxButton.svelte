@@ -41,8 +41,8 @@
 </script>
 
 <script lang="ts" generics="TTag extends ElementType">
-  const data = useData("Listbox.Button")
-  const actions = useActions("Listbox.Button")
+  const data = useData("ListboxButton")
+  const actions = useActions("ListboxButton")
 
   const internalId = useId()
   const providedId = getIdContext()

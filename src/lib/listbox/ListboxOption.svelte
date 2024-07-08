@@ -54,8 +54,8 @@
     ...theirProps
   }: ListboxOptionProps<TTag, TType> = $props()
   const usedInSelectedOption = getContext<boolean>("SelectedOptionContext") === true
-  const data = useData("Listbox.Option")
-  const actions = useActions("Listbox.Option")
+  const data = useData("ListboxOption")
+  const actions = useActions("ListboxOption")
 
   const active = $derived(data.activeOptionIndex !== null ? data.options[data.activeOptionIndex].id === id : false)
 

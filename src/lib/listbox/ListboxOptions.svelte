@@ -81,8 +81,8 @@
     }
   })
 
-  const data = useData("Listbox.Options")
-  const actions = useActions("Listbox.Options")
+  const data = useData("ListboxOptions")
+  const actions = useActions("ListboxOptions")
 
   const ownerDocument = $derived(getOwnerDocument(data.optionsRef.current))
 
