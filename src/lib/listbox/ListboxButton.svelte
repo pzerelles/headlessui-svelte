@@ -53,7 +53,7 @@
     as = DEFAULT_BUTTON_TAG as TTag,
     ref = $bindable(),
     id = (providedId || `headlessui-listbox-button-${internalId}`) as SvelteHTMLElements[TTag][string],
-    disabled = data.disabled || false,
+    disabled: ownDisabled = false,
     autofocus = false,
     children,
     ...theirProps
@@ -63,6 +63,8 @@
     data.buttonRef.current = ref || null
     setReference(ref)
   })
+
+  const disabled = $derived(data.disabled || ownDisabled)
 
   const handleKeyDown = (event: KeyboardEvent) => {
     switch (event.key) {
