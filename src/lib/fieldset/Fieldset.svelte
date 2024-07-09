@@ -27,8 +27,8 @@
   const providedDisabled = useDisabled()
   const disabled = $derived(providedDisabled.value || ownDisabled)
 
-  setContext("Disabled", {
-    get disabled() {
+  setContext("DisabledContext", {
+    get value() {
       return disabled
     },
   })

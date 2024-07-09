@@ -75,7 +75,7 @@
     autofocus,
   })
 
-  const ownProps = $derived(
+  const ourProps = $derived(
     mergeProps(
       {
         type,
@@ -90,6 +90,6 @@
   )
 </script>
 
-<svelte:element this={as ?? DEFAULT_BUTTON_TAG} {...ownProps} {...theirProps}>
+<svelte:element this={as ?? DEFAULT_BUTTON_TAG} {...ourProps} {...theirProps}>
   {#if children}{@render children(slot)}{/if}
 </svelte:element>
