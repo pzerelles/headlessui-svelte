@@ -23,6 +23,8 @@
       ref?: HTMLElementType<TTag> | null
     }
   >
+
+  export type ListboxOptionChildren = Snippet<[OptionRenderPropArg]>
 </script>
 
 <script lang="ts" generics="TTag extends ElementType, TType">
@@ -38,7 +40,7 @@
   } from "./Listbox.svelte"
   import { disposables } from "$lib/utils/disposables.js"
   import { Focus } from "$lib/utils/calculate-active-index.js"
-  import { getContext, onMount } from "svelte"
+  import { getContext, onMount, type Snippet } from "svelte"
   import { useTextValue } from "$lib/hooks/use-text-value.svelte.js"
   import { useTrackedPointer } from "$lib/hooks/use-tracked-pointer.js"
   import { stateFromSlot } from "$lib/utils/state.js"

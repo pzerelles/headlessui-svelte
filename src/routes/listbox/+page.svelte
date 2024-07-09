@@ -33,6 +33,7 @@
         />
       </ListboxButton>
       <ListboxOptions
+        transition
         class={clsx(
           "w-[var(--button-width)] rounded-xl border border-white/5 bg-white/5 p-1 [--anchor-gap:var(--spacing-1)] focus:outline-none",
           "transition duration-100 ease-in data-[leave]:data-[closed]:opacity-0"

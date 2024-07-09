@@ -14,6 +14,7 @@
   import { useResolveButtonType } from "$lib/hooks/use-resolve-button-type.svelte.js"
   import { useFloating } from "$lib/internal/floating.svelte.js"
   import { stateFromSlot } from "$lib/utils/state.js"
+  import type { Snippet } from "svelte"
 
   const DEFAULT_BUTTON_TAG = "button" as const
   type ButtonRenderPropArg = {
@@ -38,6 +39,8 @@
       ref?: HTMLElementType<TTag> | null
     }
   >
+
+  export type ListboxButtonChildren = Snippet<[ButtonRenderPropArg]>
 </script>
 
 <script lang="ts" generics="TTag extends ElementType">

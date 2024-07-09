@@ -34,6 +34,8 @@
       ref?: HTMLElementType<TTag> | null
     } & PropsForFeatures<typeof OptionsRenderFeatures>
   >
+
+  export type ListboxOptionsChildren = Snippet<[OptionsRenderPropArg]>
 </script>
 
 <script lang="ts" generics="TTag extends ElementType">
@@ -53,7 +55,7 @@
   import { Focus } from "$lib/utils/calculate-active-index.js"
   import { focusFrom, Focus as FocusManagementFocus } from "$lib/utils/focus-management.js"
   import { useElementSize } from "$lib/hooks/use-element-size.svelte.js"
-  import { getContext, setContext } from "svelte"
+  import { getContext, setContext, type Snippet } from "svelte"
   import Hidden from "$lib/internal/Hidden.svelte"
   import Portal from "$lib/portal/Portal.svelte"
   import { stateFromSlot } from "$lib/utils/state.js"
@@ -93,8 +95,12 @@
       : data.listboxState === ListboxStates.Open
   )
   const _transition = useTransition({
-    enabled: transition,
-    element: ref,
+    get enabled() {
+      return transition
+    },
+    get element() {
+      return ref
+    },
     get show() {
       return show
     },

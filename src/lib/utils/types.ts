@@ -42,9 +42,7 @@ type HasProperty<T extends object, K extends PropertyKey> = T extends never ? ne
 // This will allow us to have a TS error on as={Fragment}
 type ClassNameOverride<TTag extends keyof SvelteHTMLElements, TSlot = {}> =
   // Order is important here, because `never extends true` is `true`...
-  true extends HasProperty<PropsOf<TTag>, "class">
-    ? { className?: PropsOf<TTag>["class"] | ((bag: TSlot) => string) }
-    : {}
+  true extends HasProperty<PropsOf<TTag>, "class"> ? { class?: PropsOf<TTag>["class"] | ((bag: TSlot) => string) } : {}
 
 // Provide clean TypeScript props, which exposes some of our custom APIs.
 export type Props<

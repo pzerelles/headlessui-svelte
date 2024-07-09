@@ -65,24 +65,28 @@ export function useIsTopLayer(options: { readonly enabled: boolean; readonly sco
     return () => hierarchyStore.dispatch("REMOVE", id)
   })
 
+  const value = $derived.by(() => {
+    if (!enabled) return false
+
+    let idx = hierarchy.indexOf(id)
+    let hierarchyLength = hierarchy.length
+
+    // Not in the hierarchy yet
+    if (idx === -1) {
+      // Assume that it will be inserted at the end, then it means that the `idx`
+      // will be the length of the current hierarchy.
+      idx = hierarchyLength
+
+      // Increase the hierarchy length as-if the node is already in the hierarchy.
+      hierarchyLength += 1
+    }
+
+    return idx === hierarchyLength - 1
+  })
+
   return {
     get value() {
-      if (!enabled) return false
-
-      let idx = hierarchy.indexOf(id)
-      let hierarchyLength = hierarchy.length
-
-      // Not in the hierarchy yet
-      if (idx === -1) {
-        // Assume that it will be inserted at the end, then it means that the `idx`
-        // will be the length of the current hierarchy.
-        idx = hierarchyLength
-
-        // Increase the hierarchy length as-if the node is already in the hierarchy.
-        hierarchyLength += 1
-      }
-
-      return idx === hierarchyLength - 1
+      return value
     },
   }
 }

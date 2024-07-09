@@ -7,7 +7,7 @@
   import { match } from "$lib/utils/match.js"
   import { useRef, type MutableRefObject } from "$lib/utils/ref.svelte.js"
   import type { ElementType, EnsureArray, Props } from "$lib/utils/types.js"
-  import { getContext, setContext } from "svelte"
+  import { getContext, setContext, type Snippet } from "svelte"
 
   let DEFAULT_LISTBOX_TAG = "svelte:fragment"
   type ListboxRenderPropArg<T> = {
@@ -40,6 +40,8 @@
       __demoMode?: boolean
     }
   >
+
+  export type ListboxChildren<T> = Snippet<[ListboxRenderPropArg<T>]>
 
   export enum ListboxStates {
     Open,

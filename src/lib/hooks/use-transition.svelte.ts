@@ -1,5 +1,6 @@
-import { disposables, useDisposables } from "$lib/utils/disposables.js"
+import { disposables, useDisposables, type Disposables } from "$lib/utils/disposables.js"
 import { once } from "$lib/utils/once.js"
+import { untrack } from "svelte"
 import { useFlags } from "./use-flags.svelte.js"
 
 /**
@@ -58,27 +59,24 @@ export function useTransition(options: {
   const { enabled, element, show, events } = $derived(options)
   let visible = $state(show)
 
-  const { hasFlag, addFlag, removeFlag } = useFlags(
-    enabled && visible ? TransitionState.Enter | TransitionState.Closed : TransitionState.None
-  )
+  let flags = $state(enabled && visible ? TransitionState.Enter | TransitionState.Closed : TransitionState.None)
   let inFlight = $state(false)
-  let cancelledRef = $state(false)
+  let cancelled = $state(false)
 
-  let d = useDisposables()
+  const d = useDisposables()
 
-  /*$effect(function retry() {
+  function retry(enabled: boolean, show: boolean, node: HTMLElement | null | undefined, d: Disposables) {
     if (!enabled) return
 
     if (show) {
       visible = true
     }
 
-    let node = element
     if (!node) {
       // Retry if the DOM node isn't available yet
       if (show) {
-        addFlag(TransitionState.Enter | TransitionState.Closed)
-        return d.nextFrame(() => retry())
+        flags |= TransitionState.Enter | TransitionState.Closed
+        return d.nextFrame(() => retry(enabled, show, node, d))
       }
       return
     }
@@ -88,29 +86,27 @@ export function useTransition(options: {
     return transition(node, {
       inFlight,
       prepare() {
-        if (cancelledRef) {
+        if (cancelled) {
           // Cancelled a cancellation, we're back to the original state.
-          cancelledRef = false
+          cancelled = false
         } else {
           // If we were already in-flight, then we want to cancel the current
           // transition.
-          cancelledRef = inFlight
+          cancelled = inFlight
         }
 
         inFlight = true
 
-        if (cancelledRef) return
+        if (cancelled) return
 
         if (show) {
-          addFlag(TransitionState.Enter | TransitionState.Closed)
-          removeFlag(TransitionState.Leave)
+          flags = TransitionState.Enter | TransitionState.Closed
         } else {
-          addFlag(TransitionState.Leave)
-          removeFlag(TransitionState.Enter)
+          flags = TransitionState.Leave | (flags & TransitionState.Closed)
         }
       },
       run() {
-        if (cancelledRef) {
+        if (cancelled) {
           // If we cancelled a transition, then the `show` state is going to
           // be inverted already, but that doesn't mean we have to go to that
           // new state.
@@ -121,23 +117,21 @@ export function useTransition(options: {
           //
           // Because of this, it might look like we are swapping the flags in
           // the following branches, but that's not the case.
-          if (show) {
-            removeFlag(TransitionState.Enter | TransitionState.Closed)
-            addFlag(TransitionState.Leave)
+          if (!show) {
+            flags = TransitionState.Leave | TransitionState.Closed
           } else {
-            removeFlag(TransitionState.Leave)
-            addFlag(TransitionState.Enter | TransitionState.Closed)
+            flags = TransitionState.Enter | TransitionState.Closed
           }
         } else {
           if (show) {
-            removeFlag(TransitionState.Closed)
+            flags = flags & ~TransitionState.Closed
           } else {
-            addFlag(TransitionState.Closed)
+            flags |= TransitionState.Closed
           }
         }
       },
       done() {
-        if (cancelledRef) {
+        if (cancelled) {
           if (typeof node.getAnimations === "function" && node.getAnimations().length > 0) {
             return
           }
@@ -145,7 +139,7 @@ export function useTransition(options: {
 
         inFlight = false
 
-        removeFlag(TransitionState.Enter | TransitionState.Leave | TransitionState.Closed)
+        flags = 0
 
         if (!show) {
           visible = false
@@ -154,13 +148,18 @@ export function useTransition(options: {
         events?.end?.(show)
       },
     })
-  })*/
+  }
+
+  $effect(() => {
+    ;[enabled, show, element, d]
+    return untrack(() => retry(enabled, show, element, d))
+  })
 
   const data = $derived({
-    closed: enabled ? hasFlag(TransitionState.Closed) : undefined,
-    enter: enabled ? hasFlag(TransitionState.Enter) : undefined,
-    leave: enabled ? hasFlag(TransitionState.Leave) : undefined,
-    transition: enabled ? hasFlag(TransitionState.Enter) || hasFlag(TransitionState.Leave) : undefined,
+    closed: enabled ? !!(flags & TransitionState.Closed) : undefined,
+    enter: enabled ? !!(flags & TransitionState.Enter) : undefined,
+    leave: enabled ? !!(flags & TransitionState.Leave) : undefined,
+    transition: enabled ? !!(flags & (TransitionState.Enter | TransitionState.Leave)) : undefined,
   })
 
   return {
@@ -187,7 +186,7 @@ function transition(
     inFlight: boolean
   }
 ) {
-  let d = disposables()
+  const d = disposables()
 
   // Prepare the transitions by ensuring that all the "before" classes are
   // applied and flushed to the DOM.

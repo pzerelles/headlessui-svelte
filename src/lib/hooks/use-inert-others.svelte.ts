@@ -87,7 +87,7 @@ export function useInertOthers(options: {
   })
 
   $effect(() => {
-    if (!isTopLayer) return
+    if (!isTopLayer.value) return
 
     let d = disposables()
 
