@@ -19,13 +19,13 @@
 
 <script lang="ts" generics="TTag extends keyof SvelteHTMLElements">
   import { setContext, type Snippet } from "svelte"
-  import { useDisabled } from "../internal/disabled.js"
-  import { createLabelContext } from "../label/Label.svelte"
+  import { useDisabled } from "../hooks/use-disabled.js"
+  import { useLabels } from "$lib/label/Label.svelte"
 
   let { as, disabled: ownDisabled = false, children, ...theirProps }: FieldsetProps<TTag> = $props()
 
   const providedDisabled = useDisabled()
-  const disabled = $derived(providedDisabled?.disabled || ownDisabled)
+  const disabled = $derived(providedDisabled.value || ownDisabled)
 
   setContext("Disabled", {
     get disabled() {
@@ -34,17 +34,17 @@
   })
 
   const tag = $state(as ?? DEFAULT_FIELDSET_TAG)
-  const labelContext = createLabelContext()
+  const labelledBy = useLabels()
   const slot = $derived({ disabled })
   const ourProps = $derived(
     tag === "fieldset"
       ? {
-          "aria-labelledby": labelContext.labelledBy,
+          "aria-labelledby": labelledBy.value,
           disabled: disabled || undefined,
         }
       : {
           role: "group",
-          "aria-labelledby": labelContext.labelledBy,
+          "aria-labelledby": labelledBy.value,
           "aria-disabled": disabled || undefined,
         }
   )

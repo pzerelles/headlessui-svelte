@@ -31,14 +31,15 @@
   import { getOwnerDocument } from "$lib/utils/owner.js"
   import { match } from "$lib/utils/match.js"
   import { microTask } from "$lib/utils/microTask.js"
-  import { createHover } from "svelte-interactions"
-  import { createActivePress } from "$lib/actions/activePress.svelte.js"
-  import { createFocusRing } from "$lib/actions/focusRing.svelte.js"
+  import { useActivePress } from "$lib/hooks/use-active-press.svelte.js"
+  import { useFocusRing } from "$lib/hooks/use-focus-ring.svelte.js"
   import { useResolveButtonType } from "$lib/hooks/use-resolve-button-type.svelte.js"
   import type { SvelteHTMLElements } from "svelte/elements"
   import { stateFromSlot } from "$lib/utils/state.js"
   import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
   import { onMount } from "svelte"
+  import { useHover } from "$lib/hooks/use-hover.svelte.js"
+  import { mergeProps } from "$lib/utils/render.js"
 
   const internalId = useId()
   const {
@@ -54,8 +55,8 @@
   const { orientation, activation, selectedIndex, tabs, panels } = $derived(data)
   const actions = useActions("Tab")
 
-  let internalTabRef = $state<HTMLElement>()
-  const tabRef = $derived<MutableRefObject<HTMLElement | undefined>>({ current: internalTabRef })
+  let ref = $state<HTMLElement>()
+  const tabRef = $derived<MutableRefObject<HTMLElement | undefined>>({ current: ref })
 
   onMount(() => actions.registerTab(tabRef))
 
@@ -70,7 +71,7 @@
   const activateUsing = $derived((cb: () => FocusResult) => {
     let result = cb()
     if (result === FocusResult.Success && activation === "auto") {
-      let newTab = getOwnerDocument(internalTabRef)?.activeElement
+      let newTab = getOwnerDocument(ref)?.activeElement
       let idx = data.tabs.findIndex((tab) => tab.current === newTab)
       if (idx !== -1) actions.change(idx)
     }
@@ -129,7 +130,7 @@
     if (ready) return
     ready = true
 
-    internalTabRef?.focus({ preventScroll: true })
+    ref?.focus({ preventScroll: true })
     actions.change(myIndex)
 
     microTask(() => {
@@ -144,15 +145,33 @@
     event.preventDefault()
   }
 
-  const { hoverAction: hover, isHovered } = $derived(createHover({ isDisabled: disabled }))
-  const ap = $derived(createActivePress({ disabled }))
-  const fr = createFocusRing({ autofocus })
+  const { isHovered: hover, hoverProps } = $derived(
+    useHover({
+      get disabled() {
+        return disabled
+      },
+    })
+  )
+  const { pressed: active, pressProps } = $derived(
+    useActivePress({
+      get disabled() {
+        return disabled
+      },
+    })
+  )
+  const { isFocusVisible: focus, focusProps } = $derived(
+    useFocusRing({
+      get autofocus() {
+        return autofocus
+      },
+    })
+  )
 
   const slot = $derived({
     selected,
-    hover: $isHovered,
-    active: ap.pressed,
-    focus: fr.focusVisible,
+    hover,
+    active,
+    focus,
     autofocus,
     disabled,
   } satisfies TabRenderPropArg)
@@ -166,30 +185,29 @@
     },
   })
 
-  const ourProps = $derived({
-    onkeydown: handleKeyDown,
-    onmousedown: handleMouseDown,
-    onclick: handleSelection,
-    id,
-    role: "tab",
-    type: resolvedType.type,
-    "aria-controls": panels[myIndex]?.current?.id,
-    "aria-selected": selected,
-    tabIndex: selected ? 0 : -1,
-    disabled: disabled || undefined,
-    autofocus,
-    ...stateFromSlot(slot),
-  })
+  const ourProps = $derived(
+    mergeProps(
+      {
+        onkeydown: handleKeyDown,
+        onmousedown: handleMouseDown,
+        onclick: handleSelection,
+        id,
+        role: "tab",
+        type: resolvedType.type,
+        "aria-controls": panels[myIndex]?.current?.id,
+        "aria-selected": selected,
+        tabIndex: selected ? 0 : -1,
+        disabled: disabled || undefined,
+        autofocus,
+      },
+      focusProps,
+      hoverProps,
+      pressProps,
+      stateFromSlot(slot)
+    )
+  )
 </script>
 
-<svelte:element
-  this={as ?? DEFAULT_TAB_TAG}
-  bind:this={internalTabRef}
-  use:hover
-  use:ap.activePressAction
-  use:fr.focusRingAction
-  {...ourProps}
-  {...theirProps}
->
+<svelte:element this={as ?? DEFAULT_TAB_TAG} bind:this={ref} {...ourProps} {...theirProps}>
   {#if children}{@render children(slot)}{/if}
 </svelte:element>

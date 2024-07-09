@@ -6,15 +6,16 @@
   import { ListboxStates, useActions, useData } from "./Listbox.svelte"
   import { attemptSubmit } from "$lib/utils/form.js"
   import { Focus } from "$lib/utils/calculate-active-index.js"
-  import { getLabelContext } from "$lib/label/Label.svelte"
-  import { getDescriptionContext } from "$lib/description/Description.svelte"
-  import { createHover } from "svelte-interactions"
-  import { createFocusRing } from "$lib/actions/focusRing.svelte.js"
-  import { createActivePress } from "$lib/actions/activePress.svelte.js"
+  import { useFocusRing } from "$lib/hooks/use-focus-ring.svelte.js"
+  import { useActivePress } from "$lib/hooks/use-active-press.svelte.js"
   import { useResolveButtonType } from "$lib/hooks/use-resolve-button-type.svelte.js"
   import { useFloating } from "$lib/internal/floating.svelte.js"
   import { stateFromSlot } from "$lib/utils/state.js"
   import type { Snippet } from "svelte"
+  import { useLabelledBy } from "$lib/label/Label.svelte"
+  import { useDescribedBy } from "$lib/description/Description.svelte"
+  import { useHover } from "$lib/hooks/use-hover.svelte.js"
+  import { mergeProps } from "$lib/utils/render.js"
 
   const DEFAULT_BUTTON_TAG = "button" as const
   type ButtonRenderPropArg = {
@@ -114,23 +115,39 @@
   // This is needed so that we can "cancel" the click event when we use the `Enter` key on a button.
   const handleKeyPress = (event: KeyboardEvent) => event.preventDefault()
 
-  const labelContext = getLabelContext([id])
-  const labelledBy = $derived(labelContext?.labelledBy)
-  const descriptionContext = getDescriptionContext()
-  const describedBy = $derived(descriptionContext?.describedBy)
+  const labelledBy = useLabelledBy()
+  const describedBy = useDescribedBy()
 
-  const fr = createFocusRing({ autofocus })
-  const { hoverAction: hover, isHovered } = $derived(createHover({ isDisabled: disabled }))
-  const ap = $derived(createActivePress({ disabled }))
+  const { isHovered: hover, hoverProps } = $derived(
+    useHover({
+      get disabled() {
+        return disabled
+      },
+    })
+  )
+  const { pressed: active, pressProps } = $derived(
+    useActivePress({
+      get disabled() {
+        return disabled
+      },
+    })
+  )
+  const { isFocusVisible: focus, focusProps } = $derived(
+    useFocusRing({
+      get autofocus() {
+        return autofocus
+      },
+    })
+  )
 
   const slot = $derived({
     open: data.listboxState === ListboxStates.Open,
-    active: ap.pressed || data.listboxState === ListboxStates.Open,
+    active: active || data.listboxState === ListboxStates.Open,
     disabled,
     invalid: data.invalid,
     value: data.value,
-    hover: $isHovered,
-    focus: fr.focusVisible,
+    hover,
+    focus,
     autofocus: autofocus ?? false,
   } satisfies ButtonRenderPropArg)
 
@@ -143,33 +160,32 @@
     },
   })
 
-  const ourProps = $derived({
-    ...getFloatingReferenceProps(),
-    id,
-    type: buttonType.type,
-    "aria-haspopup": "listbox",
-    "aria-controls": data.optionsRef.current?.id,
-    "aria-expanded": data.listboxState === ListboxStates.Open,
-    "aria-labelledby": labelledBy,
-    "aria-describedby": describedBy,
-    disabled: disabled || undefined,
-    autofocus,
-    onkeydown: handleKeyDown,
-    onkeyup: handleKeyUp,
-    onkeypress: handleKeyPress,
-    onclick: handleClick,
-    ...stateFromSlot(slot),
-  })
+  const ourProps = $derived(
+    mergeProps(
+      {
+        ...getFloatingReferenceProps(),
+        id,
+        type: buttonType.type,
+        "aria-haspopup": "listbox",
+        "aria-controls": data.optionsRef.current?.id,
+        "aria-expanded": data.listboxState === ListboxStates.Open,
+        "aria-labelledby": labelledBy.value,
+        "aria-describedby": describedBy.value,
+        disabled: disabled || undefined,
+        autofocus,
+        onkeydown: handleKeyDown,
+        onkeyup: handleKeyUp,
+        onkeypress: handleKeyPress,
+        onclick: handleClick,
+      },
+      focusProps,
+      hoverProps,
+      pressProps,
+      stateFromSlot(slot)
+    )
+  )
 </script>
 
-<svelte:element
-  this={as}
-  bind:this={ref}
-  use:hover
-  use:ap.activePressAction
-  use:fr.focusRingAction
-  {...ourProps}
-  {...theirProps}
->
+<svelte:element this={as} bind:this={ref} {...ourProps} {...theirProps}>
   {#if children}{@render children(slot)}{/if}
 </svelte:element>

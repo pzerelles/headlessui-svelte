@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
   import type { SvelteHTMLElements } from "svelte/elements"
-  import { setContext, untrack } from "svelte"
+  import { setContext } from "svelte"
 
   export type LabelProps<TTag extends keyof SvelteHTMLElements = typeof DEFAULT_LABEL_TAG> =
     SvelteHTMLElements[TTag] & {
@@ -18,69 +18,88 @@
 
   const DEFAULT_LABEL_TAG = "label" as const
 
+  interface SharedData {
+    slot?: {}
+    name?: string
+    props?: Record<string, any>
+  }
+
   export type LabelContext = {
-    labelledBy?: string
-    register: (id: string) => void
-    unregister: (id: string) => void
-  }
+    value: string | undefined
+    register(value: string): () => void
+  } & SharedData
 
-  export const createLabelContext = () => {
-    let labelledBy = $state<string | undefined>()
-    const context: LabelContext = {
-      get labelledBy() {
-        return labelledBy
-      },
-      register(id) {
-        labelledBy = untrack(() => (labelledBy === undefined ? id : `${labelledBy} ${id}`.trim()))
-      },
-      unregister(id) {
-        labelledBy = untrack(() =>
-          labelledBy
-            ?.split(" ")
-            .filter((value) => value !== id)
-            .join(" ")
-        )
-      },
-    }
-
-    return setContext("Label", context)
-  }
-
-  export const getLabelContext = (alwaysAvailableIds?: (string | undefined | null)[]) => {
-    const context = getContext<LabelContext | undefined>("Label")
-    if ((alwaysAvailableIds?.length ?? 0) > 0) {
-      return (
-        context &&
-        ({
-          ...context,
-          get labelledBy() {
-            return [context?.labelledBy, ...alwaysAvailableIds!].filter(Boolean).join(" ")
-          },
-        } satisfies LabelContext)
-      )
+  export function useLabelContext() {
+    let context = getContext<LabelContext>("LabelContext")
+    if (context === null) {
+      let err = new Error("You used a <Label /> component, but it is not inside a relevant parent.")
+      if (Error.captureStackTrace) Error.captureStackTrace(err, useLabelContext)
+      throw err
     }
     return context
   }
 
-  const validateLabelContext = () => {
-    const context = getLabelContext()
-    if (context === undefined) {
-      const err = new Error("You used a <Label /> component, but it is not inside a relevant parent.")
-      if (Error.captureStackTrace) Error.captureStackTrace(err, validateLabelContext)
-      throw err
+  export function useLabelledBy(alwaysAvailableIds?: (string | undefined | null)[]) {
+    const context = getContext<LabelContext>("LabelContext")
+    const value = $derived(
+      (alwaysAvailableIds?.length ?? 0) > 0
+        ? [context?.value, ...alwaysAvailableIds!].filter(Boolean).join(" ")
+        : context?.value
+    )
+    return {
+      get value() {
+        return value
+      },
     }
+  }
+
+  export const useLabels = (options: SharedData & { inherit?: boolean } = {}) => {
+    const { slot, name, props, inherit } = $derived(options)
+
+    const parentLabelledBy = useLabelledBy()
+    let labelIds = $state<string[]>([])
+
+    const allLabelIds = $derived(inherit && parentLabelledBy.value ? [parentLabelledBy.value, ...labelIds] : labelIds)
+
+    const value = $derived(allLabelIds.length > 0 ? allLabelIds.join(" ") : undefined)
+
+    const context: LabelContext = {
+      get slot() {
+        return slot
+      },
+      get name() {
+        return name
+      },
+      get props() {
+        return props
+      },
+      get value() {
+        return value
+      },
+      register(value) {
+        labelIds.push(value)
+        return () => {
+          const clone = labelIds.slice()
+          const idx = clone.indexOf(value)
+          if (idx !== -1) clone.splice(idx, 1)
+          labelIds = clone
+          return labelIds
+        }
+      },
+    }
+    setContext<LabelContext>("LabelContext", context)
     return context
   }
 </script>
 
 <script lang="ts" generics="TTag extends keyof SvelteHTMLElements">
-  import { getContext, type Snippet } from "svelte"
+  import { getContext, type Snippet, onMount } from "svelte"
   import { getIdContext, htmlid } from "../utils/id.js"
-  import { useDisabled } from "../internal/disabled.js"
+  import { useDisabled } from "../hooks/use-disabled.js"
   import { stateFromSlot } from "../utils/state.js"
 
   const internalId = htmlid()
-  const context = validateLabelContext()
+  const context = useLabelContext()
   const providedHtmlFor = getIdContext()
   const providedDisabled = useDisabled()
 
@@ -93,12 +112,8 @@
     ...theirOriginalProps
   }: LabelProps<TTag> = $props()
 
-  $effect(() => {
+  onMount(() => {
     context.register(id)
-    const registeredId = id
-    return () => {
-      context.unregister(registeredId)
-    }
   })
 
   let handleClick = (e: MouseEvent) => {
@@ -144,7 +159,7 @@
     }
   }
 
-  const disabled = $derived(providedDisabled?.disabled ?? false)
+  const disabled = $derived(providedDisabled.value ?? false)
   const slot = $derived({ disabled })
   const ourProps = $derived({
     id,

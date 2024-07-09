@@ -47,7 +47,7 @@
 </script>
 
 <script lang="ts" generics="TTag extends ElementType, TType">
-  import { useDisabled } from "$lib/internal/disabled.js"
+  import { useDisabled } from "$lib/hooks/use-disabled.js"
 
   const providedDisabled = useDisabled()
 </script>

@@ -17,9 +17,6 @@ importers:
       nanoid:
         specifier: ^5.0.7
         version: 5.0.7
-      svelte-interactions:
-        specifier: ^0.2.0
-        version: 0.2.0(svelte@5.0.0-next.176)
     devDependencies:
       '@changesets/cli':
         specifier: ^2.27.7
@@ -2110,11 +2107,6 @@ packages:
     engines: {node: ^12.20 || ^14.13.1 || >= 16}
     peerDependencies:
       svelte: ^3.19.0 || ^4.0.0
-
-  svelte-interactions@0.2.0:
-    resolution: {integrity: sha512-jGgZgdfSFnBzIs5j058T/XqHCEXHVpob31dkTwMu4KZyUSt2prozXoK/vKmN1eOyTaEIqALX20aLkYlbbapLPA==}
-    peerDependencies:
-      svelte: ^4.0.0
 
   svelte-preprocess@5.1.4:
     resolution: {integrity: sha512-IvnbQ6D6Ao3Gg6ftiM5tdbR6aAETwjhHV+UKGf5bHGYR69RQvF1ho0JKPcbUON4vy4R7zom13jPjgdOWCQ5hDA==}
@@ -4406,10 +4398,6 @@ snapshots:
       svelte: 5.0.0-next.176
 
   svelte-hmr@0.16.0(svelte@5.0.0-next.176):
-    dependencies:
-      svelte: 5.0.0-next.176
-
-  svelte-interactions@0.2.0(svelte@5.0.0-next.176):
     dependencies:
       svelte: 5.0.0-next.176
 

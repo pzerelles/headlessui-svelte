@@ -25,11 +25,12 @@
 
 <script lang="ts" generics="TTag extends keyof SvelteHTMLElements, TType">
   import type { Snippet } from "svelte"
-  import { createHover } from "svelte-interactions"
-  import { createActivePress } from "../actions/activePress.svelte.js"
-  import { createFocusRing } from "../actions/focusRing.svelte.js"
-  import { useDisabled } from "../internal/disabled.js"
+  import { useActivePress } from "../hooks/use-active-press.svelte.js"
+  import { useFocusRing } from "../hooks/use-focus-ring.svelte.js"
+  import { useDisabled } from "../hooks/use-disabled.js"
   import { stateFromSlot } from "../utils/state.js"
+  import { useHover } from "$lib/hooks/use-hover.svelte.js"
+  import { mergeProps } from "$lib/utils/render.js"
 
   const providedDisabled = useDisabled()
 
@@ -42,35 +43,53 @@
     ...theirProps
   }: ButtonProps<TTag> = $props()
 
-  const disabled = $derived(providedDisabled?.disabled || ownDisabled)
+  const disabled = $derived(providedDisabled.value || ownDisabled)
 
-  const { hoverAction: hover, isHovered } = $derived(createHover({ isDisabled: disabled }))
-  const ap = $derived(createActivePress({ disabled }))
-  const fr = createFocusRing({ autofocus })
+  const { isHovered: hover, hoverProps } = $derived(
+    useHover({
+      get disabled() {
+        return disabled
+      },
+    })
+  )
+  const { pressed: active, pressProps } = $derived(
+    useActivePress({
+      get disabled() {
+        return disabled
+      },
+    })
+  )
+  const { isFocusVisible: focus, focusProps } = $derived(
+    useFocusRing({
+      get autofocus() {
+        return autofocus
+      },
+    })
+  )
 
   const slot = $derived({
     disabled,
-    hover: $isHovered,
-    focus: fr.focusVisible,
-    active: ap.pressed,
+    hover,
+    focus,
+    active,
     autofocus,
   })
 
-  const ownProps = $derived({
-    type,
-    disabled: disabled || undefined,
-    autofocus,
-    ...stateFromSlot(slot),
-  })
+  const ownProps = $derived(
+    mergeProps(
+      {
+        type,
+        disabled: disabled || undefined,
+        autofocus,
+      },
+      focusProps,
+      hoverProps,
+      pressProps,
+      stateFromSlot(slot)
+    )
+  )
 </script>
 
-<svelte:element
-  this={as ?? DEFAULT_BUTTON_TAG}
-  use:hover
-  use:ap.activePressAction
-  use:fr.focusRingAction
-  {...ownProps}
-  {...theirProps}
->
+<svelte:element this={as ?? DEFAULT_BUTTON_TAG} {...ownProps} {...theirProps}>
   {#if children}{@render children(slot)}{/if}
 </svelte:element>

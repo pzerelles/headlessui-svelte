@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
   import type { SvelteHTMLElements } from "svelte/elements"
-  import { getContext, setContext, untrack, type Snippet } from "svelte"
+  import { getContext, setContext, type Snippet } from "svelte"
 
   export type DescriptionProps<TTag extends keyof SvelteHTMLElements = typeof DEFAULT_DESCRIPTION_TAG> =
     SvelteHTMLElements[TTag] & {
@@ -16,42 +16,68 @@
 
   const DEFAULT_DESCRIPTION_TAG = "p" as const
 
+  interface SharedData {
+    slot?: {}
+    name?: string
+    props?: Record<string, any>
+  }
+
   export type DescriptionContext = {
-    describedBy?: string
-    register: (id: string) => void
-    unregister: (id: string) => void
-  }
+    value: string | undefined
+    register(value: string): () => void
+  } & SharedData
 
-  export const createDescriptionContext = () => {
-    let describedBy = $state<string | undefined>()
-
-    setContext<DescriptionContext>("Description", {
-      get describedBy() {
-        return describedBy
-      },
-      register(id) {
-        describedBy = untrack(() => (describedBy === undefined ? id : `${describedBy} ${id}`.trim()))
-      },
-      unregister(id) {
-        describedBy = untrack(() =>
-          describedBy
-            ?.split(" ")
-            .filter((value) => value !== id)
-            .join(" ")
-        )
-      },
-    })
-  }
-
-  export const getDescriptionContext = () => getContext<DescriptionContext>("Description")
-
-  const validateDescriptionContext = () => {
-    const context = getDescriptionContext()
-    if (context === undefined) {
-      const err = new Error("You used a <Description /> component, but it is not inside a relevant parent.")
-      if (Error.captureStackTrace) Error.captureStackTrace(err, validateDescriptionContext)
+  export function useDescriptionContext() {
+    let context = getContext<DescriptionContext>("DescriptionContext")
+    if (context === null) {
+      let err = new Error("You used a <Description /> component, but it is not inside a relevant parent.")
+      if (Error.captureStackTrace) Error.captureStackTrace(err, useDescriptionContext)
       throw err
     }
+    return context
+  }
+
+  export function useDescribedBy() {
+    const context = getContext<DescriptionContext>("DescriptionContext")
+    return {
+      get value() {
+        return context?.value
+      },
+    }
+  }
+
+  export const useDescriptions = (options: SharedData & { inherit?: boolean } = {}) => {
+    const { slot, name, props, inherit } = $derived(options)
+
+    let descriptionIds = $state<string[]>([])
+
+    const value = $derived(descriptionIds.length > 0 ? descriptionIds.join(" ") : undefined)
+
+    const context: DescriptionContext = {
+      get slot() {
+        return slot
+      },
+      get name() {
+        return name
+      },
+      get props() {
+        return props
+      },
+      get value() {
+        return value
+      },
+      register(value) {
+        descriptionIds.push(value)
+        return () => {
+          const clone = descriptionIds.slice()
+          const idx = clone.indexOf(value)
+          if (idx !== -1) clone.splice(idx, 1)
+          descriptionIds = clone
+          return descriptionIds
+        }
+      },
+    }
+    setContext<DescriptionContext>("DescriptionContext", context)
     return context
   }
 </script>
@@ -59,24 +85,21 @@
 <script lang="ts" generics="TTag extends keyof SvelteHTMLElements">
   import { htmlid } from "../utils/id.js"
   import { stateFromSlot } from "../utils/state.js"
-  import { useDisabled } from "../internal/disabled.js"
+  import { useDisabled } from "../hooks/use-disabled.js"
+  import { onMount } from "svelte"
 
   const internalId = htmlid()
   const providedDisabled = useDisabled()
 
   let { as, id = `headlessui-description-${internalId}`, children, ...theirProps }: DescriptionProps<TTag> = $props()
 
-  const context = validateDescriptionContext()
+  const context = useDescriptionContext()
 
-  $effect(() => {
+  onMount(() => {
     context.register(id)
-    const registeredId = id
-    return () => {
-      context.unregister(registeredId)
-    }
   })
 
-  const disabled = $derived(providedDisabled?.disabled || false)
+  const disabled = $derived(providedDisabled.value || false)
   const slot = $derived({ disabled })
   const ourProps = $derived({ id, ...stateFromSlot(slot) })
 </script>

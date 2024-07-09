@@ -1,7 +1,7 @@
 <script lang="ts" context="module">
   import { useByComparator, type ByComparator } from "$lib/hooks/use-by-comparator.js"
   import { useControllable } from "$lib/hooks/use-controllable.svelte.js"
-  import { useDisabled } from "$lib/internal/disabled.js"
+  import { useDisabled } from "$lib/hooks/use-disabled.js"
   import { calculateActiveIndex, Focus } from "$lib/utils/calculate-active-index.js"
   import { FocusableMode, isFocusableElement, sortByDomNode } from "$lib/utils/focus-management.js"
   import { match } from "$lib/utils/match.js"
@@ -132,13 +132,13 @@
 </script>
 
 <script lang="ts" generics="TTag extends ElementType, TType, TActualType">
-  import { outsideClick } from "$lib/actions/outsideClick.svelte.js"
   import { disposables } from "$lib/utils/disposables.js"
-  import { getLabelContext } from "$lib/label/Label.svelte"
   import FormFields from "$lib/internal/FormFields.svelte"
   import { createFloatingContext } from "$lib/internal/floating.svelte.js"
   import { createOpenClosedContext, State } from "$lib/internal/open-closed.js"
   import { stateFromSlot } from "$lib/utils/state.js"
+  import { useLabels } from "$lib/label/Label.svelte"
+  import { useOutsideClick } from "$lib/hooks/use-outside-click.svelte.js"
 
   function adjustOrderedState<T>(
     state: StateDefinition<T>,
@@ -391,7 +391,7 @@
   let {
     as,
     value: controlledValue,
-    defaultValue: _defaultValue,
+    defaultValue,
     form,
     name,
     onchange: controlledOnChange,
@@ -406,10 +406,9 @@
   }: ListboxProps<TTag, TType, TActualType> = $props()
 
   const providedDisabled = useDisabled()
-  const disabled = $derived(providedDisabled?.disabled || ownDisabled)
+  const disabled = $derived(providedDisabled.value || ownDisabled)
 
   const orientation = horizontal ? "horizontal" : "vertical"
-  const defaultValue = _defaultValue
   const controllable = useControllable<any>(
     {
       get controlledValue() {
@@ -503,19 +502,24 @@
   setContext<ListboxDataContext>("ListboxDataContext", data)
   setContext("ListboxData", data)
 
-  // Handle outside click with action
-  const outsideClickEnabled = $derived(_state.listboxState === ListboxStates.Open)
-  const outsideClickContainers = $derived([
-    /*buttonRef, optionsRef*/
-  ])
-  const handleOutsideClick = (event: MouseEvent | PointerEvent | FocusEvent | TouchEvent, target: HTMLElement) => {
-    _state.closeListbox()
+  // Handle outside click
+  const outsideClickEnabled = $derived(data.listboxState === ListboxStates.Open)
+  useOutsideClick({
+    get enabled() {
+      return outsideClickEnabled
+    },
+    get containers() {
+      return [data.buttonRef, data.optionsRef]
+    },
+    cb: (event, target) => {
+      _state.closeListbox()
 
-    if (!isFocusableElement(target, FocusableMode.Loose)) {
-      event.preventDefault()
-      //data.buttonRef.current?.focus()
-    }
-  }
+      if (!isFocusableElement(target, FocusableMode.Loose)) {
+        event.preventDefault()
+        data.buttonRef.current?.focus()
+      }
+    },
+  })
 
   const slot = $derived({
     open: _state.listboxState === ListboxStates.Open,
@@ -606,8 +610,22 @@
     },
   })
 
-  const labelContext = getLabelContext()
-  const labelledBy = $derived(labelContext?.labelledBy)
+  useLabels({
+    inherit: true,
+    props: {
+      get htmlFor() {
+        return data.buttonRef.current?.id
+      },
+    },
+    slot: {
+      get open() {
+        return data.listboxState === ListboxStates.Open
+      },
+      get disabled() {
+        return disabled
+      },
+    },
+  })
 
   const ourProps = $derived(stateFromSlot(slot))
 
@@ -617,26 +635,9 @@
   }
 </script>
 
-<div
-  use:outsideClick={{
-    enabled: outsideClickEnabled,
-    containers: outsideClickContainers,
-    cb: handleOutsideClick,
-  }}
-></div>
-
 {#if name && value}
   <FormFields {disabled} data={{ [name]: value }} {form} onReset={reset} />
 {/if}
-<svelte:element
-  this={as ?? DEFAULT_LISTBOX_TAG}
-  use:outsideClick={{
-    enabled: outsideClickEnabled,
-    containers: outsideClickContainers,
-    cb: handleOutsideClick,
-  }}
-  {...ourProps}
-  {...theirProps}
->
+<svelte:element this={as ?? DEFAULT_LISTBOX_TAG} {...ourProps} {...theirProps}>
   {#if children}{@render children(slot)}{/if}
 </svelte:element>

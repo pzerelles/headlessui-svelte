@@ -22,7 +22,7 @@
   import { RenderFeatures, type PropsForFeatures } from "$lib/utils/render.js"
   import { useActions, useData } from "./TabGroup.svelte"
   import { useStableCollectionIndex } from "$lib/utils/StableCollection.svelte"
-  import { createFocusRing } from "$lib/actions/focusRing.svelte.js"
+  import { useFocusRing } from "$lib/hooks/use-focus-ring.svelte.js"
   import Hidden from "$lib/internal/Hidden.svelte"
   import { stateFromSlot } from "$lib/utils/state.js"
   import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
@@ -56,10 +56,10 @@
 
   const selected = $derived(myIndex === selectedIndex)
 
-  const fr = createFocusRing()
+  const { isFocusVisible: focus, focusProps } = $derived(useFocusRing())
   const slot = $derived({
     selected,
-    focus: fr.focusVisible,
+    focus,
   } satisfies PanelRenderPropArg)
 
   const ourProps = $derived({
@@ -67,6 +67,7 @@
     role: "tabpanel",
     "aria-labelledby": tabs[myIndex]?.current?.id,
     tabIndex: selected ? 0 : -1,
+    ...focusProps,
     ...stateFromSlot(slot),
   })
 </script>
@@ -77,7 +78,6 @@
   <svelte:element
     this={as ?? DEFAULT_PANEL_TAG}
     bind:this={internalPanelRef}
-    use:fr.focusRingAction
     {...ourProps}
     {...theirProps}
     hidden={isStatic || selected ? undefined : true}

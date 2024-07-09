@@ -36,15 +36,17 @@
 
 <script lang="ts" generics="TTag extends keyof SvelteHTMLElements, TType">
   import { tick, type Snippet } from "svelte"
-  import { createHover } from "svelte-interactions"
   import { attemptSubmit } from "../utils/form.js"
   import { getIdContext, htmlid } from "../utils/id.js"
-  import { createActivePress } from "../actions/activePress.svelte.js"
-  import { createFocusRing } from "../actions/focusRing.svelte.js"
+  import { useActivePress } from "../hooks/use-active-press.svelte.js"
+  import { useFocusRing } from "../hooks/use-focus-ring.svelte.js"
   import FormFields from "../internal/FormFields.svelte"
-  import { getLabelContext } from "../label/Label.svelte"
-  import { useDisabled } from "../internal/disabled.js"
+  import { useDisabled } from "../hooks/use-disabled.js"
   import { stateFromSlot } from "../utils/state.js"
+  import { useLabelledBy } from "$lib/label/Label.svelte"
+  import { useDescribedBy } from "$lib/description/Description.svelte"
+  import { useHover } from "$lib/hooks/use-hover.svelte.js"
+  import { mergeProps } from "$lib/utils/render.js"
 
   const internalId = htmlid()
   const providedId = getIdContext()
@@ -66,14 +68,32 @@
     ...theirProps
   }: CheckboxProps<TType, TTag> = $props()
 
-  const disabled = $derived(providedDisabled?.disabled || ownDisabled)
+  const disabled = $derived(providedDisabled.value || ownDisabled)
 
-  const { hoverAction: hover, isHovered } = $derived(createHover({ isDisabled: disabled }))
-  const ap = $derived(createActivePress({ disabled }))
-  const fr = createFocusRing({ autofocus })
+  const { isHovered: hover, hoverProps } = $derived(
+    useHover({
+      get disabled() {
+        return disabled
+      },
+    })
+  )
+  const { pressed: active, pressProps } = $derived(
+    useActivePress({
+      get disabled() {
+        return disabled
+      },
+    })
+  )
+  const { isFocusVisible: focus, focusProps } = $derived(
+    useFocusRing({
+      get autofocus() {
+        return autofocus
+      },
+    })
+  )
 
-  const labelContext = getLabelContext()
-  const labelledBy = $derived(labelContext?.labelledBy)
+  const labelledBy = useLabelledBy()
+  const describedBy = useDescribedBy()
 
   let changing = $state(false)
 
@@ -106,27 +126,34 @@
   const slot = $derived({
     checked,
     changing,
-    focus: fr.focusVisible,
-    active: ap.pressed,
-    hover: $isHovered,
+    focus,
+    active,
+    hover,
     autofocus: autofocus ?? false,
     disabled,
     indeterminate,
   })
 
-  const ownProps = $derived({
-    id,
-    role: "checkbox",
-    "aria-checked": indeterminate ? ("mixed" as "mixed") : checked ? true : false,
-    "aria-labelledby": labelledBy,
-    "aria-describedby": undefined,
-    "aria-disabled": disabled ? true : undefined,
-    tabindex: disabled ? undefined : 0,
-    onkeyup: disabled ? undefined : handleKeyUp,
-    onkeypress: disabled ? undefined : handleKeyPress,
-    onclick: disabled ? undefined : handleClick,
-    ...stateFromSlot(slot),
-  })
+  const ownProps = $derived(
+    mergeProps(
+      {
+        id,
+        role: "checkbox",
+        "aria-checked": indeterminate ? ("mixed" as "mixed") : checked ? true : false,
+        "aria-labelledby": labelledBy.value,
+        "aria-describedby": describedBy.value,
+        "aria-disabled": disabled ? true : undefined,
+        tabindex: disabled ? undefined : 0,
+        onkeyup: disabled ? undefined : handleKeyUp,
+        onkeypress: disabled ? undefined : handleKeyPress,
+        onclick: disabled ? undefined : handleClick,
+      },
+      focusProps,
+      hoverProps,
+      pressProps,
+      stateFromSlot(slot)
+    )
+  )
 
   const reset = $derived(() => {
     if (defaultChecked === undefined) return
@@ -143,13 +170,6 @@
     onReset={reset}
   />
 {/if}
-<svelte:element
-  this={as ?? DEFAULT_CHECKBOX_TAG}
-  use:hover
-  use:ap.activePressAction
-  use:fr.focusRingAction
-  {...ownProps}
-  {...theirProps}
->
+<svelte:element this={as ?? DEFAULT_CHECKBOX_TAG} {...ownProps} {...theirProps}>
   {#if children}{@render children(slot)}{/if}
 </svelte:element>
