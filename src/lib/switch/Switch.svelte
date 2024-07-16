@@ -57,9 +57,9 @@
     as = DEFAULT_SWITCH_TAG as TTag,
     id: ownId,
     disabled: ownDisabled,
-    checked: controlledChecked,
     defaultChecked,
-    onchange: controlledOnChange,
+    checked = $bindable(defaultChecked),
+    onchange,
     name,
     value,
     form,
@@ -78,23 +78,13 @@
 
   $inspect(providedDisabled)
 
-  const controllable = useControllable(
-    {
-      get controlledValue() {
-        return controlledChecked
-      },
-    },
-    controlledOnChange,
-    defaultChecked ?? false
-  )
-  const { value: checked, onchange: onChange } = $derived(controllable)
-
   const d = useDisposables()
   let changing = $state(false)
 
   const toggle = () => {
     changing = true
-    onChange?.(!checked)
+    checked = !checked
+    onchange?.(checked)
 
     d.nextFrame(() => {
       changing = false
@@ -169,7 +159,7 @@
         id,
         role: "switch",
         type: buttonType.type,
-        tabIndex: tabIndex === -1 ? 0 : tabIndex ?? 0,
+        tabIndex: tabIndex === -1 ? 0 : (tabIndex ?? 0),
         "aria-checked": checked,
         "aria-labelledby": labelledBy.value,
         "aria-describedby": describedBy.value,
@@ -188,7 +178,8 @@
 
   const reset = () => {
     if (defaultChecked === undefined) return
-    return onChange?.(defaultChecked)
+    checked = defaultChecked
+    return onchange?.(checked)
   }
 </script>
 

@@ -5,6 +5,7 @@
   import Switch from "$lib/switch/Switch.svelte"
 
   let enabled = $state(false)
+  let enabled2 = $state(false)
 </script>
 
 <div class="flex h-screen w-full justify-center px-4 pt-24">
@@ -15,6 +16,12 @@
       <Switch
         checked={enabled}
         onchange={(checked) => (enabled = checked)}
+        class="group inline-flex h-6 w-11 items-center rounded-full bg-gray-200 transition data-[checked]:bg-blue-600"
+      >
+        <span class="size-4 translate-x-1 rounded-full bg-white transition group-data-[checked]:translate-x-6"></span>
+      </Switch>
+      <Switch
+        bind:checked={enabled2}
         class="group inline-flex h-6 w-11 items-center rounded-full bg-gray-200 transition data-[checked]:bg-blue-600"
       >
         <span class="size-4 translate-x-1 rounded-full bg-white transition group-data-[checked]:translate-x-6"></span>
