@@ -1,5 +1,13 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.1-next.2
+
+### Patch Changes
+
+- 10888b5: feat: add Button component
+- 6670012: feat: add DataInteractive component
+- 4eff6ce: feat: add CloseButton component
+
 ## 2.0.0-next.1
 
 ### Minor Changes
