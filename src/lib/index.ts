@@ -1,5 +1,6 @@
 export * from "./button/index.js"
 export * from "./checkbox/index.js"
+export * from "./data-interactive/index.js"
 export * from "./description/index.js"
 export * from "./field/index.js"
 export * from "./fieldset/index.js"
