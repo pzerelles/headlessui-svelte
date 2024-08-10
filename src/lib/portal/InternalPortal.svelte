@@ -1,22 +1,22 @@
 <script lang="ts" context="module">
   import { usePortalRoot } from "$lib/internal/portal-force-root.svelte.js"
   import { getOwnerDocument } from "$lib/utils/owner.js"
-  import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
   import { getContext, onMount, setContext } from "svelte"
   import { env } from "../utils/env.js"
   import type { ElementType, Props } from "$lib/utils/types.js"
-  import Portal from "../internal/Portal.svelte"
+  import type { PortalGroupContext } from "./PortalGroup.svelte"
 
   function usePortalTarget(options: { element: HTMLElement | null }): { readonly target: HTMLElement | null } {
     const { element } = $derived(options)
     const forceInRoot = usePortalRoot()
-    const groupTarget = getContext<MutableRefObject<HTMLElement | null>>("PortalGroupContext")
+    const portalGroupContext = getContext<PortalGroupContext>("PortalGroupContext")
+    const { target: groupTarget } = $derived(portalGroupContext ?? {})
 
     const ownerDocument = $derived(getOwnerDocument(element))
 
     const initialTarget = () => {
       // Group context is used, but still null
-      if (!forceInRoot && groupTarget !== null) return groupTarget.current ?? null
+      if (!forceInRoot && groupTarget) return groupTarget ?? null
 
       // No group context is used, let's create a default portal root
       if (env.isServer) return null
@@ -34,7 +34,7 @@
 
     // Ensure the portal root is always in the DOM
     $effect(() => {
-      if (target === null) return
+      if (!target) return
 
       if (!ownerDocument?.body.contains(target)) {
         ownerDocument?.body.appendChild(target)
@@ -43,8 +43,8 @@
 
     $effect(() => {
       if (forceInRoot) return
-      if (groupTarget === null) return
-      target = groupTarget.current
+      if (!groupTarget) return
+      target = groupTarget
     })
 
     return {
@@ -92,7 +92,7 @@
 
   // ---
 
-  export const DEFAULT_PORTAL_TAG = "svelte:fragment"
+  export const DEFAULT_PORTAL_TAG = "div"
   type PortalRenderPropArg = {}
   type PortalPropsWeControl = never
 
@@ -109,16 +109,13 @@
 <script lang="ts" generics="TTag extends ElementType">
   let { as = DEFAULT_PORTAL_TAG as TTag, children, ...theirProps }: PortalProps<TTag> = $props()
 
-  let internalPortalRootRef = $state<HTMLElement | null>(null)
-  const portalRef = $derived(internalPortalRootRef)
-  const ownerDocument = $derived(getOwnerDocument(internalPortalRootRef))
+  let element = $state<HTMLElement>()
   const portalTarget = usePortalTarget({
     get element() {
-      return internalPortalRootRef
+      return element ?? null
     },
   })
   const { target } = $derived(portalTarget)
-  const element = $derived(env.isServer ? null : ownerDocument?.createElement("div") ?? null)
   const parent = getContext<PortalParentContext>("PortalParentContext")
   //const ready = useServerHandoffComplete()
 
@@ -133,14 +130,9 @@
     }
   })
 
-  $effect(() => {
-    if (!element) return
-    if (!parent) return
-
-    return parent.register(element)
-  })
-
   onMount(() => {
+    if (parent) parent.register(element!)
+
     return () => {
       if (!target || !element) return
 
@@ -155,10 +147,8 @@
   })
 </script>
 
-{#if target && element}
-  <Portal target={element}>
-    <svelte:element this={as} bind:this={internalPortalRootRef} {...theirProps}>
-      {#if children}{@render children({})}{/if}
-    </svelte:element>
-  </Portal>
+{#if target}
+  <svelte:element this={as} bind:this={element} {...theirProps}>
+    {#if children}{@render children({})}{/if}
+  </svelte:element>
 {/if}

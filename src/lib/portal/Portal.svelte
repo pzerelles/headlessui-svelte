@@ -6,7 +6,9 @@
 </script>
 
 {#if enabled}
-  <InternalPortal {...theirProps} />
+  <InternalPortal {...theirProps}>
+    {#if children}{@render children({})}{/if}
+  </InternalPortal>
 {:else}
   <svelte:element this={as} {...theirProps}>
     {#if children}{@render children({})}{/if}

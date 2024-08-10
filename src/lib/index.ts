@@ -9,3 +9,5 @@ export * from "./legend/index.js"
 export * from "./listbox/index.js"
 export * from "./switch/index.js"
 export * from "./tabs/index.js"
+
+export * from "./hooks/use-id.js"

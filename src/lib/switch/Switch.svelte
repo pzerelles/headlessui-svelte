@@ -76,8 +76,6 @@
     if (groupContext) groupContext.switchElement = ref
   })
 
-  $inspect(providedDisabled)
-
   const d = useDisposables()
   let changing = $state(false)
 

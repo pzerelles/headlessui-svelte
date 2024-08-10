@@ -189,7 +189,6 @@
         return _state
       },
       unregisterPanel(panel: MutableRefObject<HTMLElement | undefined>) {
-        console.log("unregisterPanel", panel)
         _state.panels = _state.panels.filter((_panel) => !$state.is(_panel, panel))
         return _state
       },

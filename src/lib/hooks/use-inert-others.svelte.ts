@@ -75,7 +75,7 @@ function markNotInert(element: HTMLElement) {
  */
 export function useInertOthers(options: {
   enabled: boolean
-  elements?: { allowed?: () => (HTMLElement | null)[]; disallowed?: () => (HTMLElement | null)[] }
+  elements?: { allowed?: (HTMLElement | null)[]; disallowed?: (HTMLElement | null)[] }
 }) {
   const { enabled, elements } = $derived(options)
   const { allowed, disallowed } = $derived(elements ?? {})
@@ -92,14 +92,14 @@ export function useInertOthers(options: {
     let d = disposables()
 
     // Mark all disallowed elements as inert
-    for (let element of disallowed?.() ?? []) {
+    for (let element of disallowed ?? []) {
       if (!element) continue
 
       d.add(markInert(element))
     }
 
     // Mark all siblings of allowed elements (and parents) as inert
-    let allowedElements = allowed?.() ?? []
+    let allowedElements = allowed ?? []
 
     for (let element of allowedElements) {
       if (!element) continue
@@ -113,7 +113,8 @@ export function useInertOthers(options: {
         for (let node of parent.children) {
           // If the node contains any of the elements we should not mark it as inert
           // because it would make the elements unreachable.
-          if (allowedElements.some((el) => node.contains(el))) continue
+          if (node.tagName.toLowerCase() === "svelte:fragment" || allowedElements.some((el) => node.contains(el)))
+            continue
 
           // Mark the node as inert
           d.add(markInert(node as HTMLElement))

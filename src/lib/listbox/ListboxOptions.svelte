@@ -139,7 +139,7 @@
     },
     elements: {
       get allowed() {
-        return () => [data.buttonRef.current, data.optionsRef.current]
+        return [data.buttonRef.current, data.optionsRef.current]
       },
     },
   })

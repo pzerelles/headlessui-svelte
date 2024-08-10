@@ -6,7 +6,7 @@
   type GroupPropsWeControl = never
 
   export type PortalGroupContext = {
-    readonly element: HTMLElement | null
+    readonly target: HTMLElement | null
   }
 
   export type PortalGroupProps<TTag extends ElementType = typeof DEFAULT_GROUP_TAG> = Props<
