@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
   import { tick, type Snippet } from "svelte"
-  import type { ElementType, HTMLElementType, Props } from "$lib/utils/types.js"
+  import type { Props, PropsOf, RefType, TagType } from "$lib/utils/types.js"
 
   const DEFAULT_BUTTON_TAG = "button" as const
   type ButtonRenderPropArg = {
@@ -13,23 +13,22 @@
   }
   type ButtonPropsWeControl = "aria-controls" | "aria-expanded" | "aria-haspopup"
 
-  export type MenuButtonProps<TTag extends ElementType = typeof DEFAULT_BUTTON_TAG> = Props<
+  export type MenuButtonProps<TTag extends TagType = typeof DEFAULT_BUTTON_TAG> = Props<
     TTag,
     ButtonRenderPropArg,
     ButtonPropsWeControl,
     {
       disabled?: boolean
       autofocus?: boolean
-      ref?: HTMLElementType<TTag> | null
+      ref?: RefType<TTag> | null
     }
   >
 
   export type MenuButtonChildren = Snippet<[ButtonRenderPropArg]>
 </script>
 
-<script lang="ts" generics="TTag extends ElementType">
+<script lang="ts" generics="TTag extends TagType">
   import { useId } from "$lib/hooks/use-id.js"
-  import type { SvelteHTMLElements } from "svelte/elements"
   import { Focus } from "$lib/utils/calculate-active-index.js"
   import { useFocusRing } from "$lib/hooks/use-focus-ring.svelte.js"
   import { useActivePress } from "$lib/hooks/use-active-press.svelte.js"
@@ -40,12 +39,13 @@
   import { mergeProps } from "$lib/utils/render.js"
   import { MenuStates, useMenuContext } from "./Menu.svelte"
   import { untrack } from "svelte"
+  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 
   const internalId = useId()
   let {
     as = DEFAULT_BUTTON_TAG as TTag,
     ref = $bindable(),
-    id = `headlessui-menu-button-${internalId}` as SvelteHTMLElements[TTag][string],
+    id = `headlessui-menu-button-${internalId}` as PropsOf<TTag>["id"],
     disabled = false,
     autofocus = false,
     children,
@@ -54,7 +54,7 @@
   const _state = useMenuContext("MenuButton")
   const { setReference, getReferenceProps: getFloatingReferenceProps } = useFloating()
   $effect(() => {
-    untrack(() => _state.setButtonElement(ref || null))
+    untrack(() => _state.setButtonElement(ref ? (ref as HTMLButtonElement) : null))
     setReference(ref)
   })
 
@@ -169,6 +169,4 @@
   )
 </script>
 
-<svelte:element this={as} bind:this={ref} {...ourProps} {...theirProps}>
-  {#if children}{@render children(slot)}{/if}
-</svelte:element>
+<ElementOrComponent {as} bind:ref {...ourProps} {...theirProps} {slot} {children} />

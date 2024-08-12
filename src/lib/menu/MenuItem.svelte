@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-  import type { ElementType, HTMLElementType, Props } from "$lib/utils/types.js"
+  import type { ElementType, HTMLElementType, Props, PropsOf, RefType, TagType } from "$lib/utils/types.js"
   import { onMount, type Snippet } from "svelte"
 
   const DEFAULT_ITEM_TAG = "svelte:fragment" as const
@@ -13,13 +13,13 @@
   }
   type ItemPropsWeControl = "aria-describedby" | "aria-disabled" | "aria-labelledby" | "role" | "tabIndex"
 
-  export type MenuItemProps<TTag extends ElementType = typeof DEFAULT_ITEM_TAG> = Props<
+  export type MenuItemProps<TTag extends TagType = typeof DEFAULT_ITEM_TAG> = Props<
     TTag,
     ItemRenderPropArg,
     ItemPropsWeControl,
     {
       disabled?: boolean
-      ref?: HTMLElementType<TTag> | null
+      ref?: RefType<TTag> | null
     }
   > & {
     children: Snippet<[ItemRenderPropArg]>
@@ -28,9 +28,8 @@
   export type MenuItemChildren = Snippet<[ItemRenderPropArg]>
 </script>
 
-<script lang="ts" generics="TTag extends ElementType, TType">
+<script lang="ts" generics="TTag extends TagType">
   import { useId } from "$lib/hooks/use-id.js"
-  import type { SvelteHTMLElements } from "svelte/elements"
   import { ActivationTrigger, MenuStates, useMenuContext, type MenuItemDataRef } from "./Menu.svelte"
   import { disposables } from "$lib/utils/disposables.js"
   import { useTextValue } from "$lib/hooks/use-text-value.svelte.js"
@@ -40,12 +39,13 @@
   import { useDescriptions } from "$lib/description/Description.svelte"
   import { useLabels } from "$lib/label/Label.svelte"
   import { stateFromSlot } from "$lib/utils/state.js"
+  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 
   const internalId = useId()
   let {
     as = DEFAULT_ITEM_TAG as TTag,
     ref = $bindable(),
-    id = `headlessui-menu-item-${internalId}` as SvelteHTMLElements[TTag][string],
+    id = `headlessui-menu-item-${internalId}` as PropsOf<TTag>["id"],
     disabled = false,
     children,
     ...theirProps
@@ -151,12 +151,4 @@
   })
 </script>
 
-{#if as === "svelte:fragment"}
-  <svelte:element this={as} bind:this={ref} {...ourProps} {...theirProps}>
-    {#if children}{@render children({ ...slot, props: ourProps })}{/if}
-  </svelte:element>
-{:else}
-  <svelte:element this={as} bind:this={ref} {...ourProps} {...theirProps}>
-    {#if children}{@render children(slot)}{/if}
-  </svelte:element>
-{/if}
+<ElementOrComponent {as} bind:ref {...ourProps} {...theirProps} {slot} {children} />

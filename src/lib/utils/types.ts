@@ -2,7 +2,7 @@
 // A unique placeholder we can use as a default. This is nice because we can use this instead of
 // defaulting to null / never / ... and possibly collide with actual data.
 
-import type { Snippet } from "svelte"
+import type { Component, Snippet, SvelteComponent } from "svelte"
 import type { HTMLAttributes, SvelteHTMLElements } from "svelte/elements"
 
 // Ideally we use a unique symbol here.
@@ -10,6 +10,12 @@ const __ = "1D45E01E-AF44-47C4-988A-19A94EBAF55C" as const
 export type __ = typeof __
 
 export type ElementType = keyof SvelteHTMLElements
+export type TagType = ElementType | SvelteComponent<any> | Component<any, any>
+export type RefType<TTag> = TTag extends "svelte:fragment"
+  ? HTMLElement
+  : TTag extends ElementType
+    ? HTMLElementType<TTag>
+    : HTMLElement
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type HTMLElementType<T extends keyof SvelteHTMLElements> =
@@ -17,20 +23,24 @@ export type HTMLElementType<T extends keyof SvelteHTMLElements> =
 
 export type Expand<T> = T extends infer O ? { [K in keyof O]: O[K] } : never
 
-export type PropsOf<TTag extends keyof SvelteHTMLElements> = TTag extends keyof SvelteHTMLElements
+export type PropsOf<TTag extends TagType> = TTag extends ElementType
   ? SvelteHTMLElements[TTag]
-  : never
+  : TTag extends Component<infer Props, any>
+    ? Props
+    : TTag extends SvelteComponent<infer Props>
+      ? Props
+      : never
 
 type PropsWeControl = "as" | "children" | "class"
 
 // Resolve the props of the component, but ensure to omit certain props that we control
-type CleanProps<TTag extends keyof SvelteHTMLElements, TOmittableProps extends PropertyKey = never> = Omit<
-  SvelteHTMLElements[TTag],
+type CleanProps<TTag extends TagType, TOmittableProps extends PropertyKey = never> = Omit<
+  PropsOf<TTag>,
   TOmittableProps | PropsWeControl
 >
 
 // Add certain props that we control
-type OurProps<TTag extends keyof SvelteHTMLElements, TSlot> = {
+type OurProps<TTag extends TagType, TSlot> = {
   as?: TTag
   children?: Snippet<[TSlot]>
 }
@@ -40,13 +50,13 @@ type HasProperty<T extends object, K extends PropertyKey> = T extends never ? ne
 // Conditionally override the `class`, to also allow for a function
 // if and only if the PropsOf<TTag> already defines `class`.
 // This will allow us to have a TS error on as={Fragment}
-type ClassNameOverride<TTag extends keyof SvelteHTMLElements, TSlot = {}> =
+type ClassNameOverride<TTag extends TagType, TSlot = {}> =
   // Order is important here, because `never extends true` is `true`...
-  true extends HasProperty<PropsOf<TTag>, "class"> ? { class?: PropsOf<TTag>["class"] | ((bag: TSlot) => string) } : {}
+  true extends HasProperty<PropsOf<TTag>, "class"> ? { class?: string | null | ((bag: TSlot) => string) } : {}
 
 // Provide clean TypeScript props, which exposes some of our custom APIs.
 export type Props<
-  TTag extends keyof SvelteHTMLElements,
+  TTag extends TagType,
   TSlot = {},
   TOmittableProps extends PropertyKey = never,
   Overrides = {},

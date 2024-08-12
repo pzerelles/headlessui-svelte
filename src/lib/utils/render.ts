@@ -46,7 +46,7 @@ export function mergeProps<T extends Props<any, any>[]>(...listOfProps: T) {
   if (listOfProps.length === 0) return {}
   if (listOfProps.length === 1) return listOfProps[0]
 
-  let target: Props<any, any> = {}
+  let target: Omit<Props<any, any>, "children"> = {}
 
   let eventHandlers: Record<string, ((...args: any[]) => void | undefined)[]> = {}
 

@@ -6,6 +6,7 @@
   import type { Snippet } from "svelte"
   import { useHover } from "$lib/hooks/use-hover.svelte.js"
   import { mergeProps } from "$lib/utils/render.js"
+  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 
   const DEFAULT_DATA_INTERACTIVE_TAG = "svelte:fragment" as const
 
@@ -66,6 +67,4 @@
   const ourProps = $derived(mergeProps(focusProps, hoverProps, pressProps, stateFromSlot(slot)))
 </script>
 
-<svelte:element this={as} bind:this={ref} {...ourProps} {...theirProps}>
-  {#if children}{@render children(slot)}{/if}
-</svelte:element>
+<ElementOrComponent {as} bind:ref {...ourProps} {...theirProps} {slot} {children} />

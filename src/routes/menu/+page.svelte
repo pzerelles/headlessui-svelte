@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Button from "$lib/button/Button.svelte"
   import Menu from "$lib/menu/Menu.svelte"
   import MenuButton from "$lib/menu/MenuButton.svelte"
   import MenuItem from "$lib/menu/MenuItem.svelte"
@@ -39,7 +40,7 @@
           class="w-52 origin-top-right rounded-xl border border-white/5 bg-white/5 p-1 text-sm/6 text-white transition duration-100 ease-out [--anchor-gap:4px] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
         >
           <MenuItem
-            as="button"
+            as={Button}
             class="group flex w-full items-center gap-2 rounded-lg px-3 py-1.5 data-[focus]:bg-white/10"
           >
             <PencilIcon class="size-4 fill-white/30" />

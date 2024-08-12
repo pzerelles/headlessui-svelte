@@ -7,6 +7,7 @@ export * from "./fieldset/index.js"
 export * from "./label/index.js"
 export * from "./legend/index.js"
 export * from "./listbox/index.js"
+export * from "./menu/index.js"
 export * from "./switch/index.js"
 export * from "./tabs/index.js"
 
