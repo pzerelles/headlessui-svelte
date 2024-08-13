@@ -10,7 +10,7 @@ const __ = "1D45E01E-AF44-47C4-988A-19A94EBAF55C" as const
 export type __ = typeof __
 
 export type ElementType = keyof SvelteHTMLElements
-export type TagType = ElementType | Component<any, any>
+export type TagType = ElementType | SvelteComponent | Component<any, any>
 export type RefType<TTag> = TTag extends "svelte:fragment"
   ? HTMLElement
   : TTag extends ElementType
@@ -31,7 +31,7 @@ export type PropsOf<TTag extends TagType> = TTag extends ElementType
       ? Props
       : never
 
-type PropsWeControl = "as" | "children" | "class"
+type PropsWeControl = "as" | "ref" | "children" | "class"
 
 // Resolve the props of the component, but ensure to omit certain props that we control
 type CleanProps<TTag extends TagType, TOmittableProps extends PropertyKey = never> = Omit<
