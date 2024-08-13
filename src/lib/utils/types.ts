@@ -10,7 +10,7 @@ const __ = "1D45E01E-AF44-47C4-988A-19A94EBAF55C" as const
 export type __ = typeof __
 
 export type ElementType = keyof SvelteHTMLElements
-export type TagType = ElementType | SvelteComponent<any> | Component<any, any>
+export type TagType = ElementType | Component<any, any>
 export type RefType<TTag> = TTag extends "svelte:fragment"
   ? HTMLElement
   : TTag extends ElementType
@@ -36,12 +36,13 @@ type PropsWeControl = "as" | "children" | "class"
 // Resolve the props of the component, but ensure to omit certain props that we control
 type CleanProps<TTag extends TagType, TOmittableProps extends PropertyKey = never> = Omit<
   PropsOf<TTag>,
-  TOmittableProps | PropsWeControl
+  TOmittableProps
 >
 
 // Add certain props that we control
 type OurProps<TTag extends TagType, TSlot> = {
   as?: TTag
+  ref?: RefType<TTag>
   children?: Snippet<[TSlot]>
 }
 
@@ -52,7 +53,9 @@ type HasProperty<T extends object, K extends PropertyKey> = T extends never ? ne
 // This will allow us to have a TS error on as={Fragment}
 type ClassNameOverride<TTag extends TagType, TSlot = {}> =
   // Order is important here, because `never extends true` is `true`...
-  true extends HasProperty<PropsOf<TTag>, "class"> ? { class?: string | null | ((bag: TSlot) => string) } : {}
+  true extends HasProperty<PropsOf<TTag>, "class">
+    ? { class?: string | null | ((bag: TSlot) => string) }
+    : { class: undefined }
 
 // Provide clean TypeScript props, which exposes some of our custom APIs.
 export type Props<
@@ -60,7 +63,7 @@ export type Props<
   TSlot = {},
   TOmittableProps extends PropertyKey = never,
   Overrides = {},
-> = CleanProps<TTag, TOmittableProps | keyof Overrides> &
+> = CleanProps<TTag, TOmittableProps | keyof Overrides | PropsWeControl> &
   OurProps<TTag, TSlot> &
   ClassNameOverride<TTag, TSlot> &
   Overrides

@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
   import { tick, type Snippet } from "svelte"
-  import type { Props, PropsOf, RefType, TagType } from "$lib/utils/types.js"
+  import type { Props, PropsOf, TagType } from "$lib/utils/types.js"
 
   const DEFAULT_BUTTON_TAG = "button" as const
   type ButtonRenderPropArg = {
@@ -20,7 +20,6 @@
     {
       disabled?: boolean
       autofocus?: boolean
-      ref?: RefType<TTag> | null
     }
   >
 
@@ -43,12 +42,10 @@
 
   const internalId = useId()
   let {
-    as = DEFAULT_BUTTON_TAG as TTag,
     ref = $bindable(),
     id = `headlessui-menu-button-${internalId}` as PropsOf<TTag>["id"],
     disabled = false,
     autofocus = false,
-    children,
     ...theirProps
   }: MenuButtonProps<TTag> = $props()
   const _state = useMenuContext("MenuButton")
@@ -139,7 +136,7 @@
 
   const buttonType = useResolveButtonType({
     get props() {
-      return { type: theirProps.type, as }
+      return { type: theirProps.type, as: theirProps.as }
     },
     get ref() {
       return { current: _state.buttonElement }
@@ -169,4 +166,4 @@
   )
 </script>
 
-<ElementOrComponent {as} bind:ref {...ourProps} {...theirProps} {slot} {children} />
+<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_BUTTON_TAG} name="MenuButton" bind:ref />

@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-  import type { ElementType, HTMLElementType, Props, PropsOf, RefType, TagType } from "$lib/utils/types.js"
+  import type { Props, PropsOf, TagType } from "$lib/utils/types.js"
   import { onMount, type Snippet } from "svelte"
 
   const DEFAULT_ITEM_TAG = "svelte:fragment" as const
@@ -16,14 +16,12 @@
   export type MenuItemProps<TTag extends TagType = typeof DEFAULT_ITEM_TAG> = Props<
     TTag,
     ItemRenderPropArg,
-    ItemPropsWeControl,
+    ItemPropsWeControl | "children",
     {
       disabled?: boolean
-      ref?: RefType<TTag> | null
+      children: Snippet<[ItemRenderPropArg]>
     }
-  > & {
-    children: Snippet<[ItemRenderPropArg]>
-  }
+  >
 
   export type MenuItemChildren = Snippet<[ItemRenderPropArg]>
 </script>
@@ -40,14 +38,13 @@
   import { useLabels } from "$lib/label/Label.svelte"
   import { stateFromSlot } from "$lib/utils/state.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
+  import { mergeProps } from "$lib/utils/render.js"
 
   const internalId = useId()
   let {
-    as = DEFAULT_ITEM_TAG as TTag,
     ref = $bindable(),
     id = `headlessui-menu-item-${internalId}` as PropsOf<TTag>["id"],
     disabled = false,
-    children,
     ...theirProps
   }: MenuItemProps<TTag> = $props()
   const _state = useMenuContext("MenuItem")
@@ -131,24 +128,26 @@
     disabled,
     close: _state.closeMenu,
   } satisfies ItemRenderPropArg)
-  const ourProps = $derived({
-    id,
-    role: "menuitem",
-    tabindex: disabled === true ? undefined : -1,
-    "aria-disabled": disabled === true ? true : undefined,
-    "aria-labelledby": labelledby.value,
-    "aria-describedby": describedby.value,
-    disabled: undefined, // Never forward the `disabled` prop
-    onclick: handleClick,
-    onfocus: handleFocus,
-    onpointerenter: handleEnter,
-    onmouseenter: handleEnter,
-    onpointermove: handleMove,
-    onmousemove: handleMove,
-    onpointerleave: handleLeave,
-    onmouseleave: handleLeave,
-    ...stateFromSlot(slot),
-  })
+  const ourProps = $derived(
+    mergeProps({
+      id,
+      role: "menuitem",
+      tabindex: disabled === true ? undefined : -1,
+      "aria-disabled": disabled === true ? true : undefined,
+      "aria-labelledby": labelledby.value,
+      "aria-describedby": describedby.value,
+      disabled: undefined, // Never forward the `disabled` prop
+      onclick: handleClick,
+      onfocus: handleFocus,
+      onpointerenter: handleEnter,
+      onmouseenter: handleEnter,
+      onpointermove: handleMove,
+      onmousemove: handleMove,
+      onpointerleave: handleLeave,
+      onmouseleave: handleLeave,
+      ...stateFromSlot(slot),
+    })
+  )
 </script>
 
-<ElementOrComponent {as} bind:ref {...ourProps} {...theirProps} {slot} {children} />
+<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_ITEM_TAG} name="MenuItem" bind:ref />

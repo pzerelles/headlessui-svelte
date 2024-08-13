@@ -11,6 +11,7 @@
     Square2StackIcon,
     TrashIcon,
   } from "@pzerelles/heroicons-svelte/16/solid"
+  import DropdownButton from "./DropdownButton.svelte"
 
   const people = [
     { id: 1, name: "Tom Cook" },
@@ -27,12 +28,12 @@
   <div class="mx-auto h-screen w-52 pt-20">
     <div class="fixed top-24 w-52 text-right">
       <Menu __demoMode>
-        <MenuButton
+        <DropdownButton
           class="inline-flex items-center gap-2 rounded-md bg-gray-800 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-700 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-white"
         >
           Options
           <ChevronDownIcon class="size-4 fill-white/60" />
-        </MenuButton>
+        </DropdownButton>
 
         <MenuItems
           transition

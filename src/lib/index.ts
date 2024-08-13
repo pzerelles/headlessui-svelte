@@ -12,3 +12,4 @@ export * from "./switch/index.js"
 export * from "./tabs/index.js"
 
 export * from "./hooks/use-id.js"
+export * from "./utils/types.js"

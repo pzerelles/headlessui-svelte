@@ -46,7 +46,7 @@ export function mergeProps<T extends Props<any, any>[]>(...listOfProps: T) {
   if (listOfProps.length === 0) return {}
   if (listOfProps.length === 1) return listOfProps[0]
 
-  let target: Omit<Props<any, any>, "children"> = {}
+  let target: Omit<Props<any, any>, "children" | "ref"> = {}
 
   let eventHandlers: Record<string, ((...args: any[]) => void | undefined)[]> = {}
 
@@ -77,4 +77,65 @@ export function mergeProps<T extends Props<any, any>[]>(...listOfProps: T) {
   }
 
   return target
+}
+
+// A more complex example fo the `mergeProps` function, this one also cancels subsequent event
+// listeners if the event has already been `preventDefault`ed.
+export function mergePropsAdvanced(...listOfProps: Props<any, any>[]) {
+  if (listOfProps.length === 0) return {}
+  if (listOfProps.length === 1) return listOfProps[0]
+
+  let target: Props<any, any> = {}
+
+  let eventHandlers: Record<string, ((event: { defaultPrevented: boolean }, ...args: any[]) => void | undefined)[]> = {}
+
+  for (let props of listOfProps) {
+    for (let prop in props) {
+      // Collect event handlers
+      if (prop.startsWith("on") && typeof props[prop] === "function") {
+        eventHandlers[prop] ??= []
+        eventHandlers[prop].push(props[prop])
+      } else {
+        // Override incoming prop
+        target[prop] = props[prop]
+      }
+    }
+  }
+
+  // Ensure event listeners are not called if `disabled` or `aria-disabled` is true
+  if (target.disabled || target["aria-disabled"]) {
+    for (let eventName in eventHandlers) {
+      // Prevent default events for `onclick`, `onmousedown`, `onkeydown`, etc.
+      if (/^(on(?:click|pointer|mouse|key)(?:down|up|press)?)$/.test(eventName)) {
+        eventHandlers[eventName] = [(e: any) => e?.preventDefault?.()]
+      }
+    }
+  }
+
+  // Merge event handlers
+  for (let eventName in eventHandlers) {
+    Object.assign(target, {
+      [eventName](event: { nativeEvent?: Event; defaultPrevented: boolean }, ...args: any[]) {
+        let handlers = eventHandlers[eventName]
+
+        for (let handler of handlers) {
+          if ((event instanceof Event || event?.nativeEvent instanceof Event) && event.defaultPrevented) {
+            return
+          }
+
+          handler(event, ...args)
+        }
+      },
+    })
+  }
+
+  return target
+}
+
+export function omit<T extends Record<any, any>>(object: T, keysToOmit: string[] = []) {
+  let clone = Object.assign({}, object) as T
+  for (let key of keysToOmit) {
+    if (key in clone) delete clone[key]
+  }
+  return clone
 }

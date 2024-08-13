@@ -20,7 +20,6 @@
       disabled?: boolean
       autoFocus?: boolean
       type?: "button" | "submit" | "reset"
-      ref?: RefType<TTag> | null
     }
   >
 </script>
@@ -38,12 +37,10 @@
   const providedDisabled = useDisabled()
 
   let {
-    as = DEFAULT_BUTTON_TAG as TTag,
     ref = $bindable(),
     disabled: ownDisabled = false,
     autofocus = false as PropsOf<TTag>["autofocus"],
     type = "button",
-    children,
     ...theirProps
   }: ButtonProps<TTag> = $props()
 
@@ -94,4 +91,4 @@
   )
 </script>
 
-<ElementOrComponent {as} bind:ref {...ourProps} {...theirProps} {slot} {children} />
+<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_BUTTON_TAG} name="Button" bind:ref />

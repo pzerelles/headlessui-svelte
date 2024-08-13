@@ -1,42 +1,29 @@
-<script lang="ts" generics="TTag extends ElementType | SvelteComponent | Component<any, any>, TSlot">
-  import type { Component, Snippet, SvelteComponent } from "svelte"
-  import type { ElementType, HTMLElementType } from "./types.js"
+<script lang="ts" generics="TFeature extends RenderFeatures, TTag extends TagType, TSlot">
+  import type { ElementType, Props, RefType, TagType } from "./types.js"
+  import { mergePropsAdvanced, RenderFeatures, type PropsForFeatures } from "./render.js"
+  import Generic from "./Generic.svelte"
 
   let {
-    as,
-    ref = $bindable(),
+    ourProps,
+    theirProps,
     slot,
-    class: className,
-    children,
-    ...props
+    defaultTag,
+    features,
+    visible = true,
+    name,
+    ref = $bindable(),
   }: {
-    as: TTag
-    ref?:
-      | (TTag extends "svelte:fragment" ? HTMLElement : TTag extends ElementType ? HTMLElementType<TTag> : HTMLElement)
-      | null
-    slot: TSlot
-    class?: string | null | ((bag: TSlot) => string)
-    children: Snippet<[TSlot]> | undefined
+    ourProps: Expand<Props<any, TSlot, any> & PropsForFeatures<TFeature>>
+    theirProps: Expand<Props<any, TSlot, any>>
+    slot?: TSlot
+    defaultTag: ElementType
+    features?: TFeature
+    visible?: boolean
+    name: string
+    ref?: RefType<TTag>
   } = $props()
 
-  const isComponent = (
-    as: ElementType | SvelteComponent<any> | Component<any, any>
-  ): as is SvelteComponent<any> | Component<any, any> => typeof as !== "string"
-
-  const resolvedClass = $derived(typeof className === "function" ? className(slot) : className)
+  const mergedProps = $derived(mergePropsAdvanced(theirProps, ourProps))
 </script>
 
-{#if isComponent(as)}
-  <svelte:component this={as} bind:ref {...props} class={resolvedClass}>
-    {#if children}{@render children(slot)}{/if}
-  </svelte:component>
-{:else if as === "svelte:fragment"}
-  {#if children}{@render children({
-      ...slot,
-      props: { ...props, ...(resolvedClass ? { class: resolvedClass } : {}) },
-    })}{/if}
-{:else}
-  <svelte:element this={as} bind:this={ref} {...props} class={resolvedClass}>
-    {#if children}{@render children(slot)}{/if}
-  </svelte:element>
-{/if}
+<Generic {...mergedProps} {slot} tag={defaultTag} {name} bind:ref />
