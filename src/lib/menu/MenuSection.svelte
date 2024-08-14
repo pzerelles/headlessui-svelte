@@ -15,7 +15,7 @@
   export type MenuSectionChildren = Snippet<[SectionRenderPropArg]>
 </script>
 
-<script lang="ts" generics="TTag extends ElementType">
+<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_SECTION_TAG">
   import { useLabels } from "$lib/label/Label.svelte"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 

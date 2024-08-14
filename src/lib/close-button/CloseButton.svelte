@@ -9,7 +9,7 @@
   export type CloseButtonProps<TTag extends ElementType = typeof DEFAULT_BUTTON_TAG> = ButtonProps<TTag>
 </script>
 
-<script lang="ts" generics="TTag extends keyof SvelteHTMLElements, TType">
+<script lang="ts" generics="TType, TTag extends ElementType = typeof DEFAULT_BUTTON_TAG">
   const close = getCloseContext()
   let { ...props }: { as?: TTag } & CloseButtonProps<TTag> = $props()
 </script>

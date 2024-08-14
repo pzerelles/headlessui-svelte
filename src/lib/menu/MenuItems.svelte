@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-  import type { ElementType, HTMLElementType, Props } from "$lib/utils/types.js"
+  import type { ElementType, Props } from "$lib/utils/types.js"
   import { mergeProps, RenderFeatures, type PropsForFeatures } from "$lib/utils/render.js"
   import {
     useFloatingPanel,
@@ -31,9 +31,8 @@
   export type MenuItemsChildren = Snippet<[ItemsRenderPropArg]>
 </script>
 
-<script lang="ts" generics="TTag extends ElementType">
+<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_ITEMS_TAG">
   import { useId } from "$lib/hooks/use-id.js"
-  import type { SvelteHTMLElements } from "svelte/elements"
   import { getOwnerDocument } from "$lib/utils/owner.js"
   import { State, useOpenClosed } from "$lib/internal/open-closed.js"
   import { transitionDataAttributes, useTransition } from "$lib/hooks/use-transition.svelte.js"
@@ -51,6 +50,7 @@
   import { stateFromSlot } from "$lib/utils/state.js"
   import { MenuStates, useMenuContext } from "./Menu.svelte"
   import { useTreeWalker } from "$lib/hooks/use-tree-walker.svelte.js"
+  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 
   const internalId = useId()
   let {
@@ -61,7 +61,6 @@
     portal = false,
     modal = true,
     transition = false,
-    children,
     static: isStatic = false,
     unmount = true,
     ...theirProps
@@ -311,17 +310,16 @@
 
 <Portal enabled={portal ? isStatic || visible : false}>
   {#if !panelEnabled && unmount && !isStatic}
-    <Hidden as="span" bind:ref aria-hidden="true" {...ourProps} />
+    <Hidden aria-hidden="true" {...ourProps} bind:ref />
   {:else}
-    <svelte:element
-      this={as}
-      bind:this={ref}
-      {...ourProps}
-      {...theirProps}
-      hidden={isStatic || panelEnabled ? undefined : true}
-      style={isStatic || panelEnabled ? ourProps.style : "display: none;"}
-    >
-      {#if children}{@render children(slot)}{/if}
-    </svelte:element>
+    <ElementOrComponent
+      {ourProps}
+      {theirProps}
+      slots={slot}
+      defaultTag={DEFAULT_ITEMS_TAG}
+      features={ItemsRenderFeatures}
+      name="MenuItems"
+      bind:ref
+    />
   {/if}
 </Portal>

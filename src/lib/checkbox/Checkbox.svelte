@@ -39,8 +39,8 @@
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType, TType">
-  import { tick, type Snippet } from "svelte"
+<script lang="ts" generics="TType, TTag extends ElementType = typeof DEFAULT_CHECKBOX_TAG">
+  import { tick } from "svelte"
   import { attemptSubmit } from "../utils/form.js"
   import { getIdContext, htmlid } from "../utils/id.js"
   import { useActivePress } from "../hooks/use-active-press.svelte.js"

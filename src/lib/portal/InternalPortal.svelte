@@ -106,7 +106,7 @@
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType">
+<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_PORTAL_TAG">
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 
   let { ref = $bindable(), ...theirProps }: { as?: TTag } & PortalProps<TTag> = $props()

@@ -1,6 +1,9 @@
 <script lang="ts" context="module">
+  import { Label, type LabelProps } from "$lib/index.js"
   import type { ElementType, Props } from "$lib/utils/types.js"
-  let DEFAULT_LEGEND_TAG = Label
+  import type { Component } from "svelte"
+
+  const DEFAULT_LEGEND_TAG = Label as Component<LabelProps, any>
 
   type LegendRenderPropArg = {}
   type LegendPropsWeControl = never
@@ -13,9 +16,7 @@
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType">
-  import Label from "../label/Label.svelte"
-
+<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_LEGEND_TAG">
   let { ...props }: { as?: TTag } & LegendProps<TTag> = $props()
 </script>
 

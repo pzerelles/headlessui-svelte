@@ -64,7 +64,7 @@
   }
 </script>
 
-<script lang="ts" generics="TTag extends ElementType">
+<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_TABS_TAG">
   import StableCollection from "$lib/utils/StableCollection.svelte"
   import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"

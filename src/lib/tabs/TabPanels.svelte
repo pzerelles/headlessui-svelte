@@ -11,7 +11,7 @@
   export type TabPanelsProps<TTag extends ElementType = typeof DEFAULT_PANELS_TAG> = Props<TTag, PanelsRenderPropArg>
 </script>
 
-<script lang="ts" generics="TTag extends ElementType">
+<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_PANELS_TAG">
   const data = useData("Tab.Panels")
   const { selectedIndex } = $derived(data)
 

@@ -31,7 +31,7 @@
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType">
+<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_SWITCH_TAG">
   import { useId } from "$lib/hooks/use-id.js"
   import { useDisabled } from "$lib/hooks/use-disabled.js"
   import { useProvidedId } from "$lib/internal/id.js"

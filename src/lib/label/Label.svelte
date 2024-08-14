@@ -83,7 +83,7 @@
   }
 </script>
 
-<script lang="ts" generics="TTag extends ElementType">
+<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_LABEL_TAG">
   import { getContext, type Snippet, onMount } from "svelte"
   import { getIdContext, htmlid } from "../utils/id.js"
   import { useDisabled } from "../hooks/use-disabled.js"

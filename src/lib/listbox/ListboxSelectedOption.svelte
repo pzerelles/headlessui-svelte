@@ -11,18 +11,19 @@
     SelectedOptionRenderPropArg,
     SelectedOptionPropsWeControl,
     {
-      options: Component
-      placeholder?: Component
+      options: Component<any, any>
+      placeholder?: Component<any, any>
     }
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType">
+<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_SELECTED_OPTION_TAG">
   import { useData, ValueMode } from "./Listbox.svelte"
   import { setContext } from "svelte"
+  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 
   let {
-    as = DEFAULT_SELECTED_OPTION_TAG as TTag,
+    ref = $bindable(),
     options,
     placeholder,
     ...theirProps
@@ -39,10 +40,19 @@
   setContext("SelectedOptionContext", true)
 </script>
 
-<svelte:element this={as} {...theirProps}>
+{#snippet children()}
   {#if placeholder && shouldShowPlaceholder}
-    <svelte:component this={placeholder} />
+    {@const Component = placeholder}
+    <Component />
   {:else}
-    <svelte:component this={options} />
+    {@const Component = options}
+    <Component />
   {/if}
-</svelte:element>
+{/snippet}
+
+<ElementOrComponent
+  theirProps={{ ...theirProps, children }}
+  defaultTag={DEFAULT_SELECTED_OPTION_TAG}
+  name="ListboxSelectedOption"
+  bind:ref
+></ElementOrComponent>

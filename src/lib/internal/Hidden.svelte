@@ -26,7 +26,7 @@
   >
 </script>
 
-<script lang="ts" generics="TTag extends keyof SvelteHTMLElements">
+<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_VISUALLY_HIDDEN_TAG">
   let { ref = $bindable(), features = HiddenFeatures.None, ...theirProps }: { as?: TTag } & HiddenProps<TTag> = $props()
 
   let ourProps = {

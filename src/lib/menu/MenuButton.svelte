@@ -26,7 +26,7 @@
   export type MenuButtonChildren = Snippet<[ButtonRenderPropArg]>
 </script>
 
-<script lang="ts" generics="TTag extends ElementType">
+<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_BUTTON_TAG">
   import { useId } from "$lib/hooks/use-id.js"
   import { Focus } from "$lib/utils/calculate-active-index.js"
   import { useFocusRing } from "$lib/hooks/use-focus-ring.svelte.js"

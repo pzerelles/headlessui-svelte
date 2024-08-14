@@ -37,9 +37,8 @@
   export type ListboxOptionsChildren = Snippet<[OptionsRenderPropArg]>
 </script>
 
-<script lang="ts" generics="TTag extends ElementType">
+<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_OPTIONS_TAG">
   import { useId } from "$lib/hooks/use-id.js"
-  import type { SvelteHTMLElements } from "svelte/elements"
   import { ListboxStates, useActions, useData, ValueMode, type ListboxDataContext } from "./Listbox.svelte"
   import { getOwnerDocument } from "$lib/utils/owner.js"
   import { State, useOpenClosed } from "$lib/internal/open-closed.js"
@@ -54,10 +53,11 @@
   import { Focus } from "$lib/utils/calculate-active-index.js"
   import { focusFrom, Focus as FocusManagementFocus } from "$lib/utils/focus-management.js"
   import { useElementSize } from "$lib/hooks/use-element-size.svelte.js"
-  import { getContext, setContext, type Snippet } from "svelte"
+  import { setContext, type Snippet } from "svelte"
   import Hidden from "$lib/internal/Hidden.svelte"
   import Portal from "$lib/portal/Portal.svelte"
   import { stateFromSlot } from "$lib/utils/state.js"
+  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 
   const internalId = useId()
   let {
@@ -352,15 +352,14 @@
   {#if !panelEnabled && unmount && !isStatic}
     <Hidden as="span" bind:ref aria-hidden="true" {...ourProps} />
   {:else}
-    <svelte:element
-      this={as}
-      bind:this={ref}
-      {...ourProps}
-      {...theirProps}
-      hidden={isStatic || panelEnabled ? undefined : true}
-      style={isStatic || panelEnabled ? theirProps.style : "display: none;"}
-    >
-      {#if children}{@render children(slot)}{/if}
-    </svelte:element>
+    <ElementOrComponent
+      {ourProps}
+      {theirProps}
+      slots={slot}
+      defaultTag={DEFAULT_OPTIONS_TAG}
+      features={OptionsRenderFeatures}
+      name="MenuItems"
+      bind:ref
+    />
   {/if}
 </Portal>

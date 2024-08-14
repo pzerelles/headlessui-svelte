@@ -131,7 +131,7 @@
   }
 </script>
 
-<script lang="ts" generics="TTag extends ElementType, TType, TActualType">
+<script lang="ts" generics="TType, TActualType, TTag extends ElementType = typeof DEFAULT_LISTBOX_TAG">
   import { disposables } from "$lib/utils/disposables.js"
   import FormFields from "$lib/internal/FormFields.svelte"
   import { createFloatingContext } from "$lib/internal/floating.svelte.js"

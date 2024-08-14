@@ -83,7 +83,7 @@
   }
 </script>
 
-<script lang="ts" generics="TTag extends ElementType">
+<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_MENU_TAG">
   import { setContext } from "svelte"
 
   function adjustOrderedState(

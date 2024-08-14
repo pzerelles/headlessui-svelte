@@ -15,7 +15,7 @@
   export type MenuSeparatorChildren = Snippet<[SeparatorRenderPropArg]>
 </script>
 
-<script lang="ts" generics="TTag extends ElementType">
+<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_SEPARATOR_TAG">
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 
   let { ref = $bindable(), ...theirProps }: { as?: TTag } & MenuSeparatorProps<TTag> = $props()

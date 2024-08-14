@@ -19,7 +19,7 @@
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType">
+<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_GROUP_TAG">
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
   import { setContext } from "svelte"
 

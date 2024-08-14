@@ -10,7 +10,7 @@
   }
 </script>
 
-<script lang="ts" generics="TTag extends ElementType">
+<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_GROUP_TAG">
   import { setContext } from "svelte"
   import { useLabels } from "$lib/label/Label.svelte"
   import { useDescriptions } from "$lib/description/Description.svelte"

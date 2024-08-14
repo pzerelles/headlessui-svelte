@@ -17,7 +17,7 @@
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType">
+<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_LIST_TAG">
   import { useData } from "./TabGroup.svelte"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 

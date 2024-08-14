@@ -16,7 +16,7 @@
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType">
+<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_FIELD_TAG">
   import { useDisabled } from "../hooks/use-disabled.js"
   import { createIdContext } from "../utils/id.js"
   import { stateFromSlot } from "../utils/state.js"

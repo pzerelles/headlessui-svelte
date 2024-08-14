@@ -15,7 +15,7 @@
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType">
+<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_FIELDSET_TAG">
   import { setContext, type Snippet } from "svelte"
   import { useDisabled } from "../hooks/use-disabled.js"
   import { useLabels } from "$lib/label/Label.svelte"

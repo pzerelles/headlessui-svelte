@@ -73,7 +73,7 @@
   }
 </script>
 
-<script lang="ts" generics="TTag extends ElementType">
+<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_DESCRIPTION_TAG">
   import { htmlid } from "../utils/id.js"
   import { stateFromSlot } from "../utils/state.js"
   import { useDisabled } from "../hooks/use-disabled.js"

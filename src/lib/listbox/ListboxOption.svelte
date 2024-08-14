@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-  import type { ElementType, HTMLElementType, Props } from "$lib/utils/types.js"
+  import type { ElementType, Props } from "$lib/utils/types.js"
 
   const DEFAULT_OPTION_TAG = "div" as const
   type OptionRenderPropArg = {
@@ -26,7 +26,7 @@
   export type ListboxOptionChildren = Snippet<[OptionRenderPropArg]>
 </script>
 
-<script lang="ts" generics="TTag extends ElementType, TType">
+<script lang="ts" generics="TType, TTag extends ElementType = typeof DEFAULT_OPTION_TAG">
   import { useId } from "$lib/hooks/use-id.js"
   import type { SvelteHTMLElements } from "svelte/elements"
   import {

@@ -46,7 +46,7 @@
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType, TType">
+<script lang="ts" generics="TType, TTag extends ElementType = typeof DEFAULT_COMBOBOX_TAG">
   import { useDisabled } from "$lib/hooks/use-disabled.js"
 
   const providedDisabled = useDisabled()

@@ -43,7 +43,7 @@
   export type ListboxButtonChildren = Snippet<[ButtonRenderPropArg]>
 </script>
 
-<script lang="ts" generics="TTag extends ElementType">
+<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_BUTTON_TAG">
   const data = useData("ListboxButton")
   const actions = useActions("ListboxButton")
 

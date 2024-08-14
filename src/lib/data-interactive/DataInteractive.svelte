@@ -27,7 +27,7 @@
   export type DataInteractiveChildren = Snippet<[DataInteractiveRenderPropArg]>
 </script>
 
-<script lang="ts" generics="TTag extends ElementType">
+<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_DATA_INTERACTIVE_TAG">
   let { ref = $bindable(), ...theirProps }: { as?: TTag } & DataInteractiveProps<TTag> = $props()
 
   // Ideally we can use a `disabled` prop, but that would depend on the props of the child element

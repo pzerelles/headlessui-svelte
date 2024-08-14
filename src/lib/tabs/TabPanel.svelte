@@ -17,7 +17,7 @@
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType">
+<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_PANEL_TAG">
   import { useId } from "$lib/hooks/use-id.js"
   import { RenderFeatures, type PropsForFeatures } from "$lib/utils/render.js"
   import { useActions, useData } from "./TabGroup.svelte"

@@ -26,7 +26,7 @@
   export type MenuItemChildren = Snippet<[ItemRenderPropArg]>
 </script>
 
-<script lang="ts" generics="TTag extends ElementType">
+<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_ITEM_TAG">
   import { useId } from "$lib/hooks/use-id.js"
   import { ActivationTrigger, MenuStates, useMenuContext, type MenuItemDataRef } from "./Menu.svelte"
   import { disposables } from "$lib/utils/disposables.js"

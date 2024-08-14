@@ -23,7 +23,7 @@
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType">
+<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_TAB_TAG">
   import { useId } from "$lib/hooks/use-id.js"
   import { useActions, useData } from "./TabGroup.svelte"
   import { useStableCollectionIndex } from "$lib/utils/StableCollection.svelte"
