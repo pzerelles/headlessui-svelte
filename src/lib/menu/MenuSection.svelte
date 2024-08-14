@@ -17,16 +17,15 @@
 
 <script lang="ts" generics="TTag extends ElementType">
   import { useLabels } from "$lib/label/Label.svelte"
+  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 
   const labelledby = useLabels()
 
-  let { as = DEFAULT_SECTION_TAG as TTag, children, ...theirProps }: MenuSectionProps<TTag> = $props()
+  let { ref = $bindable(), ...theirProps }: { as?: TTag } & MenuSectionProps<TTag> = $props()
   const ourProps = $derived({
     "aria-labelledby": labelledby,
     role: "group",
   })
 </script>
 
-<svelte:element this={as} {...ourProps} {...theirProps}>
-  {#if children}{@render children({})}{/if}
-</svelte:element>
+<ElementOrComponent {ourProps} {theirProps} defaultTag={DEFAULT_SECTION_TAG} name="MenuSection" bind:ref />

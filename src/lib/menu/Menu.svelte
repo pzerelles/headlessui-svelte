@@ -3,6 +3,7 @@
   import { createFloatingContext } from "$lib/internal/floating.svelte.js"
   import { createOpenClosedContext, State } from "$lib/internal/open-closed.js"
   import { calculateActiveIndex, Focus } from "$lib/utils/calculate-active-index.js"
+  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
   import { FocusableMode, isFocusableElement, sortByDomNode } from "$lib/utils/focus-management.js"
   import { match } from "$lib/utils/match.js"
   import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
@@ -314,7 +315,7 @@
     }
   }
 
-  let { as = DEFAULT_MENU_TAG as TTag, __demoMode = false, children, ...theirProps }: MenuProps<TTag> = $props()
+  let { ref = $bindable(), __demoMode = false, ...theirProps }: { as?: TTag } & MenuProps<TTag> = $props()
 
   const _state = stateReducer({
     __demoMode,
@@ -370,6 +371,4 @@
   })
 </script>
 
-<svelte:element this={as} {...ourProps} {...theirProps}>
-  {#if children}{@render children(slot)}{/if}
-</svelte:element>
+<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_MENU_TAG} name="Menu" bind:ref />

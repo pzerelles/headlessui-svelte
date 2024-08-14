@@ -17,7 +17,7 @@
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType, TType">
+<script lang="ts" generics="TTag extends ElementType">
   import { useData, ValueMode } from "./Listbox.svelte"
   import { setContext } from "svelte"
 
@@ -26,7 +26,7 @@
     options,
     placeholder,
     ...theirProps
-  }: ListboxSelectedOptionProps<TTag> = $props()
+  }: { as?: TTag } & ListboxSelectedOptionProps<TTag> = $props()
 
   const data = useData("ListboxSelectedOption")
 

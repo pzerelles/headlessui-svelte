@@ -1,28 +1,26 @@
 <script lang="ts" context="module">
-  import type { SvelteHTMLElements } from "svelte/elements"
+  import type { ElementType, Props } from "$lib/utils/types.js"
+  let DEFAULT_FIELDSET_TAG = "fieldset" as const
 
-  export type FieldsetProps<TTag extends keyof SvelteHTMLElements = typeof DEFAULT_FIELDSET_TAG> =
-    SvelteHTMLElements[TTag] & {
-      as?: TTag
+  type FieldsetRenderPropArg = {}
+  type FieldsetPropsWeControl = "aria-labelledby" | "aria-disabled" | "role"
+
+  export type FieldsetProps<TTag extends ElementType = typeof DEFAULT_FIELDSET_TAG> = Props<
+    TTag,
+    FieldsetRenderPropArg,
+    FieldsetPropsWeControl,
+    {
       disabled?: boolean
-      children?: Snippet<
-        [
-          {
-            disabled: boolean
-          },
-        ]
-      >
     }
-
-  const DEFAULT_FIELDSET_TAG = "fieldset" as const
+  >
 </script>
 
-<script lang="ts" generics="TTag extends keyof SvelteHTMLElements">
+<script lang="ts" generics="TTag extends ElementType">
   import { setContext, type Snippet } from "svelte"
   import { useDisabled } from "../hooks/use-disabled.js"
   import { useLabels } from "$lib/label/Label.svelte"
 
-  let { as, disabled: ownDisabled = false, children, ...theirProps }: FieldsetProps<TTag> = $props()
+  let { as, disabled: ownDisabled = false, children, ...theirProps }: { as?: TTag } & FieldsetProps<TTag> = $props()
 
   const providedDisabled = useDisabled()
   const disabled = $derived(providedDisabled.value || ownDisabled)

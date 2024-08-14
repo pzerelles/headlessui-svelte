@@ -1,6 +1,9 @@
 <script lang="ts" context="module">
-  import type { HTMLElementType, Props } from "$lib/utils/types.js"
+  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
+  import type { ElementType, Props } from "$lib/utils/types.js"
   import type { SvelteHTMLElements } from "svelte/elements"
+
+  const DEFAULT_VISUALLY_HIDDEN_TAG = "span" as const
 
   export enum HiddenFeatures {
     // The default, no features.
@@ -13,31 +16,24 @@
     Hidden = 1 << 2,
   }
 
-  const DEFAULT_VISUALLY_HIDDEN_TAG = "div" as const
-
   type HiddenRenderPropArg = {}
   type HiddenPropsWeControl = never
-  export type HiddenProps<TTag extends keyof SvelteHTMLElements = typeof DEFAULT_VISUALLY_HIDDEN_TAG> = Props<
+  export type HiddenProps<TTag extends ElementType = typeof DEFAULT_VISUALLY_HIDDEN_TAG> = Props<
     TTag,
     HiddenRenderPropArg,
     HiddenPropsWeControl,
-    { features?: HiddenFeatures; ref?: HTMLElementType<TTag> | null }
+    { features?: HiddenFeatures }
   >
 </script>
 
 <script lang="ts" generics="TTag extends keyof SvelteHTMLElements">
-  let {
-    as = DEFAULT_VISUALLY_HIDDEN_TAG as TTag,
-    ref = $bindable(),
-    features = HiddenFeatures.None,
-    ...theirProps
-  }: HiddenProps<TTag> = $props()
+  let { ref = $bindable(), features = HiddenFeatures.None, ...theirProps }: { as?: TTag } & HiddenProps<TTag> = $props()
 
   let ourProps = {
     "aria-hidden":
       (features & HiddenFeatures.Focusable) === HiddenFeatures.Focusable
         ? true
-        : theirProps["aria-hidden" as keyof typeof theirProps] ?? undefined,
+        : (theirProps["aria-hidden" as keyof typeof theirProps] ?? undefined),
     hidden: (features & HiddenFeatures.Hidden) === HiddenFeatures.Hidden ? true : undefined,
     style: [
       "position: fixed",
@@ -59,4 +55,4 @@
   }
 </script>
 
-<svelte:element this={as} bind:this={ref} {...ourProps} {...theirProps} />
+<ElementOrComponent {ourProps} {theirProps} defaultTag={DEFAULT_VISUALLY_HIDDEN_TAG} name="Hidden" bind:ref />

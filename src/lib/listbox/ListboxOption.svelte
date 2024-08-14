@@ -20,7 +20,6 @@
     {
       disabled?: boolean
       value: TType
-      ref?: HTMLElementType<TTag> | null
     }
   >
 
@@ -49,12 +48,12 @@
   let {
     as = DEFAULT_OPTION_TAG as TTag,
     ref = $bindable(),
-    id = `headlessui-listbox-option-${internalId}` as SvelteHTMLElements[TTag][string],
+    id = `headlessui-listbox-option-${internalId}`,
     disabled = false,
     value,
     children,
     ...theirProps
-  }: ListboxOptionProps<TTag, TType> = $props()
+  }: { as?: TTag } & ListboxOptionProps<TTag, TType> = $props()
   const usedInSelectedOption = getContext<boolean>("SelectedOptionContext") === true
   const data = useData("ListboxOption")
   const actions = useActions("ListboxOption")

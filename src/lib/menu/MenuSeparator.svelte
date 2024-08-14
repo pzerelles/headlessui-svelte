@@ -16,10 +16,10 @@
 </script>
 
 <script lang="ts" generics="TTag extends ElementType">
-  let { as = DEFAULT_SEPARATOR_TAG as TTag, children, ...theirProps }: MenuSeparatorProps<TTag> = $props()
+  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
+
+  let { ref = $bindable(), ...theirProps }: { as?: TTag } & MenuSeparatorProps<TTag> = $props()
   const ourProps = { role: "separator" }
 </script>
 
-<svelte:element this={as} {...ourProps} {...theirProps}>
-  {#if children}{@render children({})}{/if}
-</svelte:element>
+<ElementOrComponent {ourProps} {theirProps} defaultTag={DEFAULT_SEPARATOR_TAG} name="MenuSeparator" bind:ref />

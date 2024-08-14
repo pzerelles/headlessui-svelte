@@ -18,15 +18,14 @@
 <script lang="ts" generics="TTag extends ElementType">
   import { useId } from "$lib/hooks/use-id.js"
   import { useLabelContext } from "$lib/label/Label.svelte"
-  import type { SvelteHTMLElements } from "svelte/elements"
+  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 
   const internalId = useId()
   let {
-    as = DEFAULT_HEADING_TAG as TTag,
-    id = `headlessui-menu-heading-${internalId}` as SvelteHTMLElements[TTag][string],
-    children,
+    ref = $bindable(),
+    id = `headlessui-menu-heading-${internalId}`,
     ...theirProps
-  }: MenuHeadingProps<TTag> = $props()
+  }: { as?: TTag } & MenuHeadingProps<TTag> = $props()
 
   const context = useLabelContext()
   onMount(() => context.register(id))
@@ -34,6 +33,4 @@
   const ourProps = $derived({ id, role: "presentation", ...context.props })
 </script>
 
-<svelte:element this={as} {...ourProps} {...theirProps}>
-  {#if children}{@render children({})}{/if}
-</svelte:element>
+<ElementOrComponent {ourProps} {theirProps} defaultTag={DEFAULT_HEADING_TAG} name="MenuItem" bind:ref />

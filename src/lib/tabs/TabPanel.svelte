@@ -27,23 +27,20 @@
   import { stateFromSlot } from "$lib/utils/state.js"
   import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
   import { onMount } from "svelte"
+  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 
   const internalId = useId()
-  const {
-    as,
+  let {
+    ref = $bindable(),
     id = `headlessui-tabs-panel-${internalId}`,
     tabIndex = 0,
-    children,
-    static: isStatic = false,
-    unmount = true,
     ...theirProps
-  }: TabPanelProps<TTag> = $props()
+  }: { as?: TTag } & TabPanelProps<TTag> = $props()
   const data = useData("Tab.Panel")
   const { selectedIndex, tabs, panels } = $derived(data)
   const actions = useActions("Tab.Panel")
 
-  let internalPanelRef = $state<HTMLElement>()
-  const panelRef = $derived<MutableRefObject<HTMLElement | undefined>>({ current: internalPanelRef })
+  const panelRef = $derived<MutableRefObject<HTMLElement | undefined>>({ current: ref })
 
   onMount(() => actions.registerPanel(panelRef))
 
@@ -72,17 +69,16 @@
   })
 </script>
 
-{#if !selected && unmount && !isStatic}
-  <Hidden as="span" bind:ref={internalPanelRef} aria-hidden="true" {...ourProps} />
+{#if !selected && (theirProps.unmount ?? true) && !(theirProps.static ?? false)}
+  <Hidden aria-hidden="true" {...ourProps} bind:ref />
 {:else}
-  <svelte:element
-    this={as ?? DEFAULT_PANEL_TAG}
-    bind:this={internalPanelRef}
-    {...ourProps}
-    {...theirProps}
-    hidden={isStatic || selected ? undefined : true}
-    style={isStatic || selected ? theirProps.style : "display: none;"}
-  >
-    {#if children}{@render children(slot)}{/if}
-  </svelte:element>
+  <ElementOrComponent
+    {ourProps}
+    {theirProps}
+    {slot}
+    defaultTag={DEFAULT_PANEL_TAG}
+    features={PanelRenderFeatures}
+    name="TabPanel"
+    bind:ref
+  />
 {/if}

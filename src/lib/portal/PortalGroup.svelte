@@ -20,9 +20,10 @@
 </script>
 
 <script lang="ts" generics="TTag extends ElementType">
+  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
   import { setContext } from "svelte"
 
-  let { as = DEFAULT_GROUP_TAG as TTag, target, children, ...theirProps }: PortalGroupProps<TTag> = $props()
+  let { ref = $bindable(), target, ...theirProps }: { as?: TTag } & PortalGroupProps<TTag> = $props()
 
   setContext("PortalGroupContext", {
     get target() {
@@ -31,6 +32,4 @@
   })
 </script>
 
-<svelte:element this={as} {...theirProps}>
-  {#if children}{@render children({})}{/if}
-</svelte:element>
+<ElementOrComponent {theirProps} defaultTag={DEFAULT_GROUP_TAG} name="PortalGroup" bind:ref />

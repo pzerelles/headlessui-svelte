@@ -403,7 +403,7 @@
     __demoMode = false,
     children,
     ...theirProps
-  }: ListboxProps<TTag, TType, TActualType> = $props()
+  }: { as?: TTag } & ListboxProps<TTag, TType, TActualType> = $props()
 
   const providedDisabled = useDisabled()
   const disabled = $derived(providedDisabled.value || ownDisabled)

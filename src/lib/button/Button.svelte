@@ -12,7 +12,7 @@
   }
   type ButtonPropsWeControl = never
 
-  export type ButtonProps<TTag extends TagType = typeof DEFAULT_BUTTON_TAG> = Props<
+  export type ButtonProps<TTag extends ElementType = typeof DEFAULT_BUTTON_TAG> = Props<
     TTag,
     ButtonRenderPropArg,
     ButtonPropsWeControl,
@@ -24,14 +24,14 @@
   >
 </script>
 
-<script lang="ts" generics="TTag extends keyof SvelteHTMLElements, TType">
+<script lang="ts" generics="TTag extends ElementType">
   import { useActivePress } from "../hooks/use-active-press.svelte.js"
   import { useFocusRing } from "../hooks/use-focus-ring.svelte.js"
   import { useDisabled } from "../hooks/use-disabled.js"
   import { stateFromSlot } from "../utils/state.js"
   import { useHover } from "$lib/hooks/use-hover.svelte.js"
   import { mergeProps } from "$lib/utils/render.js"
-  import type { Props, PropsOf, RefType, TagType } from "$lib/utils/types.js"
+  import type { Props, PropsOf, RefType, ElementType } from "$lib/utils/types.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 
   const providedDisabled = useDisabled()
@@ -42,7 +42,7 @@
     autofocus = false as PropsOf<TTag>["autofocus"],
     type = "button",
     ...theirProps
-  }: ButtonProps<TTag> = $props()
+  }: { as?: TTag } & ButtonProps<TTag> = $props()
 
   const disabled = $derived(providedDisabled.value || ownDisabled)
 

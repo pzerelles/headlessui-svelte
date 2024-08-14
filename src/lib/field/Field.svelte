@@ -1,23 +1,22 @@
 <script lang="ts" context="module">
-  import type { SvelteHTMLElements } from "svelte/elements"
+  import type { ElementType, Props } from "$lib/utils/types.js"
 
-  export type FieldProps<TTag extends keyof SvelteHTMLElements = typeof DEFAULT_FIELD_TAG> =
-    SvelteHTMLElements[TTag] & {
-      as?: TTag
+  let DEFAULT_FIELD_TAG = "div" as const
+
+  type FieldRenderPropArg = {}
+  type FieldPropsWeControl = never
+
+  export type FieldProps<TTag extends ElementType = typeof DEFAULT_FIELD_TAG> = Props<
+    TTag,
+    FieldRenderPropArg,
+    FieldPropsWeControl,
+    {
       disabled?: boolean
-      children?: Snippet<
-        [
-          {
-            disabled: boolean
-          },
-        ]
-      >
     }
-
-  const DEFAULT_FIELD_TAG = "div" as const
+  >
 </script>
 
-<script lang="ts" generics="TTag extends keyof SvelteHTMLElements">
+<script lang="ts" generics="TTag extends ElementType">
   import { useDisabled } from "../hooks/use-disabled.js"
   import { createIdContext } from "../utils/id.js"
   import { stateFromSlot } from "../utils/state.js"
@@ -26,7 +25,7 @@
   import { useLabels } from "$lib/label/Label.svelte"
   import { useDescriptions } from "$lib/description/Description.svelte"
 
-  let { as, disabled: ownDisabled = false, children, ...theirProps }: FieldProps<TTag> = $props()
+  let { as, disabled: ownDisabled = false, children, ...theirProps }: { as?: TTag } & FieldProps<TTag> = $props()
 
   const inputId = `headlessui-control-${nanoid(8)}`
   createIdContext(inputId)

@@ -1,40 +1,45 @@
 <script lang="ts" context="module">
-  import type { SvelteHTMLElements } from "svelte/elements"
+  import type { ElementType, Props } from "$lib/utils/types.js"
 
-  export type CheckboxProps<
-    TType = string,
-    TTag extends keyof SvelteHTMLElements = typeof DEFAULT_CHECKBOX_TAG,
-  > = SvelteHTMLElements[TTag] & {
-    as?: TTag
-    value?: TType
-    disabled?: boolean
-    indeterminate?: boolean
-    checked?: boolean
-    defaultChecked?: boolean
-    autofocus?: boolean
-    form?: string
-    name?: string
-    onchange?: (checked: boolean) => void
-    children?: Snippet<
-      [
-        {
-          checked: boolean
-          changing: boolean
-          focus: boolean
-          active: boolean
-          hover: boolean
-          autofocus: boolean
-          disabled: boolean
-          indeterminate: boolean
-        },
-      ]
-    >
+  let DEFAULT_CHECKBOX_TAG = "span" as const
+  type CheckboxRenderPropArg = {
+    checked: boolean
+    changing: boolean
+    focus: boolean
+    active: boolean
+    hover: boolean
+    autofocus: boolean
+    disabled: boolean
+    indeterminate: boolean
   }
+  type CheckboxPropsWeControl =
+    | "aria-checked"
+    | "aria-describedby"
+    | "aria-disabled"
+    | "aria-labelledby"
+    | "role"
+    | "tabIndex"
 
-  const DEFAULT_CHECKBOX_TAG = "div" as const
+  export type CheckboxProps<TTag extends ElementType = typeof DEFAULT_CHECKBOX_TAG, TType = string> = Props<
+    TTag,
+    CheckboxRenderPropArg,
+    CheckboxPropsWeControl,
+    {
+      value?: TType
+      disabled?: boolean
+      indeterminate?: boolean
+
+      checked?: boolean
+      defaultChecked?: boolean
+      autoFocus?: boolean
+      form?: string
+      name?: string
+      onChange?: (checked: boolean) => void
+    }
+  >
 </script>
 
-<script lang="ts" generics="TTag extends keyof SvelteHTMLElements, TType">
+<script lang="ts" generics="TTag extends ElementType, TType">
   import { tick, type Snippet } from "svelte"
   import { attemptSubmit } from "../utils/form.js"
   import { getIdContext, htmlid } from "../utils/id.js"
@@ -66,7 +71,7 @@
     onchange,
     children,
     ...theirProps
-  }: CheckboxProps<TType, TTag> = $props()
+  }: { as?: TTag } & CheckboxProps<TTag, TType> = $props()
 
   const disabled = $derived(providedDisabled.value || ownDisabled)
 

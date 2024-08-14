@@ -31,15 +31,15 @@
   import { stateFromSlot } from "../utils/state.js"
   import { useHover } from "$lib/hooks/use-hover.svelte.js"
   import { mergeProps } from "$lib/utils/render.js"
+  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 
   const providedDisabled = useDisabled()
 
   let {
-    as,
+    ref = $bindable(),
     disabled: ownDisabled = false,
     autofocus = false,
     type = "button",
-    children,
     ...theirProps
   }: ButtonProps<TTag> = $props()
 
@@ -75,7 +75,7 @@
     autofocus,
   })
 
-  const ownProps = $derived(
+  const ourProps = $derived(
     mergeProps(
       {
         type,
@@ -90,6 +90,4 @@
   )
 </script>
 
-<svelte:element this={as ?? DEFAULT_BUTTON_TAG} {...ownProps} {...theirProps}>
-  {#if children}{@render children(slot)}{/if}
-</svelte:element>
+<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_BUTTON_TAG} name="Button" bind:ref />

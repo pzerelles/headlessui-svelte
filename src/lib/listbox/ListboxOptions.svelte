@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-  import type { ElementType, HTMLElementType, Props } from "$lib/utils/types.js"
+  import type { ElementType, Props } from "$lib/utils/types.js"
   import { mergeProps, RenderFeatures, type PropsForFeatures } from "$lib/utils/render.js"
   import {
     useFloatingPanel,
@@ -31,7 +31,6 @@
       portal?: boolean
       modal?: boolean
       transition?: boolean
-      ref?: HTMLElementType<TTag> | null
     } & PropsForFeatures<typeof OptionsRenderFeatures>
   >
 
@@ -64,7 +63,7 @@
   let {
     as = DEFAULT_OPTIONS_TAG as TTag,
     ref = $bindable(),
-    id = `headlessui-listbox-options-${internalId}` as SvelteHTMLElements[TTag][string],
+    id = `headlessui-listbox-options-${internalId}`,
     anchor: rawAnchor,
     portal = false,
     modal = true,
@@ -73,7 +72,7 @@
     static: isStatic = false,
     unmount = true,
     ...theirProps
-  }: ListboxOptionsProps<TTag> = $props()
+  }: { as?: TTag } & ListboxOptionsProps<TTag> = $props()
   const anchor = $derived(useResolvedAnchor(rawAnchor))
 
   // Always enable `portal` functionality, when `anchor` is enabled
@@ -196,7 +195,7 @@
     return idx
   }
 
-  const anchorOptions = (() => {
+  const anchorOptions = $derived.by(() => {
     if (anchor == null) return undefined
     if (selectedOptionIndex === null) return { ...anchor, inner: undefined }
 
@@ -209,9 +208,13 @@
         index: selectedOptionIndex,
       },
     }
-  })()
+  })
 
-  const floatingPanel = useFloatingPanel(anchorOptions)
+  const floatingPanel = useFloatingPanel({
+    get placement() {
+      return anchorOptions
+    },
+  })
   const { setFloating, style } = $derived(floatingPanel)
   const getFloatingPanelProps = useFloatingPanelProps()
 
@@ -319,7 +322,6 @@
   const ourProps = $derived(
     mergeProps(anchor ? getFloatingPanelProps() : {}, {
       id,
-      ref: optionsRef,
       "aria-activedescendant": data.activeOptionIndex === null ? undefined : data.options[data.activeOptionIndex]?.id,
       "aria-multiselectable": data.mode === ValueMode.Multi ? true : undefined,
       "aria-labelledby": labelledby,

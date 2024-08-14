@@ -1,20 +1,11 @@
 <script lang="ts" context="module">
   import type { SvelteHTMLElements } from "svelte/elements"
   import { getContext, setContext, type Snippet } from "svelte"
+  import type { ElementType, Props } from "$lib/utils/types.js"
 
-  export type DescriptionProps<TTag extends keyof SvelteHTMLElements = typeof DEFAULT_DESCRIPTION_TAG> =
-    SvelteHTMLElements[TTag] & {
-      as?: TTag
-      children?: Snippet<
-        [
-          {
-            disabled: boolean
-          },
-        ]
-      >
-    }
+  let DEFAULT_DESCRIPTION_TAG = "p" as const
 
-  const DEFAULT_DESCRIPTION_TAG = "p" as const
+  export type DescriptionProps<TTag extends ElementType = typeof DEFAULT_DESCRIPTION_TAG> = Props<TTag>
 
   interface SharedData {
     slot?: {}
@@ -82,7 +73,7 @@
   }
 </script>
 
-<script lang="ts" generics="TTag extends keyof SvelteHTMLElements">
+<script lang="ts" generics="TTag extends ElementType">
   import { htmlid } from "../utils/id.js"
   import { stateFromSlot } from "../utils/state.js"
   import { useDisabled } from "../hooks/use-disabled.js"
@@ -91,7 +82,12 @@
   const internalId = htmlid()
   const providedDisabled = useDisabled()
 
-  let { as, id = `headlessui-description-${internalId}`, children, ...theirProps }: DescriptionProps<TTag> = $props()
+  let {
+    as,
+    id = `headlessui-description-${internalId}`,
+    children,
+    ...theirProps
+  }: { as?: TTag } & DescriptionProps<TTag> = $props()
 
   const context = useDescriptionContext()
 

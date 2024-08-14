@@ -34,28 +34,26 @@
   import { useActivePress } from "$lib/hooks/use-active-press.svelte.js"
   import { useFocusRing } from "$lib/hooks/use-focus-ring.svelte.js"
   import { useResolveButtonType } from "$lib/hooks/use-resolve-button-type.svelte.js"
-  import type { SvelteHTMLElements } from "svelte/elements"
   import { stateFromSlot } from "$lib/utils/state.js"
   import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
   import { onMount } from "svelte"
   import { useHover } from "$lib/hooks/use-hover.svelte.js"
   import { mergeProps } from "$lib/utils/render.js"
+  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 
   const internalId = useId()
-  const {
-    as,
-    id = `headlessui-tabs-tab-${internalId}` as SvelteHTMLElements[TTag]["id"],
+  let {
+    ref = $bindable(),
+    id = `headlessui-tabs-tab-${internalId}`,
     disabled = false,
     autofocus = false,
-    children,
     ...theirProps
-  }: TabProps<TTag> = $props()
+  }: { as?: TTag } & TabProps<TTag> = $props()
 
   const data = useData("Tab")
   const { orientation, activation, selectedIndex, tabs, panels } = $derived(data)
   const actions = useActions("Tab")
 
-  let ref = $state<HTMLElement>()
   const tabRef = $derived<MutableRefObject<HTMLElement | undefined>>({ current: ref })
 
   onMount(() => actions.registerTab(tabRef))
@@ -178,7 +176,7 @@
 
   const resolvedType = useResolveButtonType({
     get props() {
-      return { type: theirProps.type, as }
+      return { type: theirProps.type, as: theirProps.as }
     },
     get ref() {
       return tabRef
@@ -208,6 +206,4 @@
   )
 </script>
 
-<svelte:element this={as ?? DEFAULT_TAB_TAG} bind:this={ref} {...ourProps} {...theirProps}>
-  {#if children}{@render children(slot)}{/if}
-</svelte:element>
+<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_TAB_TAG} name="Tab" bind:ref />

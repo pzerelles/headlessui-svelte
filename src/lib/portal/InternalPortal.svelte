@@ -107,7 +107,9 @@
 </script>
 
 <script lang="ts" generics="TTag extends ElementType">
-  let { as = DEFAULT_PORTAL_TAG as TTag, children, ...theirProps }: PortalProps<TTag> = $props()
+  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
+
+  let { ref = $bindable(), ...theirProps }: { as?: TTag } & PortalProps<TTag> = $props()
 
   let element = $state<HTMLElement>()
   const portalTarget = usePortalTarget({
@@ -148,7 +150,5 @@
 </script>
 
 {#if target}
-  <svelte:element this={as} bind:this={element} {...theirProps}>
-    {#if children}{@render children({})}{/if}
-  </svelte:element>
+  <ElementOrComponent {theirProps} defaultTag={DEFAULT_PORTAL_TAG} name="InternalPortal" bind:ref />
 {/if}

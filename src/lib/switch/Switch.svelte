@@ -37,7 +37,6 @@
   import { useProvidedId } from "$lib/internal/id.js"
   import { getContext } from "svelte"
   import type { GroupContext } from "./SwitchGroup.svelte"
-  import { useControllable } from "$lib/hooks/use-controllable.svelte.js"
   import { useDisposables } from "$lib/utils/disposables.js"
   import { attemptSubmit } from "$lib/utils/form.js"
   import { useLabelledBy } from "$lib/label/Label.svelte"
@@ -49,12 +48,13 @@
   import { useActivePress } from "$lib/hooks/use-active-press.svelte.js"
   import { stateFromSlot } from "$lib/utils/state.js"
   import FormFields from "$lib/internal/FormFields.svelte"
+  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 
   const internalId = useId()
   let providedId = useProvidedId()
   let { value: providedDisabled } = $derived(useDisabled())
   let {
-    as = DEFAULT_SWITCH_TAG as TTag,
+    ref = $bindable(),
     id: ownId,
     disabled: ownDisabled,
     defaultChecked,
@@ -65,13 +65,11 @@
     form,
     autofocus = false,
     tabIndex,
-    children,
     ...theirProps
-  }: SwitchProps<TTag> = $props()
+  }: { as?: TTag } & SwitchProps<TTag> = $props()
   const id = $derived(ownId || providedId || `headlessui-switch-${internalId}`)
   const disabled = $derived(ownDisabled || providedDisabled || false)
   const groupContext = getContext<GroupContext>("GroupContext")
-  let ref = $state<HTMLButtonElement | null>(null)
   $effect(() => {
     if (groupContext) groupContext.switchElement = ref
   })
@@ -144,7 +142,7 @@
 
   const buttonType = useResolveButtonType({
     get props() {
-      return { type: theirProps.type, as }
+      return { type: theirProps.type, as: theirProps.as }
     },
     get ref() {
       return { current: ref }
@@ -190,6 +188,5 @@
     onReset={reset}
   />
 {/if}
-<svelte:element this={as} {...ourProps} {...theirProps}>
-  {#if children}{@render children(slot)}{/if}
-</svelte:element>
+
+<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_SWITCH_TAG} name="Switch" bind:ref />

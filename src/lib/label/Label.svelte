@@ -1,22 +1,13 @@
 <script lang="ts" context="module">
-  import type { SvelteHTMLElements } from "svelte/elements"
+  import type { ElementType, Props } from "$lib/utils/types.js"
   import { setContext } from "svelte"
 
-  export type LabelProps<TTag extends keyof SvelteHTMLElements = typeof DEFAULT_LABEL_TAG> =
-    SvelteHTMLElements[TTag] & {
-      as?: TTag
-      passive?: boolean
-      htmlFor?: string
-      children?: Snippet<
-        [
-          {
-            disabled: boolean
-          },
-        ]
-      >
-    }
+  let DEFAULT_LABEL_TAG = "label" as const
 
-  const DEFAULT_LABEL_TAG = "label" as const
+  export type LabelProps<TTag extends ElementType = typeof DEFAULT_LABEL_TAG> = Props<TTag> & {
+    passive?: boolean
+    htmlFor?: string
+  }
 
   interface SharedData {
     slot?: {}
@@ -92,7 +83,7 @@
   }
 </script>
 
-<script lang="ts" generics="TTag extends keyof SvelteHTMLElements">
+<script lang="ts" generics="TTag extends ElementType">
   import { getContext, type Snippet, onMount } from "svelte"
   import { getIdContext, htmlid } from "../utils/id.js"
   import { useDisabled } from "../hooks/use-disabled.js"
@@ -110,7 +101,7 @@
     passive = false,
     children,
     ...theirOriginalProps
-  }: LabelProps<TTag> = $props()
+  }: { as?: TTag } & LabelProps<TTag> = $props()
 
   onMount(() => {
     context.register(id)

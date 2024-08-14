@@ -1,6 +1,6 @@
-<script lang="ts" generics="TTag extends TagType, TSlot">
+<script lang="ts" generics="TTag extends ElementType, TSlot">
   import type { Component, SvelteComponent } from "svelte"
-  import type { ElementType, HTMLElementType, Props, TagType } from "./types.js"
+  import type { ElementType, Props, RefType } from "./types.js"
 
   let {
     slot = {} as TSlot,
@@ -8,18 +8,17 @@
     name,
     ref = $bindable(),
     children,
-    as = tag as TTag,
+    as = tag,
     unmount,
     static: isStatic,
     ...props
-  }: Props<TTag, TSlot> & {
+  }: {
+    as?: TTag
     slot: TSlot
-    tag: TagType
+    tag: ElementType
     name: string
-    ref?:
-      | (TTag extends "svelte:fragment" ? HTMLElement : TTag extends ElementType ? HTMLElementType<TTag> : HTMLElement)
-      | null
-  } = $props()
+    ref?: RefType<TTag>
+  } & Props<TTag, TSlot> = $props()
 
   const isComponent = (
     as: ElementType | SvelteComponent | Component<any, any>

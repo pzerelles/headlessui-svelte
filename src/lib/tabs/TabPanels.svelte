@@ -1,4 +1,5 @@
 <script lang="ts" context="module">
+  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
   import type { ElementType, Props } from "$lib/utils/types.js"
   import { useData } from "./TabGroup.svelte"
 
@@ -16,9 +17,7 @@
 
   const slot = $derived({ selectedIndex } satisfies PanelsRenderPropArg)
 
-  const { as, children, ...theirProps }: TabPanelsProps<TTag> = $props()
+  let { ref = $bindable(), ...theirProps }: { as?: TTag } & TabPanelsProps<TTag> = $props()
 </script>
 
-<svelte:element this={as ?? DEFAULT_PANELS_TAG} {...theirProps}>
-  {#if children}{@render children(slot)}{/if}
-</svelte:element>
+<ElementOrComponent {theirProps} {slot} defaultTag={DEFAULT_PANELS_TAG} name="TabPanel" bind:ref />

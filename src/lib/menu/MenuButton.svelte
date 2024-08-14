@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
   import { tick, type Snippet } from "svelte"
-  import type { Props, PropsOf, TagType } from "$lib/utils/types.js"
+  import type { Props, PropsOf, ElementType } from "$lib/utils/types.js"
 
   const DEFAULT_BUTTON_TAG = "button" as const
   type ButtonRenderPropArg = {
@@ -13,7 +13,7 @@
   }
   type ButtonPropsWeControl = "aria-controls" | "aria-expanded" | "aria-haspopup"
 
-  export type MenuButtonProps<TTag extends TagType = typeof DEFAULT_BUTTON_TAG> = Props<
+  export type MenuButtonProps<TTag extends ElementType = typeof DEFAULT_BUTTON_TAG> = Props<
     TTag,
     ButtonRenderPropArg,
     ButtonPropsWeControl,
@@ -26,7 +26,7 @@
   export type MenuButtonChildren = Snippet<[ButtonRenderPropArg]>
 </script>
 
-<script lang="ts" generics="TTag extends TagType">
+<script lang="ts" generics="TTag extends ElementType">
   import { useId } from "$lib/hooks/use-id.js"
   import { Focus } from "$lib/utils/calculate-active-index.js"
   import { useFocusRing } from "$lib/hooks/use-focus-ring.svelte.js"
@@ -47,7 +47,7 @@
     disabled = false,
     autofocus = false,
     ...theirProps
-  }: MenuButtonProps<TTag> = $props()
+  }: { as?: TTag } & MenuButtonProps<TTag> = $props()
   const _state = useMenuContext("MenuButton")
   const { setReference, getReferenceProps: getFloatingReferenceProps } = useFloating()
   $effect(() => {

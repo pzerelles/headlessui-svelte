@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-  import type { Props, PropsOf, TagType } from "$lib/utils/types.js"
+  import type { Props, PropsOf, ElementType } from "$lib/utils/types.js"
   import { onMount, type Snippet } from "svelte"
 
   const DEFAULT_ITEM_TAG = "svelte:fragment" as const
@@ -13,7 +13,7 @@
   }
   type ItemPropsWeControl = "aria-describedby" | "aria-disabled" | "aria-labelledby" | "role" | "tabIndex"
 
-  export type MenuItemProps<TTag extends TagType = typeof DEFAULT_ITEM_TAG> = Props<
+  export type MenuItemProps<TTag extends ElementType = typeof DEFAULT_ITEM_TAG> = Props<
     TTag,
     ItemRenderPropArg,
     ItemPropsWeControl | "children",
@@ -26,7 +26,7 @@
   export type MenuItemChildren = Snippet<[ItemRenderPropArg]>
 </script>
 
-<script lang="ts" generics="TTag extends TagType">
+<script lang="ts" generics="TTag extends ElementType">
   import { useId } from "$lib/hooks/use-id.js"
   import { ActivationTrigger, MenuStates, useMenuContext, type MenuItemDataRef } from "./Menu.svelte"
   import { disposables } from "$lib/utils/disposables.js"
@@ -43,10 +43,10 @@
   const internalId = useId()
   let {
     ref = $bindable(),
-    id = `headlessui-menu-item-${internalId}` as PropsOf<TTag>["id"],
+    id = `headlessui-menu-item-${internalId}`,
     disabled = false,
     ...theirProps
-  }: MenuItemProps<TTag> = $props()
+  }: { as?: TTag } & MenuItemProps<TTag> = $props()
   const _state = useMenuContext("MenuItem")
   const active = $derived(_state.activeItemIndex !== null ? _state.items[_state.activeItemIndex].id === id : false)
 

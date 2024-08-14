@@ -14,6 +14,7 @@
   import { setContext } from "svelte"
   import { useLabels } from "$lib/label/Label.svelte"
   import { useDescriptions } from "$lib/description/Description.svelte"
+  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 
   let switchElement = $state<HTMLButtonElement | null>(null)
   useLabels({
@@ -43,9 +44,7 @@
     },
   })
 
-  const { as = DEFAULT_GROUP_TAG as TTag, children, ...theirProps }: SwitchGroupProps<TTag> = $props()
+  let { ref = $bindable(), ...theirProps }: { as?: TTag } & SwitchGroupProps<TTag> = $props()
 </script>
 
-<svelte:element this={as} {...theirProps}>
-  {#if children}{@render children({})}{/if}
-</svelte:element>
+<ElementOrComponent {theirProps} defaultTag={DEFAULT_GROUP_TAG} name="SwitchGroup" bind:ref />

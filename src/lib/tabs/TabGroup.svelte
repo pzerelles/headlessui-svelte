@@ -67,6 +67,7 @@
 <script lang="ts" generics="TTag extends ElementType">
   import StableCollection from "$lib/utils/StableCollection.svelte"
   import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
+  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 
   enum Direction {
     Forwards,
@@ -196,15 +197,14 @@
   }
 
   let {
-    as,
+    ref = $bindable(),
     defaultIndex = 0,
     vertical = false,
     manual = false,
     onchange,
     selectedIndex = undefined,
-    children,
     ...theirProps
-  }: TabGroupProps<TTag> = $props()
+  }: { as?: TTag } & TabGroupProps<TTag> = $props()
   const orientation = $derived(vertical ? "vertical" : "horizontal")
   const activation = $derived(manual ? "manual" : "auto")
 
@@ -325,7 +325,5 @@
       }}
     />
   {/if}
-  <svelte:element this={as ?? DEFAULT_TABS_TAG} {...theirProps}>
-    {#if children}{@render children(slot)}{/if}
-  </svelte:element>
+  <ElementOrComponent {theirProps} defaultTag={DEFAULT_TABS_TAG} name="TabGroup" bind:ref />
 </StableCollection>

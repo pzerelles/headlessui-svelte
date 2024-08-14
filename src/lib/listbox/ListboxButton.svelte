@@ -37,7 +37,6 @@
     {
       autofocus?: boolean
       disabled?: boolean
-      ref?: HTMLElementType<TTag> | null
     }
   >
 
@@ -53,12 +52,12 @@
   let {
     as = DEFAULT_BUTTON_TAG as TTag,
     ref = $bindable(),
-    id = (providedId || `headlessui-listbox-button-${internalId}`) as SvelteHTMLElements[TTag][string],
+    id = providedId || `headlessui-listbox-button-${internalId}`,
     disabled: ownDisabled = false,
     autofocus = false,
     children,
     ...theirProps
-  }: ListboxButtonProps<TTag> = $props()
+  }: { as?: TTag } & ListboxButtonProps<TTag> = $props()
   const { setReference, getReferenceProps: getFloatingReferenceProps } = useFloating()
   $effect(() => {
     data.buttonRef.current = ref || null

@@ -25,7 +25,6 @@
       portal?: boolean
       modal?: boolean
       transition?: boolean
-      ref?: HTMLElementType<TTag> | null
     } & PropsForFeatures<typeof ItemsRenderFeatures>
   >
 
@@ -57,7 +56,7 @@
   let {
     as = DEFAULT_ITEMS_TAG as TTag,
     ref = $bindable(),
-    id = `headlessui-menu-items-${internalId}` as SvelteHTMLElements[TTag][string],
+    id = `headlessui-menu-items-${internalId}`,
     anchor: rawAnchor,
     portal = false,
     modal = true,
@@ -66,7 +65,7 @@
     static: isStatic = false,
     unmount = true,
     ...theirProps
-  }: MenuItemsProps<TTag> = $props()
+  }: { as?: TTag } & MenuItemsProps<TTag> = $props()
   const anchor = $derived(useResolvedAnchor(rawAnchor))
   const _state = useMenuContext("MenuOptions")
   const floatingPanel = useFloatingPanel({

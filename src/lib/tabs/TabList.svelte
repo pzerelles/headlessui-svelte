@@ -1,5 +1,4 @@
 <script lang="ts" context="module">
-  import { stateFromSlot } from "$lib/utils/state.js"
   import type { ElementType, Props } from "$lib/utils/types.js"
 
   const DEFAULT_LIST_TAG = "div" as const
@@ -20,19 +19,18 @@
 
 <script lang="ts" generics="TTag extends ElementType">
   import { useData } from "./TabGroup.svelte"
+  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 
   const data = useData("Tab.List")
   const { orientation, selectedIndex } = $derived(data)
 
   const slot = $derived({ selectedIndex } satisfies ListRenderPropArg)
 
-  const { as, children, ...theirProps }: TabListProps<TTag> = $props()
+  let { ref = $bindable(), ...theirProps }: { as?: TTag } & TabListProps<TTag> = $props()
   const ourProps = $derived({
     role: "tablist",
     "aria-orientation": orientation,
   })
 </script>
 
-<svelte:element this={as ?? DEFAULT_LIST_TAG} {...ourProps} {...theirProps}>
-  {#if children}{@render children(slot)}{/if}
-</svelte:element>
+<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_LIST_TAG} name="TabList" bind:ref />
