@@ -111,10 +111,9 @@
 
   let { ref = $bindable(), ...theirProps }: { as?: TTag } & PortalProps<TTag> = $props()
 
-  let element = $state<HTMLElement>()
   const portalTarget = usePortalTarget({
     get element() {
-      return element ?? null
+      return ref ?? null
     },
   })
   const { target } = $derived(portalTarget)
@@ -122,24 +121,24 @@
   //const ready = useServerHandoffComplete()
 
   $effect(() => {
-    if (!target || !element) return
+    if (!target || !ref) return
 
     // Element already exists in target, always calling target.appendChild(element) will cause a
     // brief unmount/remount.
-    if (!target.contains(element)) {
-      element.setAttribute("data-headlessui-portal", "")
-      target.appendChild(element)
+    if (!target.contains(ref)) {
+      ref.setAttribute("data-headlessui-portal", "")
+      target.appendChild(ref)
     }
   })
 
   onMount(() => {
-    if (parent) parent.register(element!)
+    if (parent) parent.register(ref!)
 
     return () => {
-      if (!target || !element) return
+      if (!target || !ref) return
 
-      if (element instanceof Node && target.contains(element)) {
-        target.removeChild(element)
+      if (ref instanceof Node && target.contains(ref)) {
+        target.removeChild(ref)
       }
 
       if (target.childNodes.length <= 0) {

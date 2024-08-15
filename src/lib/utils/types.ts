@@ -53,7 +53,7 @@ type ClassNameOverride<TTag extends ElementType, TSlot = {}> =
   // Order is important here, because `never extends true` is `true`...
   true extends HasProperty<PropsOf<TTag>, "class">
     ? { class?: string | null | ((bag: TSlot) => string) }
-    : { class: undefined }
+    : { class?: undefined }
 
 // Provide clean TypeScript props, which exposes some of our custom APIs.
 export type Props<
