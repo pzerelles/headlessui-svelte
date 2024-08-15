@@ -61,8 +61,6 @@
     portal = false,
     modal = true,
     transition = false,
-    static: isStatic = false,
-    unmount = true,
     ...theirProps
   }: { as?: TTag } & MenuItemsProps<TTag> = $props()
   const anchor = $derived(useResolvedAnchor(rawAnchor))
@@ -308,18 +306,15 @@
   )
 </script>
 
-<Portal enabled={portal ? isStatic || visible : false}>
-  {#if !panelEnabled && unmount && !isStatic}
-    <Hidden aria-hidden="true" {...ourProps} bind:ref />
-  {:else}
-    <ElementOrComponent
-      {ourProps}
-      {theirProps}
-      slots={slot}
-      defaultTag={DEFAULT_ITEMS_TAG}
-      features={ItemsRenderFeatures}
-      name="MenuItems"
-      bind:ref
-    />
-  {/if}
+<Portal enabled={portal ? theirProps.static || visible : false}>
+  <ElementOrComponent
+    {ourProps}
+    {theirProps}
+    slots={slot}
+    defaultTag={DEFAULT_ITEMS_TAG}
+    features={ItemsRenderFeatures}
+    visible={panelEnabled}
+    name="MenuItems"
+    bind:ref
+  />
 </Portal>
