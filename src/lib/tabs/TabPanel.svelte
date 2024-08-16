@@ -24,7 +24,6 @@
   import { useStableCollectionIndex } from "$lib/utils/StableCollection.svelte"
   import { useFocusRing } from "$lib/hooks/use-focus-ring.svelte.js"
   import Hidden from "$lib/internal/Hidden.svelte"
-  import { stateFromSlot } from "$lib/utils/state.js"
   import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
   import { onMount } from "svelte"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
@@ -65,7 +64,6 @@
     "aria-labelledby": tabs[myIndex]?.current?.id,
     tabIndex: selected ? 0 : -1,
     ...focusProps,
-    ...stateFromSlot(slot),
   })
 </script>
 

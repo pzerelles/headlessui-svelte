@@ -6,7 +6,7 @@
   export type SwitchGroupProps<TTag extends ElementType = typeof DEFAULT_GROUP_TAG> = Props<TTag>
 
   export type GroupContext = {
-    switchElement: HTMLButtonElement | null
+    switchElement: HTMLElement | null
   }
 </script>
 
@@ -16,7 +16,7 @@
   import { useDescriptions } from "$lib/description/Description.svelte"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 
-  let switchElement = $state<HTMLButtonElement | null>(null)
+  let switchElement = $state<HTMLElement | null>(null)
   useLabels({
     name: "SwitchGroup",
     props: {

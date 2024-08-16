@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
   import { tick, type Snippet } from "svelte"
-  import type { Props, PropsOf, ElementType } from "$lib/utils/types.js"
+  import type { Props, ElementType } from "$lib/utils/types.js"
 
   const DEFAULT_BUTTON_TAG = "button" as const
   type ButtonRenderPropArg = {
@@ -18,8 +18,10 @@
     ButtonRenderPropArg,
     ButtonPropsWeControl,
     {
+      id?: string
       disabled?: boolean
       autofocus?: boolean
+      type?: string
     }
   >
 
@@ -33,7 +35,6 @@
   import { useActivePress } from "$lib/hooks/use-active-press.svelte.js"
   import { useResolveButtonType } from "$lib/hooks/use-resolve-button-type.svelte.js"
   import { useFloating } from "$lib/internal/floating.svelte.js"
-  import { stateFromSlot } from "$lib/utils/state.js"
   import { useHover } from "$lib/hooks/use-hover.svelte.js"
   import { mergeProps } from "$lib/utils/render.js"
   import { MenuStates, useMenuContext } from "./Menu.svelte"
@@ -43,7 +44,7 @@
   const internalId = useId()
   let {
     ref = $bindable(),
-    id = `headlessui-menu-button-${internalId}` as PropsOf<TTag>["id"],
+    id = `headlessui-menu-button-${internalId}`,
     disabled = false,
     autofocus = false,
     ...theirProps
@@ -160,8 +161,7 @@
       },
       focusProps,
       hoverProps,
-      pressProps,
-      stateFromSlot(slot)
+      pressProps
     )
   )
 </script>

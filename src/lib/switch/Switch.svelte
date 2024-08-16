@@ -46,7 +46,6 @@
   import { useFocusRing } from "$lib/hooks/use-focus-ring.svelte.js"
   import { useHover } from "$lib/hooks/use-hover.svelte.js"
   import { useActivePress } from "$lib/hooks/use-active-press.svelte.js"
-  import { stateFromSlot } from "$lib/utils/state.js"
   import FormFields from "$lib/internal/FormFields.svelte"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 
@@ -71,7 +70,7 @@
   const disabled = $derived(ownDisabled || providedDisabled || false)
   const groupContext = getContext<GroupContext>("GroupContext")
   $effect(() => {
-    if (groupContext) groupContext.switchElement = ref
+    if (groupContext) groupContext.switchElement = ref ?? null
   })
 
   const d = useDisposables()
@@ -167,8 +166,7 @@
       },
       focusProps,
       hoverProps,
-      pressProps,
-      stateFromSlot(slot)
+      pressProps
     )
   )
 

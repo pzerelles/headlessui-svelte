@@ -1,14 +1,15 @@
-export type SlotStateProps<TSlot extends Record<string, any>> = {
+export type SlotStateProps<TSlot> = {
   [Property in keyof TSlot as TSlot[Property] extends boolean ? `data-${string & Property}` : never]?: string
 }
 
-export type StateProps<TSlot extends Record<string, any>> = SlotStateProps<TSlot> & { "data-headlessui-state"?: string }
+export type StateProps<TSlot> = SlotStateProps<TSlot> & { "data-headlessui-state"?: string }
 
-export const stateFromSlot = <TSlot extends Record<string, any>>(slot: TSlot = {} as TSlot): StateProps<TSlot> => {
+export const stateFromSlot = <TSlot>(slot: TSlot = {} as TSlot): StateProps<TSlot> => {
+  if (typeof slot !== "object") return {}
   let dataAttributes: Record<string, string> = {}
   let exposeState = false
   let states: string[] = []
-  for (let [k, v] of Object.entries(slot)) {
+  for (let [k, v] of Object.entries(slot as Record<string, any>)) {
     if (typeof v === "boolean") {
       exposeState = true
     }

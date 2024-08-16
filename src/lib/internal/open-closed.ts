@@ -12,7 +12,7 @@ export type OpenClosedContext = {
 }
 
 export function useOpenClosed() {
-  return getContext<OpenClosedContext>("OpenClosedContext")
+  return getContext<OpenClosedContext | undefined>("OpenClosedContext") ?? null
 }
 
 export function createOpenClosedContext(options: { readonly value: State }) {

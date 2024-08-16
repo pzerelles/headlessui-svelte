@@ -1,7 +1,6 @@
 <script lang="ts" context="module">
-  import type { SvelteHTMLElements } from "svelte/elements"
   import Button, { type ButtonProps } from "$lib/button/Button.svelte"
-  import { getCloseContext } from "$lib/utils/close.js"
+  import { useClose } from "$lib/internal/close-provider.js"
   import type { ElementType } from "$lib/utils/types.js"
 
   let DEFAULT_BUTTON_TAG = "button" as const
@@ -10,7 +9,7 @@
 </script>
 
 <script lang="ts" generics="TType, TTag extends ElementType = typeof DEFAULT_BUTTON_TAG">
-  const close = getCloseContext()
+  const close = $derived(useClose()?.close)
   let { ...props }: { as?: TTag } & CloseButtonProps<TTag> = $props()
 </script>
 

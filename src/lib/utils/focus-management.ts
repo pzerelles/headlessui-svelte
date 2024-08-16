@@ -4,7 +4,7 @@ import { getOwnerDocument } from "./owner.js"
 
 // Credit:
 //  - https://stackoverflow.com/a/30753870
-const focusableSelector = [
+export let focusableSelector = [
   "[contentEditable=true]",
   "[tabindex]",
   "a[href]",
@@ -25,7 +25,7 @@ const focusableSelector = [
   )
   .join(",")
 
-const autoFocusableSelector = [
+let autoFocusableSelector = [
   // In a perfect world this was just `autofocus`, but React doesn't pass `autofocus` to the DOM...
   "[data-autofocus]",
 ]
@@ -126,7 +126,7 @@ export function isFocusableElement(element: HTMLElement, mode: FocusableMode = F
 }
 
 export function restoreFocusIfNecessary(element: HTMLElement | null) {
-  const ownerDocument = getOwnerDocument(element)
+  let ownerDocument = getOwnerDocument(element)
   disposables().nextFrame(() => {
     if (ownerDocument && !isFocusableElement(ownerDocument.activeElement as HTMLElement, FocusableMode.Strict)) {
       focusElement(element)
@@ -180,22 +180,22 @@ export function focusElement(element: HTMLElement | null) {
 }
 
 // https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/select
-const selectableSelector = ["textarea", "input"].join(",")
+let selectableSelector = ["textarea", "input"].join(",")
 function isSelectableElement(element: Element | null): element is HTMLInputElement | HTMLTextAreaElement {
   return element?.matches?.(selectableSelector) ?? false
 }
 
 export function sortByDomNode<T>(
   nodes: T[],
-  resolveKey: (item: T) => HTMLElement | null | undefined = (i) => i as HTMLElement | null | undefined
+  resolveKey: (item: T) => HTMLElement | null = (i) => i as HTMLElement | null
 ): T[] {
   return nodes.slice().sort((aItem, zItem) => {
-    const a = resolveKey(aItem)
-    const z = resolveKey(zItem)
+    let a = resolveKey(aItem)
+    let z = resolveKey(zItem)
 
-    if (!a || !z) return 0
+    if (a === null || z === null) return 0
 
-    const position = a.compareDocumentPosition(z)
+    let position = a.compareDocumentPosition(z)
 
     if (position & Node.DOCUMENT_POSITION_FOLLOWING) return -1
     if (position & Node.DOCUMENT_POSITION_PRECEDING) return 1
@@ -220,7 +220,7 @@ export function focusIn(
     skipElements: HTMLElement[]
   }> = {}
 ) {
-  const ownerDocument = Array.isArray(container)
+  let ownerDocument = Array.isArray(container)
     ? container.length > 0
       ? container[0].ownerDocument
       : document
@@ -248,14 +248,14 @@ export function focusIn(
 
   relativeTo = relativeTo ?? (ownerDocument.activeElement as HTMLElement)
 
-  const direction = (() => {
+  let direction = (() => {
     if (focus & (Focus.First | Focus.Next)) return Direction.Next
     if (focus & (Focus.Previous | Focus.Last)) return Direction.Previous
 
     throw new Error("Missing Focus.First, Focus.Previous, Focus.Next or Focus.Last")
   })()
 
-  const startIndex = (() => {
+  let startIndex = (() => {
     if (focus & Focus.First) return 0
     if (focus & Focus.Previous) return Math.max(0, elements.indexOf(relativeTo)) - 1
     if (focus & Focus.Next) return Math.max(0, elements.indexOf(relativeTo)) + 1
@@ -264,10 +264,10 @@ export function focusIn(
     throw new Error("Missing Focus.First, Focus.Previous, Focus.Next or Focus.Last")
   })()
 
-  const focusOptions = focus & Focus.NoScroll ? { preventScroll: true } : {}
+  let focusOptions = focus & Focus.NoScroll ? { preventScroll: true } : {}
 
   let offset = 0
-  const total = elements.length
+  let total = elements.length
   let next = undefined
   do {
     // Guard against infinite loops

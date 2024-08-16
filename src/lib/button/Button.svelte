@@ -18,7 +18,7 @@
     ButtonPropsWeControl,
     {
       disabled?: boolean
-      autoFocus?: boolean
+      autofocus?: boolean
       type?: "button" | "submit" | "reset"
     }
   >
@@ -28,7 +28,6 @@
   import { useActivePress } from "../hooks/use-active-press.svelte.js"
   import { useFocusRing } from "../hooks/use-focus-ring.svelte.js"
   import { useDisabled } from "../hooks/use-disabled.js"
-  import { stateFromSlot } from "../utils/state.js"
   import { useHover } from "$lib/hooks/use-hover.svelte.js"
   import { mergeProps } from "$lib/utils/render.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
@@ -84,8 +83,7 @@
       },
       focusProps,
       hoverProps,
-      pressProps,
-      stateFromSlot(slot)
+      pressProps
     )
   )
 </script>

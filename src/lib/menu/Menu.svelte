@@ -7,7 +7,6 @@
   import { FocusableMode, isFocusableElement, sortByDomNode } from "$lib/utils/focus-management.js"
   import { match } from "$lib/utils/match.js"
   import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
-  import { stateFromSlot } from "$lib/utils/state.js"
   import type { ElementType, Props } from "$lib/utils/types.js"
   import { getContext, type Snippet } from "svelte"
 
@@ -354,8 +353,6 @@
     close: _state.closeMenu,
   } satisfies MenuRenderPropArg)
 
-  const ourProps = $derived(stateFromSlot(slot))
-
   createFloatingContext()
 
   const openClosed = $derived(
@@ -371,4 +368,4 @@
   })
 </script>
 
-<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_MENU_TAG} name="Menu" bind:ref />
+<ElementOrComponent {theirProps} {slot} defaultTag={DEFAULT_MENU_TAG} name="Menu" bind:ref />

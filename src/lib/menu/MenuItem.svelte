@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-  import type { Props, PropsOf, ElementType } from "$lib/utils/types.js"
+  import type { Props, ElementType, Children } from "$lib/utils/types.js"
   import { onMount, type Snippet } from "svelte"
 
   const DEFAULT_ITEM_TAG = "svelte:fragment" as const
@@ -18,12 +18,13 @@
     ItemRenderPropArg,
     ItemPropsWeControl | "children",
     {
+      id?: string
       disabled?: boolean
-      children: Snippet<[ItemRenderPropArg]>
+      children: Children<ItemRenderPropArg>
     }
   >
 
-  export type MenuItemChildren = Snippet<[ItemRenderPropArg]>
+  export type MenuItemChildren = Children<ItemRenderPropArg>
 </script>
 
 <script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_ITEM_TAG">
@@ -36,7 +37,6 @@
   import { useTrackedPointer } from "$lib/hooks/use-tracked-pointer.js"
   import { useDescriptions } from "$lib/description/Description.svelte"
   import { useLabels } from "$lib/label/Label.svelte"
-  import { stateFromSlot } from "$lib/utils/state.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
   import { mergeProps } from "$lib/utils/render.js"
 
@@ -145,7 +145,6 @@
       onmousemove: handleMove,
       onpointerleave: handleLeave,
       onmouseleave: handleLeave,
-      ...stateFromSlot(slot),
     })
   )
 </script>

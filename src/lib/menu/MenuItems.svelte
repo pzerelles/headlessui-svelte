@@ -21,6 +21,7 @@
     ItemsRenderPropArg,
     ItemsPropsWeControl,
     {
+      id?: string
       anchor?: AnchorProps
       portal?: boolean
       modal?: boolean
@@ -45,9 +46,7 @@
   import { focusFrom, Focus as FocusManagementFocus, restoreFocusIfNecessary } from "$lib/utils/focus-management.js"
   import { useElementSize } from "$lib/hooks/use-element-size.svelte.js"
   import { tick, untrack, type Snippet } from "svelte"
-  import Hidden from "$lib/internal/Hidden.svelte"
   import Portal from "$lib/portal/Portal.svelte"
-  import { stateFromSlot } from "$lib/utils/state.js"
   import { MenuStates, useMenuContext } from "./Menu.svelte"
   import { useTreeWalker } from "$lib/hooks/use-tree-walker.svelte.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
@@ -301,7 +300,6 @@
       ref,
       style: [theirProps.style, style, `--button-width: ${buttonSize.width}`].filter(Boolean).join("; "),
       ...transitionDataAttributes(transitionData),
-      ...stateFromSlot(slot),
     })
   )
 </script>

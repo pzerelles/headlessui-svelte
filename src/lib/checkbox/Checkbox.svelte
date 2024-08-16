@@ -25,6 +25,7 @@
     CheckboxRenderPropArg,
     CheckboxPropsWeControl,
     {
+      id?: string
       value?: TType
       disabled?: boolean
       indeterminate?: boolean
@@ -47,7 +48,6 @@
   import { useFocusRing } from "../hooks/use-focus-ring.svelte.js"
   import FormFields from "../internal/FormFields.svelte"
   import { useDisabled } from "../hooks/use-disabled.js"
-  import { stateFromSlot } from "../utils/state.js"
   import { useLabelledBy } from "$lib/label/Label.svelte"
   import { useDescribedBy } from "$lib/description/Description.svelte"
   import { useHover } from "$lib/hooks/use-hover.svelte.js"
@@ -155,8 +155,7 @@
       },
       focusProps,
       hoverProps,
-      pressProps,
-      stateFromSlot(slot)
+      pressProps
     )
   )
 
@@ -176,5 +175,5 @@
   />
 {/if}
 <svelte:element this={as ?? DEFAULT_CHECKBOX_TAG} {...ownProps} {...theirProps}>
-  {#if children}{@render children(slot)}{/if}
+  {#if children}{@render children(slot, {})}{/if}
 </svelte:element>

@@ -1,8 +1,7 @@
 <script lang="ts" context="module">
-  import type { Props, RefType, ElementType } from "$lib/utils/types.js"
+  import type { Props, ElementType } from "$lib/utils/types.js"
   import { useFocusRing } from "$lib/hooks/use-focus-ring.svelte.js"
   import { useActivePress } from "$lib/hooks/use-active-press.svelte.js"
-  import { stateFromSlot } from "$lib/utils/state.js"
   import type { Snippet } from "svelte"
   import { useHover } from "$lib/hooks/use-hover.svelte.js"
   import { mergeProps } from "$lib/utils/render.js"
@@ -57,7 +56,7 @@
     active,
   } satisfies DataInteractiveRenderPropArg)
 
-  const ourProps = $derived(mergeProps(focusProps, hoverProps, pressProps, stateFromSlot(slot)))
+  const ourProps = $derived(mergeProps(focusProps, hoverProps, pressProps))
 </script>
 
 <ElementOrComponent

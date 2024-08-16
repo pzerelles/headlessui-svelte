@@ -17,6 +17,7 @@
     TabRenderPropArg,
     TabPropsWeControl,
     {
+      id?: string
       autofocus?: boolean
       disabled?: boolean
     }
@@ -34,7 +35,6 @@
   import { useActivePress } from "$lib/hooks/use-active-press.svelte.js"
   import { useFocusRing } from "$lib/hooks/use-focus-ring.svelte.js"
   import { useResolveButtonType } from "$lib/hooks/use-resolve-button-type.svelte.js"
-  import { stateFromSlot } from "$lib/utils/state.js"
   import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
   import { onMount } from "svelte"
   import { useHover } from "$lib/hooks/use-hover.svelte.js"
@@ -200,8 +200,7 @@
       },
       focusProps,
       hoverProps,
-      pressProps,
-      stateFromSlot(slot)
+      pressProps
     )
   )
 </script>
