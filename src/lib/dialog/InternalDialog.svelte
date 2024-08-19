@@ -27,6 +27,7 @@
   import ForcePortalRoot from "$lib/internal/ForcePortalRoot.svelte"
   import { createCloseContext } from "$lib/internal/close-provider.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
+  import type { ElementType } from "$lib/utils/types.js"
 
   const internalId = useId()
   let {
@@ -36,7 +37,7 @@
     onClose,
     initialFocus,
     role: theirRole = "dialog",
-    autoFocus = true,
+    autofocus = true,
     __demoMode = false,
     unmount = false,
     ...theirProps
@@ -87,7 +88,7 @@
   // can result in `null` rather then the actual elements
   // This doesn't happen when using certain components like a
   // `<Dialog.Title>` because they cause the parent to re-render
-  const defaultContainer: { readonly current: HTMLElement } = {
+  const defaultContainer: { readonly current: HTMLElement | undefined } = {
     get current() {
       return _state.panelRef ?? ref
     },
@@ -103,7 +104,7 @@
         return portals
       },
       get defaultContainers() {
-        return [defaultContainer.current]
+        return defaultContainer.current ? [defaultContainer.current] : []
       },
     })
   )
@@ -252,7 +253,7 @@
       focusTrapFeatures |= FocusTrapFeatures.RestoreFocus
       focusTrapFeatures |= FocusTrapFeatures.TabLock
 
-      if (autoFocus) {
+      if (autofocus) {
         focusTrapFeatures |= FocusTrapFeatures.AutoFocus
       }
 

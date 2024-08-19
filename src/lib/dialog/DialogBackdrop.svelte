@@ -17,6 +17,8 @@
 <script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_BACKDROP_TAG">
   import { DialogStates, useDialogContext } from "./Dialog.svelte"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
+  import { mergeProps } from "$lib/utils/render.js"
+  import TransitionChild from "$lib/transition/TransitionChild.svelte"
 
   let { ref = $bindable(), transition = false, ...theirProps }: { as?: TTag } & DialogBackdropProps<TTag> = $props()
   const _state = useDialogContext("Dialog.Panel")
@@ -24,33 +26,31 @@
 
   const slot = $derived({ open: dialogState === DialogStates.Open } satisfies BackdropRenderPropArg)
 
-  const ourProps = {
+  const ourProps = mergeProps({
     "aria-hidden": true,
-  }
-
-  /*
-  let Wrapper = transition ? TransitionChild : Fragment
-  let wrapperProps = transition ? { unmount } : {}
-
-  return (
-    <Wrapper {...wrapperProps}>
-      {render({
-        ourProps,
-        theirProps,
-        slot,
-        defaultTag: DEFAULT_BACKDROP_TAG,
-        name: 'Dialog.Backdrop',
-      })}
-    </Wrapper>
-  )
-  */
+  })
 </script>
 
-<ElementOrComponent
-  {ourProps}
-  {theirProps}
-  slots={slot}
-  defaultTag={DEFAULT_BACKDROP_TAG}
-  name="DialogBackdrop"
-  bind:ref
-/>
+{#if transition}
+  <TransitionChild {unmount} {ref}>
+    {#snippet children(slot, props)}
+      <ElementOrComponent
+        ourProps={{ ...ourProps, ...props }}
+        {theirProps}
+        slots={slot}
+        defaultTag={DEFAULT_BACKDROP_TAG}
+        name="DialogBackdrop"
+        bind:ref
+      />
+    {/snippet}
+  </TransitionChild>
+{:else}
+  <ElementOrComponent
+    {ourProps}
+    {theirProps}
+    slots={slot}
+    defaultTag={DEFAULT_BACKDROP_TAG}
+    name="DialogBackdrop"
+    bind:ref
+  />
+{/if}

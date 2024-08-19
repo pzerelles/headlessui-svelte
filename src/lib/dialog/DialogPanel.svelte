@@ -10,7 +10,10 @@
     TTag,
     PanelRenderPropArg,
     never,
-    { transition?: boolean }
+    {
+      id?: string
+      transition?: boolean
+    }
   >
 </script>
 
@@ -18,6 +21,9 @@
   import { useId } from "$lib/hooks/use-id.js"
   import { DialogStates, useDialogContext } from "./Dialog.svelte"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
+  import { mergeProps } from "$lib/utils/render.js"
+  import TransitionChild from "$lib/transition/TransitionChild.svelte"
+  import { onMount } from "svelte"
 
   let internalId = useId()
   let {
@@ -37,27 +43,27 @@
     event.stopPropagation()
   }
 
-  const ourProps = $derived({
-    id,
-    onclick: handleClick,
-  })
-
-  /*
-  let Wrapper = transition ? TransitionChild : Fragment
-  let wrapperProps = transition ? { unmount } : {}
-
-  return (
-    <Wrapper {...wrapperProps}>
-      {render({
-        ourProps,
-        theirProps,
-        slot,
-        defaultTag: DEFAULT_PANEL_TAG,
-        name: 'Dialog.Panel',
-      })}
-    </Wrapper>
+  const ourProps = $derived(
+    mergeProps({
+      id,
+      onclick: handleClick,
+    })
   )
-  */
 </script>
 
-<ElementOrComponent {ourProps} {theirProps} slots={slot} defaultTag={DEFAULT_PANEL_TAG} name="DialogPanel" bind:ref />
+{#if transition}
+  <TransitionChild {unmount} {ref}>
+    {#snippet children(slot, props)}
+      <ElementOrComponent
+        ourProps={{ ...ourProps, ...props }}
+        {theirProps}
+        slots={slot}
+        defaultTag={DEFAULT_PANEL_TAG}
+        name="DialogPanel"
+        bind:ref
+      />
+    {/snippet}
+  </TransitionChild>
+{:else}
+  <ElementOrComponent {ourProps} {theirProps} slots={slot} defaultTag={DEFAULT_PANEL_TAG} name="DialogPanel" bind:ref />
+{/if}

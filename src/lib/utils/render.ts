@@ -1,3 +1,5 @@
+/* eslint-disable prefer-const */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Props } from "./types.js"
 
 export enum RenderFeatures {
@@ -130,6 +132,14 @@ export function mergePropsAdvanced(...listOfProps: Props<any, any>[]) {
   }
 
   return target
+}
+
+export function compact<T extends Record<any, any>>(object: T) {
+  let clone = Object.assign({}, object)
+  for (let key in clone) {
+    if (clone[key] === undefined) delete clone[key]
+  }
+  return clone
 }
 
 export function omit<T extends Record<any, any>>(object: T, keysToOmit: string[] = []) {

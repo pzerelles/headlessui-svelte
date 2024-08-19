@@ -2,9 +2,10 @@
   import { MainTreeProvider } from "$lib/hooks/use-root-containers.svelte.js"
   import { useOpenClosed } from "$lib/internal/open-closed.js"
   import { RenderFeatures, type PropsForFeatures } from "$lib/utils/render.js"
-  import type { ElementType, OurProps, Props } from "$lib/utils/types.js"
-  import { getContext, type Snippet } from "svelte"
+  import type { ElementType, Props } from "$lib/utils/types.js"
+  import { getContext, type Component, type Snippet } from "svelte"
   import InternalDialog from "./InternalDialog.svelte"
+  import Transition from "$lib/transition/Transition.svelte"
 
   export const DEFAULT_DIALOG_TAG = "div" as const
   export type DialogRenderPropArg = {
@@ -19,11 +20,12 @@
     DialogRenderPropArg,
     DialogPropsWeControl,
     PropsForFeatures<typeof DialogRenderFeatures> & {
+      id?: string
       open?: boolean
       onClose(value: boolean): void
-      initialFocus?: HTMLElement | null
+      initialFocus?: HTMLElement
       role?: "dialog" | "alertdialog"
-      autoFocus?: boolean
+      autofocus?: boolean
       transition?: boolean
       __demoMode?: boolean
     }
@@ -92,10 +94,20 @@
       )
     }
   })
+
+  const DialogComponent = InternalDialog as Component<DialogProps<TTag>, any>
 </script>
 
 {#if (open !== undefined || transition) && !rest.static}
   <MainTreeProvider>
-    <InternalDialog {...rest} />
+    <Transition show={open} {transition} unmount={rest.unmount} {ref}>
+      {#snippet children(slot, props)}
+        <DialogComponent bind:ref {...props} {...rest} />
+      {/snippet}
+    </Transition>
+  </MainTreeProvider>
+{:else}
+  <MainTreeProvider>
+    <DialogComponent bind:ref {open} {...rest} />
   </MainTreeProvider>
 {/if}

@@ -13,7 +13,6 @@
   <Button
     class="rounded bg-sky-600 px-4 py-2 text-sm text-white data-[hover]:bg-sky-500 data-[hover]:data-[active]:bg-sky-700"
     onclick={() => (disabled = !disabled)}
-    tabIndex="1"
   >
     Enable / Disable
   </Button>

@@ -1,7 +1,6 @@
 import { disposables, useDisposables, type Disposables } from "$lib/utils/disposables.js"
 import { once } from "$lib/utils/once.js"
 import { untrack } from "svelte"
-import { useFlags } from "./use-flags.svelte.js"
 
 /**
  * ```
@@ -38,8 +37,8 @@ type TransitionData = {
 }
 
 export function transitionDataAttributes(data: TransitionData) {
-  let attributes: Record<string, string> = {}
-  for (let key in data) {
+  const attributes: Record<string, string> = {}
+  for (const key in data) {
     if (data[key as keyof TransitionData] === true) {
       attributes[`data-${key}`] = ""
     }
@@ -151,6 +150,7 @@ export function useTransition(options: {
   }
 
   $effect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     ;[enabled, show, element, d]
     return untrack(() => retry(enabled, show, element, d))
   })
@@ -219,16 +219,16 @@ function transition(
 }
 
 function waitForTransition(node: HTMLElement, _done: () => void) {
-  let done = once(_done)
-  let d = disposables()
+  const done = once(_done)
+  const d = disposables()
 
   if (!node) return d.dispose
 
   // Safari returns a comma separated list of values, so let's sort them and take the highest value.
-  let { transitionDuration, transitionDelay } = getComputedStyle(node)
+  const { transitionDuration, transitionDelay } = getComputedStyle(node)
 
-  let [durationMs, delayMs] = [transitionDuration, transitionDelay].map((value) => {
-    let [resolvedValue = 0] = value
+  const [durationMs, delayMs] = [transitionDuration, transitionDelay].map((value) => {
+    const [resolvedValue = 0] = value
       .split(",")
       // Remove falsy we can't work with
       .filter(Boolean)
@@ -239,19 +239,19 @@ function waitForTransition(node: HTMLElement, _done: () => void) {
     return resolvedValue
   })
 
-  let totalDuration = durationMs + delayMs
+  const totalDuration = durationMs + delayMs
 
   if (totalDuration !== 0) {
     if (process.env.NODE_ENV === "test") {
-      let dispose = d.setTimeout(() => {
+      const dispose = d.setTimeout(() => {
         done()
         dispose()
       }, totalDuration)
     } else {
-      let disposeGroup = d.group((d) => {
+      const disposeGroup = d.group((d) => {
         // Mark the transition as done when the timeout is reached. This is a fallback in case the
         // transitionrun event is not fired.
-        let cancelTimeout = d.setTimeout(() => {
+        const cancelTimeout = d.setTimeout(() => {
           done()
           d.dispose()
         }, totalDuration)
@@ -294,7 +294,7 @@ function prepareTransition(node: HTMLElement, { inFlight, prepare }: { inFlight?
     return
   }
 
-  let previous = node.style.transition
+  const previous = node.style.transition
 
   // Force cancel current transition
   node.style.transition = "none"
@@ -302,6 +302,7 @@ function prepareTransition(node: HTMLElement, { inFlight, prepare }: { inFlight?
   prepare()
 
   // Trigger a reflow, flushing the CSS changes
+  // eslint-disable-next-line @typescript-eslint/no-unused-expressions
   node.offsetHeight
 
   // Reset the transition to what it was before
