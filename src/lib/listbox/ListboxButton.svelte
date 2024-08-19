@@ -1,8 +1,7 @@
 <script lang="ts" context="module">
   import { useId } from "$lib/hooks/use-id.js"
   import { getIdContext } from "$lib/utils/id.js"
-  import type { ElementType, HTMLElementType, Props } from "$lib/utils/types.js"
-  import type { SvelteHTMLElements } from "svelte/elements"
+  import type { ElementType, Props } from "$lib/utils/types.js"
   import { ListboxStates, useActions, useData } from "./Listbox.svelte"
   import { attemptSubmit } from "$lib/utils/form.js"
   import { Focus } from "$lib/utils/calculate-active-index.js"
@@ -16,6 +15,7 @@
   import { useDescribedBy } from "$lib/description/Description.svelte"
   import { useHover } from "$lib/hooks/use-hover.svelte.js"
   import { mergeProps } from "$lib/utils/render.js"
+  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 
   const DEFAULT_BUTTON_TAG = "button" as const
   type ButtonRenderPropArg = {
@@ -35,6 +35,7 @@
     ButtonRenderPropArg,
     ButtonPropsWeControl,
     {
+      id?: string
       autofocus?: boolean
       disabled?: boolean
     }
@@ -55,7 +56,6 @@
     id = providedId || `headlessui-listbox-button-${internalId}`,
     disabled: ownDisabled = false,
     autofocus = false,
-    children,
     ...theirProps
   }: { as?: TTag } & ListboxButtonProps<TTag> = $props()
   const { setReference, getReferenceProps: getFloatingReferenceProps } = useFloating()
@@ -185,6 +185,4 @@
   )
 </script>
 
-<svelte:element this={as} bind:this={ref} {...ourProps} {...theirProps}>
-  {#if children}{@render children(slot)}{/if}
-</svelte:element>
+<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_BUTTON_TAG} name="ListboxButton" bind:ref />

@@ -27,6 +27,7 @@
     OptionsRenderPropArg,
     OptionsPropsWeControl,
     {
+      id?: string
       anchor?: AnchorPropsWithSelection
       portal?: boolean
       modal?: boolean
@@ -68,7 +69,6 @@
     portal = false,
     modal = true,
     transition = false,
-    children,
     static: isStatic = false,
     unmount = true,
     ...theirProps
@@ -212,7 +212,7 @@
 
   const floatingPanel = useFloatingPanel({
     get placement() {
-      return anchorOptions
+      return anchorOptions ?? null
     },
   })
   const { setFloating, style } = $derived(floatingPanel)

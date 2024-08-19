@@ -18,6 +18,7 @@
     OptionRenderPropArg,
     OptionPropsWeControl,
     {
+      id?: string
       disabled?: boolean
       value: TType
     }
@@ -28,7 +29,6 @@
 
 <script lang="ts" generics="TType, TTag extends ElementType = typeof DEFAULT_OPTION_TAG">
   import { useId } from "$lib/hooks/use-id.js"
-  import type { SvelteHTMLElements } from "svelte/elements"
   import {
     ActivationTrigger,
     ListboxStates,
@@ -43,6 +43,7 @@
   import { useTextValue } from "$lib/hooks/use-text-value.svelte.js"
   import { useTrackedPointer } from "$lib/hooks/use-tracked-pointer.js"
   import { stateFromSlot } from "$lib/utils/state.js"
+  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 
   const internalId = useId()
   let {
@@ -51,7 +52,6 @@
     id = `headlessui-listbox-option-${internalId}`,
     disabled = false,
     value,
-    children,
     ...theirProps
   }: { as?: TTag } & ListboxOptionProps<TTag, TType> = $props()
   const usedInSelectedOption = getContext<boolean>("SelectedOptionContext") === true
@@ -173,7 +173,5 @@
 </script>
 
 {#if selected || !usedInSelectedOption}
-  <svelte:element this={as} bind:this={ref} {...ourProps} {...theirProps}>
-    {#if children}{@render children(slot)}{/if}
-  </svelte:element>
+  <ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_OPTION_TAG} name="Listbox" bind:ref />
 {/if}

@@ -139,6 +139,7 @@
   import { stateFromSlot } from "$lib/utils/state.js"
   import { useLabels } from "$lib/label/Label.svelte"
   import { useOutsideClick } from "$lib/hooks/use-outside-click.svelte.js"
+  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 
   function adjustOrderedState<T>(
     state: StateDefinition<T>,
@@ -389,6 +390,7 @@
   setContext("ListboxDataContext", listboxDataContext)
 
   let {
+    ref = $bindable(),
     as,
     value: controlledValue,
     defaultValue,
@@ -401,7 +403,6 @@
     horizontal = false,
     multiple = false,
     __demoMode = false,
-    children,
     ...theirProps
   }: { as?: TTag } & ListboxProps<TTag, TType, TActualType> = $props()
 
@@ -627,8 +628,6 @@
     },
   })
 
-  const ourProps = $derived(stateFromSlot(slot))
-
   const reset = () => {
     if (defaultValue === undefined) return
     return theirOnChange?.(defaultValue)
@@ -638,6 +637,4 @@
 {#if name && value}
   <FormFields {disabled} data={{ [name]: value }} {form} onReset={reset} />
 {/if}
-<svelte:element this={as ?? DEFAULT_LISTBOX_TAG} {...ourProps} {...theirProps}>
-  {#if children}{@render children(slot)}{/if}
-</svelte:element>
+<ElementOrComponent {theirProps} slots={slot} defaultTag={DEFAULT_LISTBOX_TAG} name="Listbox" bind:ref />

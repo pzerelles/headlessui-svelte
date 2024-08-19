@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable prefer-const */
 import { useDisposables } from "$lib/utils/disposables.js"
 import { computePosition, type ComputePositionReturn } from "@floating-ui/dom"
 import {
@@ -16,6 +19,7 @@ import {
   type UseFloatingReturn,
 } from "@skeletonlabs/floating-ui-svelte"*/
 import { getContext, setContext, untrack } from "svelte"
+import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
 
 type Align = "start" | "end"
 type Placement = "top" | "right" | "bottom" | "left"
@@ -65,8 +69,8 @@ export type AnchorPropsWithSelection =
 
 export type InternalFloatingPanelProps = Partial<{
   inner: {
-    //listRef: InnerProps['listRef']
-    //index: InnerProps['index']
+    listRef: MutableRefObject<(HTMLElement | null)[]> // InnerProps['listRef']
+    index: () => number | null //InnerProps['index']
   }
 }>
 
@@ -96,7 +100,7 @@ export function useFloating() {
 }
 
 export function useFloatingPanelProps() {
-  let { getFloatingProps, slot } = getContext<FloatingContext>("FloatingContext")
+  const { getFloatingProps, slot } = getContext<FloatingContext>("FloatingContext")
   return (...args: Parameters<typeof getFloatingProps>) => {
     return Object.assign({}, getFloatingProps(...args), {
       "data-anchor": slot.anchor,
@@ -148,12 +152,12 @@ export function useFloatingPanel(options: {
 }
 
 // TODO: Make this a config part of the `config`. Just need to decide on a name.
-let MINIMUM_ITEMS_VISIBLE = 4
+//let MINIMUM_ITEMS_VISIBLE = 4
 
 export const createFloatingContext = ({ enabled = true }: { enabled?: boolean } = {}): FloatingContext => {
   let config = $state<(AnchorPropsWithSelection & InternalFloatingPanelProps) | null>(null)
-  let innerOffset = $state(0)
-  let overflowRef = $state<HTMLElement | null>(null)
+  //let innerOffset = $state(0)
+  //let overflowRef = $state<HTMLElement | null>(null)
 
   let referenceEl = $state<HTMLElement | null>(null)
   let floatingEl = $state<HTMLElement | null>(null)
@@ -161,7 +165,7 @@ export const createFloatingContext = ({ enabled = true }: { enabled?: boolean } 
 
   const isEnabled = $derived(enabled && config !== null && floatingEl !== null)
 
-  let {
+  const {
     to: placement = "bottom",
     gap = 0,
     offset = 0,
@@ -177,12 +181,12 @@ export const createFloatingContext = ({ enabled = true }: { enabled?: boolean } 
       },
     })
   )
-  let [to, align = "center"] = $derived(placement.split(" ") as [Placement | "selection", Align | "center"])
+  const [to, align = "center"] = $derived(placement.split(" ") as [Placement | "selection", Align | "center"])
 
   // Reset
   $effect(() => {
     if (!isEnabled) return
-    innerOffset = 0
+    //innerOffset = 0
   })
 
   let floatingStyles = $state<string>()
