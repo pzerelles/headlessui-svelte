@@ -16,7 +16,7 @@
 
     const initialTarget = () => {
       // Group context is used, but still null
-      if (!forceInRoot && groupTarget) return groupTarget ?? null
+      if (!forceInRoot?.force && groupTarget) return groupTarget ?? null
 
       // No group context is used, let's create a default portal root
       if (env.isServer) return null
@@ -42,7 +42,7 @@
     })
 
     $effect(() => {
-      if (forceInRoot) return
+      if (forceInRoot?.force) return
       if (!groupTarget) return
       target = groupTarget
     })
@@ -125,7 +125,7 @@
 
     // Element already exists in target, always calling target.appendChild(element) will cause a
     // brief unmount/remount.
-    if (!target.contains(ref)) {
+    if (ref.parentNode !== target) {
       ref.setAttribute("data-headlessui-portal", "")
       target.appendChild(ref)
     }

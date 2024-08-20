@@ -7,6 +7,4 @@
 
 {#if enabled}
   <InternalPortal {...theirProps} bind:ref />
-{:else}
-  {@render theirProps.children()}
-{/if}
+{:else if theirProps.children}{@render theirProps.children()}{/if}
