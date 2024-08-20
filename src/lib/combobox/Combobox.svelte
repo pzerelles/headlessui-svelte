@@ -39,7 +39,7 @@
         disabled?: (value: NoInfer<TValue>) => boolean
       } | null
 
-      onClose?(): void
+      onclose?(): void
 
       __demoMode?: boolean
     }

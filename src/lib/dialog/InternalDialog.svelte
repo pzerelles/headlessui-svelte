@@ -34,7 +34,7 @@
     ref = $bindable(),
     id = `headlessui-dialog-${internalId}`,
     open: theirOpen,
-    onClose,
+    onclose,
     initialFocus,
     role: theirRole = "dialog",
     autofocus = true,
@@ -77,7 +77,7 @@
     panelRef: null,
   } as StateDefinition)
 
-  const close = $derived(() => onClose(false))
+  const close = $derived(() => onclose(false))
 
   const setTitleId = (id: string | null) => (_state.titleId = id)
 

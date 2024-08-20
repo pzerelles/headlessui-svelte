@@ -19,7 +19,7 @@
         Open dialog
       </Button>
 
-      <Dialog {open} class="relative z-10 focus:outline-none" onClose={close}>
+      <Dialog {open} class="relative z-10 focus:outline-none" onclose={close}>
         <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
           <div class="flex min-h-full items-center justify-center p-4">
             <DialogPanel

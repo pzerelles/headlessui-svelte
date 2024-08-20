@@ -6,7 +6,7 @@
     type TransitionChildProps,
     DEFAULT_TRANSITION_CHILD_TAG,
     TransitionChildRenderFeatures,
-  } from "./InternalTransitionChild.svelte"
+  } from "./TransitionChild.svelte"
   import { useIsMounted } from "$lib/hooks/use-is-mounted.svelte.js"
   import { useDisposables } from "$lib/utils/disposables.js"
   import { match } from "$lib/utils/match.js"

@@ -22,7 +22,7 @@
     PropsForFeatures<typeof DialogRenderFeatures> & {
       id?: string
       open?: boolean
-      onClose(value: boolean): void
+      onclose(value: boolean): void
       initialFocus?: HTMLElement
       role?: "dialog" | "alertdialog"
       autofocus?: boolean
@@ -67,19 +67,19 @@
   // Validations
   const usesOpenClosedState = useOpenClosed()
   const hasOpen = $derived(open !== undefined || usesOpenClosedState)
-  const hasOnClose = $derived(rest.hasOwnProperty("onClose"))
+  const hasOnClose = $derived(rest.hasOwnProperty("onclose"))
 
   $effect(() => {
     if (!hasOpen && !hasOnClose) {
-      throw new Error(`You have to provide an \`open\` and an \`onClose\` prop to the \`Dialog\` component.`)
+      throw new Error(`You have to provide an \`open\` and an \`onclose\` prop to the \`Dialog\` component.`)
     }
 
     if (!hasOpen) {
-      throw new Error(`You provided an \`onClose\` prop to the \`Dialog\`, but forgot an \`open\` prop.`)
+      throw new Error(`You provided an \`onclose\` prop to the \`Dialog\`, but forgot an \`open\` prop.`)
     }
 
     if (!hasOnClose) {
-      throw new Error(`You provided an \`open\` prop to the \`Dialog\`, but forgot an \`onClose\` prop.`)
+      throw new Error(`You provided an \`open\` prop to the \`Dialog\`, but forgot an \`onclose\` prop.`)
     }
 
     if (!usesOpenClosedState && typeof open !== "boolean") {
@@ -88,9 +88,9 @@
       )
     }
 
-    if (typeof rest.onClose !== "function") {
+    if (typeof rest.onclose !== "function") {
       throw new Error(
-        `You provided an \`onClose\` prop to the \`Dialog\`, but the value is not a function. Received: ${rest.onClose}`
+        `You provided an \`onclose\` prop to the \`Dialog\`, but the value is not a function. Received: ${rest.onclose}`
       )
     }
   })

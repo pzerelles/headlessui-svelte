@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
-  import { compact, RenderFeatures, RenderStrategy, type PropsForFeatures } from "$lib/utils/render.js"
-  import type { ElementType, Props } from "$lib/utils/types.js"
+  import { compact, RenderStrategy } from "$lib/utils/render.js"
+  import type { ElementType } from "$lib/utils/types.js"
   import { onMount, setContext, untrack } from "svelte"
   import {
     hasChildren,
@@ -9,9 +9,7 @@
     useParentNesting,
     useTransitionContext,
     type NestingContextValues,
-    type TransitionClasses,
     type TransitionDirection,
-    type TransitionEvents,
   } from "./Transition.svelte"
   import type { TransitionRootProps } from "./Transition.svelte"
   import { match } from "$lib/utils/match.js"
@@ -19,21 +17,7 @@
   import { classNames } from "$lib/utils/class-names.js"
   import { createOpenClosedContext, State } from "$lib/internal/open-closed.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
-
-  type TransitionChildPropsWeControl = never
-
-  export type TransitionChildProps<TTag extends ElementType> = Props<
-    TTag,
-    TransitionChildRenderPropArg,
-    TransitionChildPropsWeControl,
-    PropsForFeatures<typeof TransitionChildRenderFeatures> &
-      TransitionClasses &
-      TransitionEvents & { transition?: boolean; appear?: boolean }
-  >
-
-  export const DEFAULT_TRANSITION_CHILD_TAG = "svelte:fragment"
-  export type TransitionChildRenderPropArg = HTMLElement
-  export const TransitionChildRenderFeatures = RenderFeatures.RenderStrategy
+  import { DEFAULT_TRANSITION_CHILD_TAG, type TransitionChildProps } from "./TransitionChild.svelte"
 
   /**
    * Check if we should forward the ref to the child element or not. This is to
