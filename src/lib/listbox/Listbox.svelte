@@ -136,8 +136,7 @@
   import FormFields from "$lib/internal/FormFields.svelte"
   import { createFloatingContext } from "$lib/internal/floating.svelte.js"
   import { createOpenClosedContext, State } from "$lib/internal/open-closed.js"
-  import { stateFromSlot } from "$lib/utils/state.js"
-  import { useLabels } from "$lib/label/Label.svelte"
+  import { useLabels } from "$lib/label/context.svelte.js"
   import { useOutsideClick } from "$lib/hooks/use-outside-click.svelte.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 

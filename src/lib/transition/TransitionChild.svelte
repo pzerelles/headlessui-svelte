@@ -1,7 +1,7 @@
 <script lang="ts" context="module">
   import type { ElementType, Props } from "$lib/utils/types.js"
   import { RenderFeatures, type PropsForFeatures } from "$lib/utils/render.js"
-  import type { TransitionClasses, TransitionEvents } from "./Transition.svelte"
+  import type { TransitionEvents, TransitionClasses } from "./context.svelte.js"
 
   type TransitionChildPropsWeControl = never
 

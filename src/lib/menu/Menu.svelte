@@ -6,9 +6,8 @@
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
   import { FocusableMode, isFocusableElement, sortByDomNode } from "$lib/utils/focus-management.js"
   import { match } from "$lib/utils/match.js"
-  import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
   import type { ElementType, Props } from "$lib/utils/types.js"
-  import { getContext, type Snippet } from "svelte"
+  import type { Snippet } from "svelte"
 
   let DEFAULT_MENU_TAG = "svelte:fragment"
   type MenuRenderPropArg = {
@@ -27,63 +26,17 @@
   >
 
   export type MenuChildren<T> = Snippet<[MenuRenderPropArg]>
-
-  export enum MenuStates {
-    Open,
-    Closed,
-  }
-
-  export enum ActivationTrigger {
-    Pointer,
-    Other,
-  }
-
-  export type MenuItemDataRef = MutableRefObject<{
-    textValue?: string
-    disabled: boolean
-    domRef: MutableRefObject<HTMLElement | null>
-  }>
-
-  interface StateDefinition {
-    __demoMode: boolean
-    menuState: MenuStates
-    buttonElement: HTMLButtonElement | null
-    itemsElement: HTMLElement | null
-    items: { id: string; dataRef: MenuItemDataRef }[]
-    searchQuery: string
-    activeItemIndex: number | null
-    activationTrigger: ActivationTrigger
-  }
-
-  type MenuContext = StateDefinition & {
-    closeMenu(): void
-    openMenu(): void
-    goToItem(
-      action:
-        | { focus: Focus.Specific; id: string; trigger?: ActivationTrigger }
-        | { focus: Exclude<Focus, Focus.Specific>; trigger?: ActivationTrigger }
-    ): void
-    search(value: string): void
-    clearSearch(): void
-    registerItem(id: string, dataRef: MenuItemDataRef): void
-    unregisterItem(id: string): void
-    setButtonElement(element: HTMLButtonElement | null): void
-    setItemsElement(element: HTMLElement | null): void
-  }
-
-  export function useMenuContext(component: string) {
-    const context = getContext<MenuContext>("MenuContext")
-    if (!context) {
-      let err = new Error(`<${component} /> is missing a parent <Menu /> component.`)
-      if (Error.captureStackTrace) Error.captureStackTrace(err, useMenuContext)
-      throw err
-    }
-    return context
-  }
 </script>
 
 <script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_MENU_TAG">
   import { setContext } from "svelte"
+  import {
+    ActivationTrigger,
+    MenuStates,
+    type MenuContext,
+    type MenuItemDataRef,
+    type StateDefinition,
+  } from "./context.svelte.js"
 
   function adjustOrderedState(
     state: StateDefinition,

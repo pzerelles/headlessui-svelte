@@ -29,16 +29,16 @@
 
 <script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_ITEM_TAG">
   import { useId } from "$lib/hooks/use-id.js"
-  import { ActivationTrigger, MenuStates, useMenuContext, type MenuItemDataRef } from "./Menu.svelte"
+  import { ActivationTrigger, MenuStates, useMenuContext, type MenuItemDataRef } from "./context.svelte.js"
   import { disposables } from "$lib/utils/disposables.js"
   import { useTextValue } from "$lib/hooks/use-text-value.svelte.js"
   import { restoreFocusIfNecessary } from "$lib/utils/focus-management.js"
   import { Focus } from "$lib/utils/calculate-active-index.js"
   import { useTrackedPointer } from "$lib/hooks/use-tracked-pointer.js"
-  import { useDescriptions } from "$lib/description/Description.svelte"
-  import { useLabels } from "$lib/label/Label.svelte"
+  import { useLabels } from "$lib/label/context.svelte.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
   import { mergeProps } from "$lib/utils/render.js"
+  import { useDescriptions } from "$lib/description/context.svelte.js"
 
   const internalId = useId()
   let {

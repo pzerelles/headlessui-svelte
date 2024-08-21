@@ -9,7 +9,10 @@
   export type MenuHeadingProps<TTag extends ElementType = typeof DEFAULT_HEADING_TAG> = Props<
     TTag,
     HeadingRenderPropArg,
-    HeadingPropsWeControl
+    HeadingPropsWeControl,
+    {
+      id?: string
+    }
   >
 
   export type MenuHeadingChildren = Snippet<[HeadingRenderPropArg]>
@@ -17,7 +20,7 @@
 
 <script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_HEADING_TAG">
   import { useId } from "$lib/hooks/use-id.js"
-  import { useLabelContext } from "$lib/label/Label.svelte"
+  import { useLabelContext } from "$lib/label/context.svelte.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 
   const internalId = useId()

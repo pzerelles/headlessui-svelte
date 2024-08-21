@@ -13,7 +13,7 @@
 
 <script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_TITLE_TAG">
   import { useId } from "$lib/hooks/use-id.js"
-  import { DialogStates, useDialogContext } from "./Dialog.svelte"
+  import { DialogStates, useDialogContext } from "./context.svelte.js"
   import { onMount } from "svelte"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
   import { mergeProps } from "$lib/utils/render.js"

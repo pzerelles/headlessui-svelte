@@ -22,10 +22,11 @@
   import { stateFromSlot } from "../utils/state.js"
   import { nanoid } from "nanoid"
   import { setContext, type Snippet } from "svelte"
-  import { useLabels } from "$lib/label/Label.svelte"
-  import { useDescriptions } from "$lib/description/Description.svelte"
+  import { useLabels } from "$lib/label/context.svelte.js"
+  import { useDescriptions } from "$lib/description/context.svelte.js"
+  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 
-  let { as, disabled: ownDisabled = false, children, ...theirProps }: { as?: TTag } & FieldProps<TTag> = $props()
+  let { ref = $bindable(), disabled: ownDisabled = false, ...theirProps }: { as?: TTag } & FieldProps<TTag> = $props()
 
   const inputId = `headlessui-control-${nanoid(8)}`
   createIdContext(inputId)
@@ -51,6 +52,4 @@
   })
 </script>
 
-<svelte:element this={as ?? DEFAULT_FIELD_TAG} {...ourProps} {...theirProps}>
-  {#if children}{@render children(slot)}{/if}
-</svelte:element>
+<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_FIELD_TAG} name="Field" bind:ref />

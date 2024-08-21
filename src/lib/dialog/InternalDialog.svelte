@@ -4,21 +4,12 @@
   import { clearOpenClosedContext, State, useOpenClosed } from "$lib/internal/open-closed.js"
   import { useNestedPortals } from "$lib/portal/InternalPortal.svelte"
   import { getOwnerDocument } from "$lib/utils/owner.js"
-  import {
-    DEFAULT_DIALOG_TAG,
-    DialogRenderFeatures,
-    DialogStates,
-    type DialogContext,
-    type DialogProps,
-    type DialogRenderPropArg,
-    type StateDefinition,
-  } from "./Dialog.svelte"
+  import { DEFAULT_DIALOG_TAG, DialogRenderFeatures, type DialogProps, type DialogRenderPropArg } from "./Dialog.svelte"
   import { useInertOthers } from "$lib/hooks/use-inert-others.svelte.js"
   import { useOutsideClick } from "$lib/hooks/use-outside-click.svelte.js"
   import { useEscape } from "$lib/hooks/use-escape.svelte.js"
   import { useScrollLock } from "$lib/hooks/use-scroll-lock.svelte.js"
   import { useOnDisappear } from "$lib/hooks/use-on-disappear.svelte.js"
-  import { useDescriptions } from "$lib/description/Description.svelte"
   import { setContext } from "svelte"
   import { useIsTouchDevice } from "$lib/hooks/use-is-touch-device.svelte.js"
   import FocusTrap, { FocusTrapFeatures } from "$lib/focus-trap/FocusTrap.svelte"
@@ -28,6 +19,8 @@
   import { createCloseContext } from "$lib/internal/close-provider.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
   import type { ElementType } from "$lib/utils/types.js"
+  import { DialogStates, type DialogContext, type StateDefinition } from "./context.svelte.js"
+  import { useDescriptions } from "$lib/description/context.svelte.js"
 
   const internalId = useId()
   let {

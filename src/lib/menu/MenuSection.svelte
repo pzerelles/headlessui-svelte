@@ -16,7 +16,7 @@
 </script>
 
 <script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_SECTION_TAG">
-  import { useLabels } from "$lib/label/Label.svelte"
+  import { useLabels } from "$lib/label/context.svelte.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 
   const labelledby = useLabels()

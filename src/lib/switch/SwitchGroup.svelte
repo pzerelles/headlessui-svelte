@@ -12,8 +12,8 @@
 
 <script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_GROUP_TAG">
   import { setContext } from "svelte"
-  import { useLabels } from "$lib/label/Label.svelte"
-  import { useDescriptions } from "$lib/description/Description.svelte"
+  import { useLabels } from "$lib/label/context.svelte.js"
+  import { useDescriptions } from "$lib/description/context.svelte.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 
   let switchElement = $state<HTMLElement | null>(null)
