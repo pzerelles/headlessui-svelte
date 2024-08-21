@@ -10,7 +10,7 @@
     useTransitionContext,
     type NestingContextValues,
     type TransitionDirection,
-  } from "./Transition.svelte"
+  } from "./context.svelte.js"
   import type { TransitionRootProps } from "./Transition.svelte"
   import { match } from "$lib/utils/match.js"
   import { transitionDataAttributes, useTransition } from "$lib/hooks/use-transition.svelte.js"
