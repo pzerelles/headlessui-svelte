@@ -97,8 +97,8 @@
       },
       setSelectedIndex(index: number) {
         if (index === _state.selectedIndex) return _state
-        let tabs = sortByDomNode(_state.tabs, (tab) => tab.current)
-        let panels = sortByDomNode(_state.panels, (panel) => panel.current)
+        let tabs = sortByDomNode(_state.tabs, (tab) => tab.current ?? null)
+        let panels = sortByDomNode(_state.panels, (panel) => panel.current ?? null)
 
         let focusableTabs = tabs.filter((tab) => !tab?.current?.hasAttribute("disabled"))
 
@@ -133,9 +133,8 @@
           }
 
           let nextSelectedIndex = match(direction, {
-            [Direction.Forwards]: () => tabs.findIndex((tab) => $state.is(tab, focusableTabs[0])),
-            [Direction.Backwards]: () =>
-              tabs.findIndex((tab) => $state.is(tab, focusableTabs[focusableTabs.length - 1])),
+            [Direction.Forwards]: () => tabs.findIndex((tab) => tab === focusableTabs[0]),
+            [Direction.Backwards]: () => tabs.findIndex((tab) => tab === focusableTabs[focusableTabs.length - 1]),
           })
 
           _state = {
@@ -149,22 +148,22 @@
         let before = tabs.slice(0, index)
         let after = tabs.slice(index)
 
-        let next = [...after, ...before].find((tab) => focusableTabs.some((_tab) => $state.is(_tab, tab)))
+        let next = [...after, ...before].find((tab) => focusableTabs.some((_tab) => _tab === tab))
         if (!next) {
           _state = nextState
           return _state
         }
 
-        let selectedIndex = tabs.findIndex((tab) => $state.is(tab, next)) ?? _state.selectedIndex
+        let selectedIndex = tabs.findIndex((tab) => tab === next) ?? _state.selectedIndex
         if (selectedIndex === -1) selectedIndex = _state.selectedIndex
 
         _state = { ...nextState, selectedIndex }
         return _state
       },
       registerTab(tab: MutableRefObject<HTMLElement | undefined>) {
-        if (_state.tabs.some((_tab) => $state.is(_tab, tab))) return _state
+        if (_state.tabs.some((_tab) => _tab === tab)) return _state
 
-        _state.tabs = sortByDomNode([..._state.tabs, tab], (tab) => tab.current)
+        _state.tabs = sortByDomNode([..._state.tabs, tab], (tab) => tab.current ?? null)
         let activeTab = _state.tabs[_state.selectedIndex]
 
         // When the component is uncontrolled, then we want to maintain the actively
@@ -174,23 +173,23 @@
         // When the component is controlled, then we don't want to do this and
         // instead we want to select the tab based on the `selectedIndex` prop.
         if (!_state.info.isControlled) {
-          const selectedIndex = _state.tabs.findIndex((tab) => $state.is(tab, activeTab))
+          const selectedIndex = _state.tabs.findIndex((tab) => tab === activeTab)
           if (selectedIndex !== _state.selectedIndex) _state.selectedIndex = selectedIndex
         }
 
         return _state
       },
       unregisterTab(tab: MutableRefObject<HTMLElement | undefined>) {
-        _state.tabs = _state.tabs.filter((_tab) => !$state.is(_tab, tab))
+        _state.tabs = _state.tabs.filter((_tab) => _tab !== tab)
         return _state
       },
       registerPanel(panel: MutableRefObject<HTMLElement | undefined>) {
-        if (_state.panels.some((_panel) => $state.is(_panel, panel))) return _state
-        _state.panels = sortByDomNode([..._state.panels, panel], (panel) => panel.current)
+        if (_state.panels.some((_panel) => _panel === panel)) return _state
+        _state.panels = sortByDomNode([..._state.panels, panel], (panel) => panel.current ?? null)
         return _state
       },
       unregisterPanel(panel: MutableRefObject<HTMLElement | undefined>) {
-        _state.panels = _state.panels.filter((_panel) => !$state.is(_panel, panel))
+        _state.panels = _state.panels.filter((_panel) => _panel !== panel)
         return _state
       },
     }
@@ -301,11 +300,11 @@
 
     // TODO: Figure out a way to detect this without the slow sort on every render. Might be fine
     //       unless you have a lot of tabs.
-    let sorted = sortByDomNode(_state.tabs, (tab) => tab.current)
+    let sorted = sortByDomNode(_state.tabs, (tab) => tab.current ?? null)
     let didOrderChange = sorted.some((tab, i) => _state.tabs[i] !== tab)
 
     if (didOrderChange) {
-      change(sorted.findIndex((tab) => $state.is(tab, _state.tabs[realSelectedIndex])))
+      change(sorted.findIndex((tab) => tab === _state.tabs[realSelectedIndex]))
     }
   })
 </script>

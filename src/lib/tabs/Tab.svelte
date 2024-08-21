@@ -61,7 +61,7 @@
   const mySSRIndex = useStableCollectionIndex("tabs")
 
   const myIndex = $derived.by(() => {
-    const index = tabs.findIndex((tab) => $state.is(tab, tabRef))
+    const index = tabs.findIndex((tab) => tab === tabRef)
     return index === -1 ? mySSRIndex : index
   })
   const selected = $derived(myIndex === selectedIndex)

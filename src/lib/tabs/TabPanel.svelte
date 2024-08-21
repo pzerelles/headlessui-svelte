@@ -19,7 +19,7 @@
 
 <script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_PANEL_TAG">
   import { useId } from "$lib/hooks/use-id.js"
-  import { RenderFeatures, type PropsForFeatures } from "$lib/utils/render.js"
+  import { mergeProps, RenderFeatures, type PropsForFeatures } from "$lib/utils/render.js"
   import { useActions, useData } from "./TabGroup.svelte"
   import { useStableCollectionIndex } from "$lib/utils/StableCollection.svelte"
   import { useFocusRing } from "$lib/hooks/use-focus-ring.svelte.js"
@@ -46,7 +46,7 @@
   const mySSRIndex = useStableCollectionIndex("panels")
 
   const myIndex = $derived.by(() => {
-    const index = tabs.findIndex((panel) => $state.is(panel, panelRef))
+    const index = tabs.findIndex((panel) => panel === panelRef)
     return index === -1 ? mySSRIndex : index
   })
 
@@ -58,13 +58,17 @@
     focus,
   } satisfies PanelRenderPropArg)
 
-  const ourProps = $derived({
-    id,
-    role: "tabpanel",
-    "aria-labelledby": tabs[myIndex]?.current?.id,
-    tabIndex: selected ? 0 : -1,
-    ...focusProps,
-  })
+  const ourProps = $derived(
+    mergeProps(
+      {
+        id,
+        role: "tabpanel",
+        "aria-labelledby": tabs[myIndex]?.current?.id,
+        tabIndex: selected ? 0 : -1,
+      },
+      focusProps
+    )
+  )
 </script>
 
 {#if !selected && (theirProps.unmount ?? true) && !(theirProps.static ?? false)}

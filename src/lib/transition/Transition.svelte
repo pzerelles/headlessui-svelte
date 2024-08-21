@@ -96,7 +96,7 @@
     const d = useDisposables()
 
     const unregister = (container: ContainerElement, strategy = RenderStrategy.Hidden) => {
-      const idx = transitionableChildren.findIndex(({ el }) => $state.is(el, container))
+      const idx = transitionableChildren.findIndex(({ el }) => el === container)
       if (idx === -1) return
 
       match(strategy, {
@@ -116,7 +116,7 @@
     }
 
     const register = (container: ContainerElement) => {
-      const child = transitionableChildren.find(({ el }) => $state.is(el, container))
+      const child = transitionableChildren.find(({ el }) => el === container)
       if (!child) {
         transitionableChildren.push({ el: container, state: TreeStates.Visible })
       } else if (child.state !== TreeStates.Visible) {
@@ -146,7 +146,7 @@
       // ignore those and use only the new one.
       if (parent) {
         parent.chains[direction] = parent.chains[direction].filter(
-          ([containerInParent]) => !$state.is(containerInParent, container)
+          ([containerInParent]) => containerInParent !== container
         )
       }
 
