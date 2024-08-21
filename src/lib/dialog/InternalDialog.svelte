@@ -235,7 +235,7 @@
     tabIndex: -1,
     "aria-modal": __demoMode ? undefined : dialogState === DialogStates.Open ? true : undefined,
     "aria-labelledby": _state.titleId,
-    "aria-describedby": describedby,
+    "aria-describedby": describedby.value,
     unmount,
   })
 

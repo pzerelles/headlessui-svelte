@@ -48,7 +48,6 @@
   const ourProps = $derived({
     disabled: disabled || undefined,
     "aria-disabled": disabled || undefined,
-    ...stateFromSlot(slot),
   })
 </script>
 
