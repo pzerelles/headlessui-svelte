@@ -15,7 +15,7 @@
     name,
     ref = $bindable(),
   }: {
-    ourProps?: Expand<Props<any, TSlot, any> & PropsForFeatures<TFeature>>
+    ourProps?: Expand<Props<any, TSlot> & PropsForFeatures<TFeature>>
     theirProps: Expand<{ as?: TTag } & Props<any, TSlot, any>>
     slot?: TSlot
     slots?: TSlot

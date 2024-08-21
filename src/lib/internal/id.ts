@@ -5,7 +5,7 @@ type IdContext = {
 }
 
 export function useProvidedId() {
-  return getContext<IdContext>("IdContext")
+  return getContext<IdContext | undefined>("IdContext")
 }
 
 export function useIdContext(options: { id?: string }) {

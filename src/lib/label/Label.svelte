@@ -5,6 +5,7 @@
   let DEFAULT_LABEL_TAG = "label" as const
 
   export type LabelProps<TTag extends ElementType = typeof DEFAULT_LABEL_TAG> = Props<TTag> & {
+    id?: string
     passive?: boolean
     htmlFor?: string
   }
@@ -88,6 +89,7 @@
   import { getIdContext, htmlid } from "../utils/id.js"
   import { useDisabled } from "../hooks/use-disabled.js"
   import { stateFromSlot } from "../utils/state.js"
+  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 
   const internalId = htmlid()
   const context = useLabelContext()
@@ -95,11 +97,10 @@
   const providedDisabled = useDisabled()
 
   let {
-    as,
+    ref = $bindable(),
     id = `headlessui-label-${internalId}`,
     htmlFor = providedHtmlFor,
     passive = false,
-    children,
     ...theirOriginalProps
   }: { as?: TTag } & LabelProps<TTag> = $props()
 
@@ -169,6 +170,10 @@
   })
 </script>
 
-<svelte:element this={as ?? (htmlFor ? DEFAULT_LABEL_TAG : "div")} {...ourProps} {...theirProps}>
-  {#if children}{@render children(slot)}{/if}
-</svelte:element>
+<ElementOrComponent
+  {ourProps}
+  {theirProps}
+  defaultTag={htmlFor ? DEFAULT_LABEL_TAG : "div"}
+  name={context.name || "Label"}
+  bind:ref
+/>
