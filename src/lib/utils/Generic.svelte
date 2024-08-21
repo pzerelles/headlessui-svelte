@@ -1,4 +1,4 @@
-<script lang="ts" generics="TTag extends keyof SvelteHTMLProps, TSlot">
+<script lang="ts" generics="TTag extends keyof SvelteHTMLProps, TSlot, TValue">
   import { stateFromSlot } from "./state.js"
   import type { ElementType, Props, SvelteHTMLProps } from "./types.js"
 
@@ -7,6 +7,8 @@
     tag,
     name,
     ref = $bindable(),
+    value = $bindable(),
+    checked = $bindable(),
     children,
     as = tag as TTag,
     unmount,
@@ -18,6 +20,8 @@
     tag: ElementType
     name: string
     ref?: HTMLElement
+    value?: TValue
+    checked?: boolean
   } & Props<TTag, TSlot> = $props()
 
   const resolvedClass = $derived(
@@ -31,8 +35,22 @@
       ...(resolvedClass ? { class: resolvedClass } : {}),
       ...stateFromSlot(slot),
     })}{/if}
+{:else if children}
+  {#if as === "select"}
+    <select bind:this={ref} {...props} class={resolvedClass} {...stateFromSlot(slot)} bind:value>
+      {@render children(slot, {})}
+    </select>
+  {:else}
+    <svelte:element this={as} bind:this={ref} {...props} class={resolvedClass} {...stateFromSlot(slot)}>
+      {@render children(slot, {})}
+    </svelte:element>
+  {/if}
+{:else if as === "input" && props.type === "checkbox"}
+  <input type="checkbox" bind:this={ref} {...props} class={resolvedClass} {...stateFromSlot(slot)} bind:checked />
+{:else if as === "input"}
+  <input bind:this={ref} {...props} class={resolvedClass} {...stateFromSlot(slot)} bind:value />
+{:else if as === "textarea"}
+  <textarea bind:this={ref} {...props} class={resolvedClass} {...stateFromSlot(slot)} bind:value></textarea>
 {:else}
-  <svelte:element this={as} bind:this={ref} {...props} class={resolvedClass} {...stateFromSlot(slot)}>
-    {#if children}{@render children(slot, {})}{/if}
-  </svelte:element>
+  <svelte:element this={as} bind:this={ref} {...props} class={resolvedClass} {...stateFromSlot(slot)} />
 {/if}

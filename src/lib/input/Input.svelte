@@ -12,12 +12,13 @@
   }
   type InputPropsWeControl = "aria-labelledby" | "aria-describedby"
 
-  export type InputProps<TTag extends ElementType = typeof DEFAULT_INPUT_TAG> = Props<
+  export type InputProps<TTag extends ElementType = typeof DEFAULT_INPUT_TAG, TValue = string> = Props<
     TTag,
     InputRenderPropArg,
     InputPropsWeControl,
     {
       id?: string
+      value?: TValue
       disabled?: boolean
       invalid?: boolean
       autofocus?: boolean
@@ -25,7 +26,7 @@
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_INPUT_TAG">
+<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_INPUT_TAG, TValue = string">
   import { htmlid } from "../utils/id.js"
   import { useDisabled } from "../hooks/use-disabled.js"
   import { useProvidedId } from "$lib/internal/id.js"
@@ -42,12 +43,13 @@
 
   let {
     ref = $bindable(),
+    value = $bindable(),
     id = providedId?.value || `headlessui-input-${internalId}`,
     disabled: theirDisabled = false,
     autofocus = false,
     invalid = false,
     ...theirProps
-  }: { as?: TTag } & InputProps<TTag> = $props()
+  }: { as?: TTag; value?: TValue } & InputProps<TTag, TValue> = $props()
   const disabled = $derived(providedDisabled?.value ?? theirDisabled)
 
   const labelledBy = useLabelledBy()
@@ -86,4 +88,4 @@
   const slot = $derived({ disabled, invalid, hover, focus, autofocus } satisfies InputRenderPropArg)
 </script>
 
-<ElementOrComponent {ourProps} {theirProps} defaultTag={DEFAULT_INPUT_TAG} name="Input" bind:ref />
+<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_INPUT_TAG} name="Input" bind:ref bind:value />

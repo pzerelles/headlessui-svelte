@@ -1,4 +1,4 @@
-<script lang="ts" generics="TFeature extends RenderFeatures, TTag extends ElementType, TSlot">
+<script lang="ts" generics="TFeature extends RenderFeatures, TTag extends ElementType, TSlot, TValue">
   import type { ElementType, Props } from "./types.js"
   import { mergePropsAdvanced, RenderFeatures, RenderStrategy, type PropsForFeatures } from "./render.js"
   import Generic from "./Generic.svelte"
@@ -14,6 +14,8 @@
     visible = true,
     name,
     ref = $bindable(),
+    value = $bindable(),
+    checked = $bindable(),
   }: {
     ourProps?: Expand<Props<any, TSlot> & PropsForFeatures<TFeature>>
     theirProps: Expand<{ as?: TTag } & Props<any, TSlot, any>>
@@ -24,37 +26,22 @@
     visible?: boolean
     name: string
     ref?: HTMLElement
+    value?: TValue
+    checked?: boolean
   } = $props()
 
   const featureFlags = $derived(features ?? RenderFeatures.None)
-  const mergedProps = $derived(mergePropsAdvanced(theirProps, ourProps ?? {}))
+  const { static: isStatic = false, unmount = true, ...rest } = $derived(mergePropsAdvanced(theirProps, ourProps ?? {}))
+  const render = $derived(
+    visible ||
+      (featureFlags & RenderFeatures.Static && isStatic) ||
+      (featureFlags & RenderFeatures.RenderStrategy && !unmount)
+  )
+  const hiddenProps = $derived(
+    !visible && !(featureFlags & RenderFeatures.Static) && featureFlags & RenderFeatures.RenderStrategy && !unmount
+      ? { hidden: true, style: "display: none;" }
+      : {}
+  )
 </script>
 
-{#if visible}
-  <Generic
-    {...mergedProps}
-    {slot}
-    tag={defaultTag}
-    {name}
-    bind:ref={ref as ComponentProps<Generic<TTag, any>>["ref"]}
-  />
-{:else if featureFlags & RenderFeatures.Static}
-  {@const { static: isStatic = false, ...rest } = mergedProps as PropsForFeatures<RenderFeatures.Static>}
-  {#if isStatic}
-    <Generic {...rest} {slot} tag={defaultTag} {name} bind:ref={ref as ComponentProps<Generic<TTag, any>>["ref"]} />
-  {/if}
-{:else if featureFlags & RenderFeatures.RenderStrategy}
-  {@const { unmount = true, ...rest } = mergedProps as PropsForFeatures<RenderFeatures.RenderStrategy>}
-  {@const strategy = unmount ? RenderStrategy.Unmount : RenderStrategy.Hidden}
-  {#if strategy === RenderStrategy.Hidden}
-    <Generic
-      {...rest}
-      hidden={true}
-      style="display: none;"
-      {slot}
-      tag={defaultTag}
-      {name}
-      bind:ref={ref as ComponentProps<Generic<TTag, any>>["ref"]}
-    />
-  {/if}
-{/if}
+{#if render}<Generic {...rest} {...hiddenProps} {slot} tag={defaultTag} {name} bind:ref bind:value bind:checked />{/if}

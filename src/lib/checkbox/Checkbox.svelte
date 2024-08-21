@@ -52,14 +52,15 @@
   import { useDescribedBy } from "$lib/description/Description.svelte"
   import { useHover } from "$lib/hooks/use-hover.svelte.js"
   import { mergeProps } from "$lib/utils/render.js"
+  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 
   const internalId = htmlid()
   const providedId = getIdContext()
   const providedDisabled = useDisabled()
 
   let {
+    ref = $bindable(),
     id = providedId || `headlessui-checkbox-${internalId}`,
-    as,
     value,
     disabled: ownDisabled = false,
     indeterminate = false,
@@ -69,7 +70,6 @@
     form,
     name,
     onchange,
-    children,
     ...theirProps
   }: { as?: TTag } & CheckboxProps<TTag, TType> = $props()
 
@@ -139,7 +139,7 @@
     indeterminate,
   })
 
-  const ownProps = $derived(
+  const ourProps = $derived(
     mergeProps(
       {
         id,
@@ -174,6 +174,12 @@
     onReset={reset}
   />
 {/if}
-<svelte:element this={as ?? DEFAULT_CHECKBOX_TAG} {...ownProps} {...theirProps}>
-  {#if children}{@render children(slot, {})}{/if}
-</svelte:element>
+<ElementOrComponent
+  {ourProps}
+  {theirProps}
+  {slot}
+  defaultTag={DEFAULT_CHECKBOX_TAG}
+  name="Checkbox"
+  bind:ref
+  bind:value
+/>

@@ -82,7 +82,8 @@
   const setTitleId = (id: string | null) => (_state.titleId = id)
 
   const enabled = $derived(dialogState === DialogStates.Open)
-  const { portals } = $derived(useNestedPortals())
+  const nestedPortals = useNestedPortals()
+  const { portals } = $derived(nestedPortals)
 
   // We use this because reading these values during initial render(s)
   // can result in `null` rather then the actual elements
