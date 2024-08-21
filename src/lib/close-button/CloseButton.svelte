@@ -8,8 +8,9 @@
   export type CloseButtonProps<TTag extends ElementType = typeof DEFAULT_BUTTON_TAG> = ButtonProps<TTag>
 </script>
 
-<script lang="ts" generics="TType, TTag extends ElementType = typeof DEFAULT_BUTTON_TAG">
-  const close = $derived(useClose()?.close)
+<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_BUTTON_TAG">
+  const closeContext = useClose()
+  const close = $derived(closeContext?.close)
   let { ...props }: { as?: TTag } & CloseButtonProps<TTag> = $props()
 </script>
 
