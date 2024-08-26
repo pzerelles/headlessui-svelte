@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
   import type { ElementType, Props, PropsOf } from "$lib/utils/types.js"
 
   let DEFAULT_DESCRIPTION_TAG = "p" as const

@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
   import { useOutsideClick } from "$lib/hooks/use-outside-click.svelte.js"
   import { createFloatingContext } from "$lib/internal/floating.svelte.js"
   import { createOpenClosedContext, State } from "$lib/internal/open-closed.js"

@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
   import Button, { type ButtonProps } from "$lib/button/Button.svelte"
   import { useClose } from "$lib/internal/close-provider.js"
   import type { ElementType } from "$lib/utils/types.js"

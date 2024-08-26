@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
   import { useId } from "$lib/hooks/use-id.js"
   import { getIdContext } from "$lib/utils/id.js"
   import type { ElementType, Props } from "$lib/utils/types.js"

@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
   import { getOwnerDocument } from "$lib/utils/owner.js"
   import type { ElementType, Props } from "$lib/utils/types.js"
   import { history } from "$lib/utils/active-element-history.js"

@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
   import { getContext, onMount } from "svelte"
 
   type MainTreeContext = { node: HTMLElement | null }

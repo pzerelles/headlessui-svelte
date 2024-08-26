@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
   import { useId } from "$lib/hooks/use-id.js"
   import { getContext, setContext, type Snippet } from "svelte"
 

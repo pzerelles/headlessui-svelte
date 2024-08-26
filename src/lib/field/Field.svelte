@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
   import type { ElementType, Props } from "$lib/utils/types.js"
 
   let DEFAULT_FIELD_TAG = "div" as const

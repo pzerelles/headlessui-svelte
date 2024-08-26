@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
   import type { ElementType, EnsureArray, Props } from "$lib/utils/types.js"
   import type { ByComparator } from "$lib/hooks/use-by-comparator.js"
 

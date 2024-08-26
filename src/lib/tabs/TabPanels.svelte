@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
   import type { ElementType, Props } from "$lib/utils/types.js"
   import { useData } from "./TabGroup.svelte"

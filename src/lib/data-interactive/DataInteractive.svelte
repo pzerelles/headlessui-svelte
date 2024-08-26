@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
   import type { Props, ElementType } from "$lib/utils/types.js"
   import { useFocusRing } from "$lib/hooks/use-focus-ring.svelte.js"
   import { useActivePress } from "$lib/hooks/use-active-press.svelte.js"

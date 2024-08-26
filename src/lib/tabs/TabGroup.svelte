@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
   import type { ElementType, Props } from "$lib/utils/types.js"
   import { sortByDomNode } from "$lib/utils/focus-management.js"
   import { match } from "$lib/utils/match.js"

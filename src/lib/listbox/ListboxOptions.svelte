@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
   import type { ElementType, Props } from "$lib/utils/types.js"
   import { mergeProps, RenderFeatures, type PropsForFeatures } from "$lib/utils/render.js"
   import {

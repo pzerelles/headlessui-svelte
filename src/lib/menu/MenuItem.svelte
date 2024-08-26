@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
   import type { Props, ElementType, Children } from "$lib/utils/types.js"
   import { onMount, type Snippet } from "svelte"
 

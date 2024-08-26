@@ -7,6 +7,9 @@
   import { CheckIcon } from "@pzerelles/heroicons-svelte/24/outline"
 
   let disabled = $state(true)
+  let checked = $state(false)
+
+  $inspect(checked)
 </script>
 
 <div class="flex h-screen w-screen items-center justify-center gap-4">
@@ -21,6 +24,7 @@
     <Description>This will give you early access to new features we're developing.</Description>
     <Checkbox
       name="test"
+      bind:checked
       class="group block size-4 rounded border bg-white data-[disabled]:cursor-not-allowed data-[checked]:bg-blue-500 data-[checked]:data-[disabled]:bg-gray-500 data-[disabled]:opacity-50"
     >
       <CheckIcon class="size-3.5 stroke-white stroke-2 opacity-0 group-data-[checked]:opacity-100" />

@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
   import { tick, type Snippet } from "svelte"
   import type { Props, ElementType } from "$lib/utils/types.js"
 

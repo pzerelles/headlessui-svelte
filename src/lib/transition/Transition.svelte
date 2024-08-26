@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
   import { State, useOpenClosed } from "$lib/internal/open-closed.js"
   import type { ElementType } from "$lib/utils/types.js"
   import { setContext, untrack, type Component } from "svelte"

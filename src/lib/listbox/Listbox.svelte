@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
   import { useByComparator, type ByComparator } from "$lib/hooks/use-by-comparator.js"
   import { useControllable } from "$lib/hooks/use-controllable.svelte.js"
   import { useDisabled } from "$lib/hooks/use-disabled.js"

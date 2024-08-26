@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
   import { Label, type LabelProps } from "$lib/index.js"
   import type { ElementType, Props } from "$lib/utils/types.js"
   import type { Component } from "svelte"

@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
   import type { Props, ElementType } from "$lib/utils/types.js"
 
   const DEFAULT_BUTTON_TAG = "button" as const

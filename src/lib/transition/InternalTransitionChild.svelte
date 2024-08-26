@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
   import { compact, RenderStrategy } from "$lib/utils/render.js"
   import type { ElementType } from "$lib/utils/types.js"
   import { onMount, setContext, untrack } from "svelte"

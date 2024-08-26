@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
   import { usePortalRoot } from "$lib/internal/portal-force-root.svelte.js"
   import { getOwnerDocument } from "$lib/utils/owner.js"
   import { getContext, onMount, setContext } from "svelte"

@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
   import { MainTreeProvider } from "$lib/hooks/use-root-containers.svelte.js"
   import { useOpenClosed } from "$lib/internal/open-closed.js"
   import { RenderFeatures, type PropsForFeatures } from "$lib/utils/render.js"
