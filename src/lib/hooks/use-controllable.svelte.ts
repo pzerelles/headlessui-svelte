@@ -26,14 +26,13 @@ export function useControllable<T>(
     }
   })
 
-  const value = $derived(isControlled && onchange ? input.controlledValue : internalValue)!
+  const value = $derived(isControlled ? input.controlledValue : internalValue)!
 
   return {
     get value() {
       return value
     },
     onchange: (value: T) => {
-      console.log(isControlled, onchange, value)
       if (isControlled && onchange) {
         onchange?.(value)
       } else {

@@ -7,7 +7,7 @@
   import { CheckIcon } from "@pzerelles/heroicons-svelte/24/outline"
 
   let disabled = $state(true)
-  let checked = $state(false)
+  let checked = $state(true)
 
   $inspect(checked)
 </script>
@@ -19,6 +19,10 @@
   >
     Enable / Disable
   </Button>
+  <Button
+    class="rounded bg-sky-600 px-4 py-2 text-sm text-white data-[hover]:bg-sky-500 data-[hover]:data-[active]:bg-sky-700"
+    onclick={() => (checked = !checked)}>Toggle</Button
+  >
   <Field class="border border-black p-8 disabled:bg-gray-400" {disabled}>
     <Label class="data-[disabled]:text-gray-400">Enable beta features</Label>
     <Description>This will give you early access to new features we're developing.</Description>
