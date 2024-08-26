@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
   import type { ElementType, Props } from "$lib/utils/types.js"
 
   let DEFAULT_CHECKBOX_TAG = "span" as const
@@ -32,10 +32,10 @@
 
       checked?: boolean
       defaultChecked?: boolean
-      autoFocus?: boolean
+      autofocus?: boolean
       form?: string
       name?: string
-      onChange?: (checked: boolean) => void
+      onchange?: (checked: boolean) => void
     }
   >
 </script>
@@ -53,6 +53,7 @@
   import { useHover } from "$lib/hooks/use-hover.svelte.js"
   import { mergeProps } from "$lib/utils/render.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
+  import { useControllable } from "$lib/hooks/use-controllable.svelte.js"
 
   const internalId = htmlid()
   const providedId = getIdContext()
@@ -61,17 +62,32 @@
   let {
     ref = $bindable(),
     id = providedId || `headlessui-checkbox-${internalId}`,
-    value,
     disabled: ownDisabled = false,
-    indeterminate = false,
-    defaultChecked,
-    checked = $bindable(defaultChecked ?? false),
-    autofocus,
-    form,
+    autofocus = false,
+    checked: controlledChecked = $bindable(),
+    defaultChecked: _defaultChecked,
+    onchange: controlledOnChange,
     name,
-    onchange,
+    value,
+    form,
+    indeterminate = false,
     ...theirProps
   }: { as?: TTag } & CheckboxProps<TTag, TType> = $props()
+
+  const defaultChecked = _defaultChecked
+  const controllable = useControllable(
+    {
+      get controlledValue() {
+        return controlledChecked
+      },
+      set controlledValue(checked) {
+        controlledChecked = checked
+      },
+    },
+    controlledOnChange,
+    defaultChecked ?? false
+  )
+  const { value: checked, onchange } = $derived(controllable)
 
   const disabled = $derived(providedDisabled.value || ownDisabled)
 
@@ -104,8 +120,7 @@
 
   const toggle = () => {
     changing = true
-    checked = !checked
-    onchange?.(checked)
+    onchange?.(!checked)
     tick().then(() => {
       changing = false
     })
