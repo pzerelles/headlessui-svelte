@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.3
+
+### Patch Changes
+
+- 031ca55: feat: add Textarea coponent
+
 ## 2.1.2-next.2
 
 ### Patch Changes
