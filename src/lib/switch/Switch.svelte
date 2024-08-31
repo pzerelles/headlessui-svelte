@@ -1,5 +1,5 @@
 <script lang="ts" module>
-  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { ElementType, Props, PropsOf } from "$lib/utils/types.js"
 
   const DEFAULT_SWITCH_TAG = "button" as const
   type SwitchRenderPropArg = {
@@ -35,9 +35,8 @@
   import { useId } from "$lib/hooks/use-id.js"
   import { useDisabled } from "$lib/hooks/use-disabled.js"
   import { useProvidedId } from "$lib/internal/id.js"
-  import { getContext } from "svelte"
+  import { getContext, tick } from "svelte"
   import type { GroupContext } from "./SwitchGroup.svelte"
-  import { useDisposables } from "$lib/utils/disposables.js"
   import { attemptSubmit } from "$lib/utils/form.js"
   import { useLabelledBy } from "$lib/label/context.svelte.js"
   import { useDescribedBy } from "$lib/description/context.svelte.js"
@@ -46,19 +45,20 @@
   import { useFocusRing } from "$lib/hooks/use-focus-ring.svelte.js"
   import { useHover } from "$lib/hooks/use-hover.svelte.js"
   import { useActivePress } from "$lib/hooks/use-active-press.svelte.js"
+  import { useControllable } from "$lib/hooks/use-controllable.svelte.js"
   import FormFields from "$lib/internal/FormFields.svelte"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 
   const internalId = useId()
-  let providedId = useProvidedId()
-  let { value: providedDisabled } = $derived(useDisabled())
+  const providedId = useProvidedId()
+  const providedDisabled = useDisabled()
   let {
     ref = $bindable(),
-    id: ownId,
-    disabled: ownDisabled,
-    defaultChecked,
-    checked = $bindable(defaultChecked),
-    onchange,
+    id = (providedId || `headlessui-switch-${internalId}`) as PropsOf<TTag>["id"],
+    disabled: theirDisabled = false,
+    checked: controlledChecked = $bindable(),
+    defaultChecked: _defaultChecked,
+    onchange: controlledOnChange,
     name,
     value,
     form,
@@ -66,22 +66,33 @@
     tabIndex,
     ...theirProps
   }: { as?: TTag } & SwitchProps<TTag> = $props()
-  const id = $derived(ownId || providedId || `headlessui-switch-${internalId}`)
-  const disabled = $derived(ownDisabled || providedDisabled || false)
+  const disabled = $derived(providedDisabled?.value ?? theirDisabled)
   const groupContext = getContext<GroupContext>("GroupContext")
   $effect(() => {
     if (groupContext) groupContext.switchElement = ref ?? null
   })
 
-  const d = useDisposables()
+  const defaultChecked = _defaultChecked
+  const controllable = useControllable(
+    {
+      get controlledValue() {
+        return controlledChecked
+      },
+      set controlledValue(checked) {
+        controlledChecked = checked
+      },
+    },
+    controlledOnChange,
+    defaultChecked ?? false
+  )
+  const { value: checked, onchange } = $derived(controllable)
+
   let changing = $state(false)
 
   const toggle = () => {
     changing = true
-    checked = !checked
-    onchange?.(checked)
-
-    d.nextFrame(() => {
+    onchange?.(!checked)
+    tick().then(() => {
       changing = false
     })
   }
@@ -170,11 +181,10 @@
     )
   )
 
-  const reset = () => {
+  const reset = $derived(() => {
     if (defaultChecked === undefined) return
-    checked = defaultChecked
-    return onchange?.(checked)
-  }
+    return onchange?.(defaultChecked)
+  })
 </script>
 
 {#if name}

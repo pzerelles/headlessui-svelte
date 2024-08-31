@@ -1,20 +1,11 @@
 <script lang="ts" module>
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
   import type { ElementType, Props } from "$lib/utils/types.js"
-  import type { SvelteHTMLElements } from "svelte/elements"
+  import { HiddenFeatures } from "./HiddenFeatures.js"
+
+  export * from "./HiddenFeatures.js"
 
   const DEFAULT_VISUALLY_HIDDEN_TAG = "span" as const
-
-  export enum HiddenFeatures {
-    // The default, no features.
-    None = 1 << 0,
-
-    // Whether the element should be focusable or not.
-    Focusable = 1 << 1,
-
-    // Whether it should be completely hidden, even to assistive technologies.
-    Hidden = 1 << 2,
-  }
 
   type HiddenRenderPropArg = {}
   type HiddenPropsWeControl = never

@@ -62,7 +62,7 @@
   let {
     ref = $bindable(),
     id = providedId || `headlessui-checkbox-${internalId}`,
-    disabled: ownDisabled = false,
+    disabled: theirDisabled = false,
     autofocus = false,
     checked: controlledChecked = $bindable(),
     defaultChecked: _defaultChecked,
@@ -89,7 +89,7 @@
   )
   const { value: checked, onchange } = $derived(controllable)
 
-  const disabled = $derived(providedDisabled.value || ownDisabled)
+  const disabled = $derived(providedDisabled?.value ?? theirDisabled)
 
   const { isHovered: hover, hoverProps } = $derived(
     useHover({
