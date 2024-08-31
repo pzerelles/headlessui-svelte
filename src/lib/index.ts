@@ -13,6 +13,7 @@ export * from "./listbox/index.js"
 export * from "./menu/index.js"
 export * from "./switch/index.js"
 export * from "./tabs/index.js"
+export * from "./textarea/index.js"
 export * from "./transition/index.js"
 
 export * from "./hooks/use-id.js"
