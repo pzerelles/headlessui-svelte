@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.5
+
+### Patch Changes
+
+- 30ecf97: fix: remove enums from component modules
+
 ## 2.1.2-next.4
 
 ### Patch Changes
