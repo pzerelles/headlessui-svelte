@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.4
+
+### Patch Changes
+
+- 2498ecc: fix: controlled switch behavior
+
 ## 2.1.2-next.3
 
 ### Patch Changes
