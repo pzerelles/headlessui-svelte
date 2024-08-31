@@ -8,6 +8,7 @@
   import { useRef, type MutableRefObject } from "$lib/utils/ref.svelte.js"
   import type { ElementType, EnsureArray, Props } from "$lib/utils/types.js"
   import { getContext, setContext, type Snippet } from "svelte"
+  import { ActivationTrigger, ListboxStates, ValueMode } from "./ListboxStates.js"
 
   let DEFAULT_LISTBOX_TAG = "svelte:fragment"
   type ListboxRenderPropArg<T> = {
@@ -43,20 +44,7 @@
 
   export type ListboxChildren<T> = Snippet<[ListboxRenderPropArg<T>]>
 
-  export enum ListboxStates {
-    Open,
-    Closed,
-  }
-
-  export enum ValueMode {
-    Single,
-    Multi,
-  }
-
-  export enum ActivationTrigger {
-    Pointer,
-    Other,
-  }
+  export * from "./ListboxStates.js"
 
   export type ListboxOptionDataRef<T> = MutableRefObject<{
     textValue?: string
