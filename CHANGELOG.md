@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.6
+
+### Patch Changes
+
+- 4ac233c: fix: autofocus on Textarea and htmlFor on Label
+
 ## 2.1.2-next.5
 
 ### Patch Changes
