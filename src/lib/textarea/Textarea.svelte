@@ -12,11 +12,12 @@
   }
   type TextareaPropsWeControl = "aria-labelledby" | "aria-describedby"
 
-  export type TextareaProps<TTag extends ElementType = typeof DEFAULT_TEXTAREA_TAG> = Props<
+  export type TextareaProps<TTag extends ElementType = typeof DEFAULT_TEXTAREA_TAG, TValue = string> = Props<
     TTag,
     TextareaRenderPropArg,
     TextareaPropsWeControl,
     {
+      value?: TValue
       disabled?: boolean
       invalid?: boolean
       autofocus?: boolean
@@ -24,7 +25,7 @@
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_TEXTAREA_TAG">
+<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_TEXTAREA_TAG, TValue = string">
   import { htmlid } from "../utils/id.js"
   import { useDisabled } from "../hooks/use-disabled.js"
   import { useProvidedId } from "$lib/internal/id.js"
@@ -41,13 +42,13 @@
 
   let {
     ref = $bindable(),
-    value = $bindable<PropsOf<TTag>["value"]>(),
+    value = $bindable(),
     id = (providedId?.value || `headlessui-input-${internalId}`) as PropsOf<TTag>["id"],
     disabled: theirDisabled = false,
     autofocus = false as PropsOf<TTag>["autofocus"],
     invalid = false,
     ...theirProps
-  }: { as?: TTag } & TextareaProps<TTag> = $props()
+  }: { as?: TTag; value?: TValue } & TextareaProps<TTag, TValue> = $props()
   const disabled = $derived(providedDisabled?.value ?? theirDisabled)
 
   const labelledBy = useLabelledBy()

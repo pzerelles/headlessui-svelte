@@ -1,5 +1,5 @@
 <script lang="ts" module>
-  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { ElementType, Props, PropsOf } from "$lib/utils/types.js"
 
   const DEFAULT_INPUT_TAG = "input" as const
 
@@ -17,7 +17,6 @@
     InputRenderPropArg,
     InputPropsWeControl,
     {
-      id?: string
       value?: TValue
       disabled?: boolean
       invalid?: boolean
@@ -44,7 +43,7 @@
   let {
     ref = $bindable(),
     value = $bindable(),
-    id = providedId?.value || `headlessui-input-${internalId}`,
+    id = (providedId?.value || `headlessui-input-${internalId}`) as PropsOf<TTag>["id"],
     disabled: theirDisabled = false,
     autofocus = false,
     invalid = false,
