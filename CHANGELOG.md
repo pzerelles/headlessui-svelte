@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.7
+
+### Patch Changes
+
+- 7b4ae3c: fix: use generic value for Input and Textarea
+
 ## 2.1.2-next.6
 
 ### Patch Changes
