@@ -19,7 +19,7 @@
     {
       disabled?: boolean
       invalid?: boolean
-      autoFocus?: boolean
+      autofocus?: boolean
     }
   >
 </script>

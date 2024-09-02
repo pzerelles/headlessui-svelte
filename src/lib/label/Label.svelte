@@ -45,7 +45,7 @@
     }
 
     if (current instanceof HTMLLabelElement) {
-      let target = document.getElementById(current.getAttribute("htmlFor") ?? "")
+      let target = document.getElementById(current.getAttribute("for") ?? "")
       if (target) {
         // Bail if the target element is disabled
         let actuallyDisabled = target.getAttribute("disabled")
@@ -81,7 +81,7 @@
   const slot = $derived({ disabled })
   const ourProps = $derived({
     id,
-    htmlFor: passive ? undefined : htmlFor,
+    for: passive ? undefined : htmlFor,
     onclick: passive ? undefined : handleClick,
     ...stateFromSlot(slot),
   })
