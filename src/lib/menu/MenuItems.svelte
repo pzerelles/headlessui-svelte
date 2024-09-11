@@ -62,19 +62,24 @@
     transition = false,
     ...theirProps
   }: { as?: TTag } & MenuItemsProps<TTag> = $props()
-  const anchor = $derived(useResolvedAnchor(rawAnchor))
+  const resolvedAnchor = useResolvedAnchor({
+    get anchor() {
+      return rawAnchor
+    },
+  })
+  const { anchor } = $derived(resolvedAnchor)
   const _state = useMenuContext("MenuOptions")
   const floatingPanel = useFloatingPanel({
     get placement() {
       return anchor
     },
   })
-  const { setFloating, style } = $derived(floatingPanel)
+  const { setFloating, styles } = $derived(floatingPanel)
   const getFloatingPanelProps = useFloatingPanelProps()
 
   $effect(() => {
-    untrack(() => _state.setItemsElement(ref || null))
-    if (anchor) setFloating(ref)
+    untrack(() => _state.setItemsElement(ref ?? null))
+    if (anchor) setFloating(ref ?? null)
   })
   const ownerDocument = $derived(getOwnerDocument(_state.itemsElement))
 
@@ -297,7 +302,7 @@
       // to skip focusing the `MenuItems` when pressing the tab key on an
       // open `Menu`, and go to the next focusable element.
       tabindex: _state.menuState === MenuStates.Open ? 0 : undefined,
-      style: [theirProps.style, style, `--button-width: ${buttonSize.width}`].filter(Boolean).join("; "),
+      style: [theirProps.style, styles, `--button-width: ${buttonSize.width}`].filter(Boolean).join("; "),
     }),
     ...transitionDataAttributes(transitionData),
   })

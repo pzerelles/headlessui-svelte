@@ -1,6 +1,6 @@
 <script lang="ts" module>
   import { useOutsideClick } from "$lib/hooks/use-outside-click.svelte.js"
-  import { createFloatingContext } from "$lib/internal/floating.svelte.js"
+  import { useFloatingProvider } from "$lib/internal/floating.svelte.js"
   import { createOpenClosedContext, State } from "$lib/internal/open-closed.js"
   import { calculateActiveIndex, Focus } from "$lib/utils/calculate-active-index.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
@@ -306,7 +306,7 @@
     close: _state.closeMenu,
   } satisfies MenuRenderPropArg)
 
-  createFloatingContext()
+  useFloatingProvider()
 
   const openClosed = $derived(
     match(menuState, {

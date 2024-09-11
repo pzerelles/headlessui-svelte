@@ -34,7 +34,7 @@
   import { useFocusRing } from "$lib/hooks/use-focus-ring.svelte.js"
   import { useActivePress } from "$lib/hooks/use-active-press.svelte.js"
   import { useResolveButtonType } from "$lib/hooks/use-resolve-button-type.svelte.js"
-  import { useFloating } from "$lib/internal/floating.svelte.js"
+  import { useFloatingReference, useFloatingReferenceProps } from "$lib/internal/floating.svelte.js"
   import { useHover } from "$lib/hooks/use-hover.svelte.js"
   import { mergeProps } from "$lib/utils/render.js"
   import { MenuStates, useMenuContext } from "./context.svelte.js"
@@ -50,7 +50,9 @@
     ...theirProps
   }: { as?: TTag } & MenuButtonProps<TTag> = $props()
   const _state = useMenuContext("MenuButton")
-  const { setReference, getReferenceProps: getFloatingReferenceProps } = useFloating()
+  const floatingReference = useFloatingReference()
+  const { setReference } = $derived(floatingReference)
+  const { getReferenceProps: getFloatingReferenceProps } = useFloatingReferenceProps()
   $effect(() => {
     untrack(() => _state.setButtonElement(ref ? (ref as HTMLButtonElement) : null))
     setReference(ref)

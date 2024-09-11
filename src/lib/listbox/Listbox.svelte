@@ -5,7 +5,6 @@
   import { calculateActiveIndex, Focus } from "$lib/utils/calculate-active-index.js"
   import { FocusableMode, isFocusableElement, sortByDomNode } from "$lib/utils/focus-management.js"
   import { match } from "$lib/utils/match.js"
-  import { useRef } from "$lib/utils/ref.svelte.js"
   import type { ElementType, EnsureArray, Props } from "$lib/utils/types.js"
   import { setContext, type Snippet } from "svelte"
   import { ActivationTrigger, ListboxStates, ValueMode } from "./context.svelte.js"
@@ -50,7 +49,7 @@
 <script lang="ts" generics="TType, TActualType, TTag extends ElementType = typeof DEFAULT_LISTBOX_TAG">
   import { disposables } from "$lib/utils/disposables.js"
   import FormFields from "$lib/internal/FormFields.svelte"
-  import { createFloatingContext } from "$lib/internal/floating.svelte.js"
+  import { useFloatingProvider } from "$lib/internal/floating.svelte.js"
   import { createOpenClosedContext, State } from "$lib/internal/open-closed.js"
   import { useLabels } from "$lib/label/context.svelte.js"
   import { useOutsideClick } from "$lib/hooks/use-outside-click.svelte.js"
@@ -514,7 +513,7 @@
     clearSearch: _state.clearSearch,
   })
 
-  createFloatingContext()
+  useFloatingProvider()
 
   const openClosed = $derived(
     match(data.listboxState, {

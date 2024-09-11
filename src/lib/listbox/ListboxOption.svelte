@@ -80,6 +80,10 @@
     } else {
       data.listElements.set(id, ref)
     }
+
+    return () => {
+      if (ref) data.listElements.delete(id)
+    }
   })
 
   $effect(() => {
@@ -137,8 +141,6 @@
     if (!active) return
     actions.goToOption(Focus.Nothing)
   }
-
-  $inspect(id, selected)
 
   const slot = $derived({
     active,

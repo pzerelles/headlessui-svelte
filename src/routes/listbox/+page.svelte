@@ -61,7 +61,7 @@
 {/snippet}
 
 <div class="flex h-screen w-full justify-center bg-black px-4 pt-24">
-  <div class="mx-auto h-screen w-52 pt-20">
+  <div class="mx-auto h-screen w-52 pt-40">
     <Listbox value={selected} onchange={(value) => (selected = value)}>
       <ListboxButton
         class={clsx(
@@ -77,6 +77,7 @@
       </ListboxButton>
       <ListboxOptions
         transition
+        anchor="selection"
         class={clsx(
           "w-[var(--button-width)] rounded-xl border border-white/5 bg-white/5 p-1 [--anchor-gap:var(--spacing-1)] focus:outline-none",
           "transition duration-100 ease-in data-[leave]:data-[closed]:opacity-0"
@@ -104,11 +105,11 @@
       {/each}
     {/snippet}
 
-    {@render myListbox({
+    <!--{@render myListbox({
       value: selected,
       onchange: (value) => (selected = value),
       placeholder: "Select a person&hellip;",
       children: options,
-    })}
+  })}-->
   </div>
 </div>

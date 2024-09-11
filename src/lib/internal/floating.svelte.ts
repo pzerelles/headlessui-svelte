@@ -1,30 +1,13 @@
-/* eslint-disable @typescript-eslint/no-unused-expressions */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable prefer-const */
-import { useDisposables } from "$lib/utils/disposables.js"
-import { computePosition, type ComputePositionReturn } from "@floating-ui/dom"
-import {
-  flip as flipMiddleware,
-  //inner as innerMiddleware,
-  offset as offsetMiddleware,
-  shift as shiftMiddleware,
-  size as sizeMiddleware,
-} from "@floating-ui/core"
-/*import {
-  autoUpdate,
-  useFloating as _useFloating,
-  //useInnerOffset,
-  useInteractions,
-  //type InnerProps,
-  type UseFloatingReturn,
-} from "@skeletonlabs/floating-ui-svelte"*/
-import { getContext, setContext, untrack } from "svelte"
-import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
+import { useInteractions, type InnerProps, type UseFloatingReturn } from "../utils/floating-ui/svelte/index.js"
+import { useDisposables } from "../utils/disposables.js"
+import { getContext, untrack } from "svelte"
 
-type Align = "start" | "end"
-type Placement = "top" | "right" | "bottom" | "left"
+export { useFloatingProvider } from "./floating-provider.svelte.js"
 
-type BaseAnchorProps = {
+export type Align = "start" | "end"
+export type Placement = "top" | "right" | "bottom" | "left"
+
+export type BaseAnchorProps = {
   /**
    * The `gap` is the space between the trigger and the panel.
    */
@@ -69,38 +52,60 @@ export type AnchorPropsWithSelection =
 
 export type InternalFloatingPanelProps = Partial<{
   inner: {
-    listRef: MutableRefObject<(HTMLElement | null)[]> // InnerProps['listRef']
-    index: number
+    listRef: InnerProps["listRef"]
+    index: InnerProps["index"]
   }
 }>
 
-type FloatingContext = {
-  styles?: string
-  setReference: (reference: HTMLElement | null | undefined) => void
-  setFloating: (floating: HTMLElement | null | undefined) => void
-  getReferenceProps: () => Record<string, any>
-  getFloatingProps: () => Record<string, any>
+export type FloatingContext = {
+  styles?: UseFloatingReturn<any>["floatingStyles"]
+  setReference: UseFloatingReturn<any>["refs"]["setReference"]
+  setFloating: UseFloatingReturn<any>["refs"]["setFloating"]
+  getReferenceProps: ReturnType<typeof useInteractions>["getReferenceProps"]
+  getFloatingProps: ReturnType<typeof useInteractions>["getFloatingProps"]
   slot: Partial<{
     anchor: `${Placement | "selection"}` | `${Placement | "selection"} ${Align}`
   }>
 }
 
-type PlacementContext = ((value: Exclude<AnchorPropsWithSelection, boolean> | null) => void) | null
-
-export function useResolvedAnchor<T extends AnchorProps | AnchorPropsWithSelection>(
-  anchor?: T
-): Exclude<T, boolean | string> | null {
-  if (!anchor) return null // Disable entirely
-  if (typeof anchor === "string") return { to: anchor } as Exclude<T, boolean | string> // Simple string based value,
-  return anchor as Exclude<T, boolean | string> // User-provided value
+export type PlacementContext = {
+  updatePlacementConfig: ((value: Exclude<AnchorPropsWithSelection, boolean> | null) => void) | null
 }
 
-export function useFloating() {
-  return getContext<FloatingContext>("FloatingContext")
+export function useResolvedAnchor<T extends AnchorProps | AnchorPropsWithSelection>(options: {
+  anchor?: T
+}): { anchor: Exclude<T, boolean | string> | null } {
+  const { anchor } = $derived(options)
+  return {
+    get anchor() {
+      if (!anchor) return null // Disable entirely
+      if (typeof anchor === "string") return { to: anchor } as Exclude<T, boolean | string> // Simple string based value,
+      return anchor as Exclude<T, boolean | string> // User-provided value
+    },
+  }
+}
+
+export function useFloatingReference() {
+  const context = getContext<FloatingContext>("FloatingContext")
+  return {
+    get setReference() {
+      return context.setReference
+    },
+  }
+}
+
+export function useFloatingReferenceProps() {
+  const context = getContext<FloatingContext>("FloatingContext")
+  return {
+    get getReferenceProps() {
+      return context.getReferenceProps
+    },
+  }
 }
 
 export function useFloatingPanelProps() {
-  const { getFloatingProps, slot } = getContext<FloatingContext>("FloatingContext")
+  const context = getContext<FloatingContext>("FloatingContext")
+  const { getFloatingProps, slot } = $derived(context)
   return (...args: Parameters<typeof getFloatingProps>) => {
     return Object.assign({}, getFloatingProps(...args), {
       "data-anchor": slot.anchor,
@@ -108,16 +113,21 @@ export function useFloatingPanelProps() {
   }
 }
 
-export function useFloatingPanel(options: {
-  placement: (AnchorPropsWithSelection & InternalFloatingPanelProps) | null
-}) {
-  const placement = $derived.by(() => {
-    if (options.placement === false) return null // Disable entirely
-    if (typeof options.placement === "string") return { to: options.placement } // Simple string based value
-    return options.placement
-  })
+export function useFloatingPanel(
+  options: { placement: (AnchorPropsWithSelection & InternalFloatingPanelProps) | null } = { placement: null }
+) {
+  const placement = $derived(
+    options.placement === false
+      ? null
+      : typeof options.placement === "string"
+        ? { to: options.placement }
+        : options.placement
+  )
+  //if (placement === false) placement = null // Disable entirely
+  //if (typeof placement === "string") placement = { to: placement } // Simple string based value
 
-  const updatePlacementConfig = getContext<PlacementContext>("PlacementContext")
+  const placementContext = getContext<PlacementContext>("PlacementContext")
+  const { updatePlacementConfig } = $derived(placementContext)
   const trigger = $derived(
     JSON.stringify(
       placement,
@@ -145,271 +155,49 @@ export function useFloatingPanel(options: {
     get setFloating() {
       return context.setFloating
     },
-    get style() {
+    get styles() {
       return placement ? context.styles : undefined
     },
   }
 }
 
-// TODO: Make this a config part of the `config`. Just need to decide on a name.
-//let MINIMUM_ITEMS_VISIBLE = 4
-
-export const createFloatingContext = ({ enabled = true }: { enabled?: boolean } = {}): FloatingContext => {
-  let config = $state<(AnchorPropsWithSelection & InternalFloatingPanelProps) | null>(null)
-  //let innerOffset = $state(0)
-  //let overflowRef = $state<HTMLElement | null>(null)
-
-  let referenceEl = $state<HTMLElement | null>(null)
-  let floatingEl = $state<HTMLElement | null>(null)
-  $effect(() => useFixScrollingPixel(floatingEl))
-
-  const isEnabled = $derived(enabled && config !== null && floatingEl !== null)
-
-  const {
-    to: placement = "bottom",
-    gap = 0,
-    offset = 0,
-    padding = 0,
-    inner,
-  } = $derived(
-    useResolvedConfig({
-      get config() {
-        return config
-      },
-      get element() {
-        return floatingEl
-      },
-    })
-  )
-  const [to, align = "center"] = $derived(placement.split(" ") as [Placement | "selection", Align | "center"])
-
-  // Reset
+export function useFixScrollingPixel(options: { element: HTMLElement | null }) {
+  const { element } = $derived(options)
   $effect(() => {
-    if (!isEnabled) return
-    //innerOffset = 0
-  })
+    if (!element) return
 
-  let floatingStyles = $state<string>()
-  let context = $state<ComputePositionReturn>()
-  let currentComputeId = $state<number>(0)
-  $effect(() => {
-    if (!referenceEl || !floatingEl) return
+    untrack(() => {
+      let observer = new MutationObserver(() => {
+        let maxHeight = window.getComputedStyle(element).maxHeight
 
-    const computeId = untrack(() => currentComputeId + 1)
-    currentComputeId = computeId
+        let maxHeightFloat = parseFloat(maxHeight)
+        if (isNaN(maxHeightFloat)) return
 
-    computePosition(referenceEl, floatingEl, {
-      placement:
-        to === "selection"
-          ? align === "center"
-            ? "bottom"
-            : `bottom-${align}`
-          : align === "center"
-            ? `${to}`
-            : `${to}-${align}`,
+        let maxHeightInt = parseInt(maxHeight)
+        if (isNaN(maxHeightInt)) return
 
-      // This component will be used in combination with a `Portal`, which means the floating
-      // element will be rendered outside of the current DOM tree.
-      strategy: "absolute",
+        if (maxHeightFloat !== maxHeightInt) {
+          element.style.maxHeight = `${Math.ceil(maxHeightFloat)}px`
+        }
+      })
 
-      middleware: [
-        // - The `mainAxis` is set to `gap` which defines the gap between the panel and the
-        //   trigger/reference.
-        // - The `crossAxis` is set to `offset` which nudges the panel from its original position.
-        //
-        // When we are showing the panel on top of the selected item, we don't want a gap between the
-        // reference and the panel, therefore setting the `mainAxis` to `0`.
-        offsetMiddleware({
-          mainAxis: to === "selection" ? 0 : gap,
-          crossAxis: offset,
-        }),
+      observer.observe(element, {
+        attributes: true,
+        attributeFilter: ["style"],
+      })
 
-        // When the panel overflows the viewport, we will try to nudge the panel to the other side to
-        // ensure it's not clipped. We use the `padding` to define the  minimum space between the
-        // panel and the viewport.
-        shiftMiddleware({ padding }),
-
-        // The `flip` middleware will swap the `placement` of the panel if there is not enough room.
-        // This is not compatible with the `inner` middleware (which is only enabled when `to` is set
-        // to "selection").
-        to !== "selection" && flipMiddleware({ padding }),
-
-        // The `inner` middleware will ensure the panel is always fully visible on screen and
-        // positioned on top of the reference and moved to the currently selected item.
-        to === "selection" && inner
-          ? null /* TODO: use inner when available: innerMiddleware({
-                ...inner,
-                padding, // For overflow detection
-                overflowRef,
-                offset: innerOffset,
-                minItemsVisible: MINIMUM_ITEMS_VISIBLE,
-                referenceOverflowThreshold: padding,
-                onFallbackChange(fallback) {
-                  if (!fallback) return
-                  let parent = context.elements.floating
-                  if (!parent) return
-                  let scrollPaddingBottom =
-                    parseFloat(getComputedStyle(parent!).scrollPaddingBottom) || 0
-    
-                  // We want at least X visible items, but if there are less than X items in the list,
-                  // we want to show as many as possible.
-                  let missing = Math.min(MINIMUM_ITEMS_VISIBLE, parent.childElementCount)
-    
-                  let elementHeight = 0
-                  let elementAmountVisible = 0
-    
-                  for (let child of context.elements.floating?.childNodes ?? []) {
-                    if (child instanceof HTMLElement) {
-                      let childTop = child.offsetTop
-                      // It can be that the child is fully visible, but we also want to keep the scroll
-                      // padding into account to ensure the UI looks good. Therefore we fake that the
-                      // bottom of the child is actually `scrollPaddingBottom` amount of pixels lower.
-                      let childBottom = childTop + child.clientHeight + scrollPaddingBottom
-    
-                      let parentTop = parent.scrollTop
-                      let parentBottom = parentTop + parent.clientHeight
-    
-                      // Figure out if the child is fully visible in the scroll parent.
-                      if (childTop >= parentTop && childBottom <= parentBottom) {
-                        missing--
-                      } else {
-                        // Not fully visible, so we will use this child to calculate the height of
-                        // each item. We will also use this to calculate how much of the item is
-                        // already visible.
-                        elementAmountVisible = Math.max(
-                          0,
-                          Math.min(childBottom, parentBottom) - Math.max(childTop, parentTop)
-                        )
-                        elementHeight = child.clientHeight
-                        break
-                      }
-                    }
-                  }
-    
-                  // There are fewer visible items than we want, so we will try to nudge the offset
-                  // to show more items.
-                  if (missing >= 1) {
-                    setInnerOffset((existingOffset) => {
-                      let newInnerOffset =
-                        elementHeight * missing - // `missing` amount of `elementHeight`
-                        elementAmountVisible + // The amount of the last item that is visible
-                        scrollPaddingBottom // The scroll padding to ensure the UI looks good
-    
-                      // Nudged enough already, no need to continue
-                      if (existingOffset >= newInnerOffset) {
-                        return existingOffset
-                      }
-    
-                      return newInnerOffset
-                    })
-                  }
-                },
-              })*/
-          : null,
-
-        // The `size` middleware will ensure the panel is never bigger than the viewport minus the
-        // provided `padding` that we want.
-        sizeMiddleware({
-          padding,
-          apply({ availableWidth, availableHeight, elements }) {
-            Object.assign(elements.floating.style, {
-              overflow: "auto",
-              maxWidth: `${availableWidth}px`,
-              maxHeight: `min(var(--anchor-max-height, 100vh), ${availableHeight}px)`,
-            })
-          },
-        }),
-      ].filter(Boolean),
-    }).then((res) => {
-      if (currentComputeId === computeId) {
-        // Ensure only the last compute updates the context if multiple are running in parallel
-        context = res
-        const { x, y } = res
-        floatingStyles = `position: absolute; left: ${x}px; top: ${y}px;`
+      return () => {
+        observer.disconnect()
       }
     })
   })
-
-  // Calculate placement information to expose as data attributes
-  let [exposedTo = to, exposedAlign = align] = context?.placement.split("-") ?? []
-  // If user-land code is using custom styles specifically for `bottom`, but
-  // they chose `selection`, then we want to make sure to map it to selection
-  // again otherwise styles could be wrong.
-  if (to === "selection") exposedTo = "selection"
-
-  const data = $derived({
-    anchor: [exposedTo, exposedAlign].filter(Boolean).join(" ") as FloatingContext["slot"]["anchor"],
-  })
-
-  /*let innerOffsetConfig = useInnerOffset(context, {
-      overflowRef,
-      onChange: setInnerOffset,
-    })*/
-  const getReferenceProps = () => ({})
-  const getFloatingProps = () => ({})
-  /*let { getReferenceProps, getFloatingProps } = useInteractions([
-    innerOffsetConfig
-  ])*/
-
-  const floatingContext: FloatingContext = {
-    setFloating: (floating) => {
-      floatingEl = floating || null
-    },
-    setReference: (reference) => {
-      referenceEl = reference || null
-    },
-    get styles() {
-      return floatingStyles
-    },
-    getReferenceProps,
-    getFloatingProps,
-    get slot() {
-      return data
-    },
-  }
-
-  setContext("FloatingContext", floatingContext)
-  setContext<PlacementContext>("PlacementContext", (value) => {
-    config = value
-  })
-
-  return floatingContext
 }
 
-function useFixScrollingPixel(element: HTMLElement | null) {
-  if (!element) return
-
-  let observer = new MutationObserver(() => {
-    let maxHeight = window.getComputedStyle(element).maxHeight
-
-    let maxHeightFloat = parseFloat(maxHeight)
-    if (isNaN(maxHeightFloat)) return
-
-    let maxHeightInt = parseInt(maxHeight)
-    if (isNaN(maxHeightInt)) return
-
-    if (maxHeightFloat !== maxHeightInt) {
-      element.style.maxHeight = `${Math.ceil(maxHeightFloat)}px`
-    }
-  })
-
-  observer.observe(element, {
-    attributes: true,
-    attributeFilter: ["style"],
-  })
-
-  return () => {
-    observer.disconnect()
-  }
-}
-
-function useResolvedConfig({
-  config,
-  element,
-}: {
+export function useResolvedConfig(options: {
   config: (Exclude<AnchorPropsWithSelection, boolean | string> & InternalFloatingPanelProps) | null
   element?: HTMLElement | null
 }) {
+  const { config, element } = $derived(options)
   const gap = useResolvePxValue({
     get input() {
       return config?.gap ?? "var(--anchor-gap, 0)"
@@ -420,7 +208,7 @@ function useResolvedConfig({
   })
   const offset = useResolvePxValue({
     get input() {
-      return config?.gap ?? "var(--anchor-offset, 0)"
+      return config?.offset ?? "var(--anchor-offset, 0)"
     },
     get element() {
       return element
@@ -428,7 +216,7 @@ function useResolvedConfig({
   })
   const padding = useResolvePxValue({
     get input() {
-      return config?.gap ?? "var(--anchor-padding, 0)"
+      return config?.padding ?? "var(--anchor-padding, 0)"
     },
     get element() {
       return element
@@ -454,15 +242,8 @@ function useResolvedConfig({
   }
 }
 
-function useResolvePxValue({
-  input,
-  element,
-  defaultValue,
-}: {
-  input?: string | number
-  element?: HTMLElement | null
-  defaultValue?: number
-}) {
+function useResolvePxValue(options: { input?: string | number; element?: HTMLElement | null; defaultValue?: number }) {
+  const { input, element, defaultValue } = $derived(options)
   let d = useDisposables()
   const computeValue = (value?: string | number, element?: HTMLElement | null) => {
     // Nullish
@@ -556,15 +337,17 @@ function useResolvePxValue({
 
   // Calculate the value immediately when the input or element changes. Later we can setup a watcher
   // to track the value changes over time.
-  const immediateValue = computeValue(input, element)[0]
-  let value = $state(immediateValue)
+  const immediateValue = $derived(computeValue(input, element)[0])
+  let explicitValue = $state<number>()
+  const setValue = (value?: number) => (explicitValue = value)
+  const value = explicitValue ?? immediateValue
 
   $effect(() => {
-    let [newValue, watcher] = computeValue(input, element)
-    value = newValue
+    const [value, watcher] = computeValue(input, element)
+    setValue(value)
 
     if (!watcher) return
-    return watcher((_value) => (value = _value))
+    return watcher(setValue)
   })
 
   return {

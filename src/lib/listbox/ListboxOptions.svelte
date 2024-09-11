@@ -56,7 +56,6 @@
   import { useElementSize } from "$lib/hooks/use-element-size.svelte.js"
   import { setContext, type Snippet } from "svelte"
   import Portal from "$lib/portal/Portal.svelte"
-  import { stateFromSlot } from "$lib/utils/state.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 
   const internalId = useId()
@@ -69,7 +68,12 @@
     transition = false,
     ...theirProps
   }: { as?: TTag } & ListboxOptionsProps<TTag> = $props()
-  const anchor = $derived(useResolvedAnchor(rawAnchor))
+  const resolvedAnchor = useResolvedAnchor({
+    get anchor() {
+      return rawAnchor
+    },
+  })
+  const { anchor } = $derived(resolvedAnchor)
 
   let localOptionsElement = $state<HTMLElement | null>()
 
@@ -213,13 +217,13 @@
       return anchorOptions ?? null
     },
   })
-  const { setFloating, style } = $derived(floatingPanel)
+  const { setFloating, styles } = $derived(floatingPanel)
   const getFloatingPanelProps = useFloatingPanelProps()
 
   $effect(() => {
     localOptionsElement = ref
-    data.optionsElement = ref || null
-    if (anchor) setFloating(ref)
+    data.optionsElement = ref ?? null
+    if (anchor) setFloating(ref ?? null)
   })
 
   const searchDisposables = useDisposables()
@@ -333,7 +337,7 @@
       // to skip focusing the `ListboxOptions` when pressing the tab key on an
       // open `Listbox`, and go to the next focusable element.
       tabindex: data.listboxState === ListboxStates.Open ? 0 : undefined,
-      style: [theirProps.style, style, `--button-width: ${buttonSize.width}`].filter(Boolean).join("; "),
+      style: [theirProps.style, styles, `--button-width: ${buttonSize.width}`].filter(Boolean).join("; "),
     }),
     ...transitionDataAttributes(transitionData),
   })
@@ -346,6 +350,8 @@
   }
 
   setContext("ListboxDataContext", derivedData)
+
+  $inspect(styles)
 </script>
 
 <Portal enabled={portal ? theirProps.static || visible : false}>

@@ -8,7 +8,7 @@
   import { useFocusRing } from "$lib/hooks/use-focus-ring.svelte.js"
   import { useActivePress } from "$lib/hooks/use-active-press.svelte.js"
   import { useResolveButtonType } from "$lib/hooks/use-resolve-button-type.svelte.js"
-  import { useFloating } from "$lib/internal/floating.svelte.js"
+  import { useFloatingReference, useFloatingReferenceProps } from "$lib/internal/floating.svelte.js"
   import { stateFromSlot } from "$lib/utils/state.js"
   import type { Snippet } from "svelte"
   import { useLabelledBy } from "$lib/label/context.svelte.js"
@@ -56,7 +56,8 @@
     autofocus = false,
     ...theirProps
   }: { as?: TTag } & ListboxButtonProps<TTag> = $props()
-  const { setReference, getReferenceProps: getFloatingReferenceProps } = useFloating()
+  const { setReference } = useFloatingReference()
+  const { getReferenceProps: getFloatingReferenceProps } = useFloatingReferenceProps()
   $effect(() => {
     data.buttonElement = ref || null
     setReference(ref)
