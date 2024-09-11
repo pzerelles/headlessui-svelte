@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.10
+
+### Patch Changes
+
+- 7c92aad: fix: use Snippet for ListboxSelectedOption options and placeholder
+
 ## 2.1.2-next.9
 
 ### Patch Changes
