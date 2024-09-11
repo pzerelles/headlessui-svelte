@@ -285,8 +285,8 @@
     unit: true,
   })
 
-  const ourProps = $derived(
-    mergeProps(anchor ? getFloatingPanelProps() : {}, {
+  const ourProps = $derived({
+    ...mergeProps(anchor ? getFloatingPanelProps() : {}, {
       "aria-activedescendant": _state.activeItemIndex === null ? undefined : _state.items[_state.activeItemIndex]?.id,
       "aria-labelledby": _state.buttonElement?.id,
       id,
@@ -297,11 +297,10 @@
       // to skip focusing the `MenuItems` when pressing the tab key on an
       // open `Menu`, and go to the next focusable element.
       tabindex: _state.menuState === MenuStates.Open ? 0 : undefined,
-      ref,
       style: [theirProps.style, style, `--button-width: ${buttonSize.width}`].filter(Boolean).join("; "),
-      ...transitionDataAttributes(transitionData),
-    })
-  )
+    }),
+    ...transitionDataAttributes(transitionData),
+  })
 </script>
 
 <Portal enabled={portal ? theirProps.static || visible : false}>

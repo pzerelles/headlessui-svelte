@@ -17,7 +17,7 @@
   ]
 
   let selected: (typeof people)[number] = $state(people[1])
-  let multiSelected: typeof people = $state([])
+  let multiSelected: typeof people = $state([people[1]])
 </script>
 
 {#snippet myListbox({
@@ -25,7 +25,7 @@
   placeholder: placeholderText,
   children,
   ...props
-}: { placeholder?: string; children: Snippet } & ListboxProps<"svelte:fragment", typeof people>)}
+}: { placeholder?: string; children: Snippet } & ListboxProps<"svelte:fragment", typeof selected>)}
   {#snippet placeholder()}
     <span class="opacity-50">{placeholderText}</span>
   {/snippet}
@@ -105,11 +105,10 @@
     {/snippet}
 
     {@render myListbox({
-      value: multiSelected,
-      onchange: (value) => (multiSelected = value),
+      value: selected,
+      onchange: (value) => (selected = value),
       placeholder: "Select a person&hellip;",
       children: options,
-      multiple: true,
     })}
   </div>
 </div>

@@ -58,7 +58,7 @@
   }: { as?: TTag } & ListboxButtonProps<TTag> = $props()
   const { setReference, getReferenceProps: getFloatingReferenceProps } = useFloating()
   $effect(() => {
-    data.buttonRef.current = ref || null
+    data.buttonElement = ref || null
     setReference(ref)
   })
 
@@ -102,7 +102,7 @@
     //if (isDisabledReactIssue7711(event.currentTarget)) return event.preventDefault()
     if (data.listboxState === ListboxStates.Open) {
       actions.closeListbox()
-      data.buttonRef.current?.focus({ preventScroll: true })
+      data.buttonElement?.focus({ preventScroll: true })
     } else {
       event.preventDefault()
       actions.openListbox()
@@ -153,7 +153,7 @@
       return { type: theirProps.type, as: theirProps.as }
     },
     get ref() {
-      return data.buttonRef
+      return { current: data.buttonElement }
     },
   })
 
@@ -164,7 +164,7 @@
         id,
         type: buttonType.type,
         "aria-haspopup": "listbox",
-        "aria-controls": data.optionsRef.current?.id,
+        "aria-controls": data.optionsElement?.id,
         "aria-expanded": data.listboxState === ListboxStates.Open,
         "aria-labelledby": labelledBy.value,
         "aria-describedby": describedBy.value,

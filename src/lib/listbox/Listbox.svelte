@@ -5,10 +5,10 @@
   import { calculateActiveIndex, Focus } from "$lib/utils/calculate-active-index.js"
   import { FocusableMode, isFocusableElement, sortByDomNode } from "$lib/utils/focus-management.js"
   import { match } from "$lib/utils/match.js"
-  import { useRef, type MutableRefObject } from "$lib/utils/ref.svelte.js"
+  import { useRef } from "$lib/utils/ref.svelte.js"
   import type { ElementType, EnsureArray, Props } from "$lib/utils/types.js"
-  import { getContext, setContext, type Snippet } from "svelte"
-  import { ActivationTrigger, ListboxStates, ValueMode } from "./ListboxStates.js"
+  import { setContext, type Snippet } from "svelte"
+  import { ActivationTrigger, ListboxStates, ValueMode } from "./context.svelte.js"
 
   let DEFAULT_LISTBOX_TAG = "svelte:fragment"
   type ListboxRenderPropArg<T> = {
@@ -44,79 +44,7 @@
 
   export type ListboxChildren<T> = Snippet<[ListboxRenderPropArg<T>]>
 
-  export * from "./ListboxStates.js"
-
-  export type ListboxOptionDataRef<T> = MutableRefObject<{
-    textValue?: string
-    disabled: boolean
-    value: T
-    domRef: MutableRefObject<HTMLElement | null>
-  }>
-
-  interface StateDefinition<T> {
-    listboxState: ListboxStates
-
-    options: { id: string; dataRef: ListboxOptionDataRef<T> }[]
-    searchQuery: string
-    activeOptionIndex: number | null
-    activationTrigger: ActivationTrigger
-
-    __demoMode: boolean
-  }
-
-  type ListboxActionsContext = {
-    openListbox(): void
-    closeListbox(): void
-    registerOption(id: string, dataRef: ListboxOptionDataRef<unknown>): () => void
-    goToOption(focus: Focus.Specific, id: string, trigger?: ActivationTrigger): void
-    goToOption(focus: Focus, id?: string, trigger?: ActivationTrigger): void
-    selectOption(id: string): void
-    selectActiveOption(): void
-    onChange(value: unknown): void
-    search(query: string): void
-    clearSearch(): void
-  }
-
-  export function useActions(component: string) {
-    const context = getContext<ListboxActionsContext>("ListboxActionsContext")
-    if (!context) {
-      let err = new Error(`<${component} /> is missing a parent <Listbox /> component.`)
-      if (Error.captureStackTrace) Error.captureStackTrace(err, useActions)
-      throw err
-    }
-    return context
-  }
-
-  export type ListboxDataContext = {
-    value: unknown
-    disabled: boolean
-    invalid: boolean
-    mode: ValueMode
-    orientation: "horizontal" | "vertical"
-    activeOptionIndex: number | null
-    compare(a: unknown, z: unknown): boolean
-    isSelected(value: unknown): boolean
-
-    optionsPropsRef: MutableRefObject<{
-      static: boolean
-      hold: boolean
-    }>
-
-    listRef: MutableRefObject<Map<string, HTMLElement | null>>
-
-    buttonRef: MutableRefObject<HTMLElement | null>
-    optionsRef: MutableRefObject<HTMLElement | null>
-  } & Omit<StateDefinition<unknown>, "dataRef">
-
-  export function useData(component: string) {
-    const context = getContext<ListboxDataContext>("ListboxData")
-    if (context === null) {
-      let err = new Error(`<${component} /> is missing a parent <Listbox /> component.`)
-      if (Error.captureStackTrace) Error.captureStackTrace(err, useData)
-      throw err
-    }
-    return context
-  }
+  export * from "./context.svelte.js"
 </script>
 
 <script lang="ts" generics="TType, TActualType, TTag extends ElementType = typeof DEFAULT_LISTBOX_TAG">
@@ -127,6 +55,14 @@
   import { useLabels } from "$lib/label/context.svelte.js"
   import { useOutsideClick } from "$lib/hooks/use-outside-click.svelte.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
+  import type {
+    ListboxActionsContext,
+    ListboxDataContext,
+    ListboxOptionDataRef,
+    StateActions,
+    StateDefinition,
+  } from "./context.svelte.js"
+  import { SvelteMap } from "svelte/reactivity"
 
   function adjustOrderedState<T>(
     state: StateDefinition<T>,
@@ -199,11 +135,7 @@
         _state.__demoMode = false
         return _state
       },
-      goToOption(
-        action:
-          | { focus: Focus.Specific; id: string; trigger?: ActivationTrigger }
-          | { focus: Exclude<Focus, Focus.Specific>; trigger?: ActivationTrigger }
-      ) {
+      goToOption(action) {
         if (disabled) return _state
         if (_state.listboxState === ListboxStates.Closed) return _state
 
@@ -302,7 +234,7 @@
         _state.activeOptionIndex = activeOptionIndex
         return _state
       },
-      search(value: string) {
+      search(value) {
         if (disabled) return _state
         if (_state.listboxState === ListboxStates.Closed) return _state
 
@@ -340,13 +272,13 @@
         _state.searchQuery = ""
         return _state
       },
-      registerOption(action: { id: string; dataRef: ListboxOptionDataRef<TActualType> }) {
-        let option = { id: action.id, dataRef: action.dataRef }
+      registerOption(id, dataRef) {
+        let option = { id, dataRef }
         let adjustedState = adjustOrderedState(_state, (options) => [...options, option])
 
         // Check if we need to make the newly registered option active.
         if (_state.activeOptionIndex === null) {
-          if (isSelected(action.dataRef.current.value as any)) {
+          if (isSelected(dataRef.current.value as any)) {
             adjustedState.activeOptionIndex = adjustedState.options.indexOf(option)
           }
         }
@@ -355,9 +287,9 @@
         _state.activeOptionIndex = adjustedState.activeOptionIndex
         return _state
       },
-      unregisterOption(action: { id: string }) {
+      unregisterOption(id) {
         let adjustedState = adjustOrderedState(_state, (options) => {
-          let idx = options.findIndex((a) => a.id === action.id)
+          let idx = options.findIndex((a) => a.id === id)
           if (idx !== -1) options.splice(idx, 1)
           return options
         })
@@ -367,14 +299,8 @@
         _state.activationTrigger = ActivationTrigger.Other
         return _state
       },
-    }
+    } satisfies StateDefinition<TActualType> & StateActions<TActualType>
   }
-
-  const listboxActionsContext: ListboxActionsContext | null = null
-  setContext("ListboxActionsContext", listboxActionsContext)
-
-  const listboxDataContext: ListboxDataContext | null = null
-  setContext("ListboxDataContext", listboxDataContext)
 
   let {
     ref = $bindable(),
@@ -417,13 +343,13 @@
     __demoMode,
   } as StateDefinition<TActualType>)
 
-  type _Data = ListboxDataContext
+  type _Data = ListboxDataContext<TActualType>
 
-  const optionsPropsRef = useRef<_Data["optionsPropsRef"]["current"]>({ static: false, hold: false })
+  const optionsProps = $state<_Data["optionsProps"]>({ static: false, hold: false })
 
-  const buttonRef = useRef<_Data["buttonRef"]["current"]>(null)
-  const optionsRef = useRef<_Data["optionsRef"]["current"]>(null)
-  const listRef = useRef<_Data["listRef"]["current"]>(new Map())
+  let buttonElement = $state<_Data["buttonElement"]>(null)
+  let optionsElement = $state<_Data["optionsElement"]>(null)
+  const listElements = new SvelteMap<string, HTMLElement | null>()
 
   const compare = useByComparator(by)
 
@@ -437,7 +363,7 @@
       },
     })
 
-  const data = {
+  const data: ListboxDataContext<TActualType> = {
     get listboxState() {
       return _state.listboxState
     },
@@ -473,21 +399,26 @@
     },
     compare,
     isSelected,
-    get optionsPropsRef() {
-      return optionsPropsRef
+    get optionsProps() {
+      return optionsProps
     },
-    get buttonRef() {
-      return buttonRef
+    get buttonElement() {
+      return buttonElement
     },
-    get optionsRef() {
-      return optionsRef
+    set buttonElement(value) {
+      buttonElement = value
     },
-    get listRef() {
-      return listRef
+    get optionsElement() {
+      return optionsElement
+    },
+    set optionsElement(value) {
+      optionsElement = value
+    },
+    get listElements() {
+      return listElements
     },
   }
-  setContext<ListboxDataContext>("ListboxDataContext", data)
-  setContext("ListboxData", data)
+  setContext<ListboxDataContext<TActualType>>("ListboxDataContext", data)
 
   // Handle outside click
   const outsideClickEnabled = $derived(data.listboxState === ListboxStates.Open)
@@ -496,14 +427,14 @@
       return outsideClickEnabled
     },
     get containers() {
-      return [data.buttonRef, data.optionsRef]
+      return [data.buttonElement, data.optionsElement]
     },
     cb: (event, target) => {
       _state.closeListbox()
 
       if (!isFocusableElement(target, FocusableMode.Loose)) {
         event.preventDefault()
-        data.buttonRef.current?.focus()
+        data.buttonElement?.focus()
       }
     },
   })
@@ -547,8 +478,8 @@
   }
 
   const registerOption = (id: string, dataRef: ListboxOptionDataRef<TActualType>) => {
-    _state.registerOption({ id, dataRef })
-    return () => _state.unregisterOption({ id })
+    _state.registerOption(id, dataRef)
+    return () => _state.unregisterOption(id)
   }
 
   const onChange = (value: unknown) => {
@@ -571,7 +502,7 @@
     })
   }
 
-  setContext<ListboxActionsContext>("ListboxActionsContext", {
+  setContext<ListboxActionsContext<TActualType>>("ListboxActionsContext", {
     onChange,
     registerOption,
     goToOption,
@@ -601,7 +532,7 @@
     inherit: true,
     props: {
       get htmlFor() {
-        return data.buttonRef.current?.id
+        return data.buttonElement?.id
       },
     },
     slot: {

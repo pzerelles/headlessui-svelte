@@ -70,7 +70,7 @@ export type AnchorPropsWithSelection =
 export type InternalFloatingPanelProps = Partial<{
   inner: {
     listRef: MutableRefObject<(HTMLElement | null)[]> // InnerProps['listRef']
-    index: () => number | null //InnerProps['index']
+    index: number
   }
 }>
 

@@ -76,9 +76,9 @@
 
   $effect(() => {
     if (!ref) {
-      data.listRef.current.delete(id)
+      data.listElements.delete(id)
     } else {
-      data.listRef.current.set(id, ref)
+      data.listElements.set(id, ref)
     }
   })
 
@@ -106,7 +106,7 @@
     actions.onChange(value)
     if (data.mode === ValueMode.Single) {
       actions.closeListbox()
-      data.buttonRef.current?.focus({ preventScroll: true })
+      data.buttonElement?.focus({ preventScroll: true })
     }
   }
 
@@ -137,6 +137,8 @@
     if (!active) return
     actions.goToOption(Focus.Nothing)
   }
+
+  $inspect(id, selected)
 
   const slot = $derived({
     active,

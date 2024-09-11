@@ -2,25 +2,20 @@ export function useDidElementMove(options: { enabled: boolean; element: HTMLElem
   readonly value: boolean
 } {
   const { enabled, element } = $derived(options)
-  let elementPosition = $state({ left: 0, top: 0 })
+  let elementPosition = $state<DOMRect>()
 
   $effect(() => {
     if (!element) return
 
-    let DOMRect = element.getBoundingClientRect()
+    const DOMRect = element.getBoundingClientRect()
     if (DOMRect) elementPosition = DOMRect
   })
 
   const value = $derived.by(() => {
-    if (element == null) return false
-    if (!enabled) return false
-    if (element === document.activeElement) return false
+    if (element == null || !enabled || element === document.activeElement || elementPosition === undefined) return false
 
-    let buttonRect = element.getBoundingClientRect()
-
-    let didElementMove = buttonRect.top !== elementPosition.top || buttonRect.left !== elementPosition.left
-
-    return didElementMove
+    const buttonRect = element.getBoundingClientRect()
+    return buttonRect.top !== elementPosition.top || buttonRect.left !== elementPosition.left
   })
 
   return {

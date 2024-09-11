@@ -55,7 +55,6 @@
   import { focusFrom, Focus as FocusManagementFocus } from "$lib/utils/focus-management.js"
   import { useElementSize } from "$lib/hooks/use-element-size.svelte.js"
   import { setContext, type Snippet } from "svelte"
-  import Hidden from "$lib/internal/Hidden.svelte"
   import Portal from "$lib/portal/Portal.svelte"
   import { stateFromSlot } from "$lib/utils/state.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
@@ -68,11 +67,11 @@
     portal = false,
     modal = true,
     transition = false,
-    static: isStatic = false,
-    unmount = true,
     ...theirProps
   }: { as?: TTag } & ListboxOptionsProps<TTag> = $props()
   const anchor = $derived(useResolvedAnchor(rawAnchor))
+
+  let localOptionsElement = $state<HTMLElement | null>()
 
   // Always enable `portal` functionality, when `anchor` is enabled
   $effect(() => {
@@ -84,7 +83,7 @@
   const data = useData("ListboxOptions")
   const actions = useActions("ListboxOptions")
 
-  const ownerDocument = $derived(getOwnerDocument(data.optionsRef.current))
+  const ownerDocument = $derived(getOwnerDocument(data.optionsElement))
 
   const usesOpenClosedState = useOpenClosed()
   const show = $derived(
@@ -97,7 +96,7 @@
       return transition
     },
     get element() {
-      return ref
+      return localOptionsElement
     },
     get show() {
       return show
@@ -111,7 +110,7 @@
       return visible
     },
     get ref() {
-      return data.buttonRef.current
+      return data.buttonElement
     },
     get ondisappear() {
       return actions.closeListbox
@@ -137,7 +136,7 @@
     },
     elements: {
       get allowed() {
-        return [data.buttonRef.current, data.optionsRef.current]
+        return [data.buttonElement, data.optionsElement]
       },
     },
   })
@@ -157,7 +156,7 @@
       return didElementMoveEnabled
     },
     get element() {
-      return data.buttonRef.current
+      return data.buttonElement
     },
   })
 
@@ -180,9 +179,9 @@
     },
   })
 
-  const isSelected = (compareValue: unknown) => data.compare(frozenValue, compareValue)
+  const isSelected = (compareValue: unknown) => data.compare(frozenValue.data, compareValue)
 
-  const selectedOptionIndex = () => {
+  const selectedOptionIndex = $derived.by(() => {
     if (anchor == null) return null
     if (!anchor?.to?.includes("selection")) return null
 
@@ -192,13 +191,13 @@
     // Ensure that if no data is selected, we default to the first item.
     if (idx === -1) idx = 0
     return idx
-  }
+  })
 
   const anchorOptions = $derived.by(() => {
     if (anchor == null) return undefined
     if (selectedOptionIndex === null) return { ...anchor, inner: undefined }
 
-    let elements = Array.from(data.listRef.current.values())
+    let elements = Array.from(data.listElements.values())
 
     return {
       ...anchor,
@@ -218,20 +217,20 @@
   const getFloatingPanelProps = useFloatingPanelProps()
 
   $effect(() => {
-    data.optionsRef.current = ref || null
+    localOptionsElement = ref
+    data.optionsElement = ref || null
     if (anchor) setFloating(ref)
   })
 
   const searchDisposables = useDisposables()
 
-  const { listboxState, optionsRef } = $derived(data)
+  const { listboxState, optionsElement } = $derived(data)
   $effect(() => {
-    let container = optionsRef.current
-    if (!container) return
+    if (!optionsElement) return
     if (listboxState !== ListboxStates.Open) return
-    if (container === getOwnerDocument(container)?.activeElement) return
+    if (optionsElement === getOwnerDocument(optionsElement)?.activeElement) return
 
-    container?.focus({ preventScroll: true })
+    optionsElement?.focus({ preventScroll: true })
   })
 
   const handleKeyDown = (event: KeyboardEvent) => {
@@ -257,7 +256,7 @@
         }
         if (data.mode === ValueMode.Single) {
           actions.closeListbox()
-          data.buttonRef.current?.focus({ preventScroll: true })
+          data.buttonElement?.focus({ preventScroll: true })
         }
         break
 
@@ -287,14 +286,14 @@
         event.preventDefault()
         event.stopPropagation()
         actions.closeListbox()
-        data.buttonRef.current?.focus({ preventScroll: true })
+        data.buttonElement?.focus({ preventScroll: true })
         return
 
       case "Tab":
         event.preventDefault()
         event.stopPropagation()
         actions.closeListbox()
-        focusFrom(data.buttonRef.current!, event.shiftKey ? FocusManagementFocus.Previous : FocusManagementFocus.Next)
+        focusFrom(data.buttonElement, event.shiftKey ? FocusManagementFocus.Previous : FocusManagementFocus.Next)
         break
 
       default:
@@ -306,36 +305,38 @@
     }
   }
 
-  const labelledby = $derived(data.buttonRef.current?.id)
+  const labelledby = $derived(data.buttonElement?.id)
   const slot = $derived({
     open: data.listboxState === ListboxStates.Open,
   } satisfies OptionsRenderPropArg)
 
   const buttonSize = useElementSize({
     get element() {
-      return data.buttonRef.current
+      return data.buttonElement
     },
     unit: true,
   })
 
-  const ourProps = $derived(
-    mergeProps(anchor ? getFloatingPanelProps() : {}, {
+  $effect(() => {
+    transitionData
+  })
+
+  const ourProps = $derived({
+    ...mergeProps(anchor ? getFloatingPanelProps() : {}, {
       id,
       "aria-activedescendant": data.activeOptionIndex === null ? undefined : data.options[data.activeOptionIndex]?.id,
       "aria-multiselectable": data.mode === ValueMode.Multi ? true : undefined,
       "aria-labelledby": labelledby,
       "aria-orientation": data.orientation,
-      onkeydown: handleKeyDown,
       role: "listbox",
       // When the `Listbox` is closed, it should not be focusable. This allows us
       // to skip focusing the `ListboxOptions` when pressing the tab key on an
       // open `Listbox`, and go to the next focusable element.
-      tabIndex: data.listboxState === ListboxStates.Open ? 0 : undefined,
+      tabindex: data.listboxState === ListboxStates.Open ? 0 : undefined,
       style: [theirProps.style, style, `--button-width: ${buttonSize.width}`].filter(Boolean).join("; "),
-      ...transitionDataAttributes(transitionData),
-      ...stateFromSlot(slot),
-    })
-  )
+    }),
+    ...transitionDataAttributes(transitionData),
+  })
 
   const derivedData: ListboxDataContext = {
     ...data,
@@ -347,18 +348,15 @@
   setContext("ListboxDataContext", derivedData)
 </script>
 
-<Portal enabled={portal ? isStatic || visible : false}>
-  {#if !panelEnabled && unmount && !isStatic}
-    <Hidden as="span" bind:ref aria-hidden="true" {...ourProps} />
-  {:else}
-    <ElementOrComponent
-      {ourProps}
-      {theirProps}
-      slots={slot}
-      defaultTag={DEFAULT_OPTIONS_TAG}
-      features={OptionsRenderFeatures}
-      name="MenuItems"
-      bind:ref
-    />
-  {/if}
+<Portal enabled={portal ? theirProps.static || visible : false}>
+  <ElementOrComponent
+    {ourProps}
+    {theirProps}
+    slots={slot}
+    defaultTag={DEFAULT_OPTIONS_TAG}
+    features={OptionsRenderFeatures}
+    visible={panelEnabled}
+    name="ListboxOptions"
+    bind:ref
+  />
 </Portal>
