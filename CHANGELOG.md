@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.8
+
+### Patch Changes
+
+- 30d377a: fix: transpile typescript to javascript for distribution
+
 ## 2.1.2-next.7
 
 ### Patch Changes
