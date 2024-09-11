@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.9
+
+### Patch Changes
+
+- ac29561: fix: provided id for Switch
+
 ## 2.1.2-next.8
 
 ### Patch Changes
