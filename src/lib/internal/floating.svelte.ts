@@ -20,6 +20,7 @@ import {
 } from "@skeletonlabs/floating-ui-svelte"*/
 import { getContext, setContext, untrack } from "svelte"
 import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
+import { useInnerOffset } from "./inner.svelte.js"
 
 type Align = "start" | "end"
 type Placement = "top" | "right" | "bottom" | "left"
@@ -74,7 +75,7 @@ export type InternalFloatingPanelProps = Partial<{
   }
 }>
 
-type FloatingContext = {
+export type FloatingContext = {
   styles?: string
   setReference: (reference: HTMLElement | null | undefined) => void
   setFloating: (floating: HTMLElement | null | undefined) => void
@@ -156,8 +157,8 @@ export function useFloatingPanel(options: {
 
 export const createFloatingContext = ({ enabled = true }: { enabled?: boolean } = {}): FloatingContext => {
   let config = $state<(AnchorPropsWithSelection & InternalFloatingPanelProps) | null>(null)
-  //let innerOffset = $state(0)
-  //let overflowRef = $state<HTMLElement | null>(null)
+  let innerOffset = $state(0)
+  let overflowRef = $state<HTMLElement | null>(null)
 
   let referenceEl = $state<HTMLElement | null>(null)
   let floatingEl = $state<HTMLElement | null>(null)
@@ -186,7 +187,7 @@ export const createFloatingContext = ({ enabled = true }: { enabled?: boolean } 
   // Reset
   $effect(() => {
     if (!isEnabled) return
-    //innerOffset = 0
+    innerOffset = 0
   })
 
   let floatingStyles = $state<string>()
@@ -341,10 +342,17 @@ export const createFloatingContext = ({ enabled = true }: { enabled?: boolean } 
     anchor: [exposedTo, exposedAlign].filter(Boolean).join(" ") as FloatingContext["slot"]["anchor"],
   })
 
-  /*let innerOffsetConfig = useInnerOffset(context, {
-      overflowRef,
-      onChange: setInnerOffset,
-    })*/
+  const innerOffsetConfig = useInnerOffset({
+    get context() {
+      return context
+    },
+    get props() {
+      return {
+        overflowRef,
+        onChange: setInnerOffset,
+      }
+    },
+  })
   const getReferenceProps = () => ({})
   const getFloatingProps = () => ({})
   /*let { getReferenceProps, getFloatingProps } = useInteractions([
