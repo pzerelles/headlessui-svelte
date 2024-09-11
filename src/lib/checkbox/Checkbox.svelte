@@ -1,5 +1,5 @@
 <script lang="ts" module>
-  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { ElementType, Props, PropsOf } from "$lib/utils/types.js"
 
   let DEFAULT_CHECKBOX_TAG = "span" as const
   type CheckboxRenderPropArg = {
@@ -25,7 +25,6 @@
     CheckboxRenderPropArg,
     CheckboxPropsWeControl,
     {
-      id?: string
       value?: TType
       disabled?: boolean
       indeterminate?: boolean
@@ -43,7 +42,7 @@
 <script lang="ts" generics="TType, TTag extends ElementType = typeof DEFAULT_CHECKBOX_TAG">
   import { tick } from "svelte"
   import { attemptSubmit } from "../utils/form.js"
-  import { getIdContext, htmlid } from "../utils/id.js"
+  import { useProvidedId, htmlid } from "../utils/id.js"
   import { useActivePress } from "../hooks/use-active-press.svelte.js"
   import { useFocusRing } from "../hooks/use-focus-ring.svelte.js"
   import FormFields from "../internal/FormFields.svelte"
@@ -56,12 +55,12 @@
   import { useControllable } from "$lib/hooks/use-controllable.svelte.js"
 
   const internalId = htmlid()
-  const providedId = getIdContext()
+  const providedId = useProvidedId()
   const providedDisabled = useDisabled()
 
   let {
     ref = $bindable(),
-    id = providedId || `headlessui-checkbox-${internalId}`,
+    id = (providedId || `headlessui-checkbox-${internalId}`) as PropsOf<TTag>["id"],
     disabled: theirDisabled = false,
     autofocus = false,
     checked: controlledChecked = $bindable(),

@@ -19,7 +19,6 @@
 <script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_FIELD_TAG">
   import { useDisabled } from "../hooks/use-disabled.js"
   import { createIdContext } from "../utils/id.js"
-  import { stateFromSlot } from "../utils/state.js"
   import { nanoid } from "nanoid"
   import { setContext, type Snippet } from "svelte"
   import { useLabels } from "$lib/label/context.svelte.js"

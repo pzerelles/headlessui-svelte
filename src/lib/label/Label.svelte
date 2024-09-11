@@ -11,7 +11,7 @@
 
 <script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_LABEL_TAG">
   import { onMount } from "svelte"
-  import { getIdContext, htmlid } from "../utils/id.js"
+  import { useProvidedId, htmlid } from "../utils/id.js"
   import { useDisabled } from "../hooks/use-disabled.js"
   import { stateFromSlot } from "../utils/state.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
@@ -19,7 +19,7 @@
 
   const internalId = htmlid()
   const context = useLabelContext()
-  const providedHtmlFor = getIdContext()
+  const providedHtmlFor = useProvidedId()
   const providedDisabled = useDisabled()
 
   let {
@@ -43,6 +43,8 @@
     if (current instanceof HTMLLabelElement) {
       e.preventDefault()
     }
+
+    console.log("click", providedHtmlFor)
 
     if (current instanceof HTMLLabelElement) {
       let target = document.getElementById(current.getAttribute("for") ?? "")

@@ -34,7 +34,7 @@
 <script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_SWITCH_TAG">
   import { useId } from "$lib/hooks/use-id.js"
   import { useDisabled } from "$lib/hooks/use-disabled.js"
-  import { useProvidedId } from "$lib/internal/id.js"
+  import { useProvidedId } from "$lib/utils/id.js"
   import { getContext, tick } from "svelte"
   import type { GroupContext } from "./SwitchGroup.svelte"
   import { attemptSubmit } from "$lib/utils/form.js"

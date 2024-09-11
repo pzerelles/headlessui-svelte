@@ -5,6 +5,6 @@ export const alphaid = customAlphabet("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmno
 
 export const htmlid = (size: number = 10) => alphaid(1) + nanoid(size - 1)
 
-export const getIdContext = () => getContext<string | undefined>("Id")
+export const useProvidedId = () => getContext<string | undefined>("Id")
 
 export const createIdContext = (id: string) => setContext<string | undefined>("Id", id)

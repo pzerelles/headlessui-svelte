@@ -28,7 +28,7 @@
 <script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_TEXTAREA_TAG, TValue = string">
   import { htmlid } from "../utils/id.js"
   import { useDisabled } from "../hooks/use-disabled.js"
-  import { useProvidedId } from "$lib/internal/id.js"
+  import { useProvidedId } from "$lib/utils/id.js"
   import { useLabelledBy } from "$lib/label/context.svelte.js"
   import { useDescribedBy } from "$lib/description/context.svelte.js"
   import { useHover } from "$lib/hooks/use-hover.svelte.js"
@@ -43,7 +43,7 @@
   let {
     ref = $bindable(),
     value = $bindable(),
-    id = (providedId?.value || `headlessui-input-${internalId}`) as PropsOf<TTag>["id"],
+    id = (providedId || `headlessui-input-${internalId}`) as PropsOf<TTag>["id"],
     disabled: theirDisabled = false,
     autofocus = false as PropsOf<TTag>["autofocus"],
     invalid = false,

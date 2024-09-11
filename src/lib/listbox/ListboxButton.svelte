@@ -1,7 +1,7 @@
 <script lang="ts" module>
   import { useId } from "$lib/hooks/use-id.js"
-  import { getIdContext } from "$lib/utils/id.js"
-  import type { ElementType, Props } from "$lib/utils/types.js"
+  import { useProvidedId } from "$lib/utils/id.js"
+  import type { ElementType, Props, PropsOf } from "$lib/utils/types.js"
   import { ListboxStates, useActions, useData } from "./Listbox.svelte"
   import { attemptSubmit } from "$lib/utils/form.js"
   import { Focus } from "$lib/utils/calculate-active-index.js"
@@ -35,7 +35,6 @@
     ButtonRenderPropArg,
     ButtonPropsWeControl,
     {
-      id?: string
       autofocus?: boolean
       disabled?: boolean
     }
@@ -49,11 +48,11 @@
   const actions = useActions("ListboxButton")
 
   const internalId = useId()
-  const providedId = getIdContext()
+  const providedId = useProvidedId()
   let {
     as = DEFAULT_BUTTON_TAG as TTag,
     ref = $bindable(),
-    id = providedId || `headlessui-listbox-button-${internalId}`,
+    id = (providedId || `headlessui-listbox-button-${internalId}`) as PropsOf<TTag>["id"],
     disabled: ownDisabled = false,
     autofocus = false,
     ...theirProps
