@@ -1,6 +1,6 @@
 <script lang="ts" module>
   import type { ElementType, Props } from "$lib/utils/types.js"
-  import type { Component } from "svelte"
+  import type { Snippet } from "svelte"
 
   const DEFAULT_SELECTED_OPTION_TAG = "svelte:fragment"
   type SelectedOptionRenderPropArg = {}
@@ -11,8 +11,8 @@
     SelectedOptionRenderPropArg,
     SelectedOptionPropsWeControl,
     {
-      options: Component<any, any>
-      placeholder?: Component<any, any>
+      options: Snippet
+      placeholder?: Snippet
     }
   >
 </script>
@@ -42,11 +42,9 @@
 
 {#snippet children()}
   {#if placeholder && shouldShowPlaceholder}
-    {@const Component = placeholder}
-    <Component />
+    {@render placeholder()}
   {:else}
-    {@const Component = options}
-    <Component />
+    {@render options()}
   {/if}
 {/snippet}
 

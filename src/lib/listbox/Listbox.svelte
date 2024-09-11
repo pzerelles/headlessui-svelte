@@ -378,7 +378,6 @@
 
   let {
     ref = $bindable(),
-    as,
     value: controlledValue,
     defaultValue,
     form,

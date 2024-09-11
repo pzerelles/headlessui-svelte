@@ -50,7 +50,6 @@
   const internalId = useId()
   const providedId = useProvidedId()
   let {
-    as = DEFAULT_BUTTON_TAG as TTag,
     ref = $bindable(),
     id = (providedId || `headlessui-listbox-button-${internalId}`) as PropsOf<TTag>["id"],
     disabled: ownDisabled = false,
@@ -151,7 +150,7 @@
 
   const buttonType = useResolveButtonType({
     get props() {
-      return { type: theirProps.type, as }
+      return { type: theirProps.type, as: theirProps.as }
     },
     get ref() {
       return data.buttonRef

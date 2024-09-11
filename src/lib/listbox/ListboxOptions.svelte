@@ -62,7 +62,6 @@
 
   const internalId = useId()
   let {
-    as = DEFAULT_OPTIONS_TAG as TTag,
     ref = $bindable(),
     id = `headlessui-listbox-options-${internalId}`,
     anchor: rawAnchor,
