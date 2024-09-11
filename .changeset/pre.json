@@ -5,6 +5,7 @@
     "@pzerelles/headlessui-svelte": "2.0.0-next.0"
   },
   "changesets": [
+    "breezy-bears-listen",
     "five-donuts-collect",
     "kind-lies-hug",
     "many-geese-begin",
