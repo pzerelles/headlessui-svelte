@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.12
+
+### Patch Changes
+
+- f50fc0f: fix: selection anchor when using ListboxSelectedOption
+
 ## 2.1.2-next.11
 
 ### Patch Changes
