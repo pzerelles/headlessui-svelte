@@ -109,7 +109,6 @@ export function useFloating<RT extends ReferenceType = ReferenceType>(
     }
 
     computePosition(referenceRef.current, floatingRef.current, config).then(async (data) => {
-      console.log("computing", config)
       const fullData = {
         ...data,
         // The floating element's position may be recomputed while it's closed

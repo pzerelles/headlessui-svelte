@@ -350,8 +350,6 @@
   }
 
   setContext("ListboxDataContext", derivedData)
-
-  $inspect(styles)
 </script>
 
 <Portal enabled={portal ? theirProps.static || visible : false}>

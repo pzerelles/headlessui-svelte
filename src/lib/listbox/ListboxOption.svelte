@@ -75,6 +75,7 @@
   })
 
   $effect(() => {
+    if (usedInSelectedOption) return
     if (!ref) {
       data.listElements.delete(id)
     } else {

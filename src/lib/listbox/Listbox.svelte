@@ -303,7 +303,7 @@
 
   let {
     ref = $bindable(),
-    value: controlledValue,
+    value: controlledValue = $bindable(),
     defaultValue,
     form,
     name,
@@ -325,6 +325,9 @@
     {
       get controlledValue() {
         return controlledValue
+      },
+      set controlledValue(value) {
+        controlledValue = value
       },
     },
     controlledOnChange,

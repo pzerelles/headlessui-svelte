@@ -37,7 +37,7 @@ export function useControllable<T>(
         onchange?.(value)
       } else {
         internalValue = value
-        input.controlledValue = value
+        if (isControlled) input.controlledValue = value
       }
     },
   }
