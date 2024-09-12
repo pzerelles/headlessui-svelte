@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.13
+
+### Patch Changes
+
+- b8580aa: fix: listbox active item state
+
 ## 2.1.2-next.12
 
 ### Patch Changes
