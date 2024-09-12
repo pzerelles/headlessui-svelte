@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.14
+
+### Patch Changes
+
+- d18e2bf: fix: move menu context out of component
+
 ## 2.1.2-next.13
 
 ### Patch Changes
