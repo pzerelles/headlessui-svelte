@@ -1,5 +1,12 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.11
+
+### Patch Changes
+
+- 58e427e: fix: problems with listbox transitions
+- 7cf8bd8: refactor: add support for "inner" to floating
+
 ## 2.1.2-next.10
 
 ### Patch Changes
