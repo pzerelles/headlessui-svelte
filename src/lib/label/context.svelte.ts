@@ -13,7 +13,7 @@ export type LabelContext = {
 
 export function useLabelContext() {
   let context = getContext<LabelContext>("LabelContext")
-  if (context === null) {
+  if (!context) {
     let err = new Error("You used a <Label /> component, but it is not inside a relevant parent.")
     if (Error.captureStackTrace) Error.captureStackTrace(err, useLabelContext)
     throw err

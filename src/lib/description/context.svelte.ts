@@ -13,7 +13,7 @@ export type DescriptionContext = {
 
 export function useDescriptionContext() {
   let context = getContext<DescriptionContext>("DescriptionContext")
-  if (context === null) {
+  if (!context) {
     let err = new Error("You used a <Description /> component, but it is not inside a relevant parent.")
     if (Error.captureStackTrace) Error.captureStackTrace(err, useDescriptionContext)
     throw err

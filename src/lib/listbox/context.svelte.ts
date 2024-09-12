@@ -92,7 +92,7 @@ export type ListboxDataContext<T = unknown> = {
 
 export function useData<T>(component: string) {
   const context = getContext<ListboxDataContext<T>>("ListboxDataContext")
-  if (context === null) {
+  if (!context) {
     let err = new Error(`<${component} /> is missing a parent <Listbox /> component.`)
     if (Error.captureStackTrace) Error.captureStackTrace(err, useData)
     throw err
