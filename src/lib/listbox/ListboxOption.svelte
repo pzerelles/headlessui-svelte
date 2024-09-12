@@ -57,7 +57,9 @@
   const data = useData("ListboxOption")
   const actions = useActions("ListboxOption")
 
-  const active = $derived(data.activeOptionIndex !== null ? data.options[data.activeOptionIndex].id === id : false)
+  const { activeOptionIndex, options } = $derived(data)
+
+  const active = $derived(activeOptionIndex !== null ? options[activeOptionIndex].id === id : false)
 
   const selected = $derived(data.isSelected(value))
   const getTextValue = useTextValue({

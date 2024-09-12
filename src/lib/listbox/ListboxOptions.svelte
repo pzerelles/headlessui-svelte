@@ -342,14 +342,66 @@
     ...transitionDataAttributes(transitionData),
   })
 
-  const derivedData: ListboxDataContext = {
+  const derivedData: ListboxDataContext = $derived({
     ...data,
     get isSelected() {
       return data.mode === ValueMode.Multi ? data.isSelected : isSelected
     },
-  }
+  })
 
-  setContext("ListboxDataContext", derivedData)
+  setContext("ListboxDataContext", {
+    get value() {
+      return data.value
+    },
+    get disabled() {
+      return data.disabled
+    },
+    get invalid() {
+      return data.invalid
+    },
+    get mode() {
+      return data.mode
+    },
+    get orientation() {
+      return data.orientation
+    },
+    get activeOptionIndex() {
+      return data.activeOptionIndex
+    },
+    get compare() {
+      return data.compare
+    },
+    get isSelected() {
+      return data.mode === ValueMode.Multi ? data.isSelected : isSelected
+    },
+    get optionsProps() {
+      return data.optionsProps
+    },
+    get listElements() {
+      return data.listElements
+    },
+    get buttonElement() {
+      return data.buttonElement
+    },
+    get optionsElement() {
+      return data.optionsElement
+    },
+    get listboxState() {
+      return data.listboxState
+    },
+    get options() {
+      return data.options
+    },
+    get searchQuery() {
+      return data.searchQuery
+    },
+    get activationTrigger() {
+      return data.activationTrigger
+    },
+    get __demoMode() {
+      return data.__demoMode
+    },
+  })
 </script>
 
 <Portal enabled={portal ? theirProps.static || visible : false}>

@@ -340,7 +340,7 @@ function useResolvePxValue(options: { input?: string | number; element?: HTMLEle
   const immediateValue = $derived(computeValue(input, element)[0])
   let explicitValue = $state<number>()
   const setValue = (value?: number) => (explicitValue = value)
-  const value = explicitValue ?? immediateValue
+  const value = $derived(explicitValue ?? immediateValue)
 
   $effect(() => {
     const [value, watcher] = computeValue(input, element)
