@@ -11,7 +11,7 @@
     }
   })
 
-  let element = $state<HTMLInputElement>()
+  let element = $state<HTMLElement>()
 
   onMount(() => {
     if (!element) return

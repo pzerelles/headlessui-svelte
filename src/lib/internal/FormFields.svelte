@@ -2,7 +2,7 @@
   import { disposables } from "../utils/disposables.js"
   import { objectToFormEntries } from "../utils/form.js"
   import FormResolver from "./FormResolver.svelte"
-  import HoistFormFields from "./HoistFormFields.svelte"
+  import { hoistFormFields } from "./form-fields.svelte.js"
   import Hidden, { HiddenFeatures } from "./Hidden.svelte"
   import { compact } from "../utils/object.js"
 
@@ -29,25 +29,30 @@
 
     return d.addEventListener(form, "reset", onReset)
   })
-</script>
 
-<HoistFormFields>
-  <FormResolver setForm={(value) => (form = value)} {formId} />
-  {#each objectToFormEntries(data) as [name, value]}
-    <Hidden
-      features={HiddenFeatures.Hidden}
-      {...compact({
+  const fields = $derived(
+    objectToFormEntries(data).map(([name, value]) =>
+      compact({
         key: name,
         as: "input",
         type: "hidden",
-        hidden: true,
-        readOnly: true,
         form: formId,
         disabled,
         name,
         value,
         ...overrides,
-      })}
-    />
+      })
+    )
+  )
+
+  const hoisted = hoistFormFields(formFields)
+</script>
+
+{#snippet formFields()}
+  <FormResolver setForm={(value) => (form = value)} {formId} />
+  {#each fields as props}
+    <Hidden features={HiddenFeatures.Hidden} {...props} />
   {/each}
-</HoistFormFields>
+{/snippet}
+
+{#if !hoisted}{@render formFields()}{/if}

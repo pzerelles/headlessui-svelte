@@ -5,7 +5,6 @@
   let {
     slot = {} as TSlot,
     tag,
-    name,
     ref = $bindable(),
     value = $bindable(),
     checked = $bindable(),
@@ -18,7 +17,6 @@
     as?: TTag
     slot: TSlot
     tag: ElementType
-    name: string
     ref?: HTMLElement
     value?: TValue
     checked?: boolean

@@ -43,4 +43,4 @@
   )
 </script>
 
-{#if render}<Generic {...rest} {...hiddenProps} {slot} tag={defaultTag} {name} bind:ref bind:value bind:checked />{/if}
+{#if render}<Generic {...rest} {...hiddenProps} {slot} tag={defaultTag} bind:ref bind:value bind:checked />{/if}

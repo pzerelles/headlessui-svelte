@@ -20,12 +20,18 @@
   import { useDisabled } from "../hooks/use-disabled.js"
   import { createIdContext } from "../utils/id.js"
   import { nanoid } from "nanoid"
-  import { setContext, type Snippet } from "svelte"
+  import { setContext } from "svelte"
   import { useLabels } from "$lib/label/context.svelte.js"
   import { useDescriptions } from "$lib/description/context.svelte.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
+  import FormFieldsProvider from "$lib/internal/FormFieldsProvider.svelte"
 
-  let { ref = $bindable(), disabled: ownDisabled = false, ...theirProps }: { as?: TTag } & FieldProps<TTag> = $props()
+  let {
+    ref = $bindable(),
+    disabled: ownDisabled = false,
+    children: theirChildren,
+    ...theirProps
+  }: { as?: TTag } & FieldProps<TTag> = $props()
 
   const inputId = `headlessui-control-${nanoid(8)}`
   createIdContext(inputId)
@@ -50,4 +56,17 @@
   })
 </script>
 
-<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_FIELD_TAG} name="Field" bind:ref />
+{#snippet children(slot: FieldRenderPropArg, props: Record<string, any>)}
+  <FormFieldsProvider>
+    {#if theirChildren}{@render theirChildren(slot, props)}{/if}
+  </FormFieldsProvider>
+{/snippet}
+
+<ElementOrComponent
+  {ourProps}
+  theirProps={{ ...theirProps, children }}
+  {slot}
+  defaultTag={DEFAULT_FIELD_TAG}
+  name="Field"
+  bind:ref
+/>

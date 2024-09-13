@@ -18,7 +18,13 @@
 </script>
 
 <script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_VISUALLY_HIDDEN_TAG">
-  let { ref = $bindable(), features = HiddenFeatures.None, ...theirProps }: { as?: TTag } & HiddenProps<TTag> = $props()
+  let {
+    ref = $bindable(),
+    value,
+    checked,
+    features = HiddenFeatures.None,
+    ...theirProps
+  }: { as?: TTag } & HiddenProps<TTag> = $props()
 
   let ourProps = {
     "aria-hidden":
@@ -46,4 +52,12 @@
   }
 </script>
 
-<ElementOrComponent {ourProps} {theirProps} defaultTag={DEFAULT_VISUALLY_HIDDEN_TAG} name="Hidden" bind:ref />
+<ElementOrComponent
+  {ourProps}
+  {theirProps}
+  defaultTag={DEFAULT_VISUALLY_HIDDEN_TAG}
+  name="Hidden"
+  bind:ref
+  {value}
+  {checked}
+/>

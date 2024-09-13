@@ -23,8 +23,7 @@
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
   import { mergeProps } from "$lib/utils/render.js"
   import TransitionChild from "$lib/transition/TransitionChild.svelte"
-  import { onMount } from "svelte"
-
+  
   let internalId = useId()
   let {
     ref = $bindable(),
