@@ -24,4 +24,5 @@ export const hoistFormFields = (fields: Snippet) => {
   const context = getContext<FormFieldsContext>("FormFieldsContext")
   if (!context) return false
   $effect(() => context.registerField(fields))
+  return true
 }
