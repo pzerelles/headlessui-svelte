@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.16
+
+### Patch Changes
+
+- 4fb3639: fix: return from hoistFromFields
+
 ## 2.1.2-next.15
 
 ### Patch Changes
