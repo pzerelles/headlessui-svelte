@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.17
+
+### Patch Changes
+
+- 2f4bd5c: fix: type of component children
+
 ## 2.1.2-next.16
 
 ### Patch Changes
