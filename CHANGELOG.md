@@ -1,5 +1,12 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.15
+
+### Patch Changes
+
+- ee3f289: feat: add Select component
+- 8afc394: fix: hoist form fields correctly
+
 ## 2.1.2-next.14
 
 ### Patch Changes
