@@ -1,5 +1,5 @@
 <script lang="ts" module>
-  import type { Props, ElementType, Children } from "$lib/utils/types.js"
+  import type { Props, ElementType } from "$lib/utils/types.js"
   import { onMount, type Snippet } from "svelte"
 
   const DEFAULT_ITEM_TAG = "svelte:fragment" as const
@@ -20,11 +20,11 @@
     {
       id?: string
       disabled?: boolean
-      children: Children<ItemRenderPropArg>
+      children: Snippet<[ItemRenderPropArg]>
     }
   >
 
-  export type MenuItemChildren = Children<ItemRenderPropArg>
+  export type MenuItemChildren = Snippet<[ItemRenderPropArg]>
 </script>
 
 <script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_ITEM_TAG">

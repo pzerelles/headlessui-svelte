@@ -12,9 +12,6 @@ export type Expand<T> = T extends infer O ? { [K in keyof O]: O[K] } : never
 
 export type PropsOf<TTag extends ElementType> = SvelteHTMLProps[TTag]
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type Children<TSlot> = Snippet | Snippet<[TSlot, Record<string, any>]>
-
 type PropsWeControl = "as" | "children" | "refName" | "class"
 
 // Resolve the props of the component, but ensure to omit certain props that we control
@@ -25,7 +22,7 @@ type CleanProps<TTag extends ElementType, TOmittableProps extends PropertyKey = 
 
 // Add certain props that we control
 type OurProps<TSlot> = {
-  children?: Children<TSlot>
+  children?: Snippet<[TSlot, Record<string, any>]>
   ref?: HTMLElement
 }
 

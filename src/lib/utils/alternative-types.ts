@@ -9,11 +9,9 @@ export type ElementType = keyof SvelteHTMLProps
 
 export type Expand<T> = T extends infer O ? { [K in keyof O]: O[K] } : never
 
-export type Children<TSlot> = Snippet | Snippet<[TSlot, Record<string, any>]>
-
 // Add certain props that we control
 type OurProps<TSlot> = {
-  children?: Children<TSlot>
+  children?: Snippet<[TSlot, Record<string, any>]>
   ref?: HTMLElement
   class?: string | null | ((bag: TSlot) => string)
 }
