@@ -15,41 +15,77 @@
   ]
 
   let selected: (typeof people)[number] = $state(people[1])
+  let multiSelected: typeof people = $state(people.slice(1, 2))
 </script>
 
 <div class="flex h-screen w-full justify-center bg-black px-4 pt-24">
-  <div class="mx-auto h-screen w-52 pt-40">
-    <Listbox value={selected} onchange={(value) => (selected = value)}>
-      <ListboxButton
-        class={clsx(
-          "relative block w-full rounded-lg bg-white/5 py-1.5 pl-3 pr-8 text-left text-sm/6 text-white",
-          "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
-        )}
-      >
-        {selected.name}
-        <ChevronDownIcon
-          class="group pointer-events-none absolute right-2.5 top-2.5 size-4 fill-white/60"
-          aria-hidden="true"
-        />
-      </ListboxButton>
-      <ListboxOptions
-        transition
-        anchor="bottom end"
-        class={clsx(
-          "w-[var(--button-width)] rounded-xl border border-white/5 bg-white/5 p-1 [--anchor-gap:var(--spacing-1)] focus:outline-none",
-          "transition duration-100 ease-in data-[leave]:data-[closed]:opacity-0"
-        )}
-      >
-        {#each people as person (person.name)}
-          <ListboxOption
-            value={person}
-            class="group flex cursor-default select-none items-center gap-2 rounded-lg px-3 py-1.5 data-[focus]:bg-white/10"
-          >
-            <CheckIcon class="invisible size-4 fill-white group-data-[selected]:visible" />
-            <div class="text-sm/6 text-white">{person.name}</div>
-          </ListboxOption>
-        {/each}
-      </ListboxOptions>
-    </Listbox>
+  <div class="mx-auto h-screen w-[448px] pt-40">
+    <div class="flex gap-8">
+      <Listbox value={selected} onchange={(value) => (selected = value)}>
+        <ListboxButton
+          class={clsx(
+            "relative block w-full rounded-lg bg-white/5 py-1.5 pl-3 pr-8 text-left text-sm/6 text-white",
+            "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
+          )}
+        >
+          {selected.name}
+          <ChevronDownIcon
+            class="group pointer-events-none absolute right-2.5 top-2.5 size-4 fill-white/60"
+            aria-hidden="true"
+          />
+        </ListboxButton>
+        <ListboxOptions
+          transition
+          anchor="bottom end"
+          class={clsx(
+            "w-[var(--button-width)] rounded-xl border border-white/5 bg-white/5 p-1 [--anchor-gap:var(--spacing-1)] focus:outline-none",
+            "transition duration-100 ease-in data-[leave]:data-[closed]:opacity-0"
+          )}
+        >
+          {#each people as person (person.name)}
+            <ListboxOption
+              value={person}
+              class="group flex cursor-default select-none items-center gap-2 rounded-lg px-3 py-1.5 data-[focus]:bg-white/10"
+            >
+              <CheckIcon class="invisible size-4 fill-white group-data-[selected]:visible" />
+              <div class="text-sm/6 text-white">{person.name}</div>
+            </ListboxOption>
+          {/each}
+        </ListboxOptions>
+      </Listbox>
+
+      <Listbox value={multiSelected} onchange={(value) => (multiSelected = value)} multiple>
+        <ListboxButton
+          class={clsx(
+            "relative block w-full rounded-lg bg-white/5 py-1.5 pl-3 pr-8 text-left text-sm/6 text-white",
+            "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
+          )}
+        >
+          Select multiple
+          <ChevronDownIcon
+            class="group pointer-events-none absolute right-2.5 top-2.5 size-4 fill-white/60"
+            aria-hidden="true"
+          />
+        </ListboxButton>
+        <ListboxOptions
+          transition
+          anchor="bottom end"
+          class={clsx(
+            "w-[var(--button-width)] rounded-xl border border-white/5 bg-white/5 p-1 [--anchor-gap:var(--spacing-1)] focus:outline-none",
+            "transition duration-100 ease-in data-[leave]:data-[closed]:opacity-0"
+          )}
+        >
+          {#each people as person (person.name)}
+            <ListboxOption
+              value={person}
+              class="group flex cursor-default select-none items-center gap-2 rounded-lg px-3 py-1.5 data-[focus]:bg-white/10"
+            >
+              <CheckIcon class="invisible size-4 fill-white group-data-[selected]:visible" />
+              <div class="text-sm/6 text-white">{person.name}</div>
+            </ListboxOption>
+          {/each}
+        </ListboxOptions>
+      </Listbox>
+    </div>
   </div>
 </div>

@@ -368,6 +368,9 @@
     get activeOptionIndex() {
       return data.activeOptionIndex
     },
+    get closeOnSelect() {
+      return data.closeOnSelect
+    },
     get compare() {
       return data.compare
     },
