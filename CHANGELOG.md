@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.18
+
+### Patch Changes
+
+- f013512: feat: add "closeOnSelect" option to Listbox
+
 ## 2.1.2-next.17
 
 ### Patch Changes
