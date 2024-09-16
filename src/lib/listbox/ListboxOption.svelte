@@ -111,7 +111,7 @@
   const handleClick = (event: { preventDefault: Function }) => {
     if (disabled) return event.preventDefault()
     actions.onChange(value)
-    if (data.mode === ValueMode.Single) {
+    if (data.closeOnSelect === true || (data.closeOnSelect === undefined && data.mode === ValueMode.Single)) {
       actions.closeListbox()
       data.buttonElement?.focus({ preventScroll: true })
     }

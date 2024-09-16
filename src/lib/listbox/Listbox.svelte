@@ -36,6 +36,7 @@
       form?: string
       name?: string
       multiple?: boolean
+      closeOnSelect?: boolean
 
       __demoMode?: boolean
     }
@@ -313,6 +314,7 @@
     disabled: ownDisabled = false,
     horizontal = false,
     multiple = false,
+    closeOnSelect,
     __demoMode = false,
     ...theirProps
   }: { as?: TTag } & ListboxProps<TTag, TType, TActualType> = $props()
@@ -398,6 +400,9 @@
     },
     get orientation() {
       return orientation
+    },
+    get closeOnSelect() {
+      return closeOnSelect
     },
     compare,
     isSelected,

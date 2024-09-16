@@ -62,7 +62,7 @@ export type ListboxActionsContext<T = unknown> = {
 export function useActions<T>(component: string) {
   const context = getContext<ListboxActionsContext<T>>("ListboxActionsContext")
   if (!context) {
-    let err = new Error(`<${component} /> is missing a parent <Listbox /> component.`)
+    const err = new Error(`<${component} /> is missing a parent <Listbox /> component.`)
     if (Error.captureStackTrace) Error.captureStackTrace(err, useActions)
     throw err
   }
@@ -76,6 +76,7 @@ export type ListboxDataContext<T = unknown> = {
   mode: ValueMode
   orientation: "horizontal" | "vertical"
   activeOptionIndex: number | null
+  closeOnSelect?: boolean
   compare(a: T, z: T): boolean
   isSelected(value: T): boolean
 
@@ -93,7 +94,7 @@ export type ListboxDataContext<T = unknown> = {
 export function useData<T>(component: string) {
   const context = getContext<ListboxDataContext<T>>("ListboxDataContext")
   if (!context) {
-    let err = new Error(`<${component} /> is missing a parent <Listbox /> component.`)
+    const err = new Error(`<${component} /> is missing a parent <Listbox /> component.`)
     if (Error.captureStackTrace) Error.captureStackTrace(err, useData)
     throw err
   }
