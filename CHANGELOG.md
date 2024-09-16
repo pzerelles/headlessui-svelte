@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.19
+
+### Patch Changes
+
+- bcf41cb: fix: closeOnSelect passed in context of Listbox
+
 ## 2.1.2-next.18
 
 ### Patch Changes

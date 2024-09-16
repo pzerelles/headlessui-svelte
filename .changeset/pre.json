@@ -5,6 +5,7 @@
     "@pzerelles/headlessui-svelte": "2.0.0-next.0"
   },
   "changesets": [
+    "angry-steaks-call",
     "breezy-bears-listen",
     "clean-wasps-obey",
     "clever-oranges-compete",
