@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.20
+
+### Patch Changes
+
+- cc442ab: feat: add Popover components
+
 ## 2.1.2-next.19
 
 ### Patch Changes
