@@ -1,10 +1,11 @@
 export function useEventListener<TType extends keyof WindowEventMap>(params: {
   element: HTMLElement | Document | Window | EventTarget | null | undefined
   type: TType
-  listener: (event: WindowEventMap[TType]) => any
+  listener: (event: WindowEventMap[TType]) => unknown
   options?: boolean | AddEventListenerOptions
 }) {
-  let { element = window, type, listener, options } = $derived(params)
+  if (typeof window === "undefined") return
+  const { element = window, type, listener, options } = $derived(params)
 
   $effect(() => {
     if (!element) return
@@ -13,7 +14,7 @@ export function useEventListener<TType extends keyof WindowEventMap>(params: {
       listener(event)
     }
 
-    element.addEventListener(type, handler as any, options)
-    return () => element.removeEventListener(type, handler as any, options)
+    element.addEventListener(type, handler as EventListenerOrEventListenerObject, options)
+    return () => element.removeEventListener(type, handler as EventListenerOrEventListenerObject, options)
   })
 }

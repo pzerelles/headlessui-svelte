@@ -1,5 +1,4 @@
 <script lang="ts">
-  import Button from "$lib/button/Button.svelte"
   import Menu from "$lib/menu/Menu.svelte"
   import MenuButton from "$lib/menu/MenuButton.svelte"
   import MenuItem from "$lib/menu/MenuItem.svelte"

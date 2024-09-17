@@ -4,9 +4,9 @@ export { default as MainTreeProvider, useMainTreeNode } from "../internal/MainTr
 
 export function useRootContainers(
   options: {
-    defaultContainers?: (HTMLElement | null)[]
+    defaultContainers?: (HTMLElement | undefined | null)[]
     portals?: HTMLElement[]
-    mainTreeNode?: HTMLElement | null
+    mainTreeNode?: HTMLElement | undefined | null
   } = {}
 ) {
   const {
@@ -20,23 +20,23 @@ export function useRootContainers(
   const ownerDocument = $derived(getOwnerDocument(mainTreeNode))
 
   const resolvedContainers = $derived.by(() => {
-    let containers: HTMLElement[] = []
+    const containers: HTMLElement[] = []
 
     // Resolve default containers
-    for (let container of defaultContainers) {
-      if (container === null) continue
+    for (const container of defaultContainers) {
+      if (!container) continue
       containers.push(container)
     }
 
     // Resolve portal containers
     if (portals) {
-      for (let portal of portals) {
+      for (const portal of portals) {
         containers.push(portal)
       }
     }
 
     // Resolve third party (root) containers
-    for (let container of ownerDocument?.querySelectorAll("html > *, body > *") ?? []) {
+    for (const container of ownerDocument?.querySelectorAll("html > *, body > *") ?? []) {
       if (container === document.body) continue // Skip `<body>`
       if (container === document.head) continue // Skip `<head>`
       if (!(container instanceof HTMLElement)) continue // Skip non-HTMLElements

@@ -26,13 +26,13 @@ export const useFloatingProvider = (options: { enabled: boolean } = { enabled: t
   const { enabled } = $derived(options)
 
   // TODO: Make this a config part of the `config`. Just need to decide on a name.
-  let MINIMUM_ITEMS_VISIBLE = 4
+  const MINIMUM_ITEMS_VISIBLE = 4
 
   let config = $state<(AnchorPropsWithSelection & InternalFloatingPanelProps) | null>(null)
   let innerOffset = $state(0)
   const setInnerOffset = (offset: number | ((offset: number) => number)) =>
     (innerOffset = typeof offset === "function" ? offset(innerOffset) : offset)
-  let overflowRef = $state({ current: null })
+  const overflowRef = $state({ current: null })
 
   let floatingEl = $state<HTMLElement | null>(null)
   const setFloatingElement = (element: HTMLElement | null) => (floatingEl = element)
@@ -53,7 +53,7 @@ export const useFloatingProvider = (options: { enabled: boolean } = { enabled: t
     },
   })
   const { to: placement = "bottom", gap = 0, offset = 0, padding = 0, inner } = $derived(resolvedConfig)
-  let [to, align = "center"] = $derived(placement.split(" ") as [Placement | "selection", Align | "center"])
+  const [to, align = "center"] = $derived(placement.split(" ") as [Placement | "selection", Align | "center"])
 
   // Reset
   $effect(() => {
@@ -96,9 +96,9 @@ export const useFloatingProvider = (options: { enabled: boolean } = { enabled: t
             referenceOverflowThreshold: padding,
             onFallbackChange(fallback) {
               if (!fallback) return
-              let parent = context.elements.floating
+              const parent = context.elements.floating
               if (!parent) return
-              let scrollPaddingBottom = parseFloat(getComputedStyle(parent!).scrollPaddingBottom) || 0
+              const scrollPaddingBottom = parseFloat(getComputedStyle(parent!).scrollPaddingBottom) || 0
 
               // We want at least X visible items, but if there are less than X items in the list,
               // we want to show as many as possible.
@@ -107,16 +107,16 @@ export const useFloatingProvider = (options: { enabled: boolean } = { enabled: t
               let elementHeight = 0
               let elementAmountVisible = 0
 
-              for (let child of context.elements.floating?.childNodes ?? []) {
+              for (const child of context.elements.floating?.childNodes ?? []) {
                 if (child instanceof HTMLElement) {
-                  let childTop = child.offsetTop
+                  const childTop = child.offsetTop
                   // It can be that the child is fully visible, but we also want to keep the scroll
                   // padding into account to ensure the UI looks good. Therefore we fake that the
                   // bottom of the child is actually `scrollPaddingBottom` amount of pixels lower.
-                  let childBottom = childTop + child.clientHeight + scrollPaddingBottom
+                  const childBottom = childTop + child.clientHeight + scrollPaddingBottom
 
-                  let parentTop = parent.scrollTop
-                  let parentBottom = parentTop + parent.clientHeight
+                  const parentTop = parent.scrollTop
+                  const parentBottom = parentTop + parent.clientHeight
 
                   // Figure out if the child is fully visible in the scroll parent.
                   if (childTop >= parentTop && childBottom <= parentBottom) {
@@ -139,7 +139,7 @@ export const useFloatingProvider = (options: { enabled: boolean } = { enabled: t
               // to show more items.
               if (missing >= 1) {
                 setInnerOffset((existingOffset) => {
-                  let newInnerOffset =
+                  const newInnerOffset =
                     elementHeight * missing - // `missing` amount of `elementHeight`
                     elementAmountVisible + // The amount of the last item that is visible
                     scrollPaddingBottom // The scroll padding to ensure the UI looks good
@@ -205,7 +205,7 @@ export const useFloatingProvider = (options: { enabled: boolean } = { enabled: t
 
   // Calculate placement information to expose as data attributes
   const { exposedTo, exposedAlign } = $derived.by(() => {
-    let [exposedTo = to, exposedAlign = align] = context.placement.split("-")
+    const [exposedTo = to, exposedAlign = align] = context.placement.split("-")
     return { exposedTo: to === "selection" ? "selection" : exposedTo, exposedAlign }
   })
   // If user-land code is using custom styles specifically for `bottom`, but
@@ -217,7 +217,7 @@ export const useFloatingProvider = (options: { enabled: boolean } = { enabled: t
     anchor: [exposedTo, exposedAlign].filter(Boolean).join(" ") as FloatingContext["slot"]["anchor"],
   })
 
-  let innerOffsetConfig = useInnerOffset({
+  const innerOffsetConfig = useInnerOffset({
     get context() {
       return context
     },
@@ -228,7 +228,7 @@ export const useFloatingProvider = (options: { enabled: boolean } = { enabled: t
       }
     },
   })
-  let { getReferenceProps, getFloatingProps } = useInteractions({
+  const { getReferenceProps, getFloatingProps } = useInteractions({
     get propsList() {
       return [innerOffsetConfig]
     },

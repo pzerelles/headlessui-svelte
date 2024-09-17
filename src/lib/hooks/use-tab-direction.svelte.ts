@@ -7,7 +7,7 @@ export enum Direction {
 
 export function useTabDirection() {
   let direction = $state(Direction.Forwards)
-  let enabled = true
+  const enabled = true
 
   useWindowEvent({
     enabled,

@@ -142,6 +142,7 @@ export function useFloatingPanel(
     )
   )
   const stablePlacement = $derived.by(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     trigger
     return untrack(() => placement)
   })
