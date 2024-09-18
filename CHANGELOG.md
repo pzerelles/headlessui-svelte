@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.22
+
+### Patch Changes
+
+- 579909c: fix: autofocus prop of PopoverButton
+
 ## 2.1.2-next.21
 
 ### Patch Changes
