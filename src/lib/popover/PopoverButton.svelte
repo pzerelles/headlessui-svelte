@@ -14,7 +14,7 @@
 
   export type PopoverButtonComponentProps = {
     disabled?: boolean
-    autoFocus?: boolean
+    autofocus?: boolean
   }
 
   export type PopoverButtonProps<TTag extends ElementType = typeof DEFAULT_BUTTON_TAG> = Props<
