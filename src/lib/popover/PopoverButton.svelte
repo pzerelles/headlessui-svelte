@@ -2,7 +2,7 @@
   import type { ElementType, Props, PropsOf } from "$lib/utils/types.js"
 
   const DEFAULT_BUTTON_TAG = "button" as const
-  type ButtonRenderPropArg = {
+  export type PopoverButtonSlot = {
     open: boolean
     active: boolean
     hover: boolean
@@ -10,16 +10,18 @@
     disabled: boolean
     autofocus: boolean
   }
-  type ButtonPropsWeControl = "aria-controls" | "aria-expanded"
+  export type PopoverButtonPropsWeControl = "aria-controls" | "aria-expanded"
+
+  export type PopoverButtonComponentProps = {
+    disabled?: boolean
+    autoFocus?: boolean
+  }
 
   export type PopoverButtonProps<TTag extends ElementType = typeof DEFAULT_BUTTON_TAG> = Props<
     TTag,
-    ButtonRenderPropArg,
-    ButtonPropsWeControl,
-    {
-      disabled?: boolean
-      autoFocus?: boolean
-    }
+    PopoverButtonSlot,
+    PopoverButtonPropsWeControl,
+    PopoverButtonComponentProps
   >
 </script>
 
@@ -228,7 +230,7 @@
     hover,
     focus,
     autofocus,
-  } satisfies ButtonRenderPropArg)
+  } satisfies PopoverButtonSlot)
 
   const type = useResolveButtonType({
     get props() {
