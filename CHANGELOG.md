@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.21
+
+### Patch Changes
+
+- f10e6bd: feat: export more types for PopoverButton
+
 ## 2.1.2-next.20
 
 ### Patch Changes
