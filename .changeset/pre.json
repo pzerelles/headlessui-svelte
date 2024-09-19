@@ -5,8 +5,10 @@
     "@pzerelles/headlessui-svelte": "2.0.0-next.0"
   },
   "changesets": [
+    "afraid-apes-double",
     "angry-steaks-call",
     "breezy-bears-listen",
+    "chatty-walls-hunt",
     "clean-wasps-obey",
     "clever-oranges-compete",
     "dull-snakes-boil",

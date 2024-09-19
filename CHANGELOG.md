@@ -1,5 +1,12 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.23
+
+### Patch Changes
+
+- eb6d264: fix: description and disabled contexts
+- ae9a36d: fix: move menu context completely out of component
+
 ## 2.1.2-next.22
 
 ### Patch Changes
