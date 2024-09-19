@@ -28,18 +28,11 @@
 </script>
 
 <script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_MENU_TAG">
-  import { setContext } from "svelte"
-  import {
-    ActivationTrigger,
-    MenuStates,
-    stateReducer,
-    type MenuContext,
-    type StateDefinition,
-  } from "./context.svelte.js"
+  import { ActivationTrigger, createMenuContext, MenuStates, type StateDefinition } from "./context.svelte.js"
 
   let { ref = $bindable(), __demoMode = false, ...theirProps }: { as?: TTag } & MenuProps<TTag> = $props()
 
-  const _state = stateReducer({
+  const context = createMenuContext({
     __demoMode,
     menuState: __demoMode ? MenuStates.Open : MenuStates.Closed,
     buttonElement: null,
@@ -49,8 +42,7 @@
     activeItemIndex: null,
     activationTrigger: ActivationTrigger.Other,
   } as StateDefinition)
-  const { menuState, itemsElement, buttonElement } = $derived(_state)
-  setContext<MenuContext>("MenuContext", _state)
+  const { menuState, itemsElement, buttonElement } = $derived(context)
 
   // Handle outside click
   const outsideClickEnabled = $derived(menuState === MenuStates.Open)
@@ -62,7 +54,7 @@
       return [buttonElement, itemsElement]
     },
     cb: (event, target) => {
-      _state.closeMenu()
+      context.closeMenu()
 
       if (!isFocusableElement(target, FocusableMode.Loose)) {
         event.preventDefault()
@@ -72,8 +64,8 @@
   })
 
   const slot = $derived({
-    open: _state.menuState === MenuStates.Open,
-    close: _state.closeMenu,
+    open: context.menuState === MenuStates.Open,
+    close: context.closeMenu,
   } satisfies MenuRenderPropArg)
 
   useFloatingProvider()

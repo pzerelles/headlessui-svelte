@@ -1,7 +1,7 @@
 import { calculateActiveIndex, Focus } from "$lib/utils/calculate-active-index.js"
 import { sortByDomNode } from "$lib/utils/focus-management.js"
 import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
-import { getContext } from "svelte"
+import { getContext, setContext } from "svelte"
 
 export enum MenuStates {
   Open,
@@ -49,7 +49,7 @@ export type MenuContext = StateDefinition & {
 export function useMenuContext(component: string) {
   const context = getContext<MenuContext>("MenuContext")
   if (!context) {
-    let err = new Error(`<${component} /> is missing a parent <Menu /> component.`)
+    const err = new Error(`<${component} /> is missing a parent <Menu /> component.`)
     if (Error.captureStackTrace) Error.captureStackTrace(err, useMenuContext)
     throw err
   }
@@ -60,9 +60,9 @@ function adjustOrderedState(
   state: StateDefinition,
   adjustment: (items: StateDefinition["items"]) => StateDefinition["items"] = (i) => i
 ) {
-  let currentActiveItem = state.activeItemIndex !== null ? state.items[state.activeItemIndex] : null
+  const currentActiveItem = state.activeItemIndex !== null ? state.items[state.activeItemIndex] : null
 
-  let sortedItems = sortByDomNode(adjustment(state.items.slice()), (item) => item.dataRef.current.domRef.current)
+  const sortedItems = sortByDomNode(adjustment(state.items.slice()), (item) => item.dataRef.current.domRef.current)
 
   // If we inserted an item before the current active item then the active item index
   // would be wrong. To fix this, we will re-lookup the correct index.
@@ -79,9 +79,9 @@ function adjustOrderedState(
   }
 }
 
-export const stateReducer = (initialState: StateDefinition) => {
-  let _state = $state(initialState)
-  return {
+export const createMenuContext = (initialState: StateDefinition) => {
+  const _state = $state(initialState)
+  const context: MenuContext = {
     get menuState() {
       return _state.menuState
     },
@@ -152,17 +152,17 @@ export const stateReducer = (initialState: StateDefinition) => {
       // or if the previous DOM node is already the first DOM node, then we don't
       // have to sort all the DOM nodes.
       else if (action.focus === Focus.Previous) {
-        let activeItemIdx = _state.activeItemIndex
+        const activeItemIdx = _state.activeItemIndex
         if (activeItemIdx !== null) {
-          let currentDom = _state.items[activeItemIdx].dataRef.current.domRef
-          let previousItemIndex = calculateActiveIndex(action, {
+          const currentDom = _state.items[activeItemIdx].dataRef.current.domRef
+          const previousItemIndex = calculateActiveIndex(action, {
             resolveItems: () => _state.items,
             resolveActiveIndex: () => _state.activeItemIndex,
             resolveId: (item) => item.id,
             resolveDisabled: (item) => item.dataRef.current.disabled,
           })
           if (previousItemIndex !== null) {
-            let previousDom = _state.items[previousItemIndex].dataRef.current.domRef
+            const previousDom = _state.items[previousItemIndex].dataRef.current.domRef
             if (
               // Next to each other
               currentDom.current?.previousElementSibling === previousDom.current ||
@@ -182,17 +182,17 @@ export const stateReducer = (initialState: StateDefinition) => {
       // if the next DOM node is already the last DOM node, then we don't have to
       // sort all the DOM nodes.
       else if (action.focus === Focus.Next) {
-        let activeItemIdx = _state.activeItemIndex
+        const activeItemIdx = _state.activeItemIndex
         if (activeItemIdx !== null) {
-          let currentDom = _state.items[activeItemIdx].dataRef.current.domRef
-          let nextItemIndex = calculateActiveIndex(action, {
+          const currentDom = _state.items[activeItemIdx].dataRef.current.domRef
+          const nextItemIndex = calculateActiveIndex(action, {
             resolveItems: () => _state.items,
             resolveActiveIndex: () => _state.activeItemIndex,
             resolveId: (item) => item.id,
             resolveDisabled: (item) => item.dataRef.current.disabled,
           })
           if (nextItemIndex !== null) {
-            let nextDom = _state.items[nextItemIndex].dataRef.current.domRef
+            const nextDom = _state.items[nextItemIndex].dataRef.current.domRef
             if (
               // Next to each other
               currentDom.current?.nextElementSibling === nextDom.current ||
@@ -209,8 +209,8 @@ export const stateReducer = (initialState: StateDefinition) => {
       // Slow path:
       //
       // Ensure all the items are correctly sorted according to DOM position
-      let adjustedState = adjustOrderedState(_state)
-      let activeItemIndex = calculateActiveIndex(action, {
+      const adjustedState = adjustOrderedState(_state)
+      const activeItemIndex = calculateActiveIndex(action, {
         resolveItems: () => adjustedState.items,
         resolveActiveIndex: () => adjustedState.activeItemIndex,
         resolveId: (item) => item.id,
@@ -222,22 +222,22 @@ export const stateReducer = (initialState: StateDefinition) => {
       return _state
     },
     search(value: string) {
-      let wasAlreadySearching = _state.searchQuery !== ""
-      let offset = wasAlreadySearching ? 0 : 1
-      let searchQuery = _state.searchQuery + value.toLowerCase()
+      const wasAlreadySearching = _state.searchQuery !== ""
+      const offset = wasAlreadySearching ? 0 : 1
+      const searchQuery = _state.searchQuery + value.toLowerCase()
 
-      let reOrderedItems =
+      const reOrderedItems =
         _state.activeItemIndex !== null
           ? _state.items
               .slice(_state.activeItemIndex + offset)
               .concat(_state.items.slice(0, _state.activeItemIndex + offset))
           : _state.items
 
-      let matchingItem = reOrderedItems.find(
+      const matchingItem = reOrderedItems.find(
         (item) => item.dataRef.current.textValue?.startsWith(searchQuery) && !item.dataRef.current.disabled
       )
 
-      let matchIdx = matchingItem ? _state.items.indexOf(matchingItem) : -1
+      const matchIdx = matchingItem ? _state.items.indexOf(matchingItem) : -1
       if (matchIdx === -1 || matchIdx === _state.activeItemIndex) {
         _state.searchQuery = searchQuery
         return _state
@@ -253,16 +253,16 @@ export const stateReducer = (initialState: StateDefinition) => {
       return _state
     },
     registerItem(id: string, dataRef: MenuItemDataRef) {
-      let item = { id, dataRef }
-      let adjustedState = adjustOrderedState(_state, (items) => [...items, item])
+      const item = { id, dataRef }
+      const adjustedState = adjustOrderedState(_state, (items) => [...items, item])
 
       _state.items = adjustedState.items
       _state.activeItemIndex = adjustedState.activeItemIndex
       return _state
     },
     unregisterItem(id: string) {
-      let adjustedState = adjustOrderedState(_state, (items) => {
-        let idx = items.findIndex((a) => a.id === id)
+      const adjustedState = adjustOrderedState(_state, (items) => {
+        const idx = items.findIndex((a) => a.id === id)
         if (idx !== -1) items.splice(idx, 1)
         return items
       })
@@ -283,4 +283,6 @@ export const stateReducer = (initialState: StateDefinition) => {
       return _state
     },
   }
+  setContext<MenuContext>("MenuContext", context)
+  return context
 }
