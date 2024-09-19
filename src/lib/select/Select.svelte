@@ -49,7 +49,7 @@
     ...theirProps
   }: { as?: TTag } & SelectProps<TTag> = $props()
 
-  const disabled = $derived(providedDisabled?.value ?? theirDisabled)
+  const disabled = $derived(providedDisabled.current ?? theirDisabled)
   const labelledBy = useLabelledBy()
   const describedBy = useDescribedBy()
 

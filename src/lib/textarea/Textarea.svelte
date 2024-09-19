@@ -49,7 +49,7 @@
     invalid = false,
     ...theirProps
   }: { as?: TTag; value?: TValue } & TextareaProps<TTag, TValue> = $props()
-  const disabled = $derived(providedDisabled?.value ?? theirDisabled)
+  const disabled = $derived(providedDisabled.current || theirDisabled)
 
   const labelledBy = useLabelledBy()
   const describedBy = useDescribedBy()

@@ -320,7 +320,7 @@
   }: { as?: TTag } & ListboxProps<TTag, TType, TActualType> = $props()
 
   const providedDisabled = useDisabled()
-  const disabled = $derived(providedDisabled.value || ownDisabled)
+  const disabled = $derived(providedDisabled.current || ownDisabled)
 
   const orientation = horizontal ? "horizontal" : "vertical"
   const controllable = useControllable<any>(

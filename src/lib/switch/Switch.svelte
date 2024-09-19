@@ -66,7 +66,7 @@
     tabIndex,
     ...theirProps
   }: { as?: TTag } & SwitchProps<TTag> = $props()
-  const disabled = $derived(providedDisabled?.value ?? theirDisabled)
+  const disabled = $derived(providedDisabled.current ?? theirDisabled)
   const groupContext = getContext<GroupContext>("GroupContext")
   $effect(() => {
     if (groupContext) groupContext.switchElement = ref ?? null

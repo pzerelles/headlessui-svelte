@@ -88,7 +88,7 @@
   )
   const { value: checked, onchange } = $derived(controllable)
 
-  const disabled = $derived(providedDisabled?.value ?? theirDisabled)
+  const disabled = $derived(providedDisabled.current || theirDisabled)
 
   const { isHovered: hover, hoverProps } = $derived(
     useHover({

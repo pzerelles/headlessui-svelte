@@ -42,7 +42,7 @@
     ...theirProps
   }: { as?: TTag } & ButtonProps<TTag> = $props()
 
-  const disabled = $derived(providedDisabled.value || ownDisabled)
+  const disabled = $derived(providedDisabled.current || ownDisabled)
 
   const { isHovered: hover, hoverProps } = $derived(
     useHover({

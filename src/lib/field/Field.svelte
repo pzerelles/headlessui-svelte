@@ -17,10 +17,9 @@
 </script>
 
 <script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_FIELD_TAG">
-  import { useDisabled } from "../hooks/use-disabled.js"
+  import { provideDisabled } from "../hooks/use-disabled.js"
   import { createIdContext } from "../utils/id.js"
   import { nanoid } from "nanoid"
-  import { setContext } from "svelte"
   import { useLabels } from "$lib/label/context.svelte.js"
   import { useDescriptions } from "$lib/description/context.svelte.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
@@ -39,14 +38,8 @@
   useLabels()
   useDescriptions()
 
-  const providedDisabled = useDisabled()
-  const disabled = $derived(providedDisabled.value || ownDisabled)
-
-  setContext("DisabledContext", {
-    get value() {
-      return disabled
-    },
-  })
+  const disabledContext = provideDisabled(() => ownDisabled)
+  const { current: disabled } = $derived(disabledContext)
 
   const slot = $derived({ disabled })
 

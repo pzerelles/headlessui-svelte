@@ -28,7 +28,7 @@
   }: { as?: TTag } & FieldsetProps<TTag> = $props()
 
   const providedDisabled = useDisabled()
-  const disabled = $derived(providedDisabled.value || ownDisabled)
+  const disabled = $derived(providedDisabled.current || ownDisabled)
 
   setContext("DisabledContext", {
     get value() {

@@ -79,7 +79,7 @@
     }
   }
 
-  const disabled = $derived(providedDisabled.value ?? false)
+  const disabled = $derived(providedDisabled.current ?? false)
   const slot = $derived({ disabled })
   const ourProps = $derived({
     id,

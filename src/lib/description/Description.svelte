@@ -7,33 +7,37 @@
 </script>
 
 <script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_DESCRIPTION_TAG">
-  import { htmlid } from "../utils/id.js"
-  import { stateFromSlot } from "../utils/state.js"
+  import { useId } from "$lib/hooks/use-id.js"
   import { useDisabled } from "../hooks/use-disabled.js"
-  import { onMount } from "svelte"
   import { useDescriptionContext } from "./context.svelte.js"
+  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
+  import { untrack } from "svelte"
 
-  const internalId = htmlid()
+  const internalId = useId()
   const providedDisabled = useDisabled()
 
   let {
-    as,
+    ref = $bindable(),
     id = `headlessui-description-${internalId}` as PropsOf<TTag>["id"],
-    children,
     ...theirProps
   }: { as?: TTag } & DescriptionProps<TTag> = $props()
 
-  const context = useDescriptionContext()
-
-  onMount(() => {
-    context.register(id)
+  const { register } = useDescriptionContext()
+  $effect(() => {
+    id
+    return untrack(() => register(id))
   })
 
-  const disabled = $derived(providedDisabled.value || false)
+  const disabled = $derived(providedDisabled.current || false)
   const slot = $derived({ disabled })
-  const ourProps = $derived({ id, ...stateFromSlot(slot) })
+  const ourProps = $derived({ id })
 </script>
 
-<svelte:element this={as ?? DEFAULT_DESCRIPTION_TAG} {...ourProps} {...theirProps}>
-  {#if children}{@render children(slot, {})}{/if}
-</svelte:element>
+<ElementOrComponent
+  {ourProps}
+  {theirProps}
+  slots={slot}
+  defaultTag={DEFAULT_DESCRIPTION_TAG}
+  name="Description"
+  bind:ref
+/>
