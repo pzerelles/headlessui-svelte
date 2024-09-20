@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.24
+
+### Patch Changes
+
+- 20ca763: refactor: change children's argument to single object
+
 ## 2.1.2-next.23
 
 ### Patch Changes
