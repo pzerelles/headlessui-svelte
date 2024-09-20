@@ -1,6 +1,6 @@
-<script lang="ts" generics="TTag extends keyof SvelteHTMLProps, TSlot, TValue">
+<script lang="ts" generics="TTag extends ElementType, TSlot, TValue">
   import { stateFromSlot } from "./state.js"
-  import type { ElementType, Props, SvelteHTMLProps } from "./types.js"
+  import type { ElementType, Props } from "./types.js"
 
   let {
     slot = {} as TSlot,

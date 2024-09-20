@@ -1,6 +1,6 @@
 <script lang="ts" module>
-  import type { Props, ElementType, ChildrenArgs } from "$lib/utils/types.js"
-  import { onMount, type Snippet } from "svelte"
+  import type { Props, ElementType } from "$lib/utils/types.js"
+  import { onMount } from "svelte"
 
   const DEFAULT_ITEM_TAG = "svelte:fragment" as const
   type ItemRenderPropArg = {

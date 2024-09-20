@@ -2,17 +2,13 @@
 import type { Snippet } from "svelte"
 import type { SvelteHTMLElements } from "svelte/elements"
 
-export interface SvelteHTMLProps extends SvelteHTMLElements {
-  "svelte:fragment": {}
-}
-
-export type ElementType = keyof SvelteHTMLProps
+export type ElementType = keyof SvelteHTMLElements
 
 export type Expand<T> = T extends infer O ? { [K in keyof O]: O[K] } : never
 
-export type PropsOf<TTag extends ElementType> = SvelteHTMLProps[TTag]
+export type PropsOf<TTag extends ElementType> = SvelteHTMLElements[TTag]
 
-type PropsWeControl = "as" | "children" | "class"
+type PropsWeControl = "as" | "children" | "class" | "ref" | "slot"
 
 // Resolve the props of the component, but ensure to omit certain props that we control
 type CleanProps<TTag extends ElementType, TOmittableProps extends PropertyKey = never> = Omit<
@@ -24,19 +20,9 @@ type CleanProps<TTag extends ElementType, TOmittableProps extends PropertyKey = 
 type OurProps<TSlot> = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   children?: Snippet<[{ slot: TSlot; props: Record<string, any> }]>
+  class?: string | null | ((bag: TSlot) => string)
   ref?: HTMLElement
 }
-
-type HasProperty<T extends object, K extends PropertyKey> = T extends never ? never : K extends keyof T ? true : never
-
-// Conditionally override the `className`, to also allow for a function
-// if and only if the PropsOf<TTag> already defines `className`.
-// This will allow us to have a TS error on as={Fragment}
-type ClassNameOverride<TTag extends ElementType, TSlot = {}> =
-  // Order is important here, because `never extends true` is `true`...
-  true extends HasProperty<SvelteHTMLElements[TTag], "class">
-    ? { class?: string | null | ((bag: TSlot) => string) }
-    : {}
 
 // Provide clean TypeScript props, which exposes some of our custom APIs.
 export type Props<
@@ -44,10 +30,7 @@ export type Props<
   TSlot = {},
   TOmittableProps extends PropertyKey = never,
   Overrides = {},
-> = CleanProps<TTag, TOmittableProps | keyof Overrides> & OurProps<TSlot> & ClassNameOverride<TTag, TSlot> & Overrides
+> = CleanProps<TTag, TOmittableProps | keyof Overrides> & OurProps<TSlot> & Overrides
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type EnsureArray<T> = T extends any[] ? T : Expand<T>[]
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type ChildrenArgs<T> = T extends OurProps<infer TSlot> ? { slot: TSlot; props: Record<string, any> } : never
