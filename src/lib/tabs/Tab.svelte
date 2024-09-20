@@ -26,7 +26,6 @@
 
 <script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_TAB_TAG">
   import { useId } from "$lib/hooks/use-id.js"
-  import { useActions, useData } from "./TabGroup.svelte"
   import { useStableCollectionIndex } from "$lib/utils/StableCollection.svelte"
   import { Focus, focusIn, FocusResult } from "$lib/utils/focus-management.js"
   import { getOwnerDocument } from "$lib/utils/owner.js"
@@ -40,6 +39,7 @@
   import { useHover } from "$lib/hooks/use-hover.svelte.js"
   import { mergeProps } from "$lib/utils/render.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
+  import { useTabs } from "./context.svelte.js"
 
   const internalId = useId()
   let {
@@ -50,13 +50,12 @@
     ...theirProps
   }: { as?: TTag } & TabProps<TTag> = $props()
 
-  const data = useData("Tab")
-  const { orientation, activation, selectedIndex, tabs, panels } = $derived(data)
-  const actions = useActions("Tab")
+  const context = useTabs("Tab")
+  const { orientation, activation, selectedIndex, tabs, panels, registerTab, change } = $derived(context)
 
   const tabRef = $derived<MutableRefObject<HTMLElement | undefined>>({ current: ref })
 
-  onMount(() => actions.registerTab(tabRef))
+  onMount(() => registerTab(tabRef))
 
   const mySSRIndex = useStableCollectionIndex("tabs")
 
@@ -70,8 +69,8 @@
     let result = cb()
     if (result === FocusResult.Success && activation === "auto") {
       let newTab = getOwnerDocument(ref)?.activeElement
-      let idx = data.tabs.findIndex((tab) => tab.current === newTab)
-      if (idx !== -1) actions.change(idx)
+      let idx = context.tabs.findIndex((tab) => tab.current === newTab)
+      if (idx !== -1) change(idx)
     }
     return result
   })
@@ -83,7 +82,7 @@
       event.preventDefault()
       event.stopPropagation()
 
-      actions.change(myIndex)
+      change(myIndex)
       return
     }
 
@@ -129,7 +128,7 @@
     ready = true
 
     ref?.focus({ preventScroll: true })
-    actions.change(myIndex)
+    change(myIndex)
 
     microTask(() => {
       ready = false

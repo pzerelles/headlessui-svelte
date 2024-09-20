@@ -34,8 +34,6 @@
       transition?: boolean
     } & PropsForFeatures<typeof OptionsRenderFeatures>
   >
-
-  export type ListboxOptionsChildren = Snippet<[OptionsRenderPropArg]>
 </script>
 
 <script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_OPTIONS_TAG">

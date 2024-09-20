@@ -22,8 +22,6 @@
     DataInteractivePropsWeControl,
     {}
   >
-
-  export type DataInteractiveChildren = Snippet<[DataInteractiveRenderPropArg]>
 </script>
 
 <script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_DATA_INTERACTIVE_TAG">

@@ -96,11 +96,11 @@ export type UseFloatingReturn<RT extends ReferenceType = ReferenceType> = Pretti
       /**
        * A callback to set the reference element (reactive).
        */
-      setReference: (node: RT | null) => void
+      setReference: (node: RT | null | undefined) => void
       /**
        * A callback to set the floating element (reactive).
        */
-      setFloating: (node: HTMLElement | null) => void
+      setFloating: (node: HTMLElement | null | undefined) => void
     }
     /**
      * Object containing the reference and floating elements.

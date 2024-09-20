@@ -42,8 +42,6 @@
     }
   >
 
-  export type ListboxChildren<T> = Snippet<[ListboxRenderPropArg<T>]>
-
   export * from "./context.svelte.js"
 </script>
 

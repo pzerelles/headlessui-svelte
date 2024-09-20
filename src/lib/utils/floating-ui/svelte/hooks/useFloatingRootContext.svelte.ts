@@ -46,8 +46,8 @@ export function useFloatingRootContext(options: UseFloatingRootContextOptions): 
   }
 
   const refs = {
-    setPositionReference: (value: ReferenceElement | null) => {
-      positionReference = value
+    setPositionReference: (value: ReferenceElement | null | undefined) => {
+      positionReference = value ?? null
     },
   }
 

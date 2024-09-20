@@ -35,7 +35,7 @@ export const useFloatingProvider = (options: { enabled: boolean } = { enabled: t
   const overflowRef = $state({ current: null })
 
   let floatingEl = $state<HTMLElement | null>(null)
-  const setFloatingElement = (element: HTMLElement | null) => (floatingEl = element)
+  const setFloatingElement = (element: HTMLElement | null | undefined) => (floatingEl = element ?? null)
   useFixScrollingPixel({
     get element() {
       return floatingEl
@@ -234,7 +234,7 @@ export const useFloatingProvider = (options: { enabled: boolean } = { enabled: t
     },
   })
 
-  const setFloatingRef = (el: HTMLElement | null) => {
+  const setFloatingRef = (el: HTMLElement | null | undefined) => {
     setFloatingElement(el)
     refs.setFloating(el)
   }

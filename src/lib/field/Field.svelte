@@ -28,7 +28,7 @@
   let {
     ref = $bindable(),
     disabled: ownDisabled = false,
-    children: theirChildren,
+    children,
     ...theirProps
   }: { as?: TTag } & FieldProps<TTag> = $props()
 
@@ -49,15 +49,15 @@
   })
 </script>
 
-{#snippet children(slot: FieldRenderPropArg, props: Record<string, any>)}
+{#snippet wrapper(args: Parameters<Exclude<typeof children, undefined>>[0])}
   <FormFieldsProvider>
-    {#if theirChildren}{@render theirChildren(slot, props)}{/if}
+    {#if children}{@render children(args)}{/if}
   </FormFieldsProvider>
 {/snippet}
 
 <ElementOrComponent
   {ourProps}
-  theirProps={{ ...theirProps, children }}
+  theirProps={{ ...theirProps, children: wrapper }}
   {slot}
   defaultTag={DEFAULT_FIELD_TAG}
   name="Field"

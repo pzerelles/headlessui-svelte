@@ -28,8 +28,6 @@
       transition?: boolean
     } & PropsForFeatures<typeof ItemsRenderFeatures>
   >
-
-  export type MenuItemsChildren = Snippet<[ItemsRenderPropArg]>
 </script>
 
 <script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_ITEMS_TAG">

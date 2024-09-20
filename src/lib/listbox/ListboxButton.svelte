@@ -39,8 +39,6 @@
       disabled?: boolean
     }
   >
-
-  export type ListboxButtonChildren = Snippet<[ButtonRenderPropArg]>
 </script>
 
 <script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_BUTTON_TAG">

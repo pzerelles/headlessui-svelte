@@ -1,5 +1,4 @@
 <script lang="ts" module>
-  import type { Snippet } from "svelte"
   import type { ElementType, Props } from "$lib/utils/types.js"
 
   const DEFAULT_SEPARATOR_TAG = "div" as const
@@ -11,8 +10,6 @@
     SeparatorRenderPropArg,
     SeparatorPropsWeControl
   >
-
-  export type MenuSeparatorChildren = Snippet<[SeparatorRenderPropArg]>
 </script>
 
 <script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_SEPARATOR_TAG">

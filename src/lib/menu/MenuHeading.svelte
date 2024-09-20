@@ -14,8 +14,6 @@
       id?: string
     }
   >
-
-  export type MenuHeadingChildren = Snippet<[HeadingRenderPropArg]>
 </script>
 
 <script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_HEADING_TAG">

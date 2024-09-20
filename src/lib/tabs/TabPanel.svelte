@@ -20,13 +20,13 @@
 <script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_PANEL_TAG">
   import { useId } from "$lib/hooks/use-id.js"
   import { mergeProps, RenderFeatures, type PropsForFeatures } from "$lib/utils/render.js"
-  import { useActions, useData } from "./TabGroup.svelte"
   import { useStableCollectionIndex } from "$lib/utils/StableCollection.svelte"
   import { useFocusRing } from "$lib/hooks/use-focus-ring.svelte.js"
   import Hidden from "$lib/internal/Hidden.svelte"
   import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
   import { onMount } from "svelte"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
+  import { useTabs } from "./context.svelte.js"
 
   const internalId = useId()
   let {
@@ -35,13 +35,12 @@
     tabIndex = 0,
     ...theirProps
   }: { as?: TTag } & TabPanelProps<TTag> = $props()
-  const data = useData("Tab.Panel")
-  const { selectedIndex, tabs, panels } = $derived(data)
-  const actions = useActions("Tab.Panel")
+  const context = useTabs("TabPanel")
+  const { selectedIndex, tabs, panels, registerPanel } = $derived(context)
 
   const panelRef = $derived<MutableRefObject<HTMLElement | undefined>>({ current: ref })
 
-  onMount(() => actions.registerPanel(panelRef))
+  onMount(() => registerPanel(panelRef))
 
   const mySSRIndex = useStableCollectionIndex("panels")
 

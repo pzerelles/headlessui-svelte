@@ -11,8 +11,6 @@
     SectionRenderPropArg,
     SectionPropsWeControl
   >
-
-  export type MenuSectionChildren = Snippet<[SectionRenderPropArg]>
 </script>
 
 <script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_SECTION_TAG">

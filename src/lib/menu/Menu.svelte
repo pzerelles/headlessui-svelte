@@ -23,8 +23,6 @@
       __demoMode?: boolean
     }
   >
-
-  export type MenuChildren<T> = Snippet<[MenuRenderPropArg]>
 </script>
 
 <script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_MENU_TAG">

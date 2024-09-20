@@ -33,7 +33,7 @@
 
 {#if transition}
   <TransitionChild {unmount} {ref}>
-    {#snippet children(slot, props)}
+    {#snippet children({ slot, props })}
       <ElementOrComponent
         ourProps={{ ...ourProps, ...props }}
         {theirProps}

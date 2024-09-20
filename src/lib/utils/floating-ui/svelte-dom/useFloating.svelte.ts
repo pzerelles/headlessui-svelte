@@ -55,17 +55,17 @@ export function useFloating<RT extends ReferenceType = ReferenceType>(
   let _reference = $state<RT | null>(null)
   let _floating = $state<HTMLElement | null>(null)
 
-  const setReference = (node: RT | null) => {
-    if (node !== referenceRef.current) {
-      referenceRef.current = node
-      _reference = node
+  const setReference = (node: RT | null | undefined) => {
+    if ((node ?? null) !== referenceRef.current) {
+      referenceRef.current = node ?? null
+      _reference = node ?? null
     }
   }
 
-  const setFloating = (node: HTMLElement | null) => {
-    if (node !== floatingRef.current) {
-      floatingRef.current = node
-      _floating = node
+  const setFloating = (node: HTMLElement | null | undefined) => {
+    if ((node ?? null) !== floatingRef.current) {
+      floatingRef.current = node ?? null
+      _floating = node ?? null
     }
   }
 

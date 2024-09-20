@@ -2,13 +2,7 @@ import { useFloating as usePosition } from "../../svelte-dom/index.js"
 import { isElement } from "@floating-ui/utils/dom"
 
 import { useFloatingTree } from "../components/FloatingTree.svelte"
-import type {
-  FloatingContext,
-  NarrowedElement,
-  ReferenceType,
-  UseFloatingOptions,
-  UseFloatingReturn,
-} from "../types.js"
+import type { NarrowedElement, ReferenceType, UseFloatingOptions, UseFloatingReturn } from "../types.js"
 import { useFloatingRootContext } from "./useFloatingRootContext.svelte.js"
 import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
 
@@ -43,7 +37,7 @@ export function useFloating<RT extends ReferenceType = ReferenceType>(
   let _domReference = $state<NarrowedElement<RT> | null>(null)
   const setDomReference = (value: NarrowedElement<RT> | null) => (_domReference = value)
   let positionReference = $state<ReferenceType | null>(null)
-  const _setPositionReference = (value: ReferenceType | null) => (positionReference = value)
+  const _setPositionReference = (value: ReferenceType | null | undefined) => (positionReference = value ?? null)
 
   const optionDomReference = $derived(computedElements?.reference)
   const domReference = $derived((optionDomReference || _domReference) as NarrowedElement<RT>)
@@ -87,23 +81,23 @@ export function useFloating<RT extends ReferenceType = ReferenceType>(
     },
   })
 
-  const setPositionReference = (node: ReferenceType | null) => {
+  const setPositionReference = (node: ReferenceType | null | undefined) => {
     const computedPositionReference = isElement(node)
       ? {
           getBoundingClientRect: () => node.getBoundingClientRect(),
           contextElement: node,
         }
-      : node
+      : (node ?? null)
     // Store the positionReference in state if the DOM reference is specified externally via the
     // `elements.reference` option. This ensures that it won't be overridden on future renders.
     _setPositionReference(computedPositionReference)
     position.refs.setReference(computedPositionReference)
   }
 
-  const setReference = (node: RT | null) => {
-    if (isElement(node) || node === null) {
-      ;(domReferenceRef as MutableRefObject<Element | null>).current = node
-      setDomReference(node as NarrowedElement<RT> | null)
+  const setReference = (node: RT | null | undefined) => {
+    if (isElement(node) || !node) {
+      ;(domReferenceRef as MutableRefObject<Element | null>).current = node ?? null
+      setDomReference((node ?? null) as NarrowedElement<RT> | null)
     }
 
     // Backwards-compatibility for passing a virtual element to `reference`
@@ -114,9 +108,9 @@ export function useFloating<RT extends ReferenceType = ReferenceType>(
       // Don't allow setting virtual elements using the old technique back to
       // `null` to support `positionReference` + an unstable `reference`
       // callback ref.
-      (node !== null && !isElement(node))
+      (node && !isElement(node))
     ) {
-      position.refs.setReference(node)
+      position.refs.setReference(node ?? null)
     }
   }
 

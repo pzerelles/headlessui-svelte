@@ -58,9 +58,9 @@ export type InternalFloatingPanelProps = Partial<{
 }>
 
 export type FloatingContext = {
-  styles?: UseFloatingReturn<any>["floatingStyles"]
-  setReference: UseFloatingReturn<any>["refs"]["setReference"]
-  setFloating: UseFloatingReturn<any>["refs"]["setFloating"]
+  styles?: UseFloatingReturn["floatingStyles"]
+  setReference: UseFloatingReturn["refs"]["setReference"]
+  setFloating: UseFloatingReturn["refs"]["setFloating"]
   getReferenceProps: ReturnType<typeof useInteractions>["getReferenceProps"]
   getFloatingProps: ReturnType<typeof useInteractions>["getFloatingProps"]
   slot: Partial<{
@@ -163,18 +163,18 @@ export function useFloatingPanel(
 }
 
 export function useFixScrollingPixel(options: { element: HTMLElement | null }) {
-  const { element } = $derived(options)
   $effect(() => {
+    const element = options.element
     if (!element) return
 
     untrack(() => {
-      let observer = new MutationObserver(() => {
-        let maxHeight = window.getComputedStyle(element).maxHeight
+      const observer = new MutationObserver(() => {
+        const maxHeight = window.getComputedStyle(element).maxHeight
 
-        let maxHeightFloat = parseFloat(maxHeight)
+        const maxHeightFloat = parseFloat(maxHeight)
         if (isNaN(maxHeightFloat)) return
 
-        let maxHeightInt = parseInt(maxHeight)
+        const maxHeightInt = parseInt(maxHeight)
         if (isNaN(maxHeightInt)) return
 
         if (maxHeightFloat !== maxHeightInt) {
@@ -245,7 +245,7 @@ export function useResolvedConfig(options: {
 
 function useResolvePxValue(options: { input?: string | number; element?: HTMLElement | null; defaultValue?: number }) {
   const { input, element, defaultValue } = $derived(options)
-  let d = useDisposables()
+  const d = useDisposables()
   const computeValue = (value?: string | number, element?: HTMLElement | null) => {
     // Nullish
     if (value == null) return [defaultValue, null] as const
@@ -262,7 +262,7 @@ function useResolvePxValue(options: { input?: string | number; element?: HTMLEle
       return [
         result,
         (setValue: (value?: number) => void) => {
-          let variables = resolveVariables(value)
+          const variables = resolveVariables(value)
 
           // TODO: Improve this part and make it work
           //
@@ -296,7 +296,7 @@ function useResolvePxValue(options: { input?: string | number; element?: HTMLEle
 
           // Works as a fallback, but not very performant because we are polling the value.
           {
-            let history = variables.map((variable) => window.getComputedStyle(element!).getPropertyValue(variable))
+            const history = variables.map((variable) => window.getComputedStyle(element!).getPropertyValue(variable))
 
             d.requestAnimationFrame(function check() {
               d.nextFrame(check)
@@ -307,8 +307,8 @@ function useResolvePxValue(options: { input?: string | number; element?: HTMLEle
               //
               // This is a lot of work, so we want to avoid it if possible.
               let changed = false
-              for (let [idx, variable] of variables.entries()) {
-                let value = window.getComputedStyle(element!).getPropertyValue(variable)
+              for (const [idx, variable] of variables.entries()) {
+                const value = window.getComputedStyle(element!).getPropertyValue(variable)
                 if (history[idx] !== value) {
                   history[idx] = value
                   changed = true
@@ -319,7 +319,7 @@ function useResolvePxValue(options: { input?: string | number; element?: HTMLEle
               // Nothing changed, no need to perform the expensive computation.
               if (!changed) return
 
-              let newResult = resolveCSSVariablePxValue(value, element)
+              const newResult = resolveCSSVariablePxValue(value, element)
 
               if (result !== newResult) {
                 setValue(newResult)
@@ -359,15 +359,15 @@ function useResolvePxValue(options: { input?: string | number; element?: HTMLEle
 }
 
 function resolveVariables(value: string): string[] {
-  let matches = /var\((.*)\)/.exec(value)
+  const matches = /var\((.*)\)/.exec(value)
   if (matches) {
-    let idx = matches[1].indexOf(",")
+    const idx = matches[1].indexOf(",")
     if (idx === -1) {
       return [matches[1]]
     }
 
-    let variable = matches[1].slice(0, idx).trim()
-    let fallback = matches[1].slice(idx + 1).trim()
+    const variable = matches[1].slice(0, idx).trim()
+    const fallback = matches[1].slice(idx + 1).trim()
 
     if (fallback) {
       return [variable, ...resolveVariables(fallback)]
@@ -405,7 +405,7 @@ function resolveCSSVariablePxValue(input: string, element: HTMLElement) {
   // ```
   //
   // Then this will result to resolved value of `2rem`, instead of `1rem`
-  let tmpEl = document.createElement("div")
+  const tmpEl = document.createElement("div")
   element.appendChild(tmpEl)
 
   // Set the value to `0px` otherwise if an invalid value is provided later the browser will read
@@ -418,7 +418,7 @@ function resolveCSSVariablePxValue(input: string, element: HTMLElement) {
   tmpEl.style.setProperty("margin-top", input, "important")
 
   // Reading the `margin-top` will already be in pixels (e.g.: 123px).
-  let pxValue = parseFloat(window.getComputedStyle(tmpEl).marginTop) || 0
+  const pxValue = parseFloat(window.getComputedStyle(tmpEl).marginTop) || 0
   element.removeChild(tmpEl)
 
   return pxValue

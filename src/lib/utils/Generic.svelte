@@ -28,19 +28,22 @@
 </script>
 
 {#if as === "svelte:fragment"}
-  {#if children}{@render children(slot, {
-      ...props,
-      ...(resolvedClass ? { class: resolvedClass } : {}),
-      ...stateFromSlot(slot),
+  {#if children}{@render children({
+      slot,
+      props: {
+        ...props,
+        ...(resolvedClass ? { class: resolvedClass } : {}),
+        ...stateFromSlot(slot),
+      },
     })}{/if}
 {:else if children}
   {#if as === "select"}
     <select bind:this={ref} {...props} class={resolvedClass} {...stateFromSlot(slot)} bind:value>
-      {@render children(slot, {})}
+      {@render children({ slot, props: {} })}
     </select>
   {:else}
     <svelte:element this={as} bind:this={ref} {...props} class={resolvedClass} {...stateFromSlot(slot)}>
-      {@render children(slot, {})}
+      {@render children({ slot, props: {} })}
     </svelte:element>
   {/if}
 {:else if as === "input" && props.type === "checkbox"}

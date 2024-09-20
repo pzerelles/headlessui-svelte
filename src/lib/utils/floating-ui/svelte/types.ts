@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
 import type { HTMLAttributes } from "svelte/elements"
 import type {
@@ -8,84 +9,6 @@ import type {
 
 import type { ExtendedUserProps } from "./hooks/useInteractions.svelte.js"
 
-/*export * from "."
-export type { FloatingArrowProps } from "./components/FloatingArrow"
-export type { FloatingFocusManagerProps } from "./components/FloatingFocusManager"
-export type { FloatingOverlayProps } from "./components/FloatingOverlay"
-export type { FloatingPortalProps, UseFloatingPortalNodeProps } from "./components/FloatingPortal"
-export type { CompositeProps, CompositeItemProps } from "./components/Composite"
-export type { UseClickProps } from "./hooks/useClick"
-export type { UseClientPointProps } from "./hooks/useClientPoint"
-export type { UseDismissProps } from "./hooks/useDismiss"
-export type { UseFocusProps } from "./hooks/useFocus"
-export type { UseHoverProps } from "./hooks/useHover"
-export type { UseListNavigationProps } from "./hooks/useListNavigation"
-export type { UseRoleProps } from "./hooks/useRole"
-export type { UseTransitionStatusProps, UseTransitionStylesProps } from "./hooks/useTransition"
-export type { UseTypeaheadProps } from "./hooks/useTypeahead"
-export type { UseFloatingRootContextOptions } from "./hooks/useFloatingRootContext"
-export type { InnerProps, UseInnerOffsetProps } from "./inner"
-export type { UseInteractionsReturn } from "./hooks/useInteractions"
-export type { SafePolygonOptions } from "./safePolygon"
-export type { FloatingTreeProps, FloatingNodeProps } from "./components/FloatingTree"
-export type {
-  AlignedPlacement,
-  Alignment,
-  ArrowOptions,
-  AutoPlacementOptions,
-  AutoUpdateOptions,
-  Axis,
-  Boundary,
-  ClientRectObject,
-  ComputePositionConfig,
-  ComputePositionReturn,
-  Coords,
-  DetectOverflowOptions,
-  Dimensions,
-  ElementContext,
-  ElementRects,
-  Elements,
-  FlipOptions,
-  FloatingElement,
-  HideOptions,
-  InlineOptions,
-  Length,
-  Middleware,
-  MiddlewareArguments,
-  MiddlewareData,
-  MiddlewareReturn,
-  MiddlewareState,
-  NodeScroll,
-  OffsetOptions,
-  Padding,
-  Placement,
-  Platform,
-  Rect,
-  ReferenceElement,
-  RootBoundary,
-  ShiftOptions,
-  Side,
-  SideObject,
-  SizeOptions,
-  Strategy,
-  VirtualElement,
-} from "@floating-ui/react-dom"
-export {
-  arrow,
-  autoPlacement,
-  autoUpdate,
-  computePosition,
-  detectOverflow,
-  flip,
-  getOverflowAncestors,
-  hide,
-  inline,
-  limitShift,
-  offset,
-  platform,
-  shift,
-  size,
-} from "@floating-ui/react-dom"*/
 export type {
   ReferenceElement,
   DetectOverflowOptions,
@@ -116,9 +39,9 @@ export interface ExtendedRefs<RT> {
   reference: MutableRefObject<ReferenceType | null>
   floating: MutableRefObject<HTMLElement | null>
   domReference: MutableRefObject<NarrowedElement<RT> | null>
-  setReference(node: RT | null): void
-  setFloating(node: HTMLElement | null): void
-  setPositionReference(node: ReferenceType | null): void
+  setReference(node: RT | null | undefined): void
+  setFloating(node: HTMLElement | null | undefined): void
+  setPositionReference(node: ReferenceType | null | undefined): void
 }
 
 export interface ExtendedElements<RT> {
@@ -153,7 +76,7 @@ export interface FloatingRootContext<RT extends ReferenceType = ReferenceType> {
   events: FloatingEvents
   floatingId: string
   refs: {
-    setPositionReference(node: ReferenceType | null): void
+    setPositionReference(node: ReferenceType | null | undefined): void
   }
 }
 

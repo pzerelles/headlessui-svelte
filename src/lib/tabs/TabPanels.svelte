@@ -1,7 +1,7 @@
 <script lang="ts" module>
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
   import type { ElementType, Props } from "$lib/utils/types.js"
-  import { useData } from "./TabGroup.svelte"
+  import { useTabs } from "./context.svelte.js"
 
   let DEFAULT_PANELS_TAG = "div" as const
   type PanelsRenderPropArg = {
@@ -12,8 +12,8 @@
 </script>
 
 <script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_PANELS_TAG">
-  const data = useData("Tab.Panels")
-  const { selectedIndex } = $derived(data)
+  const context = useTabs("TabPanels")
+  const { selectedIndex } = $derived(context)
 
   const slot = $derived({ selectedIndex } satisfies PanelsRenderPropArg)
 

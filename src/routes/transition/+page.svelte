@@ -14,7 +14,7 @@
       <div class="mt-8 flex flex-col items-center">
         <div class="size-[6.25rem]">
           <Transition show={isShowing} {ref}>
-            {#snippet children(slot, props)}
+            {#snippet children({ slot, props })}
               <div
                 bind:this={ref}
                 {...props}

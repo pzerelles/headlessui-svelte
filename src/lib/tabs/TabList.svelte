@@ -18,11 +18,11 @@
 </script>
 
 <script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_LIST_TAG">
-  import { useData } from "./TabGroup.svelte"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
+  import { useTabs } from "./context.svelte.js"
 
-  const data = useData("Tab.List")
-  const { orientation, selectedIndex } = $derived(data)
+  const context = useTabs("TabList")
+  const { orientation, selectedIndex } = $derived(context)
 
   const slot = $derived({ selectedIndex } satisfies ListRenderPropArg)
 

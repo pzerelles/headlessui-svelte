@@ -23,7 +23,7 @@
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
   import { mergeProps } from "$lib/utils/render.js"
   import TransitionChild from "$lib/transition/TransitionChild.svelte"
-  
+
   let internalId = useId()
   let {
     ref = $bindable(),
@@ -52,7 +52,7 @@
 
 {#if transition}
   <TransitionChild {unmount} {ref}>
-    {#snippet children(slot, props)}
+    {#snippet children({ slot, props })}
       <ElementOrComponent
         ourProps={{ ...ourProps, ...props }}
         {theirProps}

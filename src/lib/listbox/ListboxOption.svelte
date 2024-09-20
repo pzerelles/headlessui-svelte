@@ -23,8 +23,6 @@
       value: TType
     }
   >
-
-  export type ListboxOptionChildren = Snippet<[OptionRenderPropArg]>
 </script>
 
 <script lang="ts" generics="TType, TTag extends ElementType = typeof DEFAULT_OPTION_TAG">
