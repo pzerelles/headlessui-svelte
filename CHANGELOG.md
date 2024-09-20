@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.25
+
+### Patch Changes
+
+- 8356649: fix: try to simplify types
+
 ## 2.1.2-next.24
 
 ### Patch Changes
