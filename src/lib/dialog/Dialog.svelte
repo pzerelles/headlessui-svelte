@@ -1,8 +1,7 @@
 <script lang="ts" module>
-  import type { ElementType, Props } from "$lib/utils/types.js"
-  import { RenderFeatures, type PropsForFeatures } from "$lib/utils/render.js"
+  import type { Props } from "$lib/utils/types.js"
+  import { RenderFeatures, renderProps, type PropsForFeatures } from "$lib/utils/render.js"
 
-  export const DEFAULT_DIALOG_TAG = "div" as const
   export type DialogRenderPropArg = {
     open: boolean
   }
@@ -10,25 +9,22 @@
 
   export const DialogRenderFeatures = RenderFeatures.RenderStrategy | RenderFeatures.Static
 
-  export type DialogProps<TTag extends ElementType = typeof DEFAULT_DIALOG_TAG> = Props<
-    TTag,
+  export type DialogProps = Props<
+    "div",
     DialogRenderPropArg,
     DialogPropsWeControl,
     PropsForFeatures<typeof DialogRenderFeatures> & {
-      as?: TTag
-      id?: string
       open?: boolean
       onclose(value: boolean): void
       initialFocus?: HTMLElement
       role?: "dialog" | "alertdialog"
-      autofocus?: boolean
       transition?: boolean
       __demoMode?: boolean
     }
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_DIALOG_TAG">
+<script lang="ts">
   import { useId } from "$lib/hooks/use-id.js"
   import { useMainTreeNode, useRootContainers } from "$lib/hooks/use-root-containers.svelte.js"
   import { clearOpenClosedContext, State, useOpenClosed } from "$lib/internal/open-closed.js"
@@ -54,18 +50,18 @@
 
   const internalId = useId()
   let {
-    ref = $bindable(),
     id = `headlessui-dialog-${internalId}`,
     open: theirOpen,
     onclose,
     initialFocus,
     role: theirRole = "dialog",
-    autofocus = true,
+    autofocus,
     __demoMode = false,
     unmount = false,
     transition = false,
+    children,
     ...theirProps
-  }: { as?: TTag } & DialogProps<TTag> = $props()
+  }: DialogProps = $props()
 
   // Validations
   const usesOpenClosedState = useOpenClosed()
@@ -91,9 +87,9 @@
       )
     }
 
-    if (typeof theirProps.onclose !== "function") {
+    if (typeof onclose !== "function") {
       throw new Error(
-        `You provided an \`onclose\` prop to the \`Dialog\`, but the value is not a function. Received: ${theirProps.onclose}`
+        `You provided an \`onclose\` prop to the \`Dialog\`, but the value is not a function. Received: ${onclose}`
       )
     }
   })
@@ -122,6 +118,7 @@
       : theirOpen
   )
 
+  let ref = $state<HTMLElement>()
   const ownerDocument = $derived(getOwnerDocument(ref))
 
   const dialogState = $derived(open ? DialogStates.Open : DialogStates.Closed)
@@ -290,15 +287,23 @@
 
   const slot = $derived({ open: dialogState === DialogStates.Open } satisfies DialogRenderPropArg)
 
-  const ourProps = $derived({
-    id,
-    role,
-    tabIndex: -1,
-    "aria-modal": __demoMode ? undefined : dialogState === DialogStates.Open ? true : undefined,
-    "aria-labelledby": _state.titleId,
-    "aria-describedby": describedby.value,
-    unmount,
-  })
+  const ourProps = $derived(
+    renderProps(
+      [
+        theirProps,
+        {
+          id,
+          role,
+          tabIndex: -1,
+          "aria-modal": __demoMode ? undefined : dialogState === DialogStates.Open ? true : undefined,
+          "aria-labelledby": _state.titleId,
+          "aria-describedby": describedby.value,
+          unmount,
+        },
+      ],
+      { slot, features: DialogRenderFeatures, visible: dialogState === DialogStates.Open }
+    )
+  )
 
   const shouldMoveFocusInside = !useIsTouchDevice().value
   const focusTrapFeatures = $derived.by(() => {
@@ -329,6 +334,7 @@
 </script>
 
 {#snippet internal(transitionProps?: Record<string, any>)}
+  {@const t = console.log(transitionProps)}
   <ForcePortalRoot force={true}>
     <Portal>
       <PortalGroup target={ref ?? null}>
@@ -339,16 +345,11 @@
             containers={resolvedRootContainers}
             features={focusTrapFeatures}
           >
-            <ElementOrComponent
-              {ourProps}
-              theirProps={{ ...theirProps, ...transitionProps }}
-              slots={slot}
-              defaultTag={DEFAULT_DIALOG_TAG}
-              features={DialogRenderFeatures}
-              visible={dialogState === DialogStates.Open}
-              name="Dialog"
-              bind:ref
-            />
+            {#if ourProps}
+              <button {...ourProps}>
+                {#if children}{@render children({ slot })}{/if}
+              </button>
+            {/if}
           </FocusTrap>
         </ForcePortalRoot>
       </PortalGroup>
@@ -358,7 +359,7 @@
 
 {#if (open !== undefined || transition) && !theirProps.static}
   <MainTreeProvider>
-    <Transition show={open} {transition} unmount={theirProps.unmount} {ref}>
+    <Transition show={open} {transition} {unmount}>
       {#snippet children({ props })}
         {@render internal(props)}
       {/snippet}

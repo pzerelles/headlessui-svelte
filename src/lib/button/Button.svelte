@@ -1,6 +1,5 @@
 <script lang="ts" module>
-  import type { SvelteHTMLElements } from "svelte/elements"
-  import type { Snippet } from "svelte"
+  import type { Props } from "$lib/utils/types.js"
 
   type ButtonRenderPropArg = {
     disabled: boolean
@@ -10,11 +9,7 @@
     autofocus: boolean
   }
 
-  export type ButtonProps = Omit<SvelteHTMLElements["button"], "class"> & {
-    asChild?: boolean
-    class?: string | null | ((bag: ButtonRenderPropArg) => string)
-    children: Snippet<[{ slot: ButtonRenderPropArg; props?: Record<string, any> }]>
-  }
+  export type ButtonProps = Props<"button", ButtonRenderPropArg, never, { asChild?: boolean }>
 </script>
 
 <script lang="ts">
@@ -86,10 +81,10 @@
 
 {#if ourProps}
   {#if asChild}
-    {@render children({ slot, props: ourProps })}
+    {#if children}{@render children({ slot, props: ourProps })}{/if}
   {:else}
     <button {...ourProps}>
-      {@render children({ slot })}
+      {#if children}{@render children({ slot })}{/if}
     </button>
   {/if}
 {/if}

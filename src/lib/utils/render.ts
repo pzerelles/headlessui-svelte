@@ -153,18 +153,16 @@ export function omit<T extends Record<any, any>>(object: T, keysToOmit: string[]
 
 export const renderProps = (
   listOfProps: Record<string, any>[],
-  options?: { visible?: boolean; featureFlags?: RenderFeatures; slot?: Record<string, any> }
+  options?: { visible?: boolean; features?: RenderFeatures; slot?: Record<string, any> }
 ): Record<string, any> | undefined => {
-  const { visible = true, featureFlags = RenderFeatures.None, slot } = options ?? {}
+  const { visible = true, features = RenderFeatures.None, slot } = options ?? {}
   const { static: isStatic = false, unmount = true, ...rest } = mergePropsAdvanced(...listOfProps)
   const render =
-    visible ||
-    (featureFlags & RenderFeatures.Static && isStatic) ||
-    (featureFlags & RenderFeatures.RenderStrategy && !unmount)
+    visible || (features & RenderFeatures.Static && isStatic) || (features & RenderFeatures.RenderStrategy && !unmount)
   if (!render) return undefined
 
   const hiddenProps =
-    !visible && !(featureFlags & RenderFeatures.Static) && featureFlags & RenderFeatures.RenderStrategy && !unmount
+    !visible && !(features & RenderFeatures.Static) && features & RenderFeatures.RenderStrategy && !unmount
       ? { hidden: true, style: "display: none;" }
       : {}
 

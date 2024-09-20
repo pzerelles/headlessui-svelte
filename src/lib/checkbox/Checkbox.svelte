@@ -1,6 +1,5 @@
 <script lang="ts" module>
-  import type { SvelteHTMLElements } from "svelte/elements"
-  import type { Snippet } from "svelte"
+  import type { Props } from "$lib/utils/types.js"
 
   type CheckboxRenderPropArg = {
     checked: boolean
@@ -21,19 +20,22 @@
     | "tabindex"
     | "class"
 
-  export type CheckboxProps<T = string> = Omit<SvelteHTMLElements["span"], CheckboxPropsWeControl> & {
-    asChild?: boolean
-    class?: string | null | ((bag: CheckboxRenderPropArg) => string)
-    children: Snippet<[{ slot: CheckboxRenderPropArg; props?: Record<string, any> }]>
-    value?: T
-    disabled?: boolean
-    indeterminate?: boolean
-    checked?: boolean
-    defaultChecked?: boolean
-    form?: string
-    name?: string
-    onchange?: (checked: boolean) => void
-  }
+  export type CheckboxProps<T = string> = Props<
+    "span",
+    CheckboxRenderPropArg,
+    CheckboxPropsWeControl,
+    {
+      asChild?: boolean
+      value?: T
+      disabled?: boolean
+      indeterminate?: boolean
+      checked?: boolean
+      defaultChecked?: boolean
+      form?: string
+      name?: string
+      onchange?: (checked: boolean) => void
+    }
+  >
 </script>
 
 <script lang="ts" generics="T = string">
@@ -191,10 +193,10 @@
 {/if}
 {#if ourProps}
   {#if asChild}
-    {@render children({ slot, props: ourProps })}
+    {#if children}{@render children({ slot, props: ourProps })}{/if}
   {:else}
     <span {...ourProps}>
-      {@render children({ slot })}
+      {#if children}{@render children({ slot })}{/if}
     </span>
   {/if}
 {/if}

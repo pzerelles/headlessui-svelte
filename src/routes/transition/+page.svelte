@@ -13,16 +13,18 @@
     <div class="fixed top-24 w-52 text-right">
       <div class="mt-8 flex flex-col items-center">
         <div class="size-[6.25rem]">
-          <Transition show={isShowing} {ref}>
-            {#snippet children({ slot, props })}
-              <div
-                bind:this={ref}
-                {...props}
-                class={clsx(
-                  "size-full rounded-xl bg-white shadow-lg transition duration-1000 ease-in",
-                  "data-[leave]:data-[closed]:opacity-0"
-                )}
-              ></div>
+          <Transition
+            show={isShowing}
+            {ref}
+            class={clsx(
+              "size-full rounded-xl bg-white shadow-lg transition duration-1000",
+              "data-[closed]:rotate-[-120deg] data-[closed]:scale-50 data-[closed]:opacity-0",
+              "data-[leave]:duration-1000 data-[leave]:ease-in-out",
+              "data-[leave]:data-[closed]:rotate-[0deg] data-[leave]:data-[closed]:scale-95"
+            )}
+          >
+            {#snippet children({ props })}
+              <div bind:this={ref} {...props}></div>
             {/snippet}
           </Transition>
         </div>

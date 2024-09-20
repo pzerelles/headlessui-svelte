@@ -1,23 +1,16 @@
 <script lang="ts" module>
   import { State, useOpenClosed } from "$lib/internal/open-closed.js"
-  import type { ElementType } from "$lib/utils/types.js"
-  import { setContext, untrack, type Component } from "svelte"
-  import {
-    type TransitionChildProps,
-    DEFAULT_TRANSITION_CHILD_TAG,
-    TransitionChildRenderFeatures,
-  } from "./TransitionChild.svelte"
+  import { setContext, untrack } from "svelte"
+  import { type TransitionChildProps, TransitionChildRenderFeatures } from "./TransitionChild.svelte"
 
-  export type TransitionRootProps<TTag extends ElementType = typeof DEFAULT_TRANSITION_CHILD_TAG> =
-    TransitionChildProps<TTag> & {
-      show?: boolean
-      appear?: boolean
-    }
+  export type TransitionRootProps = TransitionChildProps & {
+    show?: boolean
+    appear?: boolean
+  }
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_TRANSITION_CHILD_TAG">
+<script lang="ts">
   import InternalTransitionChild, { shouldForwardRef } from "./InternalTransitionChild.svelte"
-  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
   import {
     hasChildren,
     TreeStates,
@@ -25,10 +18,11 @@
     type NestingContextValues,
     type TransitionContextValues,
   } from "./context.svelte.js"
+  import { renderProps } from "$lib/utils/render.js"
 
-  let { ref = $bindable(), show, ..._props }: { as?: TTag } & TransitionRootProps<TTag> = $props()
+  let { ref, show, ..._props }: TransitionRootProps = $props()
   const { appear = false, unmount = true, ...theirProps } = $derived(_props)
-  const requiresRef = shouldForwardRef(_props)
+  //const requiresRef = shouldForwardRef(_props)
 
   const usesOpenClosedState = useOpenClosed()
 
@@ -76,6 +70,13 @@
 
   const sharedProps = $derived({ unmount })
 
+  const ourProps = $derived(
+    renderProps([sharedProps], {
+      features: TransitionChildRenderFeatures,
+      visible: _state === TreeStates.Visible,
+    })
+  )
+
   const beforeEnter = () => {
     if (initial) initial = false
     _props.beforeEnter?.()
@@ -98,22 +99,8 @@
       return initial
     },
   })
-
-  const InternalChild = InternalTransitionChild as Component<TransitionChildProps<TTag>, any>
 </script>
 
-{#snippet children()}
-  <InternalChild bind:ref {...sharedProps} {...theirProps} {beforeEnter} {beforeLeave} />
-{/snippet}
-
-<ElementOrComponent
-  ourProps={{
-    ...sharedProps,
-    children,
-  }}
-  theirProps={{}}
-  defaultTag={"svelte:fragment"}
-  features={TransitionChildRenderFeatures}
-  visible={_state === TreeStates.Visible}
-  name="Transition"
-/>
+{#if ourProps}
+  <InternalTransitionChild {...sharedProps} {...theirProps} {beforeEnter} {beforeLeave} {ref} asChild={!!ref} />
+{/if}
