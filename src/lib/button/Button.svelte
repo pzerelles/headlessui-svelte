@@ -1,7 +1,6 @@
 <script lang="ts" module>
-  import type { Props, ElementType } from "$lib/utils/types.js"
-
-  const DEFAULT_BUTTON_TAG = "button" as const
+  import type { SvelteHTMLElements } from "svelte/elements"
+  import type { Snippet } from "svelte"
 
   type ButtonRenderPropArg = {
     disabled: boolean
@@ -10,39 +9,32 @@
     active: boolean
     autofocus: boolean
   }
-  type ButtonPropsWeControl = never
 
-  export type ButtonProps<TTag extends ElementType = typeof DEFAULT_BUTTON_TAG> = Props<
-    TTag,
-    ButtonRenderPropArg,
-    ButtonPropsWeControl,
-    {
-      disabled?: boolean
-      autofocus?: boolean
-      type?: "button" | "submit" | "reset"
-    }
-  >
+  export type ButtonProps = Omit<SvelteHTMLElements["button"], "class"> & {
+    asChild?: boolean
+    class?: string | null | ((bag: ButtonRenderPropArg) => string)
+    children: Snippet<[{ slot: ButtonRenderPropArg; props?: Record<string, any> }]>
+  }
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_BUTTON_TAG">
+<script lang="ts">
   import { useActivePress } from "../hooks/use-active-press.svelte.js"
   import { useFocusRing } from "../hooks/use-focus-ring.svelte.js"
   import { useDisabled } from "../hooks/use-disabled.js"
   import { useHover } from "$lib/hooks/use-hover.svelte.js"
-  import { mergeProps } from "$lib/utils/render.js"
-  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
-
-  const providedDisabled = useDisabled()
+  import { renderProps } from "$lib/utils/render.js"
 
   let {
-    ref = $bindable(),
-    disabled: ownDisabled = false,
+    asChild,
+    disabled: ownDisabled,
     autofocus = false,
     type = "button",
+    children,
     ...theirProps
-  }: { as?: TTag } & ButtonProps<TTag> = $props()
+  }: ButtonProps = $props()
 
-  const disabled = $derived(providedDisabled.current || ownDisabled)
+  const providedDisabled = useDisabled()
+  const disabled = $derived(providedDisabled.current || ownDisabled || false)
 
   const { isHovered: hover, hoverProps } = $derived(
     useHover({
@@ -61,7 +53,7 @@
   const { isFocusVisible: focus, focusProps } = $derived(
     useFocusRing({
       get autofocus() {
-        return autofocus
+        return autofocus ?? undefined
       },
     })
   )
@@ -71,21 +63,33 @@
     hover,
     focus,
     active,
-    autofocus,
+    autofocus: autofocus ?? false,
   })
 
   const ourProps = $derived(
-    mergeProps(
-      {
-        type,
-        disabled: disabled || undefined,
-        autofocus,
-      },
-      focusProps,
-      hoverProps,
-      pressProps
+    renderProps(
+      [
+        theirProps,
+        {
+          type,
+          disabled: disabled || undefined,
+          autofocus,
+        },
+        focusProps,
+        hoverProps,
+        pressProps,
+      ],
+      { slot }
     )
   )
 </script>
 
-<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_BUTTON_TAG} name="Button" bind:ref />
+{#if ourProps}
+  {#if asChild}
+    {@render children({ slot, props: ourProps })}
+  {:else}
+    <button {...ourProps}>
+      {@render children({ slot })}
+    </button>
+  {/if}
+{/if}

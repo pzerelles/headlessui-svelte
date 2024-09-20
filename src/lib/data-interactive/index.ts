@@ -1,1 +1,1 @@
-export { default as DataInteractive, type DataInteractiveProps } from "./DataInteractive.svelte"
+export * from "./use-data-interactive.js"

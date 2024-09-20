@@ -1,7 +1,7 @@
 <script lang="ts" module>
-  import type { ElementType, Props, PropsOf } from "$lib/utils/types.js"
+  import type { SvelteHTMLElements } from "svelte/elements"
+  import type { Snippet } from "svelte"
 
-  let DEFAULT_CHECKBOX_TAG = "span" as const
   type CheckboxRenderPropArg = {
     checked: boolean
     changing: boolean
@@ -18,28 +18,25 @@
     | "aria-disabled"
     | "aria-labelledby"
     | "role"
-    | "tabIndex"
+    | "tabindex"
+    | "class"
 
-  export type CheckboxProps<TTag extends ElementType = typeof DEFAULT_CHECKBOX_TAG, TType = string> = Props<
-    TTag,
-    CheckboxRenderPropArg,
-    CheckboxPropsWeControl,
-    {
-      value?: TType
-      disabled?: boolean
-      indeterminate?: boolean
-
-      checked?: boolean
-      defaultChecked?: boolean
-      autofocus?: boolean
-      form?: string
-      name?: string
-      onchange?: (checked: boolean) => void
-    }
-  >
+  export type CheckboxProps<T = string> = Omit<SvelteHTMLElements["span"], CheckboxPropsWeControl> & {
+    asChild?: boolean
+    class?: string | null | ((bag: CheckboxRenderPropArg) => string)
+    children: Snippet<[{ slot: CheckboxRenderPropArg; props?: Record<string, any> }]>
+    value?: T
+    disabled?: boolean
+    indeterminate?: boolean
+    checked?: boolean
+    defaultChecked?: boolean
+    form?: string
+    name?: string
+    onchange?: (checked: boolean) => void
+  }
 </script>
 
-<script lang="ts" generics="TType, TTag extends ElementType = typeof DEFAULT_CHECKBOX_TAG">
+<script lang="ts" generics="T = string">
   import { tick } from "svelte"
   import { attemptSubmit } from "../utils/form.js"
   import { useProvidedId, htmlid } from "../utils/id.js"
@@ -50,8 +47,7 @@
   import { useLabelledBy } from "$lib/label/context.svelte.js"
   import { useDescribedBy } from "$lib/description/context.svelte.js"
   import { useHover } from "$lib/hooks/use-hover.svelte.js"
-  import { mergeProps } from "$lib/utils/render.js"
-  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
+  import { renderProps } from "$lib/utils/render.js"
   import { useControllable } from "$lib/hooks/use-controllable.svelte.js"
 
   const internalId = htmlid()
@@ -59,8 +55,8 @@
   const providedDisabled = useDisabled()
 
   let {
-    ref = $bindable(),
-    id = (providedId || `headlessui-checkbox-${internalId}`) as PropsOf<TTag>["id"],
+    asChild,
+    id = providedId || `headlessui-checkbox-${internalId}`,
     disabled: theirDisabled = false,
     autofocus = false,
     checked: controlledChecked = $bindable(),
@@ -70,8 +66,9 @@
     value,
     form,
     indeterminate = false,
+    children,
     ...theirProps
-  }: { as?: TTag } & CheckboxProps<TTag, TType> = $props()
+  }: CheckboxProps<T> = $props()
 
   const defaultChecked = _defaultChecked
   const controllable = useControllable(
@@ -107,7 +104,7 @@
   const { isFocusVisible: focus, focusProps } = $derived(
     useFocusRing({
       get autofocus() {
-        return autofocus
+        return autofocus ?? undefined
       },
     })
   )
@@ -154,22 +151,26 @@
   })
 
   const ourProps = $derived(
-    mergeProps(
-      {
-        id,
-        role: "checkbox",
-        "aria-checked": indeterminate ? ("mixed" as "mixed") : checked ? true : false,
-        "aria-labelledby": labelledBy.value,
-        "aria-describedby": describedBy.value,
-        "aria-disabled": disabled ? true : undefined,
-        tabindex: disabled ? undefined : 0,
-        onkeyup: disabled ? undefined : handleKeyUp,
-        onkeypress: disabled ? undefined : handleKeyPress,
-        onclick: disabled ? undefined : handleClick,
-      },
-      focusProps,
-      hoverProps,
-      pressProps
+    renderProps(
+      [
+        theirProps,
+        {
+          id,
+          role: "checkbox",
+          "aria-checked": indeterminate ? ("mixed" as "mixed") : checked ? true : false,
+          "aria-labelledby": labelledBy.value,
+          "aria-describedby": describedBy.value,
+          "aria-disabled": disabled ? true : undefined,
+          tabindex: disabled ? undefined : 0,
+          onkeyup: disabled ? undefined : handleKeyUp,
+          onkeypress: disabled ? undefined : handleKeyPress,
+          onclick: disabled ? undefined : handleClick,
+        },
+        focusProps,
+        hoverProps,
+        pressProps,
+      ],
+      { slot }
     )
   )
 
@@ -188,12 +189,12 @@
     onReset={reset}
   />
 {/if}
-<ElementOrComponent
-  {ourProps}
-  {theirProps}
-  {slot}
-  defaultTag={DEFAULT_CHECKBOX_TAG}
-  name="Checkbox"
-  bind:ref
-  bind:value
-/>
+{#if ourProps}
+  {#if asChild}
+    {@render children({ slot, props: ourProps })}
+  {:else}
+    <span {...ourProps}>
+      {@render children({ slot })}
+    </span>
+  {/if}
+{/if}

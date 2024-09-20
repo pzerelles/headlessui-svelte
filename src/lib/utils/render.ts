@@ -1,5 +1,6 @@
 /* eslint-disable prefer-const */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { stateFromSlot } from "./state.js"
 import type { Props } from "./types.js"
 
 export enum RenderFeatures {
@@ -83,11 +84,11 @@ export function mergeProps<T extends Props<any, any>[]>(...listOfProps: T) {
 
 // A more complex example fo the `mergeProps` function, this one also cancels subsequent event
 // listeners if the event has already been `preventDefault`ed.
-export function mergePropsAdvanced(...listOfProps: Props<any, any>[]) {
+export function mergePropsAdvanced(...listOfProps: Record<string, any>[]) {
   if (listOfProps.length === 0) return {}
   if (listOfProps.length === 1) return listOfProps[0]
 
-  let target: Props<any, any> = {}
+  let target: Record<string, any> = {}
 
   let eventHandlers: Record<string, ((event: { defaultPrevented: boolean }, ...args: any[]) => void | undefined)[]> = {}
 
@@ -148,4 +149,31 @@ export function omit<T extends Record<any, any>>(object: T, keysToOmit: string[]
     if (key in clone) delete clone[key]
   }
   return clone
+}
+
+export const renderProps = (
+  listOfProps: Record<string, any>[],
+  options?: { visible?: boolean; featureFlags?: RenderFeatures; slot?: Record<string, any> }
+): Record<string, any> | undefined => {
+  const { visible = true, featureFlags = RenderFeatures.None, slot } = options ?? {}
+  const { static: isStatic = false, unmount = true, ...rest } = mergePropsAdvanced(...listOfProps)
+  const render =
+    visible ||
+    (featureFlags & RenderFeatures.Static && isStatic) ||
+    (featureFlags & RenderFeatures.RenderStrategy && !unmount)
+  if (!render) return undefined
+
+  const hiddenProps =
+    !visible && !(featureFlags & RenderFeatures.Static) && featureFlags & RenderFeatures.RenderStrategy && !unmount
+      ? { hidden: true, style: "display: none;" }
+      : {}
+
+  const resolvedClass: string | undefined =
+    typeof rest.class === "function" ? rest.class(slot ?? {}) : (rest.class as string | undefined)
+  return {
+    ...rest,
+    ...hiddenProps,
+    ...(resolvedClass ? { class: resolvedClass } : {}),
+    ...stateFromSlot(slot),
+  }
 }
