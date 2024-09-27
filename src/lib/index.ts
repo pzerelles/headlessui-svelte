@@ -19,5 +19,6 @@ export * from "./textarea/index.js"
 export * from "./transition/index.js"
 
 export * from "./hooks/use-id.js"
+export * from "./hooks/use-disabled.js"
 export * from "./utils/types.js"
 export { mergeProps } from "./utils/render.js"
