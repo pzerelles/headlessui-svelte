@@ -4,8 +4,8 @@ export const useDisabled = () => {
   return getContext<{ readonly current: boolean }>("DisabledContext") ?? { current: false }
 }
 
-export const provideDisabled = (disabled: () => boolean) => {
-  const parentDisabled = useDisabled()
+export const provideDisabled = (disabled: () => boolean, options?: { ignoreParent?: boolean }) => {
+  const parentDisabled = options?.ignoreParent ? { current: false } : useDisabled()
   const context = {
     get current() {
       return disabled() || parentDisabled.current
