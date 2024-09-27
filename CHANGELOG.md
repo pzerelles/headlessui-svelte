@@ -1,5 +1,12 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.29
+
+### Patch Changes
+
+- e306b59: fix: svelte-check errors in Transition
+- 529ca77: fix: Listbox generics
+
 ## 2.1.2-next.28
 
 ### Patch Changes
