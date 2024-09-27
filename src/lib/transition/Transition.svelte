@@ -99,7 +99,7 @@
     },
   })
 
-  const InternalChild = InternalTransitionChild as Component<TransitionChildProps<TTag>, any>
+  const InternalChild = InternalTransitionChild<any>
 </script>
 
 {#snippet children()}
