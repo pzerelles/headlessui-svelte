@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.27
+
+### Patch Changes
+
+- b6ac726: feat: add DisabledProvider component
+
 ## 2.1.2-next.26
 
 ### Patch Changes
