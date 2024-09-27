@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.26
+
+### Patch Changes
+
+- 83afe7f: feat: export disabled context functions
+
 ## 2.1.2-next.25
 
 ### Patch Changes
