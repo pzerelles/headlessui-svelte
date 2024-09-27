@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.28
+
+### Patch Changes
+
+- af0a3ae: feat: add ignoreParent option to provideDisabled
+
 ## 2.1.2-next.27
 
 ### Patch Changes
