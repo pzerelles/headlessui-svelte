@@ -45,7 +45,10 @@
   export * from "./context.svelte.js"
 </script>
 
-<script lang="ts" generics="TType, TActualType, TTag extends ElementType = typeof DEFAULT_LISTBOX_TAG">
+<script
+  lang="ts"
+  generics="TTag extends ElementType = typeof DEFAULT_LISTBOX_TAG, TType = string, TActualType = TType extends (infer U)[] ? U : TType"
+>
   import { disposables } from "$lib/utils/disposables.js"
   import FormFields from "$lib/internal/FormFields.svelte"
   import { useFloatingProvider } from "$lib/internal/floating.svelte.js"
