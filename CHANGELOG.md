@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.30
+
+### Patch Changes
+
+- e65136b: fix: preprocess typescript
+
 ## 2.1.2-next.29
 
 ### Patch Changes
