@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.31
+
+### Patch Changes
+
+- d13e627: fix: only export useFloatingProvider once
+
 ## 2.1.2-next.30
 
 ### Patch Changes
