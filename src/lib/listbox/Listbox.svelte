@@ -51,7 +51,7 @@
 >
   import { disposables } from "$lib/utils/disposables.js"
   import FormFields from "$lib/internal/FormFields.svelte"
-  import { useFloatingProvider } from "$lib/internal/floating.svelte.js"
+  import { useFloatingProvider } from "$lib/internal/floating-provider.svelte.js"
   import { createOpenClosedContext, State } from "$lib/internal/open-closed.js"
   import { useLabels } from "$lib/label/context.svelte.js"
   import { useOutsideClick } from "$lib/hooks/use-outside-click.svelte.js"

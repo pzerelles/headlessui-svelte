@@ -2,8 +2,6 @@ import { useInteractions, type InnerProps, type UseFloatingReturn } from "../uti
 import { useDisposables } from "../utils/disposables.js"
 import { getContext, untrack } from "svelte"
 
-export { useFloatingProvider } from "./floating-provider.svelte.js"
-
 export type Align = "start" | "end"
 export type Placement = "top" | "right" | "bottom" | "left"
 
