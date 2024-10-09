@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 import type { Snippet } from "svelte"
 import type { SvelteHTMLElements } from "svelte/elements"
@@ -17,9 +18,9 @@ type CleanProps<TTag extends ElementType, TOmittableProps extends PropertyKey = 
 >
 
 // Add certain props that we control
-type OurProps<TSlot> = {
+type OurProps<TSlot extends Record<string, any>> = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  children?: Snippet<[{ slot: TSlot; props: Record<string, any> }]>
+  children?: Snippet<[TSlot & { props?: Record<string, any> }]>
   class?: string | null | ((bag: TSlot) => string)
   ref?: HTMLElement
 }
@@ -27,7 +28,7 @@ type OurProps<TSlot> = {
 // Provide clean TypeScript props, which exposes some of our custom APIs.
 export type Props<
   TTag extends ElementType,
-  TSlot = {},
+  TSlot extends Record<string, any> = {},
   TOmittableProps extends PropertyKey = never,
   Overrides = {},
 > = CleanProps<TTag, TOmittableProps | keyof Overrides> & OurProps<TSlot> & Overrides

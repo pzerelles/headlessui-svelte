@@ -24,7 +24,7 @@
 </script>
 
 <Headless.ListboxOption as="svelte:fragment" {...theirProps} {ref}>
-  {#snippet children({ slot: { selectedOption }, props })}
+  {#snippet children({ selectedOption, props })}
     {#if selectedOption}
       <div bind:this={ref} class={clsx(className, sharedClasses)} {...props}>{@render theirChildren()}</div>
     {:else}

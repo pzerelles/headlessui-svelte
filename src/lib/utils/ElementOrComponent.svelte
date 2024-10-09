@@ -1,4 +1,7 @@
-<script lang="ts" generics="TFeature extends RenderFeatures, TTag extends ElementType, TSlot, TValue">
+<script
+  lang="ts"
+  generics="TFeature extends RenderFeatures, TTag extends ElementType, TSlot extends Record<string, any>, TValue"
+>
   import type { ElementType, Props } from "./types.js"
   import { mergePropsAdvanced, RenderFeatures, type PropsForFeatures } from "./render.js"
   import Generic from "./Generic.svelte"

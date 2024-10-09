@@ -1,4 +1,4 @@
-<script lang="ts" generics="TTag extends ElementType, TSlot, TValue">
+<script lang="ts" generics="TTag extends ElementType, TSlot extends Record<string, any>, TValue">
   import { stateFromSlot } from "./state.js"
   import type { ElementType, Props } from "./types.js"
 
@@ -29,7 +29,7 @@
 
 {#if as === "svelte:fragment"}
   {#if children}{@render children({
-      slot,
+      ...slot,
       props: {
         ...props,
         ...(resolvedClass ? { class: resolvedClass } : {}),
@@ -39,11 +39,11 @@
 {:else if children}
   {#if as === "select"}
     <select bind:this={ref} {...props} class={resolvedClass} {...stateFromSlot(slot)} bind:value>
-      {@render children({ slot, props: {} })}
+      {@render children(slot)}
     </select>
   {:else}
     <svelte:element this={as} bind:this={ref} {...props} class={resolvedClass} {...stateFromSlot(slot)}>
-      {@render children({ slot, props: {} })}
+      {@render children(slot)}
     </svelte:element>
   {/if}
 {:else if as === "input" && props.type === "checkbox"}
