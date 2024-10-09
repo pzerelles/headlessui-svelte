@@ -21,5 +21,5 @@
 </script>
 
 {#if !formId}
-  <Hidden features={HiddenFeatures.Hidden} as="input" type="hidden" hidden readonly bind:ref={element} />
+  <Hidden features={HiddenFeatures.Hidden} as="input" type="hidden" hidden readonly bind:element />
 {/if}

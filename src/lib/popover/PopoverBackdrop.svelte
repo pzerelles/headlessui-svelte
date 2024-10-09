@@ -1,6 +1,7 @@
 <script lang="ts" module>
-  import type { ElementType, Props, PropsOf } from "$lib/utils/types.js"
+  import type { ElementType, Props } from "$lib/utils/types.js"
   import { RenderFeatures, type PropsForFeatures } from "$lib/utils/render.js"
+  import type { SvelteHTMLElements } from "svelte/elements"
 
   let DEFAULT_BACKDROP_TAG = "div" as const
   type BackdropRenderPropArg = {
@@ -10,17 +11,18 @@
 
   const BackdropRenderFeatures = RenderFeatures.RenderStrategy | RenderFeatures.Static
 
-  export type PopoverBackdropProps<TTag extends ElementType = typeof DEFAULT_BACKDROP_TAG> = Props<
+  export type PopoverBackdropProps<TTag extends ElementType = undefined> = Props<
     TTag,
+    SvelteHTMLElements[typeof DEFAULT_BACKDROP_TAG],
     BackdropRenderPropArg,
     BackdropPropsWeControl,
     { transition?: boolean } & PropsForFeatures<typeof BackdropRenderFeatures>
   >
 
-  export type PopoverOverlayProps<TTag extends ElementType = typeof DEFAULT_BACKDROP_TAG> = PopoverBackdropProps<TTag>
+  export type PopoverOverlayProps<TTag extends ElementType = undefined> = PopoverBackdropProps<TTag>
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_BACKDROP_TAG">
+<script lang="ts" generics="TTag extends ElementType = undefined">
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
   import { useId } from "$lib/hooks/use-id.js"
   import { PopoverStates, usePopoverContext } from "./context.svelte.js"
@@ -29,11 +31,11 @@
 
   const internalId = useId()
   let {
-    ref = $bindable(),
-    id = `headlessui-popover-backdrop-${internalId}` as PropsOf<TTag>["id"],
+    element = $bindable(),
+    id = `headlessui-popover-backdrop-${internalId}`,
     transition = false,
     ...theirProps
-  }: { as?: TTag } & PopoverBackdropProps<TTag> = $props()
+  }: PopoverBackdropProps<TTag> = $props()
   const context = usePopoverContext("PopoverBackdrop")
   const { popoverState } = $derived(context)
 
@@ -43,7 +45,7 @@
       return transition
     },
     get element() {
-      return ref
+      return element
     },
     get show() {
       return usesOpenClosedState !== null
@@ -78,5 +80,5 @@
   features={BackdropRenderFeatures}
   name="PopoverBackdrop"
   {visible}
-  bind:ref
+  bind:element
 />

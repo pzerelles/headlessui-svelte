@@ -1,12 +1,16 @@
 <script lang="ts" module>
-  import type { ElementType, Props, PropsOf } from "$lib/utils/types.js"
+  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { SvelteHTMLElements } from "svelte/elements"
 
-  let DEFAULT_DESCRIPTION_TAG = "p" as const
+  const DEFAULT_DESCRIPTION_TAG = "p" as const
 
-  export type DescriptionProps<TTag extends ElementType = typeof DEFAULT_DESCRIPTION_TAG> = Props<TTag>
+  export type DescriptionProps<TTag extends ElementType = undefined> = Props<
+    TTag,
+    SvelteHTMLElements[typeof DEFAULT_DESCRIPTION_TAG]
+  >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_DESCRIPTION_TAG">
+<script lang="ts" generics="TTag extends ElementType = undefined">
   import { useId } from "$lib/hooks/use-id.js"
   import { useDisabled } from "../hooks/use-disabled.js"
   import { useDescriptionContext } from "./context.svelte.js"
@@ -17,10 +21,10 @@
   const providedDisabled = useDisabled()
 
   let {
-    ref = $bindable(),
-    id = `headlessui-description-${internalId}` as PropsOf<TTag>["id"],
+    id = `headlessui-description-${internalId}`,
+    element = $bindable(),
     ...theirProps
-  }: { as?: TTag } & DescriptionProps<TTag> = $props()
+  }: DescriptionProps<TTag> = $props()
 
   const { register } = useDescriptionContext()
   $effect(() => {
@@ -39,5 +43,5 @@
   slots={slot}
   defaultTag={DEFAULT_DESCRIPTION_TAG}
   name="Description"
-  bind:ref
+  bind:element
 />

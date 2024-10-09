@@ -1,12 +1,15 @@
 <script lang="ts" module>
   import type { ElementType, Props } from "$lib/utils/types.js"
-  let DEFAULT_FIELDSET_TAG = "fieldset" as const
+  import type { SvelteHTMLElements } from "svelte/elements"
+
+  const DEFAULT_FIELDSET_TAG = "fieldset" as const
 
   type FieldsetRenderPropArg = {}
   type FieldsetPropsWeControl = "aria-labelledby" | "aria-disabled" | "role"
 
-  export type FieldsetProps<TTag extends ElementType = typeof DEFAULT_FIELDSET_TAG> = Props<
+  export type FieldsetProps<TTag extends ElementType = undefined> = Props<
     TTag,
+    SvelteHTMLElements[typeof DEFAULT_FIELDSET_TAG],
     FieldsetRenderPropArg,
     FieldsetPropsWeControl,
     {
@@ -15,17 +18,13 @@
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_FIELDSET_TAG">
+<script lang="ts" generics="TTag extends ElementType = undefined">
   import { setContext } from "svelte"
   import { useDisabled } from "../hooks/use-disabled.js"
   import { useLabels } from "$lib/label/context.svelte.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 
-  let {
-    ref = $bindable(),
-    disabled: ownDisabled = false,
-    ...theirProps
-  }: { as?: TTag } & FieldsetProps<TTag> = $props()
+  let { element = $bindable(), disabled: ownDisabled = false, ...theirProps }: FieldsetProps<TTag> = $props()
 
   const providedDisabled = useDisabled()
   const disabled = $derived(providedDisabled.current || ownDisabled)
@@ -52,4 +51,4 @@
   )
 </script>
 
-<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_FIELDSET_TAG} name="Fieldset" bind:ref />
+<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_FIELDSET_TAG} name="Fieldset" bind:element />

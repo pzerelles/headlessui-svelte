@@ -1,7 +1,8 @@
 <script lang="ts" module>
-  import type { ElementType, Props, PropsOf } from "$lib/utils/types.js"
+  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { SvelteHTMLElements } from "svelte/elements"
 
-  let DEFAULT_CHECKBOX_TAG = "span" as const
+  const DEFAULT_CHECKBOX_TAG = "span" as const
   type CheckboxRenderPropArg = {
     checked: boolean
     changing: boolean
@@ -20,8 +21,9 @@
     | "role"
     | "tabIndex"
 
-  export type CheckboxProps<TTag extends ElementType = typeof DEFAULT_CHECKBOX_TAG, TType = string> = Props<
+  export type CheckboxProps<TTag extends ElementType = undefined, TType = string> = Props<
     TTag,
+    SvelteHTMLElements[typeof DEFAULT_CHECKBOX_TAG],
     CheckboxRenderPropArg,
     CheckboxPropsWeControl,
     {
@@ -39,7 +41,7 @@
   >
 </script>
 
-<script lang="ts" generics="TType, TTag extends ElementType = typeof DEFAULT_CHECKBOX_TAG">
+<script lang="ts" generics="TType, TTag extends ElementType = undefined">
   import { tick } from "svelte"
   import { attemptSubmit } from "../utils/form.js"
   import { useProvidedId, htmlid } from "../utils/id.js"
@@ -59,8 +61,7 @@
   const providedDisabled = useDisabled()
 
   let {
-    ref = $bindable(),
-    id = (providedId || `headlessui-checkbox-${internalId}`) as PropsOf<TTag>["id"],
+    id = providedId || `headlessui-checkbox-${internalId}`,
     disabled: theirDisabled = false,
     autofocus = false,
     checked: controlledChecked = $bindable(),
@@ -70,8 +71,9 @@
     value,
     form,
     indeterminate = false,
+    element = $bindable(),
     ...theirProps
-  }: { as?: TTag } & CheckboxProps<TTag, TType> = $props()
+  }: CheckboxProps<TTag, TType> = $props()
 
   const defaultChecked = _defaultChecked
   const controllable = useControllable(
@@ -188,12 +190,13 @@
     onReset={reset}
   />
 {/if}
+
 <ElementOrComponent
   {ourProps}
   {theirProps}
   {slot}
   defaultTag={DEFAULT_CHECKBOX_TAG}
   name="Checkbox"
-  bind:ref
+  bind:element
   bind:value
 />

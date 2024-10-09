@@ -5,8 +5,9 @@
 
   type TransitionChildPropsWeControl = never
 
-  export type TransitionChildProps<TTag extends ElementType> = Props<
+  export type TransitionChildProps<TTag extends ElementType = undefined> = Props<
     TTag,
+    {},
     TransitionChildRenderPropArg,
     TransitionChildPropsWeControl,
     PropsForFeatures<typeof TransitionChildRenderFeatures> &
@@ -19,7 +20,7 @@
   export const TransitionChildRenderFeatures = RenderFeatures.RenderStrategy
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_TRANSITION_CHILD_TAG">
+<script lang="ts" generics="TTag extends ElementType = undefined">
   import { useOpenClosed } from "$lib/internal/open-closed.js"
   import { getContext } from "svelte"
   import InternalTransitionChild from "./InternalTransitionChild.svelte"
@@ -28,9 +29,9 @@
   const hasTransitionContext = !!getContext("TransitionContext")
   const hasOpenClosedContext = useOpenClosed() !== null
 
-  let { ref = $bindable(), as, ...props }: { as?: TTag } & TransitionChildProps<TTag> = $props()
+  let { element = $bindable(), as, ...props }: TransitionChildProps<TTag> = $props()
 
   const TransitionRootOrChild = !hasTransitionContext && hasOpenClosedContext ? Transition : InternalTransitionChild
 </script>
 
-<TransitionRootOrChild bind:ref {...props} />
+<TransitionRootOrChild bind:element {...props} />

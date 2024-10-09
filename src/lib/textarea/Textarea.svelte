@@ -1,5 +1,6 @@
 <script lang="ts" module>
-  import type { ElementType, Props, PropsOf } from "$lib/utils/types.js"
+  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { SvelteHTMLElements } from "svelte/elements"
 
   const DEFAULT_TEXTAREA_TAG = "textarea" as const
 
@@ -12,8 +13,9 @@
   }
   type TextareaPropsWeControl = "aria-labelledby" | "aria-describedby"
 
-  export type TextareaProps<TTag extends ElementType = typeof DEFAULT_TEXTAREA_TAG, TValue = string> = Props<
+  export type TextareaProps<TTag extends ElementType = undefined, TValue = string> = Props<
     TTag,
+    SvelteHTMLElements[typeof DEFAULT_TEXTAREA_TAG],
     TextareaRenderPropArg,
     TextareaPropsWeControl,
     {
@@ -25,7 +27,7 @@
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_TEXTAREA_TAG, TValue = string">
+<script lang="ts" generics="TTag extends ElementType = undefined, TValue = string">
   import { htmlid } from "../utils/id.js"
   import { useDisabled } from "../hooks/use-disabled.js"
   import { useProvidedId } from "$lib/utils/id.js"
@@ -41,14 +43,14 @@
   const providedDisabled = useDisabled()
 
   let {
-    ref = $bindable(),
+    element = $bindable(),
     value = $bindable(),
-    id = (providedId || `headlessui-input-${internalId}`) as PropsOf<TTag>["id"],
+    id = providedId || `headlessui-input-${internalId}`,
     disabled: theirDisabled = false,
-    autofocus = false as PropsOf<TTag>["autofocus"],
+    autofocus = false,
     invalid = false,
     ...theirProps
-  }: { as?: TTag; value?: TValue } & TextareaProps<TTag, TValue> = $props()
+  }: TextareaProps<TTag, TValue> = $props()
   const disabled = $derived(providedDisabled.current || theirDisabled)
 
   const labelledBy = useLabelledBy()
@@ -93,6 +95,6 @@
   {slot}
   defaultTag={DEFAULT_TEXTAREA_TAG}
   name="Textarea"
-  bind:ref
+  bind:element
   bind:value
 />

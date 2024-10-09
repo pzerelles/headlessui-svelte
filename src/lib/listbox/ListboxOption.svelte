@@ -1,5 +1,6 @@
 <script lang="ts" module>
   import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { SvelteHTMLElements } from "svelte/elements"
 
   const DEFAULT_OPTION_TAG = "div" as const
   type OptionRenderPropArg = {
@@ -13,19 +14,19 @@
   }
   type OptionPropsWeControl = "aria-disabled" | "aria-selected" | "role" | "tabIndex"
 
-  export type ListboxOptionProps<TTag extends ElementType = typeof DEFAULT_OPTION_TAG, TType = string> = Props<
+  export type ListboxOptionProps<TTag extends ElementType = undefined, TType = string> = Props<
     TTag,
+    SvelteHTMLElements[typeof DEFAULT_OPTION_TAG],
     OptionRenderPropArg,
     OptionPropsWeControl,
     {
-      id?: string
       disabled?: boolean
       value: TType
     }
   >
 </script>
 
-<script lang="ts" generics="TType, TTag extends ElementType = typeof DEFAULT_OPTION_TAG">
+<script lang="ts" generics="TType, TTag extends ElementType = undefined">
   import { useId } from "$lib/hooks/use-id.js"
   import {
     ActivationTrigger,
@@ -45,12 +46,12 @@
 
   const internalId = useId()
   let {
-    ref = $bindable(),
+    element = $bindable(),
     id = `headlessui-listbox-option-${internalId}`,
     disabled = false,
     value,
     ...theirProps
-  }: { as?: TTag } & ListboxOptionProps<TTag, TType> = $props()
+  }: ListboxOptionProps<TTag, TType> = $props()
   const usedInSelectedOption = getContext<boolean>("SelectedOptionContext") === true
   const data = useData("ListboxOption")
   const actions = useActions("ListboxOption")
@@ -62,13 +63,13 @@
   const selected = $derived(data.isSelected(value))
   const getTextValue = useTextValue({
     get element() {
-      return ref as HTMLElement
+      return element as HTMLElement
     },
   })
   const bag: ListboxOptionDataRef<TType>["current"] = $derived({
     disabled,
     value,
-    domRef: { current: ref || null },
+    domRef: { current: element || null },
     get textValue() {
       return getTextValue()
     },
@@ -76,14 +77,14 @@
 
   $effect(() => {
     if (usedInSelectedOption) return
-    if (!ref) {
+    if (!element) {
       data.listElements.delete(id)
     } else {
-      data.listElements.set(id, ref)
+      data.listElements.set(id, element)
     }
 
     return () => {
-      if (ref) data.listElements.delete(id)
+      if (element) data.listElements.delete(id)
     }
   })
 
@@ -93,7 +94,7 @@
     if (!active) return
     if (data.activationTrigger === ActivationTrigger.Pointer) return
     return disposables().requestAnimationFrame(() => {
-      ;(ref as HTMLElement)?.scrollIntoView?.({ block: "nearest" })
+      ;(element as HTMLElement)?.scrollIntoView?.({ block: "nearest" })
     })
   })
 
@@ -177,5 +178,5 @@
 </script>
 
 {#if selected || !usedInSelectedOption}
-  <ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_OPTION_TAG} name="Listbox" bind:ref />
+  <ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_OPTION_TAG} name="Listbox" bind:element />
 {/if}

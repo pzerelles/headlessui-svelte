@@ -2,6 +2,7 @@
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
   import type { ElementType, Props } from "$lib/utils/types.js"
   import { HiddenFeatures } from "./HiddenFeatures.js"
+  import type { SvelteHTMLElements } from "svelte/elements"
 
   export * from "./HiddenFeatures.js"
 
@@ -9,22 +10,17 @@
 
   type HiddenRenderPropArg = {}
   type HiddenPropsWeControl = never
-  export type HiddenProps<TTag extends ElementType = typeof DEFAULT_VISUALLY_HIDDEN_TAG> = Props<
+  export type HiddenProps<TTag extends ElementType = undefined> = Props<
     TTag,
+    SvelteHTMLElements[typeof DEFAULT_VISUALLY_HIDDEN_TAG],
     HiddenRenderPropArg,
     HiddenPropsWeControl,
     { features?: HiddenFeatures }
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_VISUALLY_HIDDEN_TAG">
-  let {
-    ref = $bindable(),
-    value,
-    checked,
-    features = HiddenFeatures.None,
-    ...theirProps
-  }: { as?: TTag } & HiddenProps<TTag> = $props()
+<script lang="ts" generics="TTag extends ElementType = undefined">
+  let { element = $bindable(), features = HiddenFeatures.None, ...theirProps }: HiddenProps<TTag> = $props()
 
   let ourProps = {
     "aria-hidden":
@@ -52,12 +48,4 @@
   }
 </script>
 
-<ElementOrComponent
-  {ourProps}
-  {theirProps}
-  defaultTag={DEFAULT_VISUALLY_HIDDEN_TAG}
-  name="Hidden"
-  bind:ref
-  {value}
-  {checked}
-/>
+<ElementOrComponent {ourProps} {theirProps} defaultTag={DEFAULT_VISUALLY_HIDDEN_TAG} name="Hidden" bind:element />

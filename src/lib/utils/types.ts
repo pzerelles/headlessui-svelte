@@ -1,36 +1,31 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-empty-object-type */
-import type { Snippet } from "svelte"
+import type { Component, Snippet } from "svelte"
 import type { SvelteHTMLElements } from "svelte/elements"
 
-export type ElementType = keyof SvelteHTMLElements
+export type ElementType = Component<any, any> | string | undefined
 
 export type Expand<T> = T extends infer O ? { [K in keyof O]: O[K] } : never
 
-export type PropsOf<TTag extends ElementType> = SvelteHTMLElements[TTag]
-
-type PropsWeControl = "as" | "children" | "class" | "ref" | "slot"
-
-// Resolve the props of the component, but ensure to omit certain props that we control
-type CleanProps<TTag extends ElementType, TOmittableProps extends PropertyKey = never> = Omit<
-  PropsOf<TTag>,
-  TOmittableProps | PropsWeControl
->
-
-// Add certain props that we control
-type OurProps<TSlot> = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  children?: Snippet<[{ slot: TSlot; props: Record<string, any> }]>
-  class?: string | null | ((bag: TSlot) => string)
-  ref?: HTMLElement
-}
+type PropsWeControl = "as" | "children" | "class" | "element"
 
 // Provide clean TypeScript props, which exposes some of our custom APIs.
 export type Props<
-  TTag extends ElementType,
+  TTag extends Component<any, any> | string | undefined,
+  FallbackProps = {},
   TSlot = {},
   TOmittableProps extends PropertyKey = never,
   Overrides = {},
-> = CleanProps<TTag, TOmittableProps | keyof Overrides> & OurProps<TSlot> & Overrides
+> = (TTag extends Component<infer Props, any>
+  ? Omit<Props, TOmittableProps | PropsWeControl | keyof Overrides>
+  : TTag extends string
+    ? Omit<SvelteHTMLElements[TTag], TOmittableProps | PropsWeControl | keyof Overrides>
+    : Omit<FallbackProps, TOmittableProps | PropsWeControl | keyof Overrides>) & {
+  as?: TTag
+  children?: Snippet<[TSlot & { props?: Record<string, any> }]>
+  class?: string | null | ((bag: TSlot) => string)
+  element?: HTMLElement
+} & Overrides
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type EnsureArray<T> = T extends any[] ? T : Expand<T>[]

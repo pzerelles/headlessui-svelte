@@ -94,5 +94,5 @@
 
 {#if children}{@render children()}{/if}
 {#if resolvedMainTreeNode === null}
-  <Hidden features={HiddenFeatures.Hidden} bind:ref={el} />
+  <Hidden features={HiddenFeatures.Hidden} bind:element={el} />
 {/if}

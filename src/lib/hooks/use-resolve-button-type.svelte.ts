@@ -1,5 +1,4 @@
 import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
-import { untrack } from "svelte"
 
 function resolveType<TTag>(props: { type?: string; as?: TTag }) {
   if (props.type) return props.type

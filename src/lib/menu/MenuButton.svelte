@@ -1,5 +1,6 @@
 <script lang="ts" module>
-  import { tick, type Snippet } from "svelte"
+  import { tick } from "svelte"
+  import type { SvelteHTMLElements } from "svelte/elements"
   import type { Props, ElementType } from "$lib/utils/types.js"
 
   const DEFAULT_BUTTON_TAG = "button" as const
@@ -13,12 +14,12 @@
   }
   type ButtonPropsWeControl = "aria-controls" | "aria-expanded" | "aria-haspopup"
 
-  export type MenuButtonProps<TTag extends ElementType = typeof DEFAULT_BUTTON_TAG> = Props<
+  export type MenuButtonProps<TTag extends ElementType = undefined> = Props<
     TTag,
+    SvelteHTMLElements[typeof DEFAULT_BUTTON_TAG],
     ButtonRenderPropArg,
     ButtonPropsWeControl,
     {
-      id?: string
       disabled?: boolean
       autofocus?: boolean
       type?: string
@@ -26,7 +27,7 @@
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_BUTTON_TAG">
+<script lang="ts" generics="TTag extends ElementType = undefined">
   import { useId } from "$lib/hooks/use-id.js"
   import { Focus } from "$lib/utils/calculate-active-index.js"
   import { useFocusRing } from "$lib/hooks/use-focus-ring.svelte.js"
@@ -41,19 +42,19 @@
 
   const internalId = useId()
   let {
-    ref = $bindable(),
+    element = $bindable(),
     id = `headlessui-menu-button-${internalId}`,
     disabled = false,
     autofocus = false,
     ...theirProps
-  }: { as?: TTag } & MenuButtonProps<TTag> = $props()
+  }: MenuButtonProps<TTag> = $props()
   const _state = useMenuContext("MenuButton")
   const floatingReference = useFloatingReference()
   const { setReference } = $derived(floatingReference)
   const { getReferenceProps: getFloatingReferenceProps } = useFloatingReferenceProps()
   $effect(() => {
-    untrack(() => _state.setButtonElement(ref ? (ref as HTMLButtonElement) : null))
-    setReference(ref)
+    untrack(() => _state.setButtonElement(element ? (element as HTMLButtonElement) : null))
+    setReference(element)
   })
 
   const handleKeyDown = async (event: KeyboardEvent) => {
@@ -166,4 +167,4 @@
   )
 </script>
 
-<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_BUTTON_TAG} name="MenuButton" bind:ref />
+<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_BUTTON_TAG} name="MenuButton" bind:element />

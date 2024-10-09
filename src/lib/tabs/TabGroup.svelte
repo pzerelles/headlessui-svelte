@@ -2,6 +2,7 @@
   import type { ElementType, Props } from "$lib/utils/types.js"
   import { sortByDomNode } from "$lib/utils/focus-management.js"
   import FocusSentinel from "$lib/internal/FocusSentinel.svelte"
+  import type { SvelteHTMLElements } from "svelte/elements"
 
   const DEFAULT_TABS_TAG = "div" as const
   type TabsRenderPropArg = {
@@ -9,8 +10,9 @@
   }
   type TabsPropsWeControl = never
 
-  export type TabGroupProps<TTag extends ElementType = typeof DEFAULT_TABS_TAG> = Props<
+  export type TabGroupProps<TTag extends ElementType = undefined> = Props<
     TTag,
+    SvelteHTMLElements[typeof DEFAULT_TABS_TAG],
     TabsRenderPropArg,
     TabsPropsWeControl,
     {
@@ -23,21 +25,21 @@
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_TABS_TAG">
+<script lang="ts" generics="TTag extends ElementType = undefined">
   import StableCollection from "$lib/utils/StableCollection.svelte"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
   import { createTabContext } from "./context.svelte.js"
   import { untrack } from "svelte"
 
   let {
-    ref = $bindable(),
+    element = $bindable(),
     defaultIndex = 0,
     vertical = false,
     manual = false,
     onchange,
     selectedIndex = undefined,
     ...theirProps
-  }: { as?: TTag } & TabGroupProps<TTag> = $props()
+  }: TabGroupProps<TTag> = $props()
   const _state = createTabContext({
     get vertical() {
       return vertical
@@ -104,5 +106,5 @@
       }}
     />
   {/if}
-  <ElementOrComponent {theirProps} slots={slot} defaultTag={DEFAULT_TABS_TAG} name="TabGroup" bind:ref />
+  <ElementOrComponent {theirProps} slots={slot} defaultTag={DEFAULT_TABS_TAG} name="TabGroup" bind:element />
 </StableCollection>

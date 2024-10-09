@@ -1,29 +1,30 @@
 <script lang="ts" module>
-  import type { Snippet } from "svelte"
+  import type { SvelteHTMLElements } from "svelte/elements"
   import type { ElementType, Props } from "$lib/utils/types.js"
 
   const DEFAULT_SECTION_TAG = "div" as const
   type SectionRenderPropArg = {}
   type SectionPropsWeControl = "role" | "aria-labelledby"
 
-  export type MenuSectionProps<TTag extends ElementType = typeof DEFAULT_SECTION_TAG> = Props<
+  export type MenuSectionProps<TTag extends ElementType = undefined> = Props<
     TTag,
+    SvelteHTMLElements[typeof DEFAULT_SECTION_TAG],
     SectionRenderPropArg,
     SectionPropsWeControl
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_SECTION_TAG">
+<script lang="ts" generics="TTag extends ElementType = undefined">
   import { useLabels } from "$lib/label/context.svelte.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 
   const labelledby = useLabels()
 
-  let { ref = $bindable(), ...theirProps }: { as?: TTag } & MenuSectionProps<TTag> = $props()
+  let { element = $bindable(), ...theirProps }: MenuSectionProps<TTag> = $props()
   const ourProps = $derived({
     "aria-labelledby": labelledby,
     role: "group",
   })
 </script>
 
-<ElementOrComponent {ourProps} {theirProps} defaultTag={DEFAULT_SECTION_TAG} name="MenuSection" bind:ref />
+<ElementOrComponent {ourProps} {theirProps} defaultTag={DEFAULT_SECTION_TAG} name="MenuSection" bind:element />

@@ -1,5 +1,6 @@
 <script lang="ts" module>
-  import type { ElementType, Props, PropsOf } from "$lib/utils/types.js"
+  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { SvelteHTMLElements } from "svelte/elements"
 
   let DEFAULT_SELECT_TAG = "select" as const
 
@@ -13,8 +14,9 @@
   }
   type SelectPropsWeControl = "aria-labelledby" | "aria-describedby"
 
-  export type SelectProps<TTag extends ElementType = typeof DEFAULT_SELECT_TAG> = Props<
+  export type SelectProps<TTag extends ElementType = undefined> = Props<
     TTag,
+    SvelteHTMLElements[typeof DEFAULT_SELECT_TAG],
     SelectRenderPropArg,
     SelectPropsWeControl,
     {
@@ -25,7 +27,7 @@
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_SELECT_TAG">
+<script lang="ts" generics="TTag extends ElementType = undefined">
   import { useId } from "$lib/hooks/use-id.js"
   import { useProvidedId } from "$lib/utils/id.js"
   import { useDisabled } from "$lib/hooks/use-disabled.js"
@@ -41,13 +43,13 @@
   const providedId = useProvidedId()
   const providedDisabled = useDisabled()
   let {
-    ref = $bindable(),
-    id = (providedId || `headlessui-select-${internalId}`) as PropsOf<TTag>["id"],
+    element = $bindable(),
+    id = providedId || `headlessui-select-${internalId}`,
     disabled: theirDisabled = false,
     invalid = false,
     autofocus = false,
     ...theirProps
-  }: { as?: TTag } & SelectProps<TTag> = $props()
+  }: SelectProps<TTag> = $props()
 
   const disabled = $derived(providedDisabled.current ?? theirDisabled)
   const labelledBy = useLabelledBy()
@@ -101,4 +103,4 @@
   } satisfies SelectRenderPropArg)
 </script>
 
-<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_SELECT_TAG} name="Select" bind:ref />
+<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_SELECT_TAG} name="Select" bind:element />

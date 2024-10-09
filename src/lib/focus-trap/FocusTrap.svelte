@@ -14,6 +14,7 @@
   import Hidden, { HiddenFeatures } from "$lib/internal/Hidden.svelte"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
   import { FocusTrapFeatures } from "./FocusTrapFeatures.js"
+  import type { SvelteHTMLElements } from "svelte/elements"
 
   type Containers =
     // Lazy resolved containers
@@ -35,15 +36,16 @@
     return all
   }
 
-  let DEFAULT_FOCUS_TRAP_TAG = "div" as const
+  const DEFAULT_FOCUS_TRAP_TAG = "div" as const
 
   export * from "./FocusTrapFeatures.js"
 
   type FocusTrapRenderPropArg = {}
   type FocusTrapPropsWeControl = never
 
-  export type FocusTrapProps<TTag extends ElementType = typeof DEFAULT_FOCUS_TRAP_TAG> = Props<
+  export type FocusTrapProps<TTag extends ElementType = undefined> = Props<
     TTag,
+    SvelteHTMLElements[typeof DEFAULT_FOCUS_TRAP_TAG],
     FocusTrapRenderPropArg,
     FocusTrapPropsWeControl,
     {
@@ -293,10 +295,10 @@
   }
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_FOCUS_TRAP_TAG">
+<script lang="ts" generics="TTag extends ElementType = undefined">
   let container = $state<HTMLElement | null>(null)
   let {
-    ref = $bindable(),
+    element = $bindable(),
     initialFocus,
     initialFocusFallback,
     containers,
@@ -305,13 +307,13 @@
       FocusTrapFeatures.FocusLock |
       FocusTrapFeatures.RestoreFocus,
     ...theirProps
-  }: { as?: TTag } & FocusTrapProps<TTag> = $props()
+  }: FocusTrapProps<TTag> = $props()
 
   /*if (!useServerHandoffComplete()) {
     features = FocusTrapFeatures.None
   }*/
 
-  const ownerDocument = $derived(getOwnerDocument(ref))
+  const ownerDocument = $derived(getOwnerDocument(element))
 
   useRestoreFocus({
     get features() {
@@ -449,7 +451,7 @@
     features={HiddenFeatures.Focusable}
   />
 {/if}
-<ElementOrComponent {ourProps} {theirProps} defaultTag={DEFAULT_FOCUS_TRAP_TAG} name="FocusTrap" bind:ref />
+<ElementOrComponent {ourProps} {theirProps} defaultTag={DEFAULT_FOCUS_TRAP_TAG} name="FocusTrap" bind:element />
 {#if tabLockEnabled}
   <Hidden
     as="button"

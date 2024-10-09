@@ -1,5 +1,6 @@
 <script lang="ts" module>
-  import type { ElementType, Props, PropsOf } from "$lib/utils/types.js"
+  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { SvelteHTMLElements } from "svelte/elements"
 
   const DEFAULT_BUTTON_TAG = "button" as const
   export type PopoverButtonSlot = {
@@ -17,15 +18,16 @@
     autofocus?: boolean
   }
 
-  export type PopoverButtonProps<TTag extends ElementType = typeof DEFAULT_BUTTON_TAG> = Props<
+  export type PopoverButtonProps<TTag extends ElementType = undefined> = Props<
     TTag,
+    SvelteHTMLElements[typeof DEFAULT_BUTTON_TAG],
     PopoverButtonSlot,
     PopoverButtonPropsWeControl,
     PopoverButtonComponentProps
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_BUTTON_TAG">
+<script lang="ts" generics="TTag extends ElementType = undefined">
   import { useId } from "$lib/hooks/use-id.js"
   import {
     PopoverStates,
@@ -48,16 +50,15 @@
   import { microTask } from "$lib/utils/microTask.js"
   import Hidden, { HiddenFeatures } from "$lib/internal/Hidden.svelte"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
-  import type { FocusEventHandler } from "svelte/elements"
 
   const internalId = useId()
   let {
-    ref = $bindable(),
-    id = `headlessui-popover-button-${internalId}` as PropsOf<TTag>["id"],
+    element = $bindable(),
+    id = `headlessui-popover-button-${internalId}`,
     disabled = false,
-    autofocus = false as PropsOf<TTag>["autofocus"],
+    autofocus = false,
     ...theirProps
-  }: { as?: TTag } & PopoverButtonProps<TTag> = $props()
+  }: PopoverButtonProps<TTag> = $props()
   const context = usePopoverContext("PopoverButton")
   const api = usePopoverAPIContext("PopoverButton")
   const { isPortalled } = $derived(api)
@@ -111,13 +112,13 @@
   const floatingReference = useFloatingReference()
   const { setReference } = $derived(floatingReference)
   $effect(() => {
-    setReference(ref)
+    setReference(element)
   })
   $effect(() => {
     if (isWithinPanel) return
-    ref
+    element
     untrack(() => {
-      if (ref) {
+      if (element) {
         context.buttons.push(uniqueIdentifier)
       } else {
         let idx = context.buttons.indexOf(uniqueIdentifier)
@@ -128,10 +129,10 @@
         console.warn("You are already using a <PopoverButton /> but only 1 <PopoverButton /> is supported.")
       }
 
-      if (ref) context.setButton(ref)
+      if (element) context.setButton(element)
     })
   })
-  const ownerDocument = $derived(getOwnerDocument(ref))
+  const ownerDocument = $derived(getOwnerDocument(element))
 
   const handleKeyDown = (event: KeyboardEvent) => {
     if (isWithinPanel) {
@@ -158,8 +159,8 @@
 
         case "Escape":
           if (context.popoverState !== PopoverStates.Open) return closeOthers?.(context.buttonId!)
-          if (!ref) return
-          if (ownerDocument?.activeElement && !ref.contains(ownerDocument.activeElement)) {
+          if (!element) return
+          if (ownerDocument?.activeElement && !element.contains(ownerDocument.activeElement)) {
             return
           }
           event.preventDefault()
@@ -311,12 +312,12 @@
   slots={slot}
   defaultTag={DEFAULT_BUTTON_TAG}
   name="PopoverButton"
-  bind:ref
+  bind:element
 />
 {#if visible && !isWithinPanel && isPortalled}
   <Hidden
     id={sentinelId}
-    bind:ref={context.afterButtonSentinel as HTMLElement}
+    bind:element={context.afterButtonSentinel as HTMLElement}
     features={HiddenFeatures.Focusable}
     data-headlessui-focus-guard
     as="button"

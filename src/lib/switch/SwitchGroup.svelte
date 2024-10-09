@@ -3,14 +3,14 @@
 
   const DEFAULT_GROUP_TAG = "svelte:fragment"
 
-  export type SwitchGroupProps<TTag extends ElementType = typeof DEFAULT_GROUP_TAG> = Props<TTag>
+  export type SwitchGroupProps<TTag extends ElementType = undefined> = Props<TTag>
 
   export type GroupContext = {
     switchElement: HTMLElement | null
   }
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_GROUP_TAG">
+<script lang="ts" generics="TTag extends ElementType = undefined">
   import { setContext } from "svelte"
   import { useLabels } from "$lib/label/context.svelte.js"
   import { useDescriptions } from "$lib/description/context.svelte.js"
@@ -44,7 +44,7 @@
     },
   })
 
-  let { ref = $bindable(), ...theirProps }: { as?: TTag } & SwitchGroupProps<TTag> = $props()
+  let { element = $bindable(), ...theirProps }: SwitchGroupProps<TTag> = $props()
 </script>
 
-<ElementOrComponent {theirProps} defaultTag={DEFAULT_GROUP_TAG} name="SwitchGroup" bind:ref />
+<ElementOrComponent {theirProps} defaultTag={DEFAULT_GROUP_TAG} name="SwitchGroup" bind:element />

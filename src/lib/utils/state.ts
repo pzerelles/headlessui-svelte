@@ -6,10 +6,10 @@ export type StateProps<TSlot> = SlotStateProps<TSlot> & { "data-headlessui-state
 
 export const stateFromSlot = <TSlot>(slot: TSlot = {} as TSlot): StateProps<TSlot> => {
   if (typeof slot !== "object") return {}
-  let dataAttributes: Record<string, string> = {}
+  const dataAttributes: Record<string, string> = {}
   let exposeState = false
-  let states: string[] = []
-  for (let [k, v] of Object.entries(slot as Record<string, any>)) {
+  const states: string[] = []
+  for (const [k, v] of Object.entries(slot as Record<string, unknown>)) {
     if (typeof v === "boolean") {
       exposeState = true
     }
@@ -21,7 +21,7 @@ export const stateFromSlot = <TSlot>(slot: TSlot = {} as TSlot): StateProps<TSlo
 
   if (!exposeState) return {}
 
-  for (let s of states) {
+  for (const s of states) {
     dataAttributes[`data-${s}`] = ""
   }
   return {

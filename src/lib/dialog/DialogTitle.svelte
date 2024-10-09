@@ -1,17 +1,22 @@
 <script lang="ts" module>
-  import type { ElementType, Props, PropsOf } from "$lib/utils/types.js"
+  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { SvelteHTMLElements } from "svelte/elements"
 
   let DEFAULT_TITLE_TAG = "h2" as const
   type TitleRenderPropArg = {
     open: boolean
   }
 
-  export type DialogTitleProps<TTag extends ElementType = typeof DEFAULT_TITLE_TAG> = Props<TTag, TitleRenderPropArg>
+  export type DialogTitleProps<TTag extends ElementType = undefined> = Props<
+    TTag,
+    SvelteHTMLElements[typeof DEFAULT_TITLE_TAG],
+    TitleRenderPropArg
+  >
 
   //
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_TITLE_TAG">
+<script lang="ts" generics="TTag extends ElementType = undefined">
   import { useId } from "$lib/hooks/use-id.js"
   import { DialogStates, useDialogContext } from "./context.svelte.js"
   import { onMount } from "svelte"
@@ -20,10 +25,10 @@
 
   const internalId = useId()
   let {
-    ref = $bindable(),
-    id = `headlessui-dialog-title-${internalId}` as PropsOf<TTag>[string],
+    element = $bindable(),
+    id = `headlessui-dialog-title-${internalId}`,
     ...theirProps
-  }: { as?: TTag } & DialogTitleProps<TTag> = $props()
+  }: DialogTitleProps<TTag> = $props()
   const _state = useDialogContext("Dialog.Panel")
   const { dialogState, setTitleId } = $derived(_state)
 
@@ -41,4 +46,11 @@
   )
 </script>
 
-<ElementOrComponent {ourProps} {theirProps} slots={slot} defaultTag={DEFAULT_TITLE_TAG} name="DialogTitle" bind:ref />
+<ElementOrComponent
+  {ourProps}
+  {theirProps}
+  slots={slot}
+  defaultTag={DEFAULT_TITLE_TAG}
+  name="DialogTitle"
+  bind:element
+/>

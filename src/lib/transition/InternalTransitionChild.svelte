@@ -37,9 +37,7 @@
    * `Transition` parent, which is a `Fragment`, is not. So we should not forward
    * the ref to the `Fragment`.
    */
-  export function shouldForwardRef<TTag extends ElementType = typeof DEFAULT_TRANSITION_CHILD_TAG>(
-    props: TransitionRootProps<TTag>
-  ) {
+  export function shouldForwardRef<TTag extends ElementType = undefined>(props: TransitionRootProps<TTag>) {
     return (
       // If we have any of the enter/leave classes
       Boolean(props.enter || props.enterFrom || props.enterTo || props.leave || props.leaveFrom || props.leaveTo) ||
@@ -51,8 +49,8 @@
   }
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_TRANSITION_CHILD_TAG">
-  let { ref = $bindable(), ..._props }: { as?: TTag } & TransitionChildProps<TTag> = $props()
+<script lang="ts" generics="TTag extends ElementType = undefined">
+  let { element = $bindable(), ..._props }: TransitionChildProps<TTag> = $props()
   const {
     // Whether or not to enable transitions on the current element (by exposing
     // transition data). When set to false, the `Transition` component still
@@ -78,7 +76,7 @@
   } = $derived(_props)
   let containerElement = $state<HTMLElement>()
   let container = $state<{ current: HTMLElement | null }>({ current: null })
-  const requiresRef = $derived(shouldForwardRef(_props))
+  const requiresRef = $derived(shouldForwardRef(_props as TransitionRootProps<TTag>))
 
   const strategy = $derived((theirProps.unmount ?? true) ? RenderStrategy.Unmount : RenderStrategy.Hidden)
 
@@ -92,8 +90,8 @@
 
   onMount(() => {
     if (requiresRef) {
-      container.current = ref ?? null
-      containerElement = ref
+      container.current = element ?? null
+      containerElement = element
     }
 
     return register(container)
@@ -224,7 +222,7 @@
         classNames(
           // Incoming classes if any
           // all components accept className (but all HTML elements do)
-          theirProps.class,
+          typeof theirProps.class === "function" ? theirProps.class(element!) : theirProps.class,
 
           // Apply these classes immediately
           immediate && enter,
@@ -264,4 +262,10 @@
   setContext<NestingContextValues>("NestingContext", nesting)
 </script>
 
-<ElementOrComponent {ourProps} {theirProps} defaultTag={DEFAULT_TRANSITION_CHILD_TAG} name="TransitionChild" bind:ref />
+<ElementOrComponent
+  {ourProps}
+  {theirProps}
+  defaultTag={DEFAULT_TRANSITION_CHILD_TAG}
+  name="TransitionChild"
+  bind:element
+/>
