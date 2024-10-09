@@ -1,5 +1,5 @@
 <script lang="ts" module>
-  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { ElementType, Props } from "../utils/types.js"
   import type { SvelteHTMLElements } from "svelte/elements"
 
   const DEFAULT_DESCRIPTION_TAG = "p" as const
@@ -11,10 +11,10 @@
 </script>
 
 <script lang="ts" generics="TTag extends ElementType = undefined">
-  import { useId } from "$lib/hooks/use-id.js"
+  import { useId } from "../hooks/use-id.js"
   import { useDisabled } from "../hooks/use-disabled.js"
   import { useDescriptionContext } from "./context.svelte.js"
-  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
+  import ElementOrComponent from "../utils/ElementOrComponent.svelte"
   import { untrack } from "svelte"
 
   const internalId = useId()

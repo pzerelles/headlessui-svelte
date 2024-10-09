@@ -1,5 +1,5 @@
-import { disposables, useDisposables, type Disposables } from "$lib/utils/disposables.js"
-import { once } from "$lib/utils/once.js"
+import { disposables, useDisposables, type Disposables } from "../utils/disposables.js"
+import { once } from "../utils/once.js"
 import { untrack } from "svelte"
 
 /**

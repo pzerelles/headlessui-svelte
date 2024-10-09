@@ -20,7 +20,7 @@ import {
   useInnerOffset,
   useInteractions,
 } from "../utils/floating-ui/svelte/index.js"
-import type { UseFloatingOptions } from "$lib/utils/floating-ui/svelte-dom/types.js"
+import type { UseFloatingOptions } from "../utils/floating-ui/svelte-dom/types.js"
 
 export const useFloatingProvider = (options: { enabled: boolean } = { enabled: true }) => {
   const { enabled } = $derived(options)

@@ -1,7 +1,7 @@
 <script lang="ts" module>
   import { onMount } from "svelte"
   import type { SvelteHTMLElements } from "svelte/elements"
-  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { ElementType, Props } from "../utils/types.js"
 
   const DEFAULT_HEADING_TAG = "header" as const
   type HeadingRenderPropArg = {}
@@ -16,9 +16,9 @@
 </script>
 
 <script lang="ts" generics="TTag extends ElementType = undefined">
-  import { useId } from "$lib/hooks/use-id.js"
-  import { useLabelContext } from "$lib/label/context.svelte.js"
-  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
+  import { useId } from "../hooks/use-id.js"
+  import { useLabelContext } from "../label/context.svelte.js"
+  import ElementOrComponent from "../utils/ElementOrComponent.svelte"
 
   const internalId = useId()
   let {

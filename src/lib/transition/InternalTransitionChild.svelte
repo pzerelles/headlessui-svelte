@@ -1,6 +1,6 @@
 <script lang="ts" module>
-  import { compact, RenderStrategy } from "$lib/utils/render.js"
-  import type { ElementType } from "$lib/utils/types.js"
+  import { compact, RenderStrategy } from "../utils/render.js"
+  import type { ElementType } from "../utils/types.js"
   import { onMount, setContext, untrack } from "svelte"
   import {
     hasChildren,
@@ -12,11 +12,11 @@
     type TransitionDirection,
   } from "./context.svelte.js"
   import type { TransitionRootProps } from "./Transition.svelte"
-  import { match } from "$lib/utils/match.js"
-  import { transitionDataAttributes, useTransition } from "$lib/hooks/use-transition.svelte.js"
-  import { classNames } from "$lib/utils/class-names.js"
-  import { createOpenClosedContext, State } from "$lib/internal/open-closed.js"
-  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
+  import { match } from "../utils/match.js"
+  import { transitionDataAttributes, useTransition } from "../hooks/use-transition.svelte.js"
+  import { classNames } from "../utils/class-names.js"
+  import { createOpenClosedContext, State } from "../internal/open-closed.js"
+  import ElementOrComponent from "../utils/ElementOrComponent.svelte"
   import { DEFAULT_TRANSITION_CHILD_TAG, type TransitionChildProps } from "./TransitionChild.svelte"
 
   /**

@@ -1,6 +1,6 @@
 <script lang="ts" module>
-  import { Label } from "$lib/index.js"
-  import type { Props } from "$lib/utils/types.js"
+  import { Label } from "../index.js"
+  import type { Props } from "../utils/types.js"
   import type { SvelteHTMLElements } from "svelte/elements"
 
   const DEFAULT_LEGEND_TAG = "div" as const

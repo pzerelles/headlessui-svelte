@@ -4,16 +4,16 @@ import {
   assertListboxButton,
   getListboxButton,
   ListboxState,
-} from "$lib/test-utils/accessability-assertions.js"
+} from "../test-utils/accessability-assertions.js"
 import Listbox1 from "./_test_components/Listbox-1.test.svelte"
 import Listbox2 from "./_test_components/Listbox-2.test.svelte"
 import ListboxButton from "./ListboxButton.svelte"
 import ListboxOptions from "./ListboxOptions.svelte"
 import ListboxOption from "./ListboxOption.svelte"
-import { Label } from "$lib/label/index.js"
-import { click } from "$lib/test-utils/interactions.js"
+import { Label } from "../label/index.js"
+import { click } from "../test-utils/interactions.js"
 
-vitest.mock("$lib/hooks/use-id.js", () => {
+vitest.mock("../hooks/use-id.js", () => {
   return {
     useId: () => "1",
   }

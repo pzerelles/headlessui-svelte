@@ -1,10 +1,10 @@
 <script lang="ts" module>
-  import type { Props, ElementType } from "$lib/utils/types.js"
-  import { useFocusRing } from "$lib/hooks/use-focus-ring.svelte.js"
-  import { useActivePress } from "$lib/hooks/use-active-press.svelte.js"
-  import { useHover } from "$lib/hooks/use-hover.svelte.js"
-  import { mergeProps } from "$lib/utils/render.js"
-  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
+  import type { Props, ElementType } from "../utils/types.js"
+  import { useFocusRing } from "../hooks/use-focus-ring.svelte.js"
+  import { useActivePress } from "../hooks/use-active-press.svelte.js"
+  import { useHover } from "../hooks/use-hover.svelte.js"
+  import { mergeProps } from "../utils/render.js"
+  import ElementOrComponent from "../utils/ElementOrComponent.svelte"
 
   const DEFAULT_DATA_INTERACTIVE_TAG = "svelte:fragment" as const
 

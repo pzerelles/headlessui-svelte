@@ -1,6 +1,6 @@
 <script lang="ts" module>
-  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
-  import type { ElementType, Props } from "$lib/utils/types.js"
+  import ElementOrComponent from "../utils/ElementOrComponent.svelte"
+  import type { ElementType, Props } from "../utils/types.js"
   import { HiddenFeatures } from "./HiddenFeatures.js"
   import type { SvelteHTMLElements } from "svelte/elements"
 

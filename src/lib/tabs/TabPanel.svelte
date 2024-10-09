@@ -1,5 +1,5 @@
 <script lang="ts" module>
-  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { ElementType, Props } from "../utils/types.js"
   import type { SvelteHTMLElements } from "svelte/elements"
 
   const DEFAULT_PANEL_TAG = "div" as const
@@ -20,14 +20,14 @@
 </script>
 
 <script lang="ts" generics="TTag extends ElementType = undefined">
-  import { useId } from "$lib/hooks/use-id.js"
-  import { mergeProps, RenderFeatures, type PropsForFeatures } from "$lib/utils/render.js"
-  import { useStableCollectionIndex } from "$lib/utils/StableCollection.svelte"
-  import { useFocusRing } from "$lib/hooks/use-focus-ring.svelte.js"
-  import Hidden from "$lib/internal/Hidden.svelte"
-  import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
+  import { useId } from "../hooks/use-id.js"
+  import { mergeProps, RenderFeatures, type PropsForFeatures } from "../utils/render.js"
+  import { useStableCollectionIndex } from "../utils/StableCollection.svelte"
+  import { useFocusRing } from "../hooks/use-focus-ring.svelte.js"
+  import Hidden from "../internal/Hidden.svelte"
+  import type { MutableRefObject } from "../utils/ref.svelte.js"
   import { onMount } from "svelte"
-  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
+  import ElementOrComponent from "../utils/ElementOrComponent.svelte"
   import { useTabs } from "./context.svelte.js"
 
   const internalId = useId()

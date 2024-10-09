@@ -1,4 +1,4 @@
-import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
+import type { MutableRefObject } from "../../../../utils/ref.svelte.js"
 
 export function useLatestRef<T>(options: { value: T }) {
   return {

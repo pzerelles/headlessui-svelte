@@ -1,5 +1,5 @@
 <script lang="ts" module>
-  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { ElementType, Props } from "../utils/types.js"
   import type { SvelteHTMLElements } from "svelte/elements"
 
   const DEFAULT_BUTTON_TAG = "button" as const
@@ -30,9 +30,9 @@
   import { useActivePress } from "../hooks/use-active-press.svelte.js"
   import { useFocusRing } from "../hooks/use-focus-ring.svelte.js"
   import { useDisabled } from "../hooks/use-disabled.js"
-  import { useHover } from "$lib/hooks/use-hover.svelte.js"
-  import { mergeProps } from "$lib/utils/render.js"
-  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
+  import { useHover } from "../hooks/use-hover.svelte.js"
+  import { mergeProps } from "../utils/render.js"
+  import ElementOrComponent from "../utils/ElementOrComponent.svelte"
 
   const providedDisabled = useDisabled()
 

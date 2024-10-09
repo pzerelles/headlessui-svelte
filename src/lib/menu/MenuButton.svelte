@@ -1,7 +1,7 @@
 <script lang="ts" module>
   import { tick } from "svelte"
   import type { SvelteHTMLElements } from "svelte/elements"
-  import type { Props, ElementType } from "$lib/utils/types.js"
+  import type { Props, ElementType } from "../utils/types.js"
 
   const DEFAULT_BUTTON_TAG = "button" as const
   type ButtonRenderPropArg = {
@@ -28,17 +28,17 @@
 </script>
 
 <script lang="ts" generics="TTag extends ElementType = undefined">
-  import { useId } from "$lib/hooks/use-id.js"
-  import { Focus } from "$lib/utils/calculate-active-index.js"
-  import { useFocusRing } from "$lib/hooks/use-focus-ring.svelte.js"
-  import { useActivePress } from "$lib/hooks/use-active-press.svelte.js"
-  import { useResolveButtonType } from "$lib/hooks/use-resolve-button-type.svelte.js"
-  import { useFloatingReference, useFloatingReferenceProps } from "$lib/internal/floating.svelte.js"
-  import { useHover } from "$lib/hooks/use-hover.svelte.js"
-  import { mergeProps } from "$lib/utils/render.js"
+  import { useId } from "../hooks/use-id.js"
+  import { Focus } from "../utils/calculate-active-index.js"
+  import { useFocusRing } from "../hooks/use-focus-ring.svelte.js"
+  import { useActivePress } from "../hooks/use-active-press.svelte.js"
+  import { useResolveButtonType } from "../hooks/use-resolve-button-type.svelte.js"
+  import { useFloatingReference, useFloatingReferenceProps } from "../internal/floating.svelte.js"
+  import { useHover } from "../hooks/use-hover.svelte.js"
+  import { mergeProps } from "../utils/render.js"
   import { MenuStates, useMenuContext } from "./context.svelte.js"
   import { untrack } from "svelte"
-  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
+  import ElementOrComponent from "../utils/ElementOrComponent.svelte"
 
   const internalId = useId()
   let {

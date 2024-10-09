@@ -1,5 +1,5 @@
 <script lang="ts" module>
-  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { ElementType, Props } from "../utils/types.js"
   import type { SvelteHTMLElements } from "svelte/elements"
 
   const DEFAULT_LABEL_TAG = "label" as const
@@ -18,7 +18,7 @@
   import { useProvidedId, htmlid } from "../utils/id.js"
   import { useDisabled } from "../hooks/use-disabled.js"
   import { stateFromSlot } from "../utils/state.js"
-  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
+  import ElementOrComponent from "../utils/ElementOrComponent.svelte"
   import { useLabelContext } from "./context.svelte.js"
 
   const internalId = htmlid()

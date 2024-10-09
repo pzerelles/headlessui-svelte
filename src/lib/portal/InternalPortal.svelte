@@ -1,9 +1,9 @@
 <script lang="ts" module>
-  import { usePortalRoot } from "$lib/internal/portal-force-root.svelte.js"
-  import { getOwnerDocument } from "$lib/utils/owner.js"
+  import { usePortalRoot } from "../internal/portal-force-root.svelte.js"
+  import { getOwnerDocument } from "../utils/owner.js"
   import { getContext, onMount, setContext } from "svelte"
   import { env } from "../utils/env.js"
-  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { ElementType, Props } from "../utils/types.js"
   import type { PortalGroupContext } from "./PortalGroup.svelte"
   import type { SvelteHTMLElements } from "svelte/elements"
 
@@ -109,7 +109,7 @@
 </script>
 
 <script lang="ts" generics="TTag extends ElementType = undefined">
-  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
+  import ElementOrComponent from "../utils/ElementOrComponent.svelte"
 
   let { element = $bindable(), ...theirProps }: PortalProps<TTag> = $props()
 

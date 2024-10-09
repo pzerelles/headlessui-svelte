@@ -11,9 +11,9 @@ import { deepEqual } from "./utils/deepEqual.js"
 import { getDPR } from "./utils/getDPR.js"
 import { roundByDPR } from "./utils/roundByDPR.js"
 import { useLatestRef } from "./utils/useLatestRef.js"
-import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
+import type { MutableRefObject } from "../../../utils/ref.svelte.js"
 import { tick, untrack } from "svelte"
-import { stylePropsToString } from "$lib/utils/style.js"
+import { stylePropsToString } from "../../../utils/style.js"
 
 /**
  * Provides data to position a floating element.
@@ -76,7 +76,7 @@ export function useFloating<RT extends ReferenceType = ReferenceType>(
   const floatingRef = $state<MutableRefObject<HTMLElement | null>>({ current: null })
   const dataRef = $state<MutableRefObject<typeof data>>({ current: data })
 
-  const hasWhileElementsMounted = whileElementsMounted != null
+  //const hasWhileElementsMounted = whileElementsMounted != null
   const whileElementsMountedRef = useLatestRef({
     get value() {
       return whileElementsMounted
@@ -126,6 +126,7 @@ export function useFloating<RT extends ReferenceType = ReferenceType>(
   }
 
   $effect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     open
     untrack(() => {
       if (open === false && dataRef.current.isPositioned) {

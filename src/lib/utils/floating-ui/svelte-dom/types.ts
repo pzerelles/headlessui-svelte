@@ -1,4 +1,4 @@
-import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
+import type { MutableRefObject } from "../../../utils/ref.svelte.js"
 import type { ComputePositionConfig, ComputePositionReturn, VirtualElement } from "@floating-ui/dom"
 
 export type { ArrowOptions } from "./arrow.js"

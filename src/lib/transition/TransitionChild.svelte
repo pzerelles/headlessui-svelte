@@ -1,6 +1,6 @@
 <script lang="ts" module>
-  import type { ElementType, Props } from "$lib/utils/types.js"
-  import { RenderFeatures, type PropsForFeatures } from "$lib/utils/render.js"
+  import type { ElementType, Props } from "../utils/types.js"
+  import { RenderFeatures, type PropsForFeatures } from "../utils/render.js"
   import type { TransitionEvents, TransitionClasses } from "./context.svelte.js"
 
   type TransitionChildPropsWeControl = never
@@ -21,7 +21,7 @@
 </script>
 
 <script lang="ts" generics="TTag extends ElementType = undefined">
-  import { useOpenClosed } from "$lib/internal/open-closed.js"
+  import { useOpenClosed } from "../internal/open-closed.js"
   import { getContext, type Component } from "svelte"
   import InternalTransitionChild from "./InternalTransitionChild.svelte"
   import Transition from "./Transition.svelte"

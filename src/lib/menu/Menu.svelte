@@ -1,5 +1,5 @@
 <script lang="ts" module>
-  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { ElementType, Props } from "../utils/types.js"
   import type { SvelteHTMLElements } from "svelte/elements"
 
   let DEFAULT_MENU_TAG = "svelte:fragment"
@@ -22,12 +22,12 @@
 
 <script lang="ts" generics="TTag extends ElementType = undefined">
   import { ActivationTrigger, createMenuContext, MenuStates, type StateDefinition } from "./context.svelte.js"
-  import { useOutsideClick } from "$lib/hooks/use-outside-click.svelte.js"
-  import { useFloatingProvider } from "$lib/internal/floating-provider.svelte.js"
-  import { createOpenClosedContext, State } from "$lib/internal/open-closed.js"
-  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
-  import { FocusableMode, isFocusableElement } from "$lib/utils/focus-management.js"
-  import { match } from "$lib/utils/match.js"
+  import { useOutsideClick } from "../hooks/use-outside-click.svelte.js"
+  import { useFloatingProvider } from "../internal/floating-provider.svelte.js"
+  import { createOpenClosedContext, State } from "../internal/open-closed.js"
+  import ElementOrComponent from "../utils/ElementOrComponent.svelte"
+  import { FocusableMode, isFocusableElement } from "../utils/focus-management.js"
+  import { match } from "../utils/match.js"
 
   let { element = $bindable(), __demoMode = false, ...theirProps }: MenuProps<TTag> = $props()
 

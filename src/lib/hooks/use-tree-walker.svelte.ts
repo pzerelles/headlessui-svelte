@@ -1,4 +1,4 @@
-import { getOwnerDocument } from "$lib/utils/owner.js"
+import { getOwnerDocument } from "../utils/owner.js"
 
 type AcceptNode = (
   node: HTMLElement

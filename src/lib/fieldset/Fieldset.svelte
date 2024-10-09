@@ -1,5 +1,5 @@
 <script lang="ts" module>
-  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { ElementType, Props } from "../utils/types.js"
   import type { SvelteHTMLElements } from "svelte/elements"
 
   const DEFAULT_FIELDSET_TAG = "fieldset" as const
@@ -21,8 +21,8 @@
 <script lang="ts" generics="TTag extends ElementType = undefined">
   import { setContext } from "svelte"
   import { useDisabled } from "../hooks/use-disabled.js"
-  import { useLabels } from "$lib/label/context.svelte.js"
-  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
+  import { useLabels } from "../label/context.svelte.js"
+  import ElementOrComponent from "../utils/ElementOrComponent.svelte"
 
   let { element = $bindable(), disabled: ownDisabled = false, ...theirProps }: FieldsetProps<TTag> = $props()
 

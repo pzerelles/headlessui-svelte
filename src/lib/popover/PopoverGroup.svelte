@@ -1,5 +1,5 @@
 <script lang="ts" module>
-  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { ElementType, Props } from "../utils/types.js"
   import { setContext } from "svelte"
   import type { SvelteHTMLElements } from "svelte/elements"
 
@@ -17,9 +17,9 @@
 
 <script lang="ts" generics="TTag extends ElementType = undefined">
   import type { PopoverGroupContext, PopoverRegisterBag } from "./context.svelte"
-  import MainTreeProvider from "$lib/internal/MainTreeProvider.svelte"
-  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
-  import { getOwnerDocument } from "$lib/utils/owner.js"
+  import MainTreeProvider from "../internal/MainTreeProvider.svelte"
+  import ElementOrComponent from "../utils/ElementOrComponent.svelte"
+  import { getOwnerDocument } from "../utils/owner.js"
 
   let { element = $bindable(), ...theirProps }: PopoverGroupProps<TTag> = $props()
 

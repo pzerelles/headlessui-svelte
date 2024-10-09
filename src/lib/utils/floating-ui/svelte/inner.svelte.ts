@@ -1,5 +1,5 @@
 import { getUserAgent } from "./utils.js"
-import { evaluate, max, min, round } from "@floating-ui/utils"
+import { evaluate, max, round } from "@floating-ui/utils"
 import { detectOverflow, offset, type Derivable } from "../svelte-dom/index.js"
 
 import type {
@@ -11,7 +11,7 @@ import type {
   SideObject,
 } from "./types.js"
 import { warn } from "./utils/log.js"
-import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
+import type { MutableRefObject } from "../../../utils/ref.svelte.js"
 import { DEV } from "esm-env"
 import { tick, untrack } from "svelte"
 
@@ -221,7 +221,7 @@ export function useInnerOffset(options: { context: FloatingRootContext; props: U
   const initialOverflowRef = $state<MutableRefObject<SideObject | null>>({ current: null })
 
   $effect(() => {
-    if (!enabled) return
+    if (!enabled) return // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     ;[enabled, open, elements.floating, overflowRef, scrollRef, onChange]
     untrack(() => {
       function onWheel(e: WheelEvent) {

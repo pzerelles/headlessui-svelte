@@ -1,4 +1,4 @@
-import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
+import type { MutableRefObject } from "../../../utils/ref.svelte.js"
 import type { Derivable, Middleware, Padding } from "@floating-ui/dom"
 import { arrow as arrowCore } from "@floating-ui/dom"
 

@@ -1,6 +1,6 @@
 <script lang="ts" module>
   import type { SvelteHTMLElements } from "svelte/elements"
-  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { ElementType, Props } from "../utils/types.js"
 
   const DEFAULT_SECTION_TAG = "div" as const
   type SectionRenderPropArg = {}
@@ -15,8 +15,8 @@
 </script>
 
 <script lang="ts" generics="TTag extends ElementType = undefined">
-  import { useLabels } from "$lib/label/context.svelte.js"
-  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
+  import { useLabels } from "../label/context.svelte.js"
+  import ElementOrComponent from "../utils/ElementOrComponent.svelte"
 
   const labelledby = useLabels()
 

@@ -6,7 +6,7 @@ import { createPubSub } from "../utils/createPubSub.js"
 import { useId } from "./useId.svelte.js"
 import { useFloatingParentNodeId } from "../components/FloatingTree.svelte"
 import { error } from "../utils/log.js"
-import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
+import type { MutableRefObject } from "../../../../utils/ref.svelte.js"
 import { DEV } from "esm-env"
 
 export interface UseFloatingRootContextOptions {

@@ -1,5 +1,5 @@
 <script lang="ts" module>
-  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { ElementType, Props } from "../utils/types.js"
 
   const DEFAULT_GROUP_TAG = "svelte:fragment"
   type GroupRenderPropArg = {}
@@ -21,7 +21,7 @@
 </script>
 
 <script lang="ts" generics="TTag extends ElementType = undefined">
-  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
+  import ElementOrComponent from "../utils/ElementOrComponent.svelte"
   import { setContext } from "svelte"
 
   let { element = $bindable(), target, ...theirProps }: PortalGroupProps<TTag> = $props()

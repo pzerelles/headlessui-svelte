@@ -1,4 +1,4 @@
-import { disposables } from "$lib/utils/disposables.js"
+import { disposables } from "../utils/disposables.js"
 
 /**
  * A hook to ensure that a callback is called when the element has disappeared

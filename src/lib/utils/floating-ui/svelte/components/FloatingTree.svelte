@@ -3,7 +3,7 @@
   import { useId } from "../hooks/useId.svelte.js"
   import type { FloatingNodeType, FloatingTreeType, ReferenceType } from "../types.js"
   import { createPubSub } from "../utils/createPubSub.js"
-  import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
+  import type { MutableRefObject } from "../../../../utils/ref.svelte.js"
 
   //const FloatingNodeContext = React.createContext<FloatingNodeType | null>(null)
   //const FloatingTreeContext = React.createContext<FloatingTreeType | null>(null)

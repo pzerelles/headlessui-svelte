@@ -1,5 +1,5 @@
-import type { Focus } from "$lib/utils/calculate-active-index.js"
-import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
+import type { Focus } from "../utils/calculate-active-index.js"
+import type { MutableRefObject } from "../utils/ref.svelte.js"
 import { getContext } from "svelte"
 import type { SvelteMap } from "svelte/reactivity"
 

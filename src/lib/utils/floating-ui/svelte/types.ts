@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
+import type { MutableRefObject } from "../../../utils/ref.svelte.js"
 import type { HTMLAttributes } from "svelte/elements"
 import type {
   UseFloatingOptions as UsePositionOptions,

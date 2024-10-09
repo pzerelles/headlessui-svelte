@@ -1,5 +1,5 @@
 <script lang="ts" module>
-  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { ElementType, Props } from "../utils/types.js"
   import type { SvelteHTMLElements } from "svelte/elements"
 
   export const DEFAULT_POPOVER_TAG = "div" as const
@@ -21,7 +21,7 @@
 </script>
 
 <script lang="ts" generics="TTag extends ElementType = undefined">
-  import { getOwnerDocument } from "$lib/utils/owner.js"
+  import { getOwnerDocument } from "../utils/owner.js"
 
   import { setContext, untrack } from "svelte"
   import {
@@ -32,16 +32,16 @@
     type PopoverAPIContext,
     type PopoverPanelContext,
   } from "./context.svelte.js"
-  import { FocusableMode, getFocusableElements, isFocusableElement } from "$lib/utils/focus-management.js"
-  import { useNestedPortals } from "$lib/portal/InternalPortal.svelte"
-  import MainTreeProvider, { useMainTreeNode } from "$lib/internal/MainTreeProvider.svelte"
-  import { useRootContainers } from "$lib/hooks/use-root-containers.svelte.js"
-  import { useEventListener } from "$lib/hooks/use-event-listener.svelte.js"
-  import { useOutsideClick } from "$lib/hooks/use-outside-click.svelte.js"
-  import { useFloatingProvider } from "$lib/internal/floating-provider.svelte.js"
-  import { createCloseContext } from "$lib/internal/close-provider.js"
-  import { createOpenClosedContext, State } from "$lib/internal/open-closed.js"
-  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
+  import { FocusableMode, getFocusableElements, isFocusableElement } from "../utils/focus-management.js"
+  import { useNestedPortals } from "../portal/InternalPortal.svelte"
+  import MainTreeProvider, { useMainTreeNode } from "../internal/MainTreeProvider.svelte"
+  import { useRootContainers } from "../hooks/use-root-containers.svelte.js"
+  import { useEventListener } from "../hooks/use-event-listener.svelte.js"
+  import { useOutsideClick } from "../hooks/use-outside-click.svelte.js"
+  import { useFloatingProvider } from "../internal/floating-provider.svelte.js"
+  import { createCloseContext } from "../internal/close-provider.js"
+  import { createOpenClosedContext, State } from "../internal/open-closed.js"
+  import ElementOrComponent from "../utils/ElementOrComponent.svelte"
 
   let { element = $bindable(), __demoMode = false, ...theirProps }: PopoverProps<TTag> = $props()
 

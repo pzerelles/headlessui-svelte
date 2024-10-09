@@ -1,5 +1,5 @@
 <script lang="ts" module>
-  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { ElementType, Props } from "../utils/types.js"
   import type { Snippet } from "svelte"
 
   const DEFAULT_SELECTED_OPTION_TAG = "svelte:fragment"
@@ -21,7 +21,7 @@
 <script lang="ts" generics="TTag extends ElementType = undefined">
   import { useData, ValueMode } from "./Listbox.svelte"
   import { setContext } from "svelte"
-  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
+  import ElementOrComponent from "../utils/ElementOrComponent.svelte"
 
   let { element = $bindable(), options, placeholder, ...theirProps }: ListboxSelectedOptionProps<TTag> = $props()
 

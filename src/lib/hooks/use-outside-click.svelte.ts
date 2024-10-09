@@ -1,5 +1,5 @@
-import { disposables } from "$lib/utils/disposables.js"
-import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
+import { disposables } from "../utils/disposables.js"
+import type { MutableRefObject } from "../utils/ref.svelte.js"
 import { FocusableMode, isFocusableElement } from "../utils/focus-management.js"
 import { isMobile } from "../utils/platform.js"
 import { useIsTopLayer } from "./use-is-top-layer.svelte.js"

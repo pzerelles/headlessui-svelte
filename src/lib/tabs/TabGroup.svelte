@@ -1,7 +1,7 @@
 <script lang="ts" module>
-  import type { ElementType, Props } from "$lib/utils/types.js"
-  import { sortByDomNode } from "$lib/utils/focus-management.js"
-  import FocusSentinel from "$lib/internal/FocusSentinel.svelte"
+  import type { ElementType, Props } from "../utils/types.js"
+  import { sortByDomNode } from "../utils/focus-management.js"
+  import FocusSentinel from "../internal/FocusSentinel.svelte"
   import type { SvelteHTMLElements } from "svelte/elements"
 
   const DEFAULT_TABS_TAG = "div" as const
@@ -26,8 +26,8 @@
 </script>
 
 <script lang="ts" generics="TTag extends ElementType = undefined">
-  import StableCollection from "$lib/utils/StableCollection.svelte"
-  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
+  import StableCollection from "../utils/StableCollection.svelte"
+  import ElementOrComponent from "../utils/ElementOrComponent.svelte"
   import { createTabContext } from "./context.svelte.js"
   import { untrack } from "svelte"
 

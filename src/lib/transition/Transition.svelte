@@ -1,6 +1,6 @@
 <script lang="ts" module>
-  import { State, useOpenClosed } from "$lib/internal/open-closed.js"
-  import type { ElementType } from "$lib/utils/types.js"
+  import { State, useOpenClosed } from "../internal/open-closed.js"
+  import type { ElementType } from "../utils/types.js"
   import { setContext, untrack } from "svelte"
   import { type TransitionChildProps, TransitionChildRenderFeatures } from "./TransitionChild.svelte"
 
@@ -12,7 +12,7 @@
 
 <script lang="ts" generics="TTag extends ElementType = undefined">
   import InternalTransitionChild from "./InternalTransitionChild.svelte"
-  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
+  import ElementOrComponent from "../utils/ElementOrComponent.svelte"
   import {
     hasChildren,
     TreeStates,

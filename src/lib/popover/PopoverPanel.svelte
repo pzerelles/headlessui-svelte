@@ -1,6 +1,6 @@
 <script lang="ts" module>
-  import type { ElementType, Props } from "$lib/utils/types.js"
-  import { RenderFeatures } from "$lib/utils/render.js"
+  import type { ElementType, Props } from "../utils/types.js"
+  import { RenderFeatures } from "../utils/render.js"
   import type { SvelteHTMLElements } from "svelte/elements"
 
   const DEFAULT_PANEL_TAG = "div" as const
@@ -33,15 +33,15 @@
 </script>
 
 <script lang="ts" generics="TTag extends ElementType = undefined">
-  import { useId } from "$lib/hooks/use-id.js"
-  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
-  import { mergeProps } from "$lib/utils/render.js"
+  import { useId } from "../hooks/use-id.js"
+  import ElementOrComponent from "../utils/ElementOrComponent.svelte"
+  import { mergeProps } from "../utils/render.js"
   import {
     useFloatingPanel,
     useFloatingPanelProps,
     useResolvedAnchor,
     type AnchorProps,
-  } from "$lib/internal/floating.svelte.js"
+  } from "../internal/floating.svelte.js"
   import {
     type PopoverAPIContext,
     type PopoverPanelContext,
@@ -49,19 +49,19 @@
     usePopoverAPIContext,
     usePopoverContext,
   } from "./context.svelte.js"
-  import { getOwnerDocument } from "$lib/utils/owner.js"
-  import { clearOpenClosedContext, State, useOpenClosed } from "$lib/internal/open-closed.js"
-  import { transitionDataAttributes, useTransition } from "$lib/hooks/use-transition.svelte.js"
-  import { useOnDisappear } from "$lib/hooks/use-on-disappear.svelte.js"
-  import { useScrollLock } from "$lib/hooks/use-scroll-lock.svelte.js"
-  import { Focus, focusIn, FocusResult, getFocusableElements } from "$lib/utils/focus-management.js"
-  import { useElementSize } from "$lib/hooks/use-element-size.svelte.js"
-  import { useTabDirection, Direction as TabDirection } from "$lib/hooks/use-tab-direction.svelte.js"
-  import { match } from "$lib/utils/match.js"
-  import { microTask } from "$lib/utils/microTask.js"
+  import { getOwnerDocument } from "../utils/owner.js"
+  import { clearOpenClosedContext, State, useOpenClosed } from "../internal/open-closed.js"
+  import { transitionDataAttributes, useTransition } from "../hooks/use-transition.svelte.js"
+  import { useOnDisappear } from "../hooks/use-on-disappear.svelte.js"
+  import { useScrollLock } from "../hooks/use-scroll-lock.svelte.js"
+  import { Focus, focusIn, FocusResult, getFocusableElements } from "../utils/focus-management.js"
+  import { useElementSize } from "../hooks/use-element-size.svelte.js"
+  import { useTabDirection, Direction as TabDirection } from "../hooks/use-tab-direction.svelte.js"
+  import { match } from "../utils/match.js"
+  import { microTask } from "../utils/microTask.js"
   import { setContext, untrack } from "svelte"
-  import Portal from "$lib/portal/Portal.svelte"
-  import Hidden, { HiddenFeatures } from "$lib/internal/Hidden.svelte"
+  import Portal from "../portal/Portal.svelte"
+  import Hidden, { HiddenFeatures } from "../internal/Hidden.svelte"
 
   let internalId = useId()
   let {

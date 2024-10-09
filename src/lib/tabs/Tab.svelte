@@ -1,5 +1,5 @@
 <script lang="ts" module>
-  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { ElementType, Props } from "../utils/types.js"
   import type { SvelteHTMLElements } from "svelte/elements"
 
   const DEFAULT_TAB_TAG = "button" as const
@@ -26,20 +26,20 @@
 </script>
 
 <script lang="ts" generics="TTag extends ElementType = undefined">
-  import { useId } from "$lib/hooks/use-id.js"
-  import { useStableCollectionIndex } from "$lib/utils/StableCollection.svelte"
-  import { Focus, focusIn, FocusResult } from "$lib/utils/focus-management.js"
-  import { getOwnerDocument } from "$lib/utils/owner.js"
-  import { match } from "$lib/utils/match.js"
-  import { microTask } from "$lib/utils/microTask.js"
-  import { useActivePress } from "$lib/hooks/use-active-press.svelte.js"
-  import { useFocusRing } from "$lib/hooks/use-focus-ring.svelte.js"
-  import { useResolveButtonType } from "$lib/hooks/use-resolve-button-type.svelte.js"
-  import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
+  import { useId } from "../hooks/use-id.js"
+  import { useStableCollectionIndex } from "../utils/StableCollection.svelte"
+  import { Focus, focusIn, FocusResult } from "../utils/focus-management.js"
+  import { getOwnerDocument } from "../utils/owner.js"
+  import { match } from "../utils/match.js"
+  import { microTask } from "../utils/microTask.js"
+  import { useActivePress } from "../hooks/use-active-press.svelte.js"
+  import { useFocusRing } from "../hooks/use-focus-ring.svelte.js"
+  import { useResolveButtonType } from "../hooks/use-resolve-button-type.svelte.js"
+  import type { MutableRefObject } from "../utils/ref.svelte.js"
   import { onMount } from "svelte"
-  import { useHover } from "$lib/hooks/use-hover.svelte.js"
-  import { mergeProps } from "$lib/utils/render.js"
-  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
+  import { useHover } from "../hooks/use-hover.svelte.js"
+  import { mergeProps } from "../utils/render.js"
+  import ElementOrComponent from "../utils/ElementOrComponent.svelte"
   import { useTabs } from "./context.svelte.js"
 
   const internalId = useId()

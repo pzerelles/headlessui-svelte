@@ -1,5 +1,5 @@
 <script lang="ts" module>
-  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { ElementType, Props } from "../utils/types.js"
   import type { SvelteHTMLElements } from "svelte/elements"
 
   const DEFAULT_SEPARATOR_TAG = "div" as const
@@ -15,7 +15,7 @@
 </script>
 
 <script lang="ts" generics="TTag extends ElementType = undefined">
-  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
+  import ElementOrComponent from "../utils/ElementOrComponent.svelte"
 
   let { element = $bindable(), ...theirProps }: MenuSeparatorProps<TTag> = $props()
   const ourProps = { role: "separator" }

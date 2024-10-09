@@ -1,4 +1,4 @@
-import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
+import type { MutableRefObject } from "../utils/ref.svelte.js"
 
 function resolveType<TTag>(props: { type?: string; as?: TTag }) {
   if (props.type) return props.type

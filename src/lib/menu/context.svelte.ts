@@ -1,6 +1,6 @@
-import { calculateActiveIndex, Focus } from "$lib/utils/calculate-active-index.js"
-import { sortByDomNode } from "$lib/utils/focus-management.js"
-import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
+import { calculateActiveIndex, Focus } from "../utils/calculate-active-index.js"
+import { sortByDomNode } from "../utils/focus-management.js"
+import type { MutableRefObject } from "../utils/ref.svelte.js"
 import { getContext, setContext } from "svelte"
 
 export enum MenuStates {

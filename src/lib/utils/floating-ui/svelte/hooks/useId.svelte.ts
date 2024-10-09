@@ -1,4 +1,4 @@
-let serverHandoffComplete = false
+//const serverHandoffComplete = false
 let count = 0
 const genId = () =>
   // Ensure the id is unique with multiple independent versions of Floating UI

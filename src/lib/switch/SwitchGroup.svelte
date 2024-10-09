@@ -1,5 +1,5 @@
 <script lang="ts" module>
-  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { ElementType, Props } from "../utils/types.js"
 
   const DEFAULT_GROUP_TAG = "svelte:fragment"
 
@@ -12,9 +12,9 @@
 
 <script lang="ts" generics="TTag extends ElementType = undefined">
   import { setContext } from "svelte"
-  import { useLabels } from "$lib/label/context.svelte.js"
-  import { useDescriptions } from "$lib/description/context.svelte.js"
-  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
+  import { useLabels } from "../label/context.svelte.js"
+  import { useDescriptions } from "../description/context.svelte.js"
+  import ElementOrComponent from "../utils/ElementOrComponent.svelte"
 
   let switchElement = $state<HTMLElement | null>(null)
   useLabels({

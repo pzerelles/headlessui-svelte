@@ -1,5 +1,5 @@
 <script lang="ts" generics="TTag extends ElementType = undefined">
-  import type { ElementType } from "$lib/utils/types.js"
+  import type { ElementType } from "../utils/types.js"
   import type { Component } from "svelte"
   import InternalPortal, { type PortalProps } from "./InternalPortal.svelte"
 

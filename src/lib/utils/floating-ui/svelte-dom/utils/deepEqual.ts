@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // Fork of `fast-deep-equal` that only does the comparisons we need and compares
 // functions
 export function deepEqual(a: any, b: any) {

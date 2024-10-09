@@ -1,8 +1,8 @@
-import { useIsMounted } from "$lib/hooks/use-is-mounted.svelte.js"
-import { useDisposables } from "$lib/utils/disposables.js"
-import { match } from "$lib/utils/match.js"
-import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
-import { RenderStrategy } from "$lib/utils/render.js"
+import { useIsMounted } from "../hooks/use-is-mounted.svelte.js"
+import { useDisposables } from "../utils/disposables.js"
+import { match } from "../utils/match.js"
+import type { MutableRefObject } from "../utils/ref.svelte.js"
+import { RenderStrategy } from "../utils/render.js"
 import { getContext } from "svelte"
 
 type ContainerElement = MutableRefObject<HTMLElement | null>

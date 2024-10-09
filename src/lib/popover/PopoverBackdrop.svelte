@@ -1,6 +1,6 @@
 <script lang="ts" module>
-  import type { ElementType, Props } from "$lib/utils/types.js"
-  import { RenderFeatures, type PropsForFeatures } from "$lib/utils/render.js"
+  import type { ElementType, Props } from "../utils/types.js"
+  import { RenderFeatures, type PropsForFeatures } from "../utils/render.js"
   import type { SvelteHTMLElements } from "svelte/elements"
 
   let DEFAULT_BACKDROP_TAG = "div" as const
@@ -23,11 +23,11 @@
 </script>
 
 <script lang="ts" generics="TTag extends ElementType = undefined">
-  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
-  import { useId } from "$lib/hooks/use-id.js"
+  import ElementOrComponent from "../utils/ElementOrComponent.svelte"
+  import { useId } from "../hooks/use-id.js"
   import { PopoverStates, usePopoverContext } from "./context.svelte.js"
-  import { State, useOpenClosed } from "$lib/internal/open-closed.js"
-  import { transitionDataAttributes, useTransition } from "$lib/hooks/use-transition.svelte.js"
+  import { State, useOpenClosed } from "../internal/open-closed.js"
+  import { transitionDataAttributes, useTransition } from "../hooks/use-transition.svelte.js"
 
   const internalId = useId()
   let {

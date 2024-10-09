@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export function createPubSub() {
   const map = new Map<string, Array<(data: any) => void>>()
 

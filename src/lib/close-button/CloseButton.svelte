@@ -1,7 +1,7 @@
 <script lang="ts" module>
-  import Button, { type ButtonProps } from "$lib/button/Button.svelte"
-  import { useClose } from "$lib/internal/close-provider.js"
-  import type { ElementType } from "$lib/utils/types.js"
+  import Button, { type ButtonProps } from "../button/Button.svelte"
+  import { useClose } from "../internal/close-provider.js"
+  import type { ElementType } from "../utils/types.js"
   import type { Component } from "svelte"
 
   export type CloseButtonProps<TTag extends ElementType = undefined> = ButtonProps<TTag>

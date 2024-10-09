@@ -1,5 +1,5 @@
 <script lang="ts" module>
-  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { ElementType, Props } from "../utils/types.js"
   import type { SvelteHTMLElements } from "svelte/elements"
 
   const DEFAULT_SWITCH_TAG = "button" as const
@@ -34,22 +34,22 @@
 </script>
 
 <script lang="ts" generics="TTag extends ElementType = undefined">
-  import { useId } from "$lib/hooks/use-id.js"
-  import { useDisabled } from "$lib/hooks/use-disabled.js"
-  import { useProvidedId } from "$lib/utils/id.js"
+  import { useId } from "../hooks/use-id.js"
+  import { useDisabled } from "../hooks/use-disabled.js"
+  import { useProvidedId } from "../utils/id.js"
   import { getContext, tick } from "svelte"
   import type { GroupContext } from "./SwitchGroup.svelte"
-  import { attemptSubmit } from "$lib/utils/form.js"
-  import { useLabelledBy } from "$lib/label/context.svelte.js"
-  import { useDescribedBy } from "$lib/description/context.svelte.js"
-  import { mergeProps } from "$lib/utils/render.js"
-  import { useResolveButtonType } from "$lib/hooks/use-resolve-button-type.svelte.js"
-  import { useFocusRing } from "$lib/hooks/use-focus-ring.svelte.js"
-  import { useHover } from "$lib/hooks/use-hover.svelte.js"
-  import { useActivePress } from "$lib/hooks/use-active-press.svelte.js"
-  import { useControllable } from "$lib/hooks/use-controllable.svelte.js"
-  import FormFields from "$lib/internal/FormFields.svelte"
-  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
+  import { attemptSubmit } from "../utils/form.js"
+  import { useLabelledBy } from "../label/context.svelte.js"
+  import { useDescribedBy } from "../description/context.svelte.js"
+  import { mergeProps } from "../utils/render.js"
+  import { useResolveButtonType } from "../hooks/use-resolve-button-type.svelte.js"
+  import { useFocusRing } from "../hooks/use-focus-ring.svelte.js"
+  import { useHover } from "../hooks/use-hover.svelte.js"
+  import { useActivePress } from "../hooks/use-active-press.svelte.js"
+  import { useControllable } from "../hooks/use-controllable.svelte.js"
+  import FormFields from "../internal/FormFields.svelte"
+  import ElementOrComponent from "../utils/ElementOrComponent.svelte"
 
   const internalId = useId()
   const providedId = useProvidedId()

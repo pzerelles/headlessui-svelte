@@ -1,5 +1,5 @@
 <script lang="ts" module>
-  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { ElementType, Props } from "../utils/types.js"
   import type { SvelteHTMLElements } from "svelte/elements"
 
   const DEFAULT_OPTION_TAG = "div" as const
@@ -27,7 +27,7 @@
 </script>
 
 <script lang="ts" generics="TType, TTag extends ElementType = undefined">
-  import { useId } from "$lib/hooks/use-id.js"
+  import { useId } from "../hooks/use-id.js"
   import {
     ActivationTrigger,
     ListboxStates,
@@ -36,13 +36,13 @@
     ValueMode,
     type ListboxOptionDataRef,
   } from "./Listbox.svelte"
-  import { disposables } from "$lib/utils/disposables.js"
-  import { Focus } from "$lib/utils/calculate-active-index.js"
+  import { disposables } from "../utils/disposables.js"
+  import { Focus } from "../utils/calculate-active-index.js"
   import { getContext, onMount, type Snippet } from "svelte"
-  import { useTextValue } from "$lib/hooks/use-text-value.svelte.js"
-  import { useTrackedPointer } from "$lib/hooks/use-tracked-pointer.js"
-  import { stateFromSlot } from "$lib/utils/state.js"
-  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
+  import { useTextValue } from "../hooks/use-text-value.svelte.js"
+  import { useTrackedPointer } from "../hooks/use-tracked-pointer.js"
+  import { stateFromSlot } from "../utils/state.js"
+  import ElementOrComponent from "../utils/ElementOrComponent.svelte"
 
   const internalId = useId()
   let {

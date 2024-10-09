@@ -1,5 +1,5 @@
 <script lang="ts" module>
-  import { useId } from "$lib/hooks/use-id.js"
+  import { useId } from "../hooks/use-id.js"
   import { getContext, setContext, type Snippet } from "svelte"
 
   type CollectionKey = string | symbol

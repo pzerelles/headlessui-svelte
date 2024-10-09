@@ -1,5 +1,5 @@
 <script lang="ts" module>
-  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { ElementType, Props } from "../utils/types.js"
   import type { SvelteHTMLElements } from "svelte/elements"
 
   let DEFAULT_FIELD_TAG = "div" as const
@@ -22,10 +22,10 @@
   import { provideDisabled } from "../hooks/use-disabled.js"
   import { createIdContext } from "../utils/id.js"
   import { nanoid } from "nanoid"
-  import { useLabels } from "$lib/label/context.svelte.js"
-  import { useDescriptions } from "$lib/description/context.svelte.js"
-  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
-  import FormFieldsProvider from "$lib/internal/FormFieldsProvider.svelte"
+  import { useLabels } from "../label/context.svelte.js"
+  import { useDescriptions } from "../description/context.svelte.js"
+  import ElementOrComponent from "../utils/ElementOrComponent.svelte"
+  import FormFieldsProvider from "../internal/FormFieldsProvider.svelte"
 
   let { element = $bindable(), disabled: ownDisabled = false, children, ...theirProps }: FieldProps<TTag> = $props()
 

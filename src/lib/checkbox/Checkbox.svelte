@@ -1,5 +1,5 @@
 <script lang="ts" module>
-  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { ElementType, Props } from "../utils/types.js"
   import type { SvelteHTMLElements } from "svelte/elements"
 
   const DEFAULT_CHECKBOX_TAG = "span" as const
@@ -49,12 +49,12 @@
   import { useFocusRing } from "../hooks/use-focus-ring.svelte.js"
   import FormFields from "../internal/FormFields.svelte"
   import { useDisabled } from "../hooks/use-disabled.js"
-  import { useLabelledBy } from "$lib/label/context.svelte.js"
-  import { useDescribedBy } from "$lib/description/context.svelte.js"
-  import { useHover } from "$lib/hooks/use-hover.svelte.js"
-  import { mergeProps } from "$lib/utils/render.js"
-  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
-  import { useControllable } from "$lib/hooks/use-controllable.svelte.js"
+  import { useLabelledBy } from "../label/context.svelte.js"
+  import { useDescribedBy } from "../description/context.svelte.js"
+  import { useHover } from "../hooks/use-hover.svelte.js"
+  import { mergeProps } from "../utils/render.js"
+  import ElementOrComponent from "../utils/ElementOrComponent.svelte"
+  import { useControllable } from "../hooks/use-controllable.svelte.js"
 
   const internalId = htmlid()
   const providedId = useProvidedId()

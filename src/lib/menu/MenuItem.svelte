@@ -1,5 +1,5 @@
 <script lang="ts" module>
-  import type { Props, ElementType } from "$lib/utils/types.js"
+  import type { Props, ElementType } from "../utils/types.js"
   import { onMount } from "svelte"
 
   const DEFAULT_ITEM_TAG = "svelte:fragment" as const
@@ -26,17 +26,17 @@
 </script>
 
 <script lang="ts" generics="TTag extends ElementType = undefined">
-  import { useId } from "$lib/hooks/use-id.js"
+  import { useId } from "../hooks/use-id.js"
   import { ActivationTrigger, MenuStates, useMenuContext, type MenuItemDataRef } from "./context.svelte.js"
-  import { disposables } from "$lib/utils/disposables.js"
-  import { useTextValue } from "$lib/hooks/use-text-value.svelte.js"
-  import { restoreFocusIfNecessary } from "$lib/utils/focus-management.js"
-  import { Focus } from "$lib/utils/calculate-active-index.js"
-  import { useTrackedPointer } from "$lib/hooks/use-tracked-pointer.js"
-  import { useLabels } from "$lib/label/context.svelte.js"
-  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
-  import { mergeProps } from "$lib/utils/render.js"
-  import { useDescriptions } from "$lib/description/context.svelte.js"
+  import { disposables } from "../utils/disposables.js"
+  import { useTextValue } from "../hooks/use-text-value.svelte.js"
+  import { restoreFocusIfNecessary } from "../utils/focus-management.js"
+  import { Focus } from "../utils/calculate-active-index.js"
+  import { useTrackedPointer } from "../hooks/use-tracked-pointer.js"
+  import { useLabels } from "../label/context.svelte.js"
+  import ElementOrComponent from "../utils/ElementOrComponent.svelte"
+  import { mergeProps } from "../utils/render.js"
+  import { useDescriptions } from "../description/context.svelte.js"
 
   const internalId = useId()
   let {

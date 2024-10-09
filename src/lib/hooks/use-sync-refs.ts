@@ -1,4 +1,4 @@
-import { useRef, type MutableRefObject } from "$lib/utils/ref.svelte.js"
+import { useRef, type MutableRefObject } from "../utils/ref.svelte.js"
 
 const Optional = Symbol()
 

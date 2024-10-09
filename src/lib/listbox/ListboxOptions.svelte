@@ -1,12 +1,12 @@
 <script lang="ts" module>
-  import type { ElementType, Props } from "$lib/utils/types.js"
-  import { mergeProps, RenderFeatures, type PropsForFeatures } from "$lib/utils/render.js"
+  import type { ElementType, Props } from "../utils/types.js"
+  import { mergeProps, RenderFeatures, type PropsForFeatures } from "../utils/render.js"
   import {
     useFloatingPanel,
     useFloatingPanelProps,
     useResolvedAnchor,
     type AnchorPropsWithSelection,
-  } from "$lib/internal/floating.svelte.js"
+  } from "../internal/floating.svelte.js"
   import type { SvelteHTMLElements } from "svelte/elements"
 
   const DEFAULT_OPTIONS_TAG = "div" as const
@@ -38,24 +38,24 @@
 </script>
 
 <script lang="ts" generics="TTag extends ElementType = undefined">
-  import { useId } from "$lib/hooks/use-id.js"
+  import { useId } from "../hooks/use-id.js"
   import { ListboxStates, useActions, useData, ValueMode, type ListboxDataContext } from "./Listbox.svelte"
-  import { getOwnerDocument } from "$lib/utils/owner.js"
-  import { State, useOpenClosed } from "$lib/internal/open-closed.js"
-  import { transitionDataAttributes, useTransition } from "$lib/hooks/use-transition.svelte.js"
-  import { useOnDisappear } from "$lib/hooks/use-on-disappear.svelte.js"
-  import { useScrollLock } from "$lib/hooks/use-scroll-lock.svelte.js"
-  import { useInertOthers } from "$lib/hooks/use-inert-others.svelte.js"
-  import { useDidElementMove } from "$lib/hooks/use-did-element-move.svelte.js"
-  import { useFrozenData } from "$lib/internal/frozen.svelte.js"
-  import { useDisposables } from "$lib/utils/disposables.js"
-  import { match } from "$lib/utils/match.js"
-  import { Focus } from "$lib/utils/calculate-active-index.js"
-  import { focusFrom, Focus as FocusManagementFocus } from "$lib/utils/focus-management.js"
-  import { useElementSize } from "$lib/hooks/use-element-size.svelte.js"
+  import { getOwnerDocument } from "../utils/owner.js"
+  import { State, useOpenClosed } from "../internal/open-closed.js"
+  import { transitionDataAttributes, useTransition } from "../hooks/use-transition.svelte.js"
+  import { useOnDisappear } from "../hooks/use-on-disappear.svelte.js"
+  import { useScrollLock } from "../hooks/use-scroll-lock.svelte.js"
+  import { useInertOthers } from "../hooks/use-inert-others.svelte.js"
+  import { useDidElementMove } from "../hooks/use-did-element-move.svelte.js"
+  import { useFrozenData } from "../internal/frozen.svelte.js"
+  import { useDisposables } from "../utils/disposables.js"
+  import { match } from "../utils/match.js"
+  import { Focus } from "../utils/calculate-active-index.js"
+  import { focusFrom, Focus as FocusManagementFocus } from "../utils/focus-management.js"
+  import { useElementSize } from "../hooks/use-element-size.svelte.js"
   import { setContext, type Snippet } from "svelte"
-  import Portal from "$lib/portal/Portal.svelte"
-  import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
+  import Portal from "../portal/Portal.svelte"
+  import ElementOrComponent from "../utils/ElementOrComponent.svelte"
 
   const internalId = useId()
   let {

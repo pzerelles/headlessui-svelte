@@ -1,10 +1,9 @@
 import { useFloating as usePosition } from "../../svelte-dom/index.js"
 import { isElement } from "@floating-ui/utils/dom"
-
 import { useFloatingTree } from "../components/FloatingTree.svelte"
 import type { NarrowedElement, ReferenceType, UseFloatingOptions, UseFloatingReturn } from "../types.js"
 import { useFloatingRootContext } from "./useFloatingRootContext.svelte.js"
-import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
+import type { MutableRefObject } from "../../../../utils/ref.svelte.js"
 
 /**
  * Provides data to position a floating element and context to add interactions.
