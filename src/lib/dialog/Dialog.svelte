@@ -1,6 +1,7 @@
 <script lang="ts" module>
   import type { ElementType, Props } from "$lib/utils/types.js"
   import { RenderFeatures, type PropsForFeatures } from "$lib/utils/render.js"
+  import type { SvelteHTMLElements } from "svelte/elements"
 
   export const DEFAULT_DIALOG_TAG = "div" as const
   export type DialogRenderPropArg = {
@@ -10,13 +11,12 @@
 
   export const DialogRenderFeatures = RenderFeatures.RenderStrategy | RenderFeatures.Static
 
-  export type DialogProps<TTag extends ElementType = typeof DEFAULT_DIALOG_TAG> = Props<
+  export type DialogProps<TTag extends ElementType = undefined> = Props<
     TTag,
+    SvelteHTMLElements[typeof DEFAULT_DIALOG_TAG],
     DialogRenderPropArg,
     DialogPropsWeControl,
     PropsForFeatures<typeof DialogRenderFeatures> & {
-      as?: TTag
-      id?: string
       open?: boolean
       onclose(value: boolean): void
       initialFocus?: HTMLElement
@@ -28,7 +28,7 @@
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_DIALOG_TAG">
+<script lang="ts" generics="TTag extends ElementType = undefined">
   import { useId } from "$lib/hooks/use-id.js"
   import { useMainTreeNode, useRootContainers } from "$lib/hooks/use-root-containers.svelte.js"
   import { clearOpenClosedContext, State, useOpenClosed } from "$lib/internal/open-closed.js"
@@ -51,26 +51,14 @@
   import { useDescriptions } from "$lib/description/context.svelte.js"
   import MainTreeProvider from "$lib/internal/MainTreeProvider.svelte"
   import Transition from "$lib/transition/Transition.svelte"
+  import { BROWSER } from "esm-env"
 
-  const internalId = useId()
-  let {
-    ref = $bindable(),
-    id = `headlessui-dialog-${internalId}`,
-    open: theirOpen,
-    onclose,
-    initialFocus,
-    role: theirRole = "dialog",
-    autofocus = true,
-    __demoMode = false,
-    unmount = false,
-    transition = false,
-    ...theirProps
-  }: { as?: TTag } & DialogProps<TTag> = $props()
+  let { element = $bindable(), transition = false, open: theirOpen, ...rest }: DialogProps<TTag> = $props()
 
   // Validations
   const usesOpenClosedState = useOpenClosed()
   const hasOpen = $derived(theirOpen !== undefined || usesOpenClosedState)
-  const hasOnClose = $derived(theirProps.hasOwnProperty("onclose"))
+  const hasOnClose = $derived(rest.hasOwnProperty("onclose"))
 
   $effect(() => {
     if (!hasOpen && !hasOnClose) {
@@ -91,12 +79,24 @@
       )
     }
 
-    if (typeof theirProps.onclose !== "function") {
+    if (typeof rest.onclose !== "function") {
       throw new Error(
-        `You provided an \`onclose\` prop to the \`Dialog\`, but the value is not a function. Received: ${theirProps.onclose}`
+        `You provided an \`onclose\` prop to the \`Dialog\`, but the value is not a function. Received: ${rest.onclose}`
       )
     }
   })
+
+  const internalId = useId()
+  let {
+    id = `headlessui-dialog-${internalId}`,
+    onclose,
+    initialFocus,
+    role: theirRole = "dialog",
+    autofocus = true,
+    __demoMode = false,
+    unmount = false,
+    ...theirProps
+  } = $derived(rest)
 
   let didWarnOnRole = $state(false)
 
@@ -122,7 +122,7 @@
       : theirOpen
   )
 
-  const ownerDocument = $derived(getOwnerDocument(ref))
+  const ownerDocument = $derived(getOwnerDocument(element))
 
   const dialogState = $derived(open ? DialogStates.Open : DialogStates.Closed)
 
@@ -135,7 +135,8 @@
 
   const setTitleId = (id: string | null) => (_state.titleId = id)
 
-  const enabled = $derived(dialogState === DialogStates.Open)
+  const ready = BROWSER
+  const enabled = $derived(ready ? dialogState === DialogStates.Open : false)
   const nestedPortals = useNestedPortals()
   const { portals } = $derived(nestedPortals)
 
@@ -145,7 +146,7 @@
   // `<Dialog.Title>` because they cause the parent to re-render
   const defaultContainer: { readonly current: HTMLElement | undefined } = {
     get current() {
-      return _state.panelRef ?? ref
+      return _state.panelRef ?? element
     },
   }
 
@@ -184,7 +185,7 @@
         return [
           // Allow the headlessui-portal of the Dialog to be interactive. This
           // contains the current dialog and the necessary focus guard elements.
-          ref?.closest<HTMLElement>("[data-headlessui-portal]") ?? null,
+          element?.closest<HTMLElement>("[data-headlessui-portal]") ?? null,
         ]
       },
       get disallowed() {
@@ -260,7 +261,7 @@
       return enabled
     },
     get ref() {
-      return ref
+      return element
     },
     get ondisappear() {
       return close
@@ -331,11 +332,11 @@
 {#snippet internal(transitionProps?: Record<string, any>)}
   <ForcePortalRoot force={true}>
     <Portal>
-      <PortalGroup target={ref ?? null}>
+      <PortalGroup target={element ?? null}>
         <ForcePortalRoot force={false}>
           <FocusTrap
             {initialFocus}
-            initialFocusFallback={ref}
+            initialFocusFallback={element}
             containers={resolvedRootContainers}
             features={focusTrapFeatures}
           >
@@ -347,7 +348,7 @@
               features={DialogRenderFeatures}
               visible={dialogState === DialogStates.Open}
               name="Dialog"
-              bind:ref
+              bind:element
             />
           </FocusTrap>
         </ForcePortalRoot>
@@ -358,7 +359,7 @@
 
 {#if (open !== undefined || transition) && !theirProps.static}
   <MainTreeProvider>
-    <Transition show={open} {transition} unmount={theirProps.unmount} {ref}>
+    <Transition show={open} {transition} unmount={rest.unmount} {element}>
       {#snippet children({ props })}
         {@render internal(props)}
       {/snippet}

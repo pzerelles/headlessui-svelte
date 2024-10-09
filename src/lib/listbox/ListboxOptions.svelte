@@ -7,6 +7,7 @@
     useResolvedAnchor,
     type AnchorPropsWithSelection,
   } from "$lib/internal/floating.svelte.js"
+  import type { SvelteHTMLElements } from "svelte/elements"
 
   const DEFAULT_OPTIONS_TAG = "div" as const
   type OptionsRenderPropArg = {
@@ -22,12 +23,12 @@
 
   let OptionsRenderFeatures = RenderFeatures.RenderStrategy | RenderFeatures.Static
 
-  export type ListboxOptionsProps<TTag extends ElementType = typeof DEFAULT_OPTIONS_TAG> = Props<
+  export type ListboxOptionsProps<TTag extends ElementType = undefined> = Props<
     TTag,
+    SvelteHTMLElements[typeof DEFAULT_OPTIONS_TAG],
     OptionsRenderPropArg,
     OptionsPropsWeControl,
     {
-      id?: string
       anchor?: AnchorPropsWithSelection
       portal?: boolean
       modal?: boolean
@@ -36,7 +37,7 @@
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_OPTIONS_TAG">
+<script lang="ts" generics="TTag extends ElementType = undefined">
   import { useId } from "$lib/hooks/use-id.js"
   import { ListboxStates, useActions, useData, ValueMode, type ListboxDataContext } from "./Listbox.svelte"
   import { getOwnerDocument } from "$lib/utils/owner.js"
@@ -58,14 +59,14 @@
 
   const internalId = useId()
   let {
-    ref = $bindable(),
+    element = $bindable(),
     id = `headlessui-listbox-options-${internalId}`,
     anchor: rawAnchor,
     portal = false,
     modal = true,
     transition = false,
     ...theirProps
-  }: { as?: TTag } & ListboxOptionsProps<TTag> = $props()
+  }: ListboxOptionsProps<TTag> = $props()
   const resolvedAnchor = useResolvedAnchor({
     get anchor() {
       return rawAnchor
@@ -219,9 +220,9 @@
   const getFloatingPanelProps = useFloatingPanelProps()
 
   $effect(() => {
-    localOptionsElement = ref
-    data.optionsElement = ref ?? null
-    if (anchor) setFloating(ref ?? null)
+    localOptionsElement = element
+    data.optionsElement = element ?? null
+    if (anchor) setFloating(element ?? null)
   })
 
   const searchDisposables = useDisposables()
@@ -414,6 +415,6 @@
     features={OptionsRenderFeatures}
     visible={panelEnabled}
     name="ListboxOptions"
-    bind:ref
+    bind:element
   />
 </Portal>

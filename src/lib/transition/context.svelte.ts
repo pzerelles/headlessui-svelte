@@ -51,7 +51,7 @@ export function useTransitionContext() {
 }
 
 export function useParentNesting() {
-  let context = getContext<NestingContextValues>("NestingContext")
+  const context = getContext<NestingContextValues>("NestingContext")
 
   if (!context) {
     throw new Error("A <Transition.Child /> is used but it is missing a parent <Transition /> or <Transition.Root />.")
@@ -79,7 +79,7 @@ export function hasChildren(
 
 export function useNesting(options: { done?: () => void; parent?: NestingContextValues }) {
   const { done, parent } = $derived(options)
-  let transitionableChildren = $state<NestingContextValues["children"]>([])
+  const transitionableChildren = $state<NestingContextValues["children"]>([])
   const mounted = useIsMounted()
   const d = useDisposables()
 
@@ -114,15 +114,15 @@ export function useNesting(options: { done?: () => void; parent?: NestingContext
     return () => unregister(container, RenderStrategy.Unmount)
   }
 
-  let todos = $state<(() => void)[]>([])
+  const todos = $state<(() => void)[]>([])
   let wait = $state<Promise<void>>(Promise.resolve())
 
-  let chains = $state<Record<TransitionDirection, [identifier: ContainerElement, promise: Promise<void>][]>>({
+  const chains = $state<Record<TransitionDirection, [identifier: ContainerElement, promise: Promise<void>][]>>({
     enter: [],
     leave: [],
   })
 
-  let onStart = (
+  const onStart = (
     container: ContainerElement,
     direction: TransitionDirection,
     cb: (direction: TransitionDirection) => void
@@ -150,7 +150,7 @@ export function useNesting(options: { done?: () => void; parent?: NestingContext
     parent?.chains[direction].push([
       container,
       new Promise<void>((resolve) => {
-        Promise.all(chains[direction].map(([_container, promise]) => promise)).then(() => resolve())
+        Promise.all(chains[direction].map(([, promise]) => promise)).then(() => resolve())
       }),
     ])
 
@@ -166,7 +166,7 @@ export function useNesting(options: { done?: () => void; parent?: NestingContext
     direction: TransitionDirection,
     cb: (direction: TransitionDirection) => void
   ) => {
-    Promise.all(chains[direction].splice(0).map(([_container, promise]) => promise)) // Wait for my children
+    Promise.all(chains[direction].splice(0).map(([, promise]) => promise)) // Wait for my children
       .then(() => {
         todos.shift()?.() // I'm ready
       })

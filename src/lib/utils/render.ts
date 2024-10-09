@@ -44,11 +44,11 @@ export type PropsForFeatures<T extends RenderFeatures> = Expand<
   >
 >
 
-export function mergeProps<T extends Props<any, any>[]>(...listOfProps: T) {
+export function mergeProps<T extends Props<any, any, never, any, any>[]>(...listOfProps: T) {
   if (listOfProps.length === 0) return {}
   if (listOfProps.length === 1) return listOfProps[0]
 
-  let target: Props<any, any> = {}
+  let target: Props<any, any, never, any, any> = {}
 
   let eventHandlers: Record<string, ((...args: any[]) => void | undefined)[]> = {}
 
@@ -83,11 +83,11 @@ export function mergeProps<T extends Props<any, any>[]>(...listOfProps: T) {
 
 // A more complex example fo the `mergeProps` function, this one also cancels subsequent event
 // listeners if the event has already been `preventDefault`ed.
-export function mergePropsAdvanced(...listOfProps: Props<any, any>[]) {
+export function mergePropsAdvanced(...listOfProps: Props<any, any, never, any, any>[]) {
   if (listOfProps.length === 0) return {}
   if (listOfProps.length === 1) return listOfProps[0]
 
-  let target: Props<any, any> = {}
+  let target: Props<any, any, never, any, any> = {}
 
   let eventHandlers: Record<string, ((event: { defaultPrevented: boolean }, ...args: any[]) => void | undefined)[]> = {}
 

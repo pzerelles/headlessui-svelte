@@ -1,5 +1,6 @@
 <script lang="ts" module>
   import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { SvelteHTMLElements } from "svelte/elements"
 
   const DEFAULT_PANEL_TAG = "div" as const
   type PanelRenderPropArg = {
@@ -9,15 +10,16 @@
   type PanelPropsWeControl = "role" | "aria-labelledby"
   const PanelRenderFeatures = RenderFeatures.RenderStrategy | RenderFeatures.Static
 
-  export type TabPanelProps<TTag extends ElementType = typeof DEFAULT_PANEL_TAG> = Props<
+  export type TabPanelProps<TTag extends ElementType = undefined> = Props<
     TTag,
+    SvelteHTMLElements[typeof DEFAULT_PANEL_TAG],
     PanelRenderPropArg,
     PanelPropsWeControl,
     PropsForFeatures<typeof PanelRenderFeatures> & { id?: string; tabIndex?: number }
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_PANEL_TAG">
+<script lang="ts" generics="TTag extends ElementType = undefined">
   import { useId } from "$lib/hooks/use-id.js"
   import { mergeProps, RenderFeatures, type PropsForFeatures } from "$lib/utils/render.js"
   import { useStableCollectionIndex } from "$lib/utils/StableCollection.svelte"
@@ -30,15 +32,15 @@
 
   const internalId = useId()
   let {
-    ref = $bindable(),
+    element = $bindable(),
     id = `headlessui-tabs-panel-${internalId}`,
     tabIndex = 0,
     ...theirProps
-  }: { as?: TTag } & TabPanelProps<TTag> = $props()
+  }: TabPanelProps<TTag> = $props()
   const context = useTabs("TabPanel")
   const { selectedIndex, tabs, panels, registerPanel } = $derived(context)
 
-  const panelRef = $derived<MutableRefObject<HTMLElement | undefined>>({ current: ref })
+  const panelRef = $derived<MutableRefObject<HTMLElement | undefined>>({ current: element })
 
   onMount(() => registerPanel(panelRef))
 
@@ -71,7 +73,7 @@
 </script>
 
 {#if !selected && (theirProps.unmount ?? true) && !(theirProps.static ?? false)}
-  <Hidden aria-hidden="true" {...ourProps} bind:ref />
+  <Hidden aria-hidden="true" {...ourProps} bind:element />
 {:else}
   <ElementOrComponent
     {ourProps}
@@ -80,6 +82,6 @@
     defaultTag={DEFAULT_PANEL_TAG}
     features={PanelRenderFeatures}
     name="TabPanel"
-    bind:ref
+    bind:element
   />
 {/if}

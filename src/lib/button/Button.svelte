@@ -1,5 +1,6 @@
 <script lang="ts" module>
-  import type { Props, ElementType } from "$lib/utils/types.js"
+  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { SvelteHTMLElements } from "svelte/elements"
 
   const DEFAULT_BUTTON_TAG = "button" as const
 
@@ -12,8 +13,9 @@
   }
   type ButtonPropsWeControl = never
 
-  export type ButtonProps<TTag extends ElementType = typeof DEFAULT_BUTTON_TAG> = Props<
+  export type ButtonProps<TTag extends ElementType = undefined> = Props<
     TTag,
+    SvelteHTMLElements[typeof DEFAULT_BUTTON_TAG],
     ButtonRenderPropArg,
     ButtonPropsWeControl,
     {
@@ -24,7 +26,7 @@
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_BUTTON_TAG">
+<script lang="ts" generics="TTag extends ElementType = undefined">
   import { useActivePress } from "../hooks/use-active-press.svelte.js"
   import { useFocusRing } from "../hooks/use-focus-ring.svelte.js"
   import { useDisabled } from "../hooks/use-disabled.js"
@@ -35,12 +37,12 @@
   const providedDisabled = useDisabled()
 
   let {
-    ref = $bindable(),
     disabled: ownDisabled = false,
     autofocus = false,
     type = "button",
+    element = $bindable(),
     ...theirProps
-  }: { as?: TTag } & ButtonProps<TTag> = $props()
+  }: ButtonProps<TTag> = $props()
 
   const disabled = $derived(providedDisabled.current || ownDisabled)
 
@@ -88,4 +90,4 @@
   )
 </script>
 
-<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_BUTTON_TAG} name="Button" bind:ref />
+<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_BUTTON_TAG} name="Button" bind:element />

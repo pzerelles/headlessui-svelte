@@ -1,5 +1,6 @@
 <script lang="ts" module>
   import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { SvelteHTMLElements } from "svelte/elements"
 
   export const DEFAULT_POPOVER_TAG = "div" as const
   type PopoverRenderPropArg = {
@@ -8,8 +9,9 @@
   }
   type PopoverPropsWeControl = never
 
-  export type PopoverProps<TTag extends ElementType = typeof DEFAULT_POPOVER_TAG> = Props<
+  export type PopoverProps<TTag extends ElementType = undefined> = Props<
     TTag,
+    SvelteHTMLElements[typeof DEFAULT_POPOVER_TAG],
     PopoverRenderPropArg,
     PopoverPropsWeControl,
     {
@@ -18,7 +20,7 @@
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_POPOVER_TAG">
+<script lang="ts" generics="TTag extends ElementType = undefined">
   import { getOwnerDocument } from "$lib/utils/owner.js"
 
   import { setContext, untrack } from "svelte"
@@ -41,7 +43,7 @@
   import { createOpenClosedContext, State } from "$lib/internal/open-closed.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 
-  let { ref = $bindable(), __demoMode = false, ...theirProps }: { as?: TTag } & PopoverProps<TTag> = $props()
+  let { element = $bindable(), __demoMode = false, ...theirProps }: PopoverProps<TTag> = $props()
 
   let buttons = $state([])
   const context = createPopoverContext({
@@ -60,7 +62,7 @@
     afterButtonSentinel,
   } = $derived(context)
 
-  const ownerDocument = $derived(getOwnerDocument(ref ?? button))
+  const ownerDocument = $derived(getOwnerDocument(element ?? button))
 
   const isPortalled = $derived.by(() => {
     if (!button) return false
@@ -223,5 +225,5 @@
 </script>
 
 <MainTreeProvider node={mainTreeNode.node}>
-  <ElementOrComponent {theirProps} slots={slot} defaultTag={DEFAULT_POPOVER_TAG} name="Popover" bind:ref />
+  <ElementOrComponent {theirProps} slots={slot} defaultTag={DEFAULT_POPOVER_TAG} name="Popover" bind:element />
 </MainTreeProvider>

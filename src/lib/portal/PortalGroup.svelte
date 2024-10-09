@@ -9,8 +9,9 @@
     readonly target: HTMLElement | null
   }
 
-  export type PortalGroupProps<TTag extends ElementType = typeof DEFAULT_GROUP_TAG> = Props<
+  export type PortalGroupProps<TTag extends ElementType = undefined> = Props<
     TTag,
+    {},
     GroupRenderPropArg,
     GroupPropsWeControl,
     {
@@ -19,11 +20,11 @@
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_GROUP_TAG">
+<script lang="ts" generics="TTag extends ElementType = undefined">
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
   import { setContext } from "svelte"
 
-  let { ref = $bindable(), target, ...theirProps }: { as?: TTag } & PortalGroupProps<TTag> = $props()
+  let { element = $bindable(), target, ...theirProps }: PortalGroupProps<TTag> = $props()
 
   setContext("PortalGroupContext", {
     get target() {
@@ -32,4 +33,4 @@
   })
 </script>
 
-<ElementOrComponent {theirProps} defaultTag={DEFAULT_GROUP_TAG} name="PortalGroup" bind:ref />
+<ElementOrComponent {theirProps} defaultTag={DEFAULT_GROUP_TAG} name="PortalGroup" bind:element />

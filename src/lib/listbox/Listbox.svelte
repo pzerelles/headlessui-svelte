@@ -6,8 +6,9 @@
   import { FocusableMode, isFocusableElement, sortByDomNode } from "$lib/utils/focus-management.js"
   import { match } from "$lib/utils/match.js"
   import type { ElementType, EnsureArray, Props } from "$lib/utils/types.js"
-  import { setContext, type Snippet } from "svelte"
+  import { setContext } from "svelte"
   import { ActivationTrigger, ListboxStates, ValueMode } from "./context.svelte.js"
+  import type { SvelteHTMLElements } from "svelte/elements"
 
   let DEFAULT_LISTBOX_TAG = "svelte:fragment"
   type ListboxRenderPropArg<T> = {
@@ -18,11 +19,12 @@
   }
 
   export type ListboxProps<
-    TTag extends ElementType = typeof DEFAULT_LISTBOX_TAG,
+    TTag extends ElementType = undefined,
     TType = string,
     TActualType = TType extends (infer U)[] ? U : TType,
   > = Props<
     TTag,
+    SvelteHTMLElements[typeof DEFAULT_LISTBOX_TAG],
     ListboxRenderPropArg<TType>,
     "value" | "defaultValue" | "onchange" | "by" | "disabled" | "horizontal" | "name" | "multiple",
     {
@@ -47,7 +49,7 @@
 
 <script
   lang="ts"
-  generics="TTag extends ElementType = typeof DEFAULT_LISTBOX_TAG, TType = string, TActualType = TType extends (infer U)[] ? U : TType"
+  generics="TTag extends ElementType = undefined, TType = string, TActualType = TType extends (infer U)[] ? U : TType"
 >
   import { disposables } from "$lib/utils/disposables.js"
   import FormFields from "$lib/internal/FormFields.svelte"
@@ -304,7 +306,7 @@
   }
 
   let {
-    ref = $bindable(),
+    element = $bindable(),
     value: controlledValue = $bindable(),
     defaultValue,
     form,
@@ -318,7 +320,7 @@
     closeOnSelect,
     __demoMode = false,
     ...theirProps
-  }: { as?: TTag } & ListboxProps<TTag, TType, TActualType> = $props()
+  }: ListboxProps<TTag, TType, TActualType> = $props()
 
   const providedDisabled = useDisabled()
   const disabled = $derived(providedDisabled.current || ownDisabled)
@@ -562,4 +564,4 @@
 {#if name && value}
   <FormFields {disabled} data={{ [name]: value }} {form} onReset={reset} />
 {/if}
-<ElementOrComponent {theirProps} slots={slot} defaultTag={DEFAULT_LISTBOX_TAG} name="Listbox" bind:ref />
+<ElementOrComponent {theirProps} slots={slot} defaultTag={DEFAULT_LISTBOX_TAG} name="Listbox" bind:element />

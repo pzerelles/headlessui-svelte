@@ -13,8 +13,9 @@
   }
   type ItemPropsWeControl = "aria-describedby" | "aria-disabled" | "aria-labelledby" | "role" | "tabIndex"
 
-  export type MenuItemProps<TTag extends ElementType = typeof DEFAULT_ITEM_TAG> = Props<
+  export type MenuItemProps<TTag extends ElementType = undefined> = Props<
     TTag,
+    {},
     ItemRenderPropArg,
     ItemPropsWeControl,
     {
@@ -24,7 +25,7 @@
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_ITEM_TAG">
+<script lang="ts" generics="TTag extends ElementType = undefined">
   import { useId } from "$lib/hooks/use-id.js"
   import { ActivationTrigger, MenuStates, useMenuContext, type MenuItemDataRef } from "./context.svelte.js"
   import { disposables } from "$lib/utils/disposables.js"
@@ -39,11 +40,11 @@
 
   const internalId = useId()
   let {
-    ref = $bindable(),
+    element = $bindable(),
     id = `headlessui-menu-item-${internalId}`,
     disabled = false,
     ...theirProps
-  }: { as?: TTag } & MenuItemProps<TTag> = $props()
+  }: MenuItemProps<TTag> = $props()
   const _state = useMenuContext("MenuItem")
   const active = $derived(_state.activeItemIndex !== null ? _state.items[_state.activeItemIndex].id === id : false)
 
@@ -55,19 +56,19 @@
     if (!active) return
     if (_state.activationTrigger === ActivationTrigger.Pointer) return
     return disposables().requestAnimationFrame(() => {
-      ;(ref as HTMLElement)?.scrollIntoView?.({ block: "nearest" })
+      ;(element as HTMLElement)?.scrollIntoView?.({ block: "nearest" })
     })
   })
 
   const getTextValue = useTextValue({
     get element() {
-      return ref || null
+      return element || null
     },
   })
 
   const bag: MenuItemDataRef["current"] = $derived({
     disabled,
-    domRef: { current: ref || null },
+    domRef: { current: element || null },
     get textValue() {
       return getTextValue()
     },
@@ -146,4 +147,4 @@
   )
 </script>
 
-<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_ITEM_TAG} name="MenuItem" bind:ref />
+<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_ITEM_TAG} name="MenuItem" bind:element />

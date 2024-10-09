@@ -1,5 +1,6 @@
 <script lang="ts" module>
-  import type { ElementType, Props, PropsOf } from "$lib/utils/types.js"
+  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { SvelteHTMLElements } from "svelte/elements"
 
   const DEFAULT_SWITCH_TAG = "button" as const
   type SwitchRenderPropArg = {
@@ -13,8 +14,9 @@
   }
   type SwitchPropsWeControl = "aria-checked" | "aria-describedby" | "aria-labelledby" | "role"
 
-  export type SwitchProps<TTag extends ElementType = typeof DEFAULT_SWITCH_TAG> = Props<
+  export type SwitchProps<TTag extends ElementType = undefined> = Props<
     TTag,
+    SvelteHTMLElements[typeof DEFAULT_SWITCH_TAG],
     SwitchRenderPropArg,
     SwitchPropsWeControl,
     {
@@ -31,7 +33,7 @@
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_SWITCH_TAG">
+<script lang="ts" generics="TTag extends ElementType = undefined">
   import { useId } from "$lib/hooks/use-id.js"
   import { useDisabled } from "$lib/hooks/use-disabled.js"
   import { useProvidedId } from "$lib/utils/id.js"
@@ -53,8 +55,8 @@
   const providedId = useProvidedId()
   const providedDisabled = useDisabled()
   let {
-    ref = $bindable(),
-    id = (providedId || `headlessui-switch-${internalId}`) as PropsOf<TTag>["id"],
+    element = $bindable(),
+    id = providedId || `headlessui-switch-${internalId}`,
     disabled: theirDisabled = false,
     checked: controlledChecked = $bindable(),
     defaultChecked: _defaultChecked,
@@ -65,11 +67,11 @@
     autofocus = false,
     tabIndex,
     ...theirProps
-  }: { as?: TTag } & SwitchProps<TTag> = $props()
+  }: SwitchProps<TTag> = $props()
   const disabled = $derived(providedDisabled.current ?? theirDisabled)
   const groupContext = getContext<GroupContext>("GroupContext")
   $effect(() => {
-    if (groupContext) groupContext.switchElement = ref ?? null
+    if (groupContext) groupContext.switchElement = element ?? null
   })
 
   const defaultChecked = _defaultChecked
@@ -155,7 +157,7 @@
       return { type: theirProps.type, as: theirProps.as }
     },
     get ref() {
-      return { current: ref }
+      return { current: element }
     },
   })
 
@@ -197,4 +199,4 @@
   />
 {/if}
 
-<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_SWITCH_TAG} name="Switch" bind:ref />
+<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_SWITCH_TAG} name="Switch" bind:element />

@@ -1,7 +1,7 @@
 <script lang="ts" module>
   import { useId } from "$lib/hooks/use-id.js"
   import { useProvidedId } from "$lib/utils/id.js"
-  import type { ElementType, Props, PropsOf } from "$lib/utils/types.js"
+  import type { ElementType, Props } from "$lib/utils/types.js"
   import { ListboxStates, useActions, useData } from "./Listbox.svelte"
   import { attemptSubmit } from "$lib/utils/form.js"
   import { Focus } from "$lib/utils/calculate-active-index.js"
@@ -10,7 +10,7 @@
   import { useResolveButtonType } from "$lib/hooks/use-resolve-button-type.svelte.js"
   import { useFloatingReference, useFloatingReferenceProps } from "$lib/internal/floating.svelte.js"
   import { stateFromSlot } from "$lib/utils/state.js"
-  import type { Snippet } from "svelte"
+  import type { SvelteHTMLElements } from "svelte/elements"
   import { useLabelledBy } from "$lib/label/context.svelte.js"
   import { useDescribedBy } from "$lib/description/context.svelte.js"
   import { useHover } from "$lib/hooks/use-hover.svelte.js"
@@ -30,8 +30,9 @@
   }
   type ButtonPropsWeControl = "aria-controls" | "aria-expanded" | "aria-haspopup" | "aria-labelledby" | "disabled"
 
-  export type ListboxButtonProps<TTag extends ElementType = typeof DEFAULT_BUTTON_TAG> = Props<
+  export type ListboxButtonProps<TTag extends ElementType = undefined> = Props<
     TTag,
+    SvelteHTMLElements[typeof DEFAULT_BUTTON_TAG],
     ButtonRenderPropArg,
     ButtonPropsWeControl,
     {
@@ -41,24 +42,24 @@
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_BUTTON_TAG">
+<script lang="ts" generics="TTag extends ElementType = undefined">
   const data = useData("ListboxButton")
   const actions = useActions("ListboxButton")
 
   const internalId = useId()
   const providedId = useProvidedId()
   let {
-    ref = $bindable(),
-    id = (providedId || `headlessui-listbox-button-${internalId}`) as PropsOf<TTag>["id"],
+    element = $bindable(),
+    id = providedId || `headlessui-listbox-button-${internalId}`,
     disabled: ownDisabled = false,
     autofocus = false,
     ...theirProps
-  }: { as?: TTag } & ListboxButtonProps<TTag> = $props()
+  }: ListboxButtonProps<TTag> = $props()
   const { setReference } = useFloatingReference()
   const { getReferenceProps: getFloatingReferenceProps } = useFloatingReferenceProps()
   $effect(() => {
-    data.buttonElement = ref || null
-    setReference(ref)
+    data.buttonElement = element || null
+    setReference(element)
   })
 
   const disabled = $derived(data.disabled || ownDisabled)
@@ -182,4 +183,4 @@
   )
 </script>
 
-<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_BUTTON_TAG} name="ListboxButton" bind:ref />
+<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_BUTTON_TAG} name="ListboxButton" bind:element />

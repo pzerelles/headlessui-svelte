@@ -6,7 +6,7 @@
 </script>
 
 <Listbox value={undefined} onchange={(x) => console.log(x)}>
-  {#snippet children({ slot: { open } })}
+  {#snippet children({ open })}
     <ListboxButton>Trigger</ListboxButton>
     {#if open}
       <ListboxOptions>

@@ -2,16 +2,17 @@
   import Button, { type ButtonProps } from "$lib/button/Button.svelte"
   import { useClose } from "$lib/internal/close-provider.js"
   import type { ElementType } from "$lib/utils/types.js"
+  import type { Component } from "svelte"
 
-  let DEFAULT_BUTTON_TAG = "button" as const
-
-  export type CloseButtonProps<TTag extends ElementType = typeof DEFAULT_BUTTON_TAG> = ButtonProps<TTag>
+  export type CloseButtonProps<TTag extends ElementType = undefined> = ButtonProps<TTag>
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_BUTTON_TAG">
+<script lang="ts" generics="TTag extends ElementType = undefined">
   const closeContext = useClose()
   const close = $derived(closeContext?.close)
-  let { ...props }: { as?: TTag } & CloseButtonProps<TTag> = $props()
+  let { element = $bindable(), ...props }: ButtonProps<TTag> = $props()
+
+  const ButtonComponent = Button as Component<typeof props, any>
 </script>
 
-<Button onclick={close} {...props} />
+<ButtonComponent {...props} onclick={close} bind:element />
