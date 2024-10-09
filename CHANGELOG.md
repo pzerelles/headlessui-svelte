@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.32
+
+### Patch Changes
+
+- 9c27f77: fix: narrow TSlot type
+
 ## 2.1.2-next.31
 
 ### Patch Changes
