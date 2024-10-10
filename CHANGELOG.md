@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.35
+
+### Patch Changes
+
+- e41187d: feat: add "...OwnProps" types for components
+
 ## 2.1.2-next.34
 
 ### Patch Changes
