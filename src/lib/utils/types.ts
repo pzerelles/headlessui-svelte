@@ -7,10 +7,11 @@ import type { SvelteHTMLElements } from "svelte/elements"
 export type Expand<T> = T extends infer O ? { [K in keyof O]: O[K] } : never
 
 // Provide clean TypeScript props, which exposes some of our custom APIs.
-export type Props<TTag extends string, TSlot extends Record<string, any> = {}, Overrides = {}> = Omit<
-  SvelteHTMLElements[TTag],
-  "asChild" | "children" | "class" | keyof Overrides
-> &
+export type Props<
+  TTag extends string | Record<string, any>,
+  TSlot extends Record<string, any> = {},
+  Overrides = {},
+> = Omit<TTag extends string ? SvelteHTMLElements[TTag] : TTag, "asChild" | "children" | "class" | keyof Overrides> &
   (
     | {
         asChild: true
