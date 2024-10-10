@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.34
+
+### Patch Changes
+
+- 73d52dd: feat: add types for component slots
+
 ## 2.1.2-next.33
 
 ### Patch Changes
