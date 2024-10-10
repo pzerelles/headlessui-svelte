@@ -1,33 +1,30 @@
 <script lang="ts" module>
-  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { Props } from "$lib/utils/types.js"
   import type { Snippet } from "svelte"
 
-  const DEFAULT_SELECTED_OPTION_TAG = "svelte:fragment"
-  type SelectedOptionRenderPropArg = {}
+  const DEFAULT_SELECTED_OPTION_TAG = "span"
+  type SelectedOptionRenderPropArg = {
+    option: Snippet
+  }
   type SelectedOptionPropsWeControl = never
 
-  export type ListboxSelectedOptionProps<TTag extends ElementType = typeof DEFAULT_SELECTED_OPTION_TAG> = Props<
-    TTag,
+  export type ListboxSelectedOptionProps = Props<
+    typeof DEFAULT_SELECTED_OPTION_TAG,
     SelectedOptionRenderPropArg,
-    SelectedOptionPropsWeControl,
     {
+      element?: HTMLElement
       options: Snippet
       placeholder?: Snippet
     }
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_SELECTED_OPTION_TAG">
+<script lang="ts">
   import { useData, ValueMode } from "./Listbox.svelte"
   import { setContext } from "svelte"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 
-  let {
-    ref = $bindable(),
-    options,
-    placeholder,
-    ...theirProps
-  }: { as?: TTag } & ListboxSelectedOptionProps<TTag> = $props()
+  let { element = $bindable(), options, placeholder, ...theirProps }: ListboxSelectedOptionProps = $props()
 
   const data = useData("ListboxSelectedOption")
 
@@ -40,7 +37,7 @@
   setContext("SelectedOptionContext", true)
 </script>
 
-{#snippet children()}
+{#snippet option()}
   {#if placeholder && shouldShowPlaceholder}
     {@render placeholder()}
   {:else}
@@ -49,8 +46,9 @@
 {/snippet}
 
 <ElementOrComponent
-  theirProps={{ ...theirProps, children }}
+  theirProps={{ ...theirProps, ...(theirProps.asChild ? {} : { children: option }) }}
+  slot={{ option }}
   defaultTag={DEFAULT_SELECTED_OPTION_TAG}
   name="ListboxSelectedOption"
-  bind:ref
-></ElementOrComponent>
+  bind:element
+/>

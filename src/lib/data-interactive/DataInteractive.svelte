@@ -1,8 +1,7 @@
 <script lang="ts" module>
-  import type { Props, ElementType } from "$lib/utils/types.js"
+  import type { PropsAsChild } from "$lib/utils/types.js"
   import { useFocusRing } from "$lib/hooks/use-focus-ring.svelte.js"
   import { useActivePress } from "$lib/hooks/use-active-press.svelte.js"
-  import type { Snippet } from "svelte"
   import { useHover } from "$lib/hooks/use-hover.svelte.js"
   import { mergeProps } from "$lib/utils/render.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
@@ -14,18 +13,12 @@
     focus: boolean
     active: boolean
   }
-  type DataInteractivePropsWeControl = never
 
-  export type DataInteractiveProps<TTag extends ElementType = typeof DEFAULT_DATA_INTERACTIVE_TAG> = Props<
-    TTag,
-    DataInteractiveRenderPropArg,
-    DataInteractivePropsWeControl,
-    {}
-  >
+  export type DataInteractiveProps = PropsAsChild<DataInteractiveRenderPropArg>
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_DATA_INTERACTIVE_TAG">
-  let { ref = $bindable(), ...theirProps }: { as?: TTag } & DataInteractiveProps<TTag> = $props()
+<script lang="ts">
+  let { ...theirProps }: DataInteractiveProps = $props()
 
   // Ideally we can use a `disabled` prop, but that would depend on the props of the child element
   // and we don't have access to that in this component.
@@ -57,11 +50,4 @@
   const ourProps = $derived(mergeProps(focusProps, hoverProps, pressProps))
 </script>
 
-<ElementOrComponent
-  {ourProps}
-  {theirProps}
-  {slot}
-  defaultTag={DEFAULT_DATA_INTERACTIVE_TAG}
-  name="DataInteractive"
-  bind:ref
-/>
+<ElementOrComponent {ourProps} {theirProps} {slot} name="DataInteractive" />

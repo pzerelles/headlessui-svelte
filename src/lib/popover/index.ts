@@ -3,7 +3,6 @@ export { default as PopoverBackdrop, type PopoverBackdropProps } from "./Popover
 export {
   default as PopoverButton,
   type PopoverButtonProps,
-  type PopoverButtonComponentProps,
   type PopoverButtonSlot,
   type PopoverButtonPropsWeControl,
 } from "./PopoverButton.svelte"

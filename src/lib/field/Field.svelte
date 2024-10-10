@@ -1,22 +1,21 @@
 <script lang="ts" module>
-  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { Props } from "$lib/utils/types.js"
 
   let DEFAULT_FIELD_TAG = "div" as const
 
   type FieldRenderPropArg = {}
-  type FieldPropsWeControl = never
 
-  export type FieldProps<TTag extends ElementType = typeof DEFAULT_FIELD_TAG> = Props<
-    TTag,
+  export type FieldProps = Props<
+    typeof DEFAULT_FIELD_TAG,
     FieldRenderPropArg,
-    FieldPropsWeControl,
     {
+      element?: HTMLElement
       disabled?: boolean
     }
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_FIELD_TAG">
+<script lang="ts">
   import { provideDisabled } from "../hooks/use-disabled.js"
   import { createIdContext } from "../utils/id.js"
   import { nanoid } from "nanoid"
@@ -25,12 +24,7 @@
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
   import FormFieldsProvider from "$lib/internal/FormFieldsProvider.svelte"
 
-  let {
-    ref = $bindable(),
-    disabled: ownDisabled = false,
-    children,
-    ...theirProps
-  }: { as?: TTag } & FieldProps<TTag> = $props()
+  let { element = $bindable(), disabled: ownDisabled = false, children, ...theirProps }: FieldProps = $props()
 
   const inputId = `headlessui-control-${nanoid(8)}`
   createIdContext(inputId)
@@ -49,9 +43,9 @@
   })
 </script>
 
-{#snippet wrapper(args: Parameters<Exclude<typeof children, undefined>>[0])}
+{#snippet wrapper(args: { props: Record<string, any> })}
   <FormFieldsProvider>
-    {#if children}{@render children(args)}{/if}
+    {@render children?.(args)}
   </FormFieldsProvider>
 {/snippet}
 
@@ -61,5 +55,5 @@
   {slot}
   defaultTag={DEFAULT_FIELD_TAG}
   name="Field"
-  bind:ref
+  bind:element
 />

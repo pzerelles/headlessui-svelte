@@ -1,6 +1,6 @@
 <script lang="ts" module>
-  import { tick, type Snippet } from "svelte"
-  import type { Props, ElementType } from "$lib/utils/types.js"
+  import { tick } from "svelte"
+  import type { Props } from "$lib/utils/types.js"
 
   const DEFAULT_BUTTON_TAG = "button" as const
   type ButtonRenderPropArg = {
@@ -13,11 +13,11 @@
   }
   type ButtonPropsWeControl = "aria-controls" | "aria-expanded" | "aria-haspopup"
 
-  export type MenuButtonProps<TTag extends ElementType = typeof DEFAULT_BUTTON_TAG> = Props<
-    TTag,
+  export type MenuButtonProps = Props<
+    typeof DEFAULT_BUTTON_TAG,
     ButtonRenderPropArg,
-    ButtonPropsWeControl,
     {
+      element?: HTMLElement
       id?: string
       disabled?: boolean
       autofocus?: boolean
@@ -26,7 +26,7 @@
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_BUTTON_TAG">
+<script lang="ts">
   import { useId } from "$lib/hooks/use-id.js"
   import { Focus } from "$lib/utils/calculate-active-index.js"
   import { useFocusRing } from "$lib/hooks/use-focus-ring.svelte.js"
@@ -41,19 +41,19 @@
 
   const internalId = useId()
   let {
-    ref = $bindable(),
+    element = $bindable(),
     id = `headlessui-menu-button-${internalId}`,
     disabled = false,
     autofocus = false,
     ...theirProps
-  }: { as?: TTag } & MenuButtonProps<TTag> = $props()
+  }: MenuButtonProps = $props()
   const _state = useMenuContext("MenuButton")
   const floatingReference = useFloatingReference()
   const { setReference } = $derived(floatingReference)
   const { getReferenceProps: getFloatingReferenceProps } = useFloatingReferenceProps()
   $effect(() => {
-    untrack(() => _state.setButtonElement(ref ? (ref as HTMLButtonElement) : null))
-    setReference(ref)
+    untrack(() => _state.setButtonElement(element ? (element as HTMLButtonElement) : null))
+    setReference(element)
   })
 
   const handleKeyDown = async (event: KeyboardEvent) => {
@@ -137,7 +137,7 @@
 
   const buttonType = useResolveButtonType({
     get props() {
-      return { type: theirProps.type, as: theirProps.as }
+      return { type: theirProps.type, as: DEFAULT_BUTTON_TAG }
     },
     get ref() {
       return { current: _state.buttonElement }
@@ -166,4 +166,4 @@
   )
 </script>
 
-<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_BUTTON_TAG} name="MenuButton" bind:ref />
+<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_BUTTON_TAG} name="MenuButton" bind:element />

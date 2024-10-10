@@ -1,25 +1,26 @@
 <script lang="ts" module>
-  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { Props } from "$lib/utils/types.js"
   import { setContext } from "svelte"
 
   const DEFAULT_GROUP_TAG = "div" as const
   type GroupRenderPropArg = {}
-  type GroupPropsWeControl = never
 
-  export type PopoverGroupProps<TTag extends ElementType = typeof DEFAULT_GROUP_TAG> = Props<
-    TTag,
+  export type PopoverGroupProps = Props<
+    typeof DEFAULT_GROUP_TAG,
     GroupRenderPropArg,
-    GroupPropsWeControl
+    {
+      element?: HTMLElement
+    }
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_GROUP_TAG">
+<script lang="ts">
   import type { PopoverGroupContext, PopoverRegisterBag } from "./context.svelte"
   import MainTreeProvider from "$lib/internal/MainTreeProvider.svelte"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
   import { getOwnerDocument } from "$lib/utils/owner.js"
 
-  let { ref = $bindable(), ...theirProps }: { as?: TTag } & PopoverGroupProps<TTag> = $props()
+  let { element = $bindable(), ...theirProps }: PopoverGroupProps = $props()
 
   const popovers = $state<PopoverRegisterBag[]>([])
 
@@ -34,17 +35,17 @@
   }
 
   const isFocusWithinPopoverGroup = () => {
-    const ownerDocument = getOwnerDocument(ref)
+    const ownerDocument = getOwnerDocument(element)
     if (!ownerDocument) return false
-    let element = ownerDocument.activeElement
+    const el = ownerDocument.activeElement
 
-    if (ref?.contains(element)) return true
+    if (element?.contains(element)) return true
 
     // Check if the focus is in one of the button or panel elements. This is important in case you are rendering inside a Portal.
     return popovers.some((bag) => {
       return (
-        ownerDocument!.getElementById(bag.buttonId!)?.contains(element) ||
-        ownerDocument!.getElementById(bag.panelId!)?.contains(element)
+        ownerDocument!.getElementById(bag.buttonId!)?.contains(el) ||
+        ownerDocument!.getElementById(bag.panelId!)?.contains(el)
       )
     })
   }
@@ -66,5 +67,5 @@
 </script>
 
 <MainTreeProvider>
-  <ElementOrComponent {theirProps} slots={slot} defaultTag={DEFAULT_GROUP_TAG} name="PopoverGroup" bind:ref />
+  <ElementOrComponent {theirProps} slots={slot} defaultTag={DEFAULT_GROUP_TAG} name="PopoverGroup" bind:element />
 </MainTreeProvider>

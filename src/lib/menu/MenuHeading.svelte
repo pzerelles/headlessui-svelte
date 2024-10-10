@@ -1,32 +1,33 @@
 <script lang="ts" module>
-  import { onMount, type Snippet } from "svelte"
-  import type { ElementType, Props } from "$lib/utils/types.js"
+  import { onMount } from "svelte"
+  import type { SvelteHTMLElements } from "svelte/elements"
+  import type { Props } from "$lib/utils/types.js"
 
   const DEFAULT_HEADING_TAG = "header" as const
   type HeadingRenderPropArg = {}
   type HeadingPropsWeControl = "role"
 
-  export type MenuHeadingProps<TTag extends ElementType = typeof DEFAULT_HEADING_TAG> = Props<
-    TTag,
+  export type MenuHeadingProps = Props<
+    typeof DEFAULT_HEADING_TAG,
     HeadingRenderPropArg,
-    HeadingPropsWeControl,
     {
+      element?: HTMLElement
       id?: string
     }
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_HEADING_TAG">
+<script lang="ts">
   import { useId } from "$lib/hooks/use-id.js"
   import { useLabelContext } from "$lib/label/context.svelte.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 
   const internalId = useId()
   let {
-    ref = $bindable(),
+    element = $bindable(),
     id = `headlessui-menu-heading-${internalId}`,
     ...theirProps
-  }: { as?: TTag } & MenuHeadingProps<TTag> = $props()
+  }: MenuHeadingProps = $props()
 
   const context = useLabelContext()
   onMount(() => context.register(id))
@@ -34,4 +35,4 @@
   const ourProps = $derived({ id, role: "presentation", ...context.props })
 </script>
 
-<ElementOrComponent {ourProps} {theirProps} defaultTag={DEFAULT_HEADING_TAG} name="MenuItem" bind:ref />
+<ElementOrComponent {ourProps} {theirProps} defaultTag={DEFAULT_HEADING_TAG} name="MenuItem" bind:element />

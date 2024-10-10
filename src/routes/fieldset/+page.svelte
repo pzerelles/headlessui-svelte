@@ -69,7 +69,7 @@
           <Listbox value={selected} onchange={setSelected} name="person">
             <ListboxButton
               class={clsx(
-                "relative block w-full rounded-lg bg-white/5 py-1.5 pl-3 pr-8 text-left text-sm/6 text-white",
+                "relative mt-3 block w-full rounded-lg bg-white/5 py-1.5 pl-3 pr-8 text-left text-sm/6 text-white",
                 "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
               )}
             >

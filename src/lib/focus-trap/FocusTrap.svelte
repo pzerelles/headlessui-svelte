@@ -1,6 +1,6 @@
 <script lang="ts" module>
   import { getOwnerDocument } from "$lib/utils/owner.js"
-  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { Props } from "$lib/utils/types.js"
   import { history } from "$lib/utils/active-element-history.js"
   import { useWatch } from "$lib/hooks/use-watch.svelte.js"
   import { microTask } from "$lib/utils/microTask.js"
@@ -35,18 +35,18 @@
     return all
   }
 
-  let DEFAULT_FOCUS_TRAP_TAG = "div" as const
+  const DEFAULT_FOCUS_TRAP_TAG = "div" as const
 
   export * from "./FocusTrapFeatures.js"
 
   type FocusTrapRenderPropArg = {}
   type FocusTrapPropsWeControl = never
 
-  export type FocusTrapProps<TTag extends ElementType = typeof DEFAULT_FOCUS_TRAP_TAG> = Props<
-    TTag,
+  export type FocusTrapProps = Props<
+    typeof DEFAULT_FOCUS_TRAP_TAG,
     FocusTrapRenderPropArg,
-    FocusTrapPropsWeControl,
     {
+      element?: HTMLElement
       initialFocus?: HTMLElement
       // A fallback element to focus, but this element will be skipped when tabbing around. This is
       // only done for focusing a fallback parent container (e.g.: A `Dialog`, but you want to tab
@@ -293,10 +293,10 @@
   }
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_FOCUS_TRAP_TAG">
+<script lang="ts">
   let container = $state<HTMLElement | null>(null)
   let {
-    ref = $bindable(),
+    element = $bindable(),
     initialFocus,
     initialFocusFallback,
     containers,
@@ -305,13 +305,13 @@
       FocusTrapFeatures.FocusLock |
       FocusTrapFeatures.RestoreFocus,
     ...theirProps
-  }: { as?: TTag } & FocusTrapProps<TTag> = $props()
+  }: FocusTrapProps = $props()
 
   /*if (!useServerHandoffComplete()) {
     features = FocusTrapFeatures.None
   }*/
 
-  const ownerDocument = $derived(getOwnerDocument(ref))
+  const ownerDocument = $derived(getOwnerDocument(element))
 
   useRestoreFocus({
     get features() {
@@ -441,21 +441,17 @@
 </script>
 
 {#if tabLockEnabled}
-  <Hidden
-    as="button"
-    type="button"
-    data-headlessui-focus-guard
-    onfocus={handleFocus}
-    features={HiddenFeatures.Focusable}
-  />
+  <Hidden asChild features={HiddenFeatures.Focusable}>
+    {#snippet children({ props })}
+      <button {...props} type="button" data-headlessui-focus-guard onfocus={handleFocus}>&zwnj;</button>
+    {/snippet}
+  </Hidden>
 {/if}
-<ElementOrComponent {ourProps} {theirProps} defaultTag={DEFAULT_FOCUS_TRAP_TAG} name="FocusTrap" bind:ref />
+<ElementOrComponent {ourProps} {theirProps} defaultTag={DEFAULT_FOCUS_TRAP_TAG} name="FocusTrap" bind:element />
 {#if tabLockEnabled}
-  <Hidden
-    as="button"
-    type="button"
-    data-headlessui-focus-guard
-    onfocus={handleFocus}
-    features={HiddenFeatures.Focusable}
-  />
+  <Hidden asChild features={HiddenFeatures.Focusable}>
+    {#snippet children({ props })}
+      <button {...props} type="button" data-headlessui-focus-guard onfocus={handleFocus}>&zwnj;</button>
+    {/snippet}
+  </Hidden>
 {/if}

@@ -1,15 +1,21 @@
 <script lang="ts" module>
-  import type { ElementType, Props, PropsOf } from "$lib/utils/types.js"
+  import type { Props } from "$lib/utils/types.js"
 
-  let DEFAULT_LABEL_TAG = "label" as const
+  const DEFAULT_LABEL_TAG = "label" as const
 
-  export type LabelProps<TTag extends ElementType = typeof DEFAULT_LABEL_TAG> = Props<TTag> & {
-    passive?: boolean
-    htmlFor?: string
-  }
+  export type LabelProps = Props<
+    typeof DEFAULT_LABEL_TAG,
+    {},
+    {
+      element?: HTMLElement
+      id?: string
+      passive?: boolean
+      htmlFor?: string
+    }
+  >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_LABEL_TAG">
+<script lang="ts">
   import { onMount } from "svelte"
   import { useProvidedId, htmlid } from "../utils/id.js"
   import { useDisabled } from "../hooks/use-disabled.js"
@@ -23,12 +29,12 @@
   const providedDisabled = useDisabled()
 
   let {
-    ref = $bindable(),
-    id = `headlessui-label-${internalId}` as PropsOf<TTag>["id"],
+    element = $bindable(),
+    id = `headlessui-label-${internalId}`,
     htmlFor = providedHtmlFor,
     passive = false,
     ...theirOriginalProps
-  }: { as?: TTag } & LabelProps<TTag> = $props()
+  }: LabelProps = $props()
 
   onMount(() => {
     context.register(id)
@@ -103,5 +109,5 @@
   {theirProps}
   defaultTag={htmlFor ? DEFAULT_LABEL_TAG : "div"}
   name={context.name || "Label"}
-  bind:ref
+  bind:element
 />

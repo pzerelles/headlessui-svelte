@@ -16,7 +16,10 @@
     autofocus?: boolean
     "aria-label"?: string
     children: Snippet
-  } & Omit<Headless.ListboxProps<"svelte:fragment", T>, "multiple"> = $props()
+  } & Omit<
+    Headless.ListboxProps<T>,
+    "multiple" | "class" | "placeholder" | "autofocus" | "aria-label" | "children"
+  > = $props()
 </script>
 
 {#snippet _placeholder()}
@@ -45,7 +48,6 @@
     ])}
   >
     <Headless.ListboxSelectedOption
-      as="span"
       {options}
       placeholder={placeholder ? _placeholder : undefined}
       class={clsx([

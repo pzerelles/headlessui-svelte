@@ -1,5 +1,5 @@
 <script lang="ts" module>
-  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { PropsAsChild } from "$lib/utils/types.js"
 
   let DEFAULT_MENU_TAG = "svelte:fragment"
   type MenuRenderPropArg = {
@@ -8,17 +8,15 @@
   }
   type MenuPropsWeControl = never
 
-  export type MenuProps<TTag extends ElementType = typeof DEFAULT_MENU_TAG> = Props<
-    TTag,
+  export type MenuProps = PropsAsChild<
     MenuRenderPropArg,
-    MenuPropsWeControl,
     {
       __demoMode?: boolean
     }
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_MENU_TAG">
+<script lang="ts">
   import { ActivationTrigger, createMenuContext, MenuStates, type StateDefinition } from "./context.svelte.js"
   import { useOutsideClick } from "$lib/hooks/use-outside-click.svelte.js"
   import { useFloatingProvider } from "$lib/internal/floating-provider.svelte.js"
@@ -27,7 +25,7 @@
   import { FocusableMode, isFocusableElement } from "$lib/utils/focus-management.js"
   import { match } from "$lib/utils/match.js"
 
-  let { ref = $bindable(), __demoMode = false, ...theirProps }: { as?: TTag } & MenuProps<TTag> = $props()
+  let { __demoMode = false, ...theirProps }: MenuProps = $props()
 
   const context = createMenuContext({
     __demoMode,
@@ -80,4 +78,4 @@
   })
 </script>
 
-<ElementOrComponent {theirProps} {slot} defaultTag={DEFAULT_MENU_TAG} name="Menu" bind:ref />
+<ElementOrComponent {theirProps} {slot} name="Menu" />

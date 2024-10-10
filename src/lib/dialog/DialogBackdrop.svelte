@@ -1,26 +1,26 @@
 <script lang="ts" module>
-  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { Props } from "$lib/utils/types.js"
+  import type { SvelteHTMLElements } from "svelte/elements"
 
   let DEFAULT_BACKDROP_TAG = "div" as const
   type BackdropRenderPropArg = {
     open: boolean
   }
 
-  export type DialogBackdropProps<TTag extends ElementType = typeof DEFAULT_BACKDROP_TAG> = Props<
-    TTag,
+  export type DialogBackdropProps = Props<
+    typeof DEFAULT_BACKDROP_TAG,
     BackdropRenderPropArg,
-    never,
-    { transition?: boolean }
+    { transition?: boolean; element?: HTMLElement }
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_BACKDROP_TAG">
+<script lang="ts">
   import { DialogStates, useDialogContext } from "./context.svelte.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
   import { mergeProps } from "$lib/utils/render.js"
   import TransitionChild from "$lib/transition/TransitionChild.svelte"
 
-  let { ref = $bindable(), transition = false, ...theirProps }: { as?: TTag } & DialogBackdropProps<TTag> = $props()
+  let { element = $bindable(), transition = false, ...theirProps }: DialogBackdropProps = $props()
   const _state = useDialogContext("Dialog.Panel")
   const { dialogState, unmount } = $derived(_state)
 
@@ -32,7 +32,7 @@
 </script>
 
 {#if transition}
-  <TransitionChild {unmount} {ref}>
+  <TransitionChild asChild {unmount} {element}>
     {#snippet children({ props, ...slot })}
       <ElementOrComponent
         ourProps={{ ...ourProps, ...props }}
@@ -40,7 +40,7 @@
         slots={slot}
         defaultTag={DEFAULT_BACKDROP_TAG}
         name="DialogBackdrop"
-        bind:ref
+        bind:element
       />
     {/snippet}
   </TransitionChild>
@@ -51,6 +51,6 @@
     slots={slot}
     defaultTag={DEFAULT_BACKDROP_TAG}
     name="DialogBackdrop"
-    bind:ref
+    bind:element
   />
 {/if}

@@ -1,22 +1,16 @@
 <script lang="ts" module>
   import { State, useOpenClosed } from "$lib/internal/open-closed.js"
-  import type { ElementType } from "$lib/utils/types.js"
-  import { setContext, untrack, type Component } from "svelte"
-  import {
-    type TransitionChildProps,
-    DEFAULT_TRANSITION_CHILD_TAG,
-    TransitionChildRenderFeatures,
-  } from "./TransitionChild.svelte"
+  import { setContext, untrack } from "svelte"
+  import { type TransitionChildProps, TransitionChildRenderFeatures } from "./TransitionChild.svelte"
 
-  export type TransitionRootProps<TTag extends ElementType = typeof DEFAULT_TRANSITION_CHILD_TAG> =
-    TransitionChildProps<TTag> & {
-      show?: boolean
-      appear?: boolean
-    }
+  export type TransitionRootProps = TransitionChildProps & {
+    show?: boolean
+    appear?: boolean
+  }
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_TRANSITION_CHILD_TAG">
-  import InternalTransitionChild, { shouldForwardRef } from "./InternalTransitionChild.svelte"
+<script lang="ts">
+  import InternalTransitionChild from "./InternalTransitionChild.svelte"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
   import {
     hasChildren,
@@ -26,9 +20,8 @@
     type TransitionContextValues,
   } from "./context.svelte.js"
 
-  let { ref = $bindable(), show, ..._props }: { as?: TTag } & TransitionRootProps<TTag> = $props()
+  let { element = $bindable(), show, ..._props }: TransitionRootProps = $props()
   const { appear = false, unmount = true, ...theirProps } = $derived(_props)
-  const requiresRef = shouldForwardRef(_props)
 
   const usesOpenClosedState = useOpenClosed()
 
@@ -69,7 +62,7 @@
   $effect(() => {
     if (show) {
       _state = TreeStates.Visible
-    } else if (!hasChildren(nestingBag) && untrack(() => ref)) {
+    } else if (!hasChildren(nestingBag) && untrack(() => element)) {
       _state = TreeStates.Hidden
     }
   })
@@ -98,12 +91,10 @@
       return initial
     },
   })
-
-  const InternalChild = InternalTransitionChild<any>
 </script>
 
 {#snippet children()}
-  <InternalChild bind:ref {...sharedProps} {...theirProps} {beforeEnter} {beforeLeave} />
+  <InternalTransitionChild bind:element {...sharedProps} {...theirProps} {beforeEnter} {beforeLeave} />
 {/snippet}
 
 <ElementOrComponent

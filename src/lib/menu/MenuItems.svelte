@@ -1,5 +1,5 @@
 <script lang="ts" module>
-  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { Props } from "$lib/utils/types.js"
   import { mergeProps, RenderFeatures, type PropsForFeatures } from "$lib/utils/render.js"
   import {
     useFloatingPanel,
@@ -16,11 +16,11 @@
 
   let ItemsRenderFeatures = RenderFeatures.RenderStrategy | RenderFeatures.Static
 
-  export type MenuItemsProps<TTag extends ElementType = typeof DEFAULT_ITEMS_TAG> = Props<
-    TTag,
+  export type MenuItemsProps = Props<
+    typeof DEFAULT_ITEMS_TAG,
     ItemsRenderPropArg,
-    ItemsPropsWeControl,
     {
+      element?: HTMLElement
       id?: string
       anchor?: AnchorProps
       portal?: boolean
@@ -30,7 +30,7 @@
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_ITEMS_TAG">
+<script lang="ts">
   import { useId } from "$lib/hooks/use-id.js"
   import { getOwnerDocument } from "$lib/utils/owner.js"
   import { State, useOpenClosed } from "$lib/internal/open-closed.js"
@@ -43,7 +43,7 @@
   import { Focus } from "$lib/utils/calculate-active-index.js"
   import { focusFrom, Focus as FocusManagementFocus, restoreFocusIfNecessary } from "$lib/utils/focus-management.js"
   import { useElementSize } from "$lib/hooks/use-element-size.svelte.js"
-  import { tick, untrack, type Snippet } from "svelte"
+  import { tick, untrack } from "svelte"
   import Portal from "$lib/portal/Portal.svelte"
   import { MenuStates, useMenuContext } from "./context.svelte.js"
   import { useTreeWalker } from "$lib/hooks/use-tree-walker.svelte.js"
@@ -51,15 +51,14 @@
 
   const internalId = useId()
   let {
-    as = DEFAULT_ITEMS_TAG as TTag,
-    ref = $bindable(),
+    element = $bindable(),
     id = `headlessui-menu-items-${internalId}`,
     anchor: rawAnchor,
     portal = false,
     modal = true,
     transition = false,
     ...theirProps
-  }: { as?: TTag } & MenuItemsProps<TTag> = $props()
+  }: MenuItemsProps = $props()
   const resolvedAnchor = useResolvedAnchor({
     get anchor() {
       return rawAnchor
@@ -76,8 +75,8 @@
   const getFloatingPanelProps = useFloatingPanelProps()
 
   $effect(() => {
-    untrack(() => _state.setItemsElement(ref ?? null))
-    if (anchor) setFloating(ref ?? null)
+    untrack(() => _state.setItemsElement(element ?? null))
+    if (anchor) setFloating(element ?? null)
   })
   const ownerDocument = $derived(getOwnerDocument(_state.itemsElement))
 
@@ -99,7 +98,7 @@
       return transition
     },
     get element() {
-      return ref
+      return element
     },
     get show() {
       return show
@@ -315,6 +314,6 @@
     features={ItemsRenderFeatures}
     visible={panelEnabled}
     name="MenuItems"
-    bind:ref
+    bind:element
   />
 </Portal>

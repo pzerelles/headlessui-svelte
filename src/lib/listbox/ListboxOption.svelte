@@ -1,5 +1,5 @@
 <script lang="ts" module>
-  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { Props } from "$lib/utils/types.js"
 
   const DEFAULT_OPTION_TAG = "div" as const
   type OptionRenderPropArg = {
@@ -13,11 +13,11 @@
   }
   type OptionPropsWeControl = "aria-disabled" | "aria-selected" | "role" | "tabIndex"
 
-  export type ListboxOptionProps<TTag extends ElementType = typeof DEFAULT_OPTION_TAG, TType = string> = Props<
-    TTag,
+  export type ListboxOptionProps<TType = string> = Props<
+    typeof DEFAULT_OPTION_TAG,
     OptionRenderPropArg,
-    OptionPropsWeControl,
     {
+      element?: HTMLElement
       id?: string
       disabled?: boolean
       value: TType
@@ -25,7 +25,7 @@
   >
 </script>
 
-<script lang="ts" generics="TType, TTag extends ElementType = typeof DEFAULT_OPTION_TAG">
+<script lang="ts" generics="TType">
   import { useId } from "$lib/hooks/use-id.js"
   import {
     ActivationTrigger,
@@ -37,7 +37,7 @@
   } from "./Listbox.svelte"
   import { disposables } from "$lib/utils/disposables.js"
   import { Focus } from "$lib/utils/calculate-active-index.js"
-  import { getContext, onMount, type Snippet } from "svelte"
+  import { getContext, onMount } from "svelte"
   import { useTextValue } from "$lib/hooks/use-text-value.svelte.js"
   import { useTrackedPointer } from "$lib/hooks/use-tracked-pointer.js"
   import { stateFromSlot } from "$lib/utils/state.js"
@@ -45,12 +45,12 @@
 
   const internalId = useId()
   let {
-    ref = $bindable(),
+    element = $bindable(),
     id = `headlessui-listbox-option-${internalId}`,
     disabled = false,
     value,
     ...theirProps
-  }: { as?: TTag } & ListboxOptionProps<TTag, TType> = $props()
+  }: ListboxOptionProps<TType> = $props()
   const usedInSelectedOption = getContext<boolean>("SelectedOptionContext") === true
   const data = useData("ListboxOption")
   const actions = useActions("ListboxOption")
@@ -62,13 +62,13 @@
   const selected = $derived(data.isSelected(value))
   const getTextValue = useTextValue({
     get element() {
-      return ref as HTMLElement
+      return element as HTMLElement
     },
   })
   const bag: ListboxOptionDataRef<TType>["current"] = $derived({
     disabled,
     value,
-    domRef: { current: ref || null },
+    domRef: { current: element || null },
     get textValue() {
       return getTextValue()
     },
@@ -76,14 +76,14 @@
 
   $effect(() => {
     if (usedInSelectedOption) return
-    if (!ref) {
+    if (!element) {
       data.listElements.delete(id)
     } else {
-      data.listElements.set(id, ref)
+      data.listElements.set(id, element)
     }
 
     return () => {
-      if (ref) data.listElements.delete(id)
+      if (element) data.listElements.delete(id)
     }
   })
 
@@ -93,7 +93,7 @@
     if (!active) return
     if (data.activationTrigger === ActivationTrigger.Pointer) return
     return disposables().requestAnimationFrame(() => {
-      ;(ref as HTMLElement)?.scrollIntoView?.({ block: "nearest" })
+      ;(element as HTMLElement)?.scrollIntoView?.({ block: "nearest" })
     })
   })
 
@@ -177,5 +177,5 @@
 </script>
 
 {#if selected || !usedInSelectedOption}
-  <ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_OPTION_TAG} name="Listbox" bind:ref />
+  <ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_OPTION_TAG} name="Listbox" bind:element />
 {/if}

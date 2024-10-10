@@ -10,12 +10,15 @@
 
   let disabled = $state(true)
   let checked = $state(true)
+
+  let buttonElement = $state<HTMLButtonElement>()
 </script>
 
 <div class="flex h-screen w-screen items-center justify-center gap-4">
   <Button
     class="rounded bg-sky-600 px-4 py-2 text-sm text-white data-[hover]:bg-sky-500 data-[hover]:data-[active]:bg-sky-700"
     onclick={() => (disabled = !disabled)}
+    bind:element={buttonElement}
   >
     Enable / Disable
   </Button>

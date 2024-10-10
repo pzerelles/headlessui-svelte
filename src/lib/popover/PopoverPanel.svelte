@@ -1,5 +1,5 @@
 <script lang="ts" module>
-  import type { ElementType, Props, PropsOf } from "$lib/utils/types.js"
+  import type { Props } from "$lib/utils/types.js"
   import { RenderFeatures } from "$lib/utils/render.js"
 
   const DEFAULT_PANEL_TAG = "div" as const
@@ -12,11 +12,12 @@
 
   type PanelPropsWeControl = "tabIndex"
 
-  export type PopoverPanelProps<TTag extends ElementType = typeof DEFAULT_PANEL_TAG> = Props<
-    TTag,
+  export type PopoverPanelProps = Props<
+    typeof DEFAULT_PANEL_TAG,
     PanelRenderPropArg,
-    PanelPropsWeControl,
     {
+      element?: HTMLElement
+      id?: string
       focus?: boolean
       anchor?: AnchorProps
       portal?: boolean
@@ -30,7 +31,7 @@
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_PANEL_TAG">
+<script lang="ts">
   import { useId } from "$lib/hooks/use-id.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
   import { mergeProps } from "$lib/utils/render.js"
@@ -63,15 +64,15 @@
 
   let internalId = useId()
   let {
-    ref = $bindable(),
-    id = `headlessui-popover-panel-${internalId}` as PropsOf<TTag>["id"],
+    element = $bindable(),
+    id = `headlessui-popover-panel-${internalId}`,
     focus = false,
     anchor: rawAnchor,
     portal: theirPortal = false,
     modal = false,
     transition = false,
     ...theirProps
-  }: { as?: TTag } & PopoverPanelProps<TTag> = $props()
+  }: PopoverPanelProps = $props()
 
   const context = usePopoverContext("PopoverPanel")
   const api = usePopoverAPIContext("PopoverPanel")
@@ -98,10 +99,10 @@
   const portal = $derived(!!anchor || theirPortal)
 
   $effect(() => {
-    if (anchor) setFloating(ref ?? null)
-    untrack(() => context.setPanel(ref))
+    if (anchor) setFloating(element ?? null)
+    untrack(() => context.setPanel(element))
   })
-  const ownerDocument = $derived(getOwnerDocument(ref))
+  const ownerDocument = $derived(getOwnerDocument(element))
 
   $effect(() => {
     id
@@ -119,7 +120,7 @@
       return transition
     },
     get element() {
-      return ref
+      return element
     },
     get show() {
       return usesOpenClosedState !== null
@@ -157,8 +158,8 @@
     switch (event.key) {
       case "Escape":
         if (context.popoverState !== PopoverStates.Open) return
-        if (!ref) return
-        if (ownerDocument?.activeElement && !ref.contains(ownerDocument.activeElement)) {
+        if (!element) return
+        if (ownerDocument?.activeElement && !element.contains(ownerDocument.activeElement)) {
           return
         }
         event.preventDefault()
@@ -183,12 +184,12 @@
     if (context.__demoMode) return
     if (!focus) return
     if (context.popoverState !== PopoverStates.Open) return
-    if (!ref) return
+    if (!element) return
 
     const activeElement = ownerDocument?.activeElement as HTMLElement
-    if (ref.contains(activeElement)) return // Already focused within Dialog
+    if (element.contains(activeElement)) return // Already focused within Dialog
 
-    focusIn(ref, Focus.First)
+    focusIn(element, Focus.First)
   }) //, [state.__demoMode, focus, internalPanelRef.current, state.popoverState])
 
   const slot = $derived({
@@ -211,8 +212,8 @@
           ? (event: FocusEvent) => {
               let el = event.relatedTarget as HTMLElement
               if (!el) return
-              if (!ref) return
-              if (ref.contains(el)) return
+              if (!element) return
+              if (element.contains(el)) return
 
               context.closePopover()
 
@@ -229,7 +230,7 @@
 
   const direction = useTabDirection()
   const handleBeforeFocus = () => {
-    let el = ref as HTMLElement
+    let el = element as HTMLElement
     if (!el) return
 
     function run() {
@@ -259,7 +260,7 @@
   }
 
   const handleAfterFocus = () => {
-    let el = ref as HTMLElement
+    let el = element as HTMLElement
     if (!el) return
 
     function run() {
@@ -277,7 +278,7 @@
 
           // Ignore sentinel buttons and items inside the panel
           for (const element of combined.slice()) {
-            if (element.dataset.headlessuiFocusGuard === "true" || ref?.contains(element)) {
+            if (element.dataset.headlessuiFocusGuard === "true" || element?.contains(element)) {
               let idx = combined.indexOf(element)
               if (idx !== -1) combined.splice(idx, 1)
             }
@@ -322,15 +323,17 @@
 
 <Portal enabled={portal ? theirProps.static || visible : false}>
   {#if visible && isPortalled}
-    <Hidden
-      id={beforePanelSentinelId}
-      bind:ref={context.beforePanelSentinel as HTMLElement}
-      features={HiddenFeatures.Focusable}
-      data-headlessui-focus-guard
-      as="button"
-      type="button"
-      onfocus={handleBeforeFocus}
-    />
+    <Hidden asChild id={beforePanelSentinelId} features={HiddenFeatures.Focusable}>
+      {#snippet children({ props })}
+        <button
+          {...props}
+          type="button"
+          data-headlessui-focus-guard
+          onfocus={handleBeforeFocus}
+          bind:this={context.beforePanelSentinel}>&zwnj;</button
+        >
+      {/snippet}
+    </Hidden>
   {/if}
   <ElementOrComponent
     {ourProps}
@@ -340,17 +343,19 @@
     features={PanelRenderFeatures}
     {visible}
     name="PopoverPanel"
-    bind:ref
+    bind:element
   />
   {#if visible && isPortalled}
-    <Hidden
-      id={afterPanelSentinelId}
-      bind:ref={context.afterPanelSentinel as HTMLElement}
-      features={HiddenFeatures.Focusable}
-      data-headlessui-focus-guard
-      as="button"
-      type="button"
-      onfocus={handleAfterFocus}
-    />
+    <Hidden asChild id={afterPanelSentinelId} features={HiddenFeatures.Focusable}>
+      {#snippet children({ props })}
+        <button
+          {...props}
+          type="button"
+          data-headlessui-focus-guard
+          onfocus={handleAfterFocus}
+          bind:this={context.afterPanelSentinel}>&zwnj;</button
+        >
+      {/snippet}
+    </Hidden>
   {/if}
 </Portal>

@@ -7,7 +7,7 @@
     children: theirChildren,
     class: className,
     ...theirProps
-  }: { class?: string; children: Snippet } & Omit<Headless.ListboxOptionProps<"div", T>, "class"> = $props()
+  }: { class?: string; children: Snippet } & Omit<Headless.ListboxOptionProps<T>, "class" | "children"> = $props()
 
   const sharedClasses = clsx(
     // Base
@@ -20,16 +20,16 @@
     "[&>[data-slot=avatar]]:-mx-0.5 [&>[data-slot=avatar]]:size-6 sm:[&>[data-slot=avatar]]:size-5"
   )
 
-  let ref = $state<HTMLElement>()
+  let element = $state<HTMLElement>()
 </script>
 
-<Headless.ListboxOption as="svelte:fragment" {...theirProps} {ref}>
+<Headless.ListboxOption asChild {...theirProps} {element}>
   {#snippet children({ selectedOption, props })}
     {#if selectedOption}
-      <div bind:this={ref} class={clsx(className, sharedClasses)} {...props}>{@render theirChildren()}</div>
+      <div bind:this={element} class={clsx(className, sharedClasses)} {...props}>{@render theirChildren()}</div>
     {:else}
       <div
-        bind:this={ref}
+        bind:this={element}
         class={clsx(
           // Basic layout
           "group/option grid cursor-default grid-cols-[theme(spacing.5),1fr] items-baseline gap-x-2 rounded-lg py-2.5 pl-2 pr-3.5 sm:grid-cols-[theme(spacing.4),1fr] sm:py-1.5 sm:pl-1.5 sm:pr-3",

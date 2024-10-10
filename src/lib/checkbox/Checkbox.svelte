@@ -1,7 +1,8 @@
 <script lang="ts" module>
-  import type { ElementType, Props, PropsOf } from "$lib/utils/types.js"
+  import type { Props } from "$lib/utils/types.js"
 
-  let DEFAULT_CHECKBOX_TAG = "span" as const
+  const DEFAULT_CHECKBOX_TAG = "span" as const
+
   type CheckboxRenderPropArg = {
     checked: boolean
     changing: boolean
@@ -12,6 +13,7 @@
     disabled: boolean
     indeterminate: boolean
   }
+
   type CheckboxPropsWeControl =
     | "aria-checked"
     | "aria-describedby"
@@ -20,15 +22,15 @@
     | "role"
     | "tabIndex"
 
-  export type CheckboxProps<TTag extends ElementType = typeof DEFAULT_CHECKBOX_TAG, TType = string> = Props<
-    TTag,
+  export type CheckboxProps<TType = string> = Props<
+    typeof DEFAULT_CHECKBOX_TAG,
     CheckboxRenderPropArg,
-    CheckboxPropsWeControl,
     {
+      element?: HTMLElement
+      id?: string
       value?: TType
       disabled?: boolean
       indeterminate?: boolean
-
       checked?: boolean
       defaultChecked?: boolean
       autofocus?: boolean
@@ -39,7 +41,7 @@
   >
 </script>
 
-<script lang="ts" generics="TType, TTag extends ElementType = typeof DEFAULT_CHECKBOX_TAG">
+<script lang="ts" generics="TType">
   import { tick } from "svelte"
   import { attemptSubmit } from "../utils/form.js"
   import { useProvidedId, htmlid } from "../utils/id.js"
@@ -59,8 +61,8 @@
   const providedDisabled = useDisabled()
 
   let {
-    ref = $bindable(),
-    id = (providedId || `headlessui-checkbox-${internalId}`) as PropsOf<TTag>["id"],
+    element = $bindable(),
+    id = providedId || `headlessui-checkbox-${internalId}`,
     disabled: theirDisabled = false,
     autofocus = false,
     checked: controlledChecked = $bindable(),
@@ -71,7 +73,7 @@
     form,
     indeterminate = false,
     ...theirProps
-  }: { as?: TTag } & CheckboxProps<TTag, TType> = $props()
+  }: CheckboxProps<TType> = $props()
 
   const defaultChecked = _defaultChecked
   const controllable = useControllable(
@@ -188,12 +190,13 @@
     onReset={reset}
   />
 {/if}
+
 <ElementOrComponent
   {ourProps}
   {theirProps}
   {slot}
   defaultTag={DEFAULT_CHECKBOX_TAG}
   name="Checkbox"
-  bind:ref
+  bind:element
   bind:value
 />

@@ -3,8 +3,9 @@
   import { getOwnerDocument } from "$lib/utils/owner.js"
   import { getContext, onMount, setContext } from "svelte"
   import { env } from "../utils/env.js"
-  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { Props } from "$lib/utils/types.js"
   import type { PortalGroupContext } from "./PortalGroup.svelte"
+  import type { SvelteHTMLElements } from "svelte/elements"
 
   function usePortalTarget(options: { element: HTMLElement | null }): { readonly target: HTMLElement | null } {
     const { element } = $derived(options)
@@ -96,24 +97,24 @@
   type PortalRenderPropArg = {}
   type PortalPropsWeControl = never
 
-  export type PortalProps<TTag extends ElementType = typeof DEFAULT_PORTAL_TAG> = Props<
-    TTag,
+  export type PortalProps = Props<
+    typeof DEFAULT_PORTAL_TAG,
     PortalRenderPropArg,
-    PortalPropsWeControl,
     {
+      element?: HTMLElement
       enabled?: boolean
     }
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_PORTAL_TAG">
+<script lang="ts">
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 
-  let { ref = $bindable(), ...theirProps }: { as?: TTag } & PortalProps<TTag> = $props()
+  let { element = $bindable(), ...theirProps }: PortalProps = $props()
 
   const portalTarget = usePortalTarget({
     get element() {
-      return ref ?? null
+      return element ?? null
     },
   })
   const { target } = $derived(portalTarget)
@@ -121,24 +122,24 @@
   //const ready = useServerHandoffComplete()
 
   $effect(() => {
-    if (!target || !ref) return
+    if (!target || !element) return
 
     // Element already exists in target, always calling target.appendChild(element) will cause a
     // brief unmount/remount.
-    if (ref.parentNode !== target) {
-      ref.setAttribute("data-headlessui-portal", "")
-      target.appendChild(ref)
+    if (element.parentNode !== target) {
+      element.setAttribute("data-headlessui-portal", "")
+      target.appendChild(element)
     }
   })
 
   onMount(() => {
-    if (parent) parent.register(ref!)
+    if (parent) parent.register(element!)
 
     return () => {
-      if (!target || !ref) return
+      if (!target || !element) return
 
-      if (ref instanceof Node && target.contains(ref)) {
-        target.removeChild(ref)
+      if (element instanceof Node && target.contains(element)) {
+        target.removeChild(element)
       }
 
       if (target.childNodes.length <= 0) {
@@ -149,5 +150,5 @@
 </script>
 
 {#if target}
-  <ElementOrComponent {theirProps} defaultTag={DEFAULT_PORTAL_TAG} name="InternalPortal" bind:ref />
+  <ElementOrComponent {theirProps} defaultTag={DEFAULT_PORTAL_TAG} name="InternalPortal" bind:element />
 {/if}

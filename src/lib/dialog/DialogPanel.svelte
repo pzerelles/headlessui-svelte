@@ -1,23 +1,24 @@
 <script lang="ts" module>
-  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { Props } from "$lib/utils/types.js"
+  import type { SvelteHTMLElements } from "svelte/elements"
 
   let DEFAULT_PANEL_TAG = "div" as const
   type PanelRenderPropArg = {
     open: boolean
   }
 
-  export type DialogPanelProps<TTag extends ElementType = typeof DEFAULT_PANEL_TAG> = Props<
-    TTag,
+  export type DialogPanelProps = Props<
+    typeof DEFAULT_PANEL_TAG,
     PanelRenderPropArg,
-    never,
     {
+      element?: HTMLElement
       id?: string
       transition?: boolean
     }
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_PANEL_TAG">
+<script lang="ts">
   import { useId } from "$lib/hooks/use-id.js"
   import { DialogStates, useDialogContext } from "./context.svelte.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
@@ -26,11 +27,11 @@
 
   let internalId = useId()
   let {
-    ref = $bindable(),
+    element = $bindable(),
     id = `headlessui-dialog-panel-${internalId}`,
     transition = false,
     ...theirProps
-  }: { as?: TTag } & DialogPanelProps<TTag> = $props()
+  }: DialogPanelProps = $props()
   const _state = useDialogContext("Dialog.Panel")
   const { dialogState, unmount } = $derived(_state)
 
@@ -51,7 +52,7 @@
 </script>
 
 {#if transition}
-  <TransitionChild {unmount} {ref}>
+  <TransitionChild asChild {unmount} {element}>
     {#snippet children({ props, ...slot })}
       <ElementOrComponent
         ourProps={{ ...ourProps, ...props }}
@@ -59,10 +60,17 @@
         slots={slot}
         defaultTag={DEFAULT_PANEL_TAG}
         name="DialogPanel"
-        bind:ref
+        bind:element
       />
     {/snippet}
   </TransitionChild>
 {:else}
-  <ElementOrComponent {ourProps} {theirProps} slots={slot} defaultTag={DEFAULT_PANEL_TAG} name="DialogPanel" bind:ref />
+  <ElementOrComponent
+    {ourProps}
+    {theirProps}
+    slots={slot}
+    defaultTag={DEFAULT_PANEL_TAG}
+    name="DialogPanel"
+    bind:element
+  />
 {/if}

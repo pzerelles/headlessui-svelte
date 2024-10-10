@@ -1,5 +1,5 @@
 <script lang="ts" module>
-  import type { ElementType, Props } from "$lib/utils/types.js"
+  import type { Props } from "$lib/utils/types.js"
 
   const DEFAULT_TAB_TAG = "button" as const
   type TabRenderPropArg = {
@@ -12,11 +12,11 @@
   }
   type TabPropsWeControl = "aria-controls" | "aria-selected" | "role" | "tabIndex"
 
-  export type TabProps<TTag extends ElementType = typeof DEFAULT_TAB_TAG> = Props<
-    TTag,
+  export type TabProps = Props<
+    typeof DEFAULT_TAB_TAG,
     TabRenderPropArg,
-    TabPropsWeControl,
     {
+      element?: HTMLElement
       id?: string
       autofocus?: boolean
       disabled?: boolean
@@ -24,7 +24,7 @@
   >
 </script>
 
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_TAB_TAG">
+<script lang="ts">
   import { useId } from "$lib/hooks/use-id.js"
   import { useStableCollectionIndex } from "$lib/utils/StableCollection.svelte"
   import { Focus, focusIn, FocusResult } from "$lib/utils/focus-management.js"
@@ -43,17 +43,17 @@
 
   const internalId = useId()
   let {
-    ref = $bindable(),
+    element = $bindable(),
     id = `headlessui-tabs-tab-${internalId}`,
     disabled = false,
     autofocus = false,
     ...theirProps
-  }: { as?: TTag } & TabProps<TTag> = $props()
+  }: TabProps = $props()
 
   const context = useTabs("Tab")
   const { orientation, activation, selectedIndex, tabs, panels, registerTab, change } = $derived(context)
 
-  const tabRef = $derived<MutableRefObject<HTMLElement | undefined>>({ current: ref })
+  const tabRef = $derived<MutableRefObject<HTMLElement | undefined>>({ current: element })
 
   onMount(() => registerTab(tabRef))
 
@@ -68,7 +68,7 @@
   const activateUsing = $derived((cb: () => FocusResult) => {
     let result = cb()
     if (result === FocusResult.Success && activation === "auto") {
-      let newTab = getOwnerDocument(ref)?.activeElement
+      let newTab = getOwnerDocument(element)?.activeElement
       let idx = context.tabs.findIndex((tab) => tab.current === newTab)
       if (idx !== -1) change(idx)
     }
@@ -127,7 +127,7 @@
     if (ready) return
     ready = true
 
-    ref?.focus({ preventScroll: true })
+    element?.focus({ preventScroll: true })
     change(myIndex)
 
     microTask(() => {
@@ -175,7 +175,7 @@
 
   const resolvedType = useResolveButtonType({
     get props() {
-      return { type: theirProps.type, as: theirProps.as }
+      return { type: theirProps.type ?? undefined, as: element ? element.tagName.toLowerCase() : DEFAULT_TAB_TAG }
     },
     get ref() {
       return tabRef
@@ -204,4 +204,4 @@
   )
 </script>
 
-<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_TAB_TAG} name="Tab" bind:ref />
+<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_TAB_TAG} name="Tab" bind:element />

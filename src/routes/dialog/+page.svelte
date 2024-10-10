@@ -37,7 +37,11 @@
               transition
               class="w-full max-w-md rounded-xl bg-white/5 p-6 backdrop-blur-2xl duration-500 ease-out data-[closed]:scale-95 data-[closed]:opacity-0"
             >
-              <DialogTitle as="h3" class="text-base/7 font-medium text-white">Payment successful</DialogTitle>
+              <DialogTitle asChild>
+                {#snippet children({ props })}
+                  <h3 {...props} class="text-base/7 font-medium text-white">Payment successful</h3>
+                {/snippet}
+              </DialogTitle>
               <p class="mt-2 text-sm/6 text-white/50">
                 Your payment has been successfully submitted. We’ve sent you an email with all of the details of your
                 order.
@@ -56,7 +60,6 @@
                   class="w-52 origin-top-right rounded-xl border border-white/5 bg-white/5 p-1 text-sm/6 text-white transition duration-100 ease-out [--anchor-gap:4px] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
                 >
                   <MenuItem
-                    as="button"
                     class="group flex w-full items-center gap-2 rounded-lg px-3 py-1.5 data-[focus]:bg-white/10"
                   >
                     <PencilIcon class="size-4 fill-white/30" />
@@ -64,7 +67,6 @@
                     <kbd class="ml-auto hidden font-sans text-xs text-white/50 group-data-[focus]:inline">⌘E</kbd>
                   </MenuItem>
                   <MenuItem
-                    as="button"
                     class="group flex w-full items-center gap-2 rounded-lg px-3 py-1.5 data-[focus]:bg-white/10"
                   >
                     <Square2StackIcon class="size-4 fill-white/30" />
@@ -73,7 +75,6 @@
                   </MenuItem>
                   <div class="my-1 h-px bg-white/5"></div>
                   <MenuItem
-                    as="button"
                     class="group flex w-full items-center gap-2 rounded-lg px-3 py-1.5 data-[focus]:bg-white/10"
                   >
                     <ArchiveBoxXMarkIcon class="size-4 fill-white/30" />
@@ -81,7 +82,6 @@
                     <kbd class="ml-auto hidden font-sans text-xs text-white/50 group-data-[focus]:inline">⌘A</kbd>
                   </MenuItem>
                   <MenuItem
-                    as="button"
                     class="group flex w-full items-center gap-2 rounded-lg px-3 py-1.5 data-[focus]:bg-white/10"
                   >
                     <TrashIcon class="size-4 fill-white/30" />

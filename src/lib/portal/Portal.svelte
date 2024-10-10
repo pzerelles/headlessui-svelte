@@ -1,10 +1,11 @@
-<script lang="ts" generics="TTag extends ElementType = typeof DEFAULT_PORTAL_TAG">
-  import type { ElementType } from "$lib/utils/types.js"
-  import InternalPortal, { DEFAULT_PORTAL_TAG, type PortalProps } from "./InternalPortal.svelte"
+<script lang="ts">
+  import InternalPortal, { type PortalProps } from "./InternalPortal.svelte"
 
-  let { ref = $bindable(), enabled = true, ...theirProps }: PortalProps<TTag> = $props()
+  let { element = $bindable(), enabled = true, ...theirProps }: PortalProps = $props()
 </script>
 
 {#if enabled}
-  <InternalPortal {...theirProps} bind:ref />
-{:else if theirProps.children}{@render theirProps.children()}{/if}
+  <InternalPortal {...theirProps} bind:element />
+{:else}
+  {@render theirProps.children?.({})}
+{/if}

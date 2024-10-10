@@ -4,14 +4,28 @@
 
   const DEFAULT_LEGEND_TAG = "div" as const
 
-  type LegendRenderPropArg = {}
-  type LegendPropsWeControl = never
-
-  export type LegendProps = Props<typeof DEFAULT_LEGEND_TAG, LegendRenderPropArg, LegendPropsWeControl, {}>
+  export type LegendProps = Props<
+    typeof DEFAULT_LEGEND_TAG,
+    {},
+    {
+      element?: HTMLElement
+      class?: string
+    }
+  >
 </script>
 
 <script lang="ts">
-  let { ...props }: LegendProps = $props()
+  let { asChild, children: theirChildren, ...props }: LegendProps = $props()
 </script>
 
-<Label as="div" {...props} />
+<Label asChild>
+  {#snippet children({ props: childProps })}
+    {#if asChild}
+      {@render theirChildren?.({ props: { ...props, ...childProps } })}
+    {:else}
+      <div {...props} {...childProps}>
+        {@render theirChildren?.({ props: {} })}
+      </div>
+    {/if}
+  {/snippet}
+</Label>

@@ -38,35 +38,23 @@
           anchor="bottom end"
           class="w-52 origin-top-right rounded-xl border border-white/5 bg-white/5 p-1 text-sm/6 text-white transition duration-100 ease-out [--anchor-gap:4px] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
         >
-          <MenuItem
-            as="button"
-            class="group flex w-full items-center gap-2 rounded-lg px-3 py-1.5 data-[focus]:bg-white/10"
-          >
+          <MenuItem class="group flex w-full items-center gap-2 rounded-lg px-3 py-1.5 data-[focus]:bg-white/10">
             <PencilIcon class="size-4 fill-white/30" />
             Edit
             <kbd class="ml-auto hidden font-sans text-xs text-white/50 group-data-[focus]:inline">⌘E</kbd>
           </MenuItem>
-          <MenuItem
-            as="button"
-            class="group flex w-full items-center gap-2 rounded-lg px-3 py-1.5 data-[focus]:bg-white/10"
-          >
+          <MenuItem class="group flex w-full items-center gap-2 rounded-lg px-3 py-1.5 data-[focus]:bg-white/10">
             <Square2StackIcon class="size-4 fill-white/30" />
             Duplicate
             <kbd class="ml-auto hidden font-sans text-xs text-white/50 group-data-[focus]:inline">⌘D</kbd>
           </MenuItem>
           <div class="my-1 h-px bg-white/5"></div>
-          <MenuItem
-            as="button"
-            class="group flex w-full items-center gap-2 rounded-lg px-3 py-1.5 data-[focus]:bg-white/10"
-          >
+          <MenuItem class="group flex w-full items-center gap-2 rounded-lg px-3 py-1.5 data-[focus]:bg-white/10">
             <ArchiveBoxXMarkIcon class="size-4 fill-white/30" />
             Archive
             <kbd class="ml-auto hidden font-sans text-xs text-white/50 group-data-[focus]:inline">⌘A</kbd>
           </MenuItem>
-          <MenuItem
-            as="button"
-            class="group flex w-full items-center gap-2 rounded-lg px-3 py-1.5 data-[focus]:bg-white/10"
-          >
+          <MenuItem class="group flex w-full items-center gap-2 rounded-lg px-3 py-1.5 data-[focus]:bg-white/10">
             <TrashIcon class="size-4 fill-white/30" />
             Delete
             <kbd class="ml-auto hidden font-sans text-xs text-white/50 group-data-[focus]:inline">⌘D</kbd>

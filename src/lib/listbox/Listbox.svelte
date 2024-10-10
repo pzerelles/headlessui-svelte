@@ -5,8 +5,8 @@
   import { calculateActiveIndex, Focus } from "$lib/utils/calculate-active-index.js"
   import { FocusableMode, isFocusableElement, sortByDomNode } from "$lib/utils/focus-management.js"
   import { match } from "$lib/utils/match.js"
-  import type { ElementType, EnsureArray, Props } from "$lib/utils/types.js"
-  import { setContext, type Snippet } from "svelte"
+  import type { EnsureArray, PropsAsChild } from "$lib/utils/types.js"
+  import { setContext } from "svelte"
   import { ActivationTrigger, ListboxStates, ValueMode } from "./context.svelte.js"
 
   let DEFAULT_LISTBOX_TAG = "svelte:fragment"
@@ -17,14 +17,8 @@
     value: T
   }
 
-  export type ListboxProps<
-    TTag extends ElementType = typeof DEFAULT_LISTBOX_TAG,
-    TType = string,
-    TActualType = TType extends (infer U)[] ? U : TType,
-  > = Props<
-    TTag,
+  export type ListboxProps<TType = string, TActualType = TType extends (infer U)[] ? U : TType> = PropsAsChild<
     ListboxRenderPropArg<TType>,
-    "value" | "defaultValue" | "onchange" | "by" | "disabled" | "horizontal" | "name" | "multiple",
     {
       value?: TType
       defaultValue?: TType
@@ -37,7 +31,6 @@
       name?: string
       multiple?: boolean
       closeOnSelect?: boolean
-
       __demoMode?: boolean
     }
   >
@@ -45,10 +38,7 @@
   export * from "./context.svelte.js"
 </script>
 
-<script
-  lang="ts"
-  generics="TTag extends ElementType = typeof DEFAULT_LISTBOX_TAG, TType = string, TActualType = TType extends (infer U)[] ? U : TType"
->
+<script lang="ts" generics="TType = string, TActualType = TType extends (infer U)[] ? U : TType">
   import { disposables } from "$lib/utils/disposables.js"
   import FormFields from "$lib/internal/FormFields.svelte"
   import { useFloatingProvider } from "$lib/internal/floating-provider.svelte.js"
@@ -304,7 +294,6 @@
   }
 
   let {
-    ref = $bindable(),
     value: controlledValue = $bindable(),
     defaultValue,
     form,
@@ -318,7 +307,7 @@
     closeOnSelect,
     __demoMode = false,
     ...theirProps
-  }: { as?: TTag } & ListboxProps<TTag, TType, TActualType> = $props()
+  }: ListboxProps<TType, TActualType> = $props()
 
   const providedDisabled = useDisabled()
   const disabled = $derived(providedDisabled.current || ownDisabled)
@@ -562,4 +551,4 @@
 {#if name && value}
   <FormFields {disabled} data={{ [name]: value }} {form} onReset={reset} />
 {/if}
-<ElementOrComponent {theirProps} slots={slot} defaultTag={DEFAULT_LISTBOX_TAG} name="Listbox" bind:ref />
+<ElementOrComponent {theirProps} slots={slot} name="Listbox" />
