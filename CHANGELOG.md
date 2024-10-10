@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.36
+
+### Patch Changes
+
+- 311ecd3: feat: allow Props type to use object instead of tag name
+
 ## 2.1.2-next.35
 
 ### Patch Changes
