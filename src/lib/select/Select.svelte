@@ -3,7 +3,7 @@
 
   let DEFAULT_SELECT_TAG = "select" as const
 
-  type SelectRenderPropArg = {
+  export type SelectRenderPropArg = {
     disabled: boolean
     hover: boolean
     focus: boolean

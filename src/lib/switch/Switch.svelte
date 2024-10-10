@@ -2,7 +2,7 @@
   import type { Props } from "$lib/utils/types.js"
 
   const DEFAULT_SWITCH_TAG = "button" as const
-  type SwitchRenderPropArg = {
+  export type SwitchRenderPropArg = {
     checked: boolean
     hover: boolean
     focus: boolean

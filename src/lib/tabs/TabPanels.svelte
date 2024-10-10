@@ -4,7 +4,7 @@
   import { useTabs } from "./context.svelte.js"
 
   let DEFAULT_PANELS_TAG = "div" as const
-  type PanelsRenderPropArg = {
+  export type PanelsRenderPropArg = {
     selectedIndex: number
   }
 

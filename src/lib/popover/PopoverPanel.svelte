@@ -3,7 +3,7 @@
   import { RenderFeatures } from "$lib/utils/render.js"
 
   const DEFAULT_PANEL_TAG = "div" as const
-  type PanelRenderPropArg = {
+  export type PanelRenderPropArg = {
     open: boolean
     close: (focusableElement?: HTMLElement) => void
   }

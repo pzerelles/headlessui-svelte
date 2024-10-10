@@ -3,11 +3,9 @@
 
   let DEFAULT_FIELD_TAG = "div" as const
 
-  type FieldRenderPropArg = {}
-
   export type FieldProps = Props<
     typeof DEFAULT_FIELD_TAG,
-    FieldRenderPropArg,
+    {},
     {
       element?: HTMLElement
       disabled?: boolean

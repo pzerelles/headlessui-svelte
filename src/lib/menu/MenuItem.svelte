@@ -3,7 +3,7 @@
   import { onMount } from "svelte"
 
   const DEFAULT_ITEM_TAG = "button" as const
-  type ItemRenderPropArg = {
+  export type ItemRenderPropArg = {
     /** @deprecated use `focus` instead */
     active: boolean
     focus: boolean

@@ -1,9 +1,8 @@
 <script lang="ts" module>
   import type { Props } from "$lib/utils/types.js"
-  import type { SvelteHTMLElements } from "svelte/elements"
 
   let DEFAULT_TITLE_TAG = "h2" as const
-  type TitleRenderPropArg = {
+  export type TitleRenderPropArg = {
     open: boolean
   }
 

@@ -2,12 +2,12 @@
   import type { Props } from "$lib/utils/types.js"
 
   const DEFAULT_SECTION_TAG = "div" as const
-  type SectionRenderPropArg = {}
+
   type SectionPropsWeControl = "role" | "aria-labelledby"
 
   export type MenuSectionProps = Props<
     typeof DEFAULT_SECTION_TAG,
-    SectionRenderPropArg,
+    {},
     {
       element?: HTMLElement
     }

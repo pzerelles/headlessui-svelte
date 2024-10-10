@@ -39,12 +39,11 @@
 
   export * from "./FocusTrapFeatures.js"
 
-  type FocusTrapRenderPropArg = {}
   type FocusTrapPropsWeControl = never
 
   export type FocusTrapProps = Props<
     typeof DEFAULT_FOCUS_TRAP_TAG,
-    FocusTrapRenderPropArg,
+    {},
     {
       element?: HTMLElement
       initialFocus?: HTMLElement

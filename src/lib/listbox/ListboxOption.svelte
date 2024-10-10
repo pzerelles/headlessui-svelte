@@ -2,7 +2,7 @@
   import type { Props } from "$lib/utils/types.js"
 
   const DEFAULT_OPTION_TAG = "div" as const
-  type OptionRenderPropArg = {
+  export type OptionRenderPropArg = {
     /** @deprecated use `focus` instead */
     active: boolean
     focus: boolean

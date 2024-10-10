@@ -1,1 +1,1 @@
-export { default as Textarea, type TextareaProps } from "./Textarea.svelte"
+export { default as Textarea, type TextareaProps, type TextareaRenderPropArg as TextareaSlot } from "./Textarea.svelte"

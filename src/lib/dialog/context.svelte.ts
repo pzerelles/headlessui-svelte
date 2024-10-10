@@ -20,7 +20,7 @@ export type DialogContext = StateDefinition & {
 export function useDialogContext(component: string) {
   const context = getContext<DialogContext>("DialogContext")
   if (!context) {
-    let err = new Error(`<${component} /> is missing a parent <Dialog /> component.`)
+    const err = new Error(`<${component} /> is missing a parent <Dialog /> component.`)
     if (Error.captureStackTrace) Error.captureStackTrace(err, useDialogContext)
     throw err
   }

@@ -8,7 +8,7 @@
 
   const DEFAULT_DATA_INTERACTIVE_TAG = "svelte:fragment" as const
 
-  type DataInteractiveRenderPropArg = {
+  export type DataInteractiveRenderPropArg = {
     hover: boolean
     focus: boolean
     active: boolean

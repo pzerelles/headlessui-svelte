@@ -9,7 +9,7 @@
   } from "$lib/internal/floating.svelte.js"
 
   const DEFAULT_ITEMS_TAG = "div" as const
-  type ItemsRenderPropArg = {
+  export type ItemsRenderPropArg = {
     open: boolean
   }
   type ItemsPropsWeControl = "aria-activedescendant" | "aria-labelledby" | "role" | "tabIndex"

@@ -4,7 +4,7 @@
 
   const DEFAULT_TEXTAREA_TAG = "textarea" as const
 
-  type TextareaRenderPropArg = {
+  export type TextareaRenderPropArg = {
     disabled: boolean
     hover: boolean
     focus: boolean

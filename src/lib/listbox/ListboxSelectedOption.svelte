@@ -3,7 +3,7 @@
   import type { Snippet } from "svelte"
 
   const DEFAULT_SELECTED_OPTION_TAG = "span"
-  type SelectedOptionRenderPropArg = {
+  export type SelectedOptionRenderPropArg = {
     option: Snippet
   }
   type SelectedOptionPropsWeControl = never

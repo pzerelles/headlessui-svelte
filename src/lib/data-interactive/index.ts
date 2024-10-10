@@ -1,1 +1,5 @@
-export { default as DataInteractive, type DataInteractiveProps } from "./DataInteractive.svelte"
+export {
+  default as DataInteractive,
+  type DataInteractiveProps,
+  type DataInteractiveRenderPropArg as DataInteractiveSlot,
+} from "./DataInteractive.svelte"

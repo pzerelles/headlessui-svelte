@@ -3,7 +3,7 @@
 
   const DEFAULT_BUTTON_TAG = "button" as const
 
-  type ButtonRenderPropArg = {
+  export type ButtonRenderPropArg = {
     disabled: boolean
     hover: boolean
     focus: boolean

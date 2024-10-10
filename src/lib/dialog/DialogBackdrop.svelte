@@ -1,9 +1,8 @@
 <script lang="ts" module>
   import type { Props } from "$lib/utils/types.js"
-  import type { SvelteHTMLElements } from "svelte/elements"
 
   let DEFAULT_BACKDROP_TAG = "div" as const
-  type BackdropRenderPropArg = {
+  export type BackdropRenderPropArg = {
     open: boolean
   }
 

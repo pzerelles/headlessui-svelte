@@ -5,7 +5,6 @@
   import { env } from "../utils/env.js"
   import type { Props } from "$lib/utils/types.js"
   import type { PortalGroupContext } from "./PortalGroup.svelte"
-  import type { SvelteHTMLElements } from "svelte/elements"
 
   function usePortalTarget(options: { element: HTMLElement | null }): { readonly target: HTMLElement | null } {
     const { element } = $derived(options)
@@ -94,7 +93,7 @@
   // ---
 
   export const DEFAULT_PORTAL_TAG = "div"
-  type PortalRenderPropArg = {}
+  export type PortalRenderPropArg = {}
   type PortalPropsWeControl = never
 
   export type PortalProps = Props<

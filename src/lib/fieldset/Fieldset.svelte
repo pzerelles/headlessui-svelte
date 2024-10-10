@@ -3,12 +3,11 @@
 
   const DEFAULT_FIELDSET_TAG = "fieldset" as const
 
-  type FieldsetRenderPropArg = {}
   type FieldsetPropsWeControl = "aria-labelledby" | "aria-disabled" | "role"
 
   export type FieldsetProps = Props<
     typeof DEFAULT_FIELDSET_TAG,
-    FieldsetRenderPropArg,
+    {},
     {
       element?: HTMLElement
       disabled?: boolean

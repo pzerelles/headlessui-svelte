@@ -3,7 +3,7 @@
   import type { Props } from "$lib/utils/types.js"
 
   const DEFAULT_BUTTON_TAG = "button" as const
-  type ButtonRenderPropArg = {
+  export type ButtonRenderPropArg = {
     open: boolean
     active: boolean
     hover: boolean

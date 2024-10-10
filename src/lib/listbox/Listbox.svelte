@@ -9,8 +9,7 @@
   import { setContext } from "svelte"
   import { ActivationTrigger, ListboxStates, ValueMode } from "./context.svelte.js"
 
-  let DEFAULT_LISTBOX_TAG = "svelte:fragment"
-  type ListboxRenderPropArg<T> = {
+  export type ListboxRenderPropArg<T> = {
     open: boolean
     disabled: boolean
     invalid: boolean

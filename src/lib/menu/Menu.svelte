@@ -2,7 +2,7 @@
   import type { PropsAsChild } from "$lib/utils/types.js"
 
   let DEFAULT_MENU_TAG = "svelte:fragment"
-  type MenuRenderPropArg = {
+  export type MenuRenderPropArg = {
     open: boolean
     close: () => void
   }

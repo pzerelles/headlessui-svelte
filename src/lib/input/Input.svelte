@@ -4,7 +4,7 @@
 
   const DEFAULT_INPUT_TAG = "input" as const
 
-  type InputRenderPropArg = {
+  export type InputRenderPropArg = {
     disabled: boolean
     hover: boolean
     focus: boolean

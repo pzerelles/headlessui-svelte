@@ -3,7 +3,7 @@
 
   const DEFAULT_CHECKBOX_TAG = "span" as const
 
-  type CheckboxRenderPropArg = {
+  export type CheckboxRenderPropArg = {
     checked: boolean
     changing: boolean
     focus: boolean

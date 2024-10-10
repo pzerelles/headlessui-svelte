@@ -10,7 +10,6 @@
   import { useResolveButtonType } from "$lib/hooks/use-resolve-button-type.svelte.js"
   import { useFloatingReference, useFloatingReferenceProps } from "$lib/internal/floating.svelte.js"
   import { stateFromSlot } from "$lib/utils/state.js"
-  import type { SvelteHTMLElements } from "svelte/elements"
   import { useLabelledBy } from "$lib/label/context.svelte.js"
   import { useDescribedBy } from "$lib/description/context.svelte.js"
   import { useHover } from "$lib/hooks/use-hover.svelte.js"
@@ -18,7 +17,7 @@
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 
   const DEFAULT_BUTTON_TAG = "button" as const
-  type ButtonRenderPropArg = {
+  export type ButtonRenderPropArg = {
     disabled: boolean
     invalid: boolean
     hover: boolean

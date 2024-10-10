@@ -7,11 +7,10 @@
     useResolvedAnchor,
     type AnchorPropsWithSelection,
   } from "$lib/internal/floating.svelte.js"
-  import type { SvelteHTMLElements } from "svelte/elements"
 
   const DEFAULT_OPTIONS_TAG = "div" as const
 
-  type OptionsRenderPropArg = {
+  export type OptionsRenderPropArg = {
     open: boolean
   }
   type OptionsPropsWeControl =

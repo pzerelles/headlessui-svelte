@@ -4,7 +4,7 @@
   import FocusSentinel from "$lib/internal/FocusSentinel.svelte"
 
   const DEFAULT_TABS_TAG = "div" as const
-  type TabsRenderPropArg = {
+  export type TabsRenderPropArg = {
     selectedIndex: number
   }
   type TabsPropsWeControl = never

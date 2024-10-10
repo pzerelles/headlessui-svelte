@@ -4,12 +4,12 @@
   import type { Props } from "$lib/utils/types.js"
 
   const DEFAULT_HEADING_TAG = "header" as const
-  type HeadingRenderPropArg = {}
+
   type HeadingPropsWeControl = "role"
 
   export type MenuHeadingProps = Props<
     typeof DEFAULT_HEADING_TAG,
-    HeadingRenderPropArg,
+    {},
     {
       element?: HTMLElement
       id?: string

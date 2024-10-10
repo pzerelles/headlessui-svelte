@@ -3,7 +3,7 @@
   import { RenderFeatures, type PropsForFeatures } from "$lib/utils/render.js"
 
   let DEFAULT_BACKDROP_TAG = "div" as const
-  type BackdropRenderPropArg = {
+  export type BackdropRenderPropArg = {
     open: boolean
   }
   type BackdropPropsWeControl = "aria-hidden"

@@ -2,7 +2,7 @@
   import type { Props } from "$lib/utils/types.js"
 
   export const DEFAULT_POPOVER_TAG = "div" as const
-  type PopoverRenderPropArg = {
+  export type PopoverRenderPropArg = {
     open: boolean
     close(focusableElement?: HTMLElement | MouseEvent<HTMLElement>): void
   }

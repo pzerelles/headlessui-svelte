@@ -2,12 +2,12 @@
   import type { Props } from "$lib/utils/types.js"
 
   const DEFAULT_SEPARATOR_TAG = "div" as const
-  type SeparatorRenderPropArg = {}
+
   type SeparatorPropsWeControl = "role"
 
   export type MenuSeparatorProps = Props<
     typeof DEFAULT_SEPARATOR_TAG,
-    SeparatorRenderPropArg,
+    {},
     {
       element?: HTMLElement
     }

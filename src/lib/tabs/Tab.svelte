@@ -2,7 +2,7 @@
   import type { Props } from "$lib/utils/types.js"
 
   const DEFAULT_TAB_TAG = "button" as const
-  type TabRenderPropArg = {
+  export type TabRenderPropArg = {
     hover: boolean
     focus: boolean
     active: boolean

@@ -8,7 +8,7 @@
 
   const DEFAULT_VISUALLY_HIDDEN_TAG = "span" as const
 
-  type HiddenRenderPropArg = {}
+  export type HiddenRenderPropArg = {}
   type HiddenPropsWeControl = never
   export type HiddenProps = Props<
     typeof DEFAULT_VISUALLY_HIDDEN_TAG,

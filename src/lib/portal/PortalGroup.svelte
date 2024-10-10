@@ -2,7 +2,7 @@
   import type { PropsAsChild } from "$lib/utils/types.js"
 
   const DEFAULT_GROUP_TAG = "svelte:fragment"
-  type GroupRenderPropArg = {}
+  export type GroupRenderPropArg = {}
 
   export type PortalGroupContext = {
     readonly target: HTMLElement | null

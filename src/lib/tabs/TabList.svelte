@@ -2,7 +2,7 @@
   import type { Props } from "$lib/utils/types.js"
 
   const DEFAULT_LIST_TAG = "div" as const
-  type ListRenderPropArg = {
+  export type ListRenderPropArg = {
     selectedIndex: number
   }
   type ListPropsWeControl = "aria-orientation" | "role"

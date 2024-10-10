@@ -3,11 +3,10 @@
   import { setContext } from "svelte"
 
   const DEFAULT_GROUP_TAG = "div" as const
-  type GroupRenderPropArg = {}
 
   export type PopoverGroupProps = Props<
     typeof DEFAULT_GROUP_TAG,
-    GroupRenderPropArg,
+    {},
     {
       element?: HTMLElement
     }
@@ -62,10 +61,8 @@
     isFocusWithinPopoverGroup,
     closeOthers,
   })
-
-  const slot = {} satisfies GroupRenderPropArg
 </script>
 
 <MainTreeProvider>
-  <ElementOrComponent {theirProps} slots={slot} defaultTag={DEFAULT_GROUP_TAG} name="PopoverGroup" bind:element />
+  <ElementOrComponent {theirProps} defaultTag={DEFAULT_GROUP_TAG} name="PopoverGroup" bind:element />
 </MainTreeProvider>
