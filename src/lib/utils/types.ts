@@ -11,20 +11,11 @@ export type Props<
   TTag extends string | Record<string, any>,
   TSlot extends Record<string, any> = {},
   Overrides = {},
-> = Omit<TTag extends string ? SvelteHTMLElements[TTag] : TTag, "asChild" | "children" | "class" | keyof Overrides> &
-  (
-    | {
-        asChild: true
-        children?: Snippet<[TSlot & { props?: Record<string, any> }]>
-        class?: never
-      }
-    | {
-        asChild?: never
-        children?: Snippet<[TSlot]>
-        class?: string | null | ((bag: TSlot) => string)
-      }
-  ) &
-  Overrides
+> = Omit<TTag extends string ? SvelteHTMLElements[TTag] : TTag, "asChild" | "children" | "class" | keyof Overrides> & {
+  asChild?: boolean
+  children?: Snippet<[TSlot & { props?: Record<string, any> }]>
+  class?: string | null | ((bag: TSlot) => string)
+} & Overrides
 
 export type PropsAsChild<TSlot extends Record<string, any> = {}, Overrides = {}> = {
   children?: Snippet<[TSlot & { props?: Record<string, any> }]>
