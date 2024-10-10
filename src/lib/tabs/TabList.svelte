@@ -7,13 +7,11 @@
   }
   type ListPropsWeControl = "aria-orientation" | "role"
 
-  export type TabListProps = Props<
-    typeof DEFAULT_LIST_TAG,
-    ListRenderPropArg,
-    {
-      element?: HTMLElement
-    }
-  >
+  export type TabListOwnProps = {
+    element?: HTMLElement
+  }
+
+  export type TabListProps = Props<typeof DEFAULT_LIST_TAG, ListRenderPropArg, TabListOwnProps>
 </script>
 
 <script lang="ts">

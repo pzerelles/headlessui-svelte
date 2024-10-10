@@ -3,16 +3,14 @@
 
   const DEFAULT_LABEL_TAG = "label" as const
 
-  export type LabelProps = Props<
-    typeof DEFAULT_LABEL_TAG,
-    {},
-    {
-      element?: HTMLElement
-      id?: string
-      passive?: boolean
-      htmlFor?: string
-    }
-  >
+  export type LabelOwnProps = {
+    element?: HTMLElement
+    id?: string
+    passive?: boolean
+    htmlFor?: string
+  }
+
+  export type LabelProps = Props<typeof DEFAULT_LABEL_TAG, {}, LabelOwnProps>
 </script>
 
 <script lang="ts">

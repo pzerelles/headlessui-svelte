@@ -1,1 +1,6 @@
-export { default as Input, type InputProps, type InputRenderPropArg as InputSlot } from "./Input.svelte"
+export {
+  default as Input,
+  type InputProps,
+  type InputRenderPropArg as InputSlot,
+  type InputOwnProps,
+} from "./Input.svelte"

@@ -3,14 +3,12 @@
 
   const DEFAULT_DESCRIPTION_TAG = "p" as const
 
-  export type DescriptionProps = Props<
-    typeof DEFAULT_DESCRIPTION_TAG,
-    {},
-    {
-      id?: string
-      element?: HTMLElement
-    }
-  >
+  export type DescriptionOwnProps = {
+    id?: string
+    element?: HTMLElement
+  }
+
+  export type DescriptionProps = Props<typeof DEFAULT_DESCRIPTION_TAG, {}, DescriptionOwnProps>
 </script>
 
 <script lang="ts">

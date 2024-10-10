@@ -12,23 +12,21 @@
 
   type PanelPropsWeControl = "tabIndex"
 
-  export type PopoverPanelProps = Props<
-    typeof DEFAULT_PANEL_TAG,
-    PanelRenderPropArg,
-    {
-      element?: HTMLElement
-      id?: string
-      focus?: boolean
-      anchor?: AnchorProps
-      portal?: boolean
-      modal?: boolean
-      transition?: boolean
+  export type PopoverPanelOwnProps = {
+    element?: HTMLElement
+    id?: string
+    focus?: boolean
+    anchor?: AnchorProps
+    portal?: boolean
+    modal?: boolean
+    transition?: boolean
 
-      // ItemsRenderFeatures
-      static?: boolean
-      unmount?: boolean
-    }
-  >
+    // ItemsRenderFeatures
+    static?: boolean
+    unmount?: boolean
+  }
+
+  export type PopoverPanelProps = Props<typeof DEFAULT_PANEL_TAG, PanelRenderPropArg, PopoverPanelOwnProps>
 </script>
 
 <script lang="ts">

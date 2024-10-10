@@ -6,11 +6,9 @@
     open: boolean
   }
 
-  export type DialogBackdropProps = Props<
-    typeof DEFAULT_BACKDROP_TAG,
-    BackdropRenderPropArg,
-    { transition?: boolean; element?: HTMLElement }
-  >
+  export type DialogBackdropOwnProps = { transition?: boolean; element?: HTMLElement }
+
+  export type DialogBackdropProps = Props<typeof DEFAULT_BACKDROP_TAG, BackdropRenderPropArg, DialogBackdropOwnProps>
 </script>
 
 <script lang="ts">

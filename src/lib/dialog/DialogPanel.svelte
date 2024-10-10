@@ -6,15 +6,13 @@
     open: boolean
   }
 
-  export type DialogPanelProps = Props<
-    typeof DEFAULT_PANEL_TAG,
-    PanelRenderPropArg,
-    {
-      element?: HTMLElement
-      id?: string
-      transition?: boolean
-    }
-  >
+  export type DialogPanelOwnProps = {
+    element?: HTMLElement
+    id?: string
+    transition?: boolean
+  }
+
+  export type DialogPanelProps = Props<typeof DEFAULT_PANEL_TAG, PanelRenderPropArg, DialogPanelOwnProps>
 </script>
 
 <script lang="ts">

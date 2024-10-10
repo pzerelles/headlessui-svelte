@@ -13,18 +13,16 @@
   }
   type InputPropsWeControl = "aria-labelledby" | "aria-describedby"
 
-  export type InputProps<TValue = string> = Props<
-    typeof DEFAULT_INPUT_TAG,
-    InputRenderPropArg,
-    {
-      element?: HTMLElement
-      id?: string
-      value?: TValue
-      disabled?: boolean
-      invalid?: boolean
-      autofocus?: boolean
-    }
-  >
+  export type InputOwnProps<TValue = string> = {
+    element?: HTMLElement
+    id?: string
+    value?: TValue
+    disabled?: boolean
+    invalid?: boolean
+    autofocus?: boolean
+  }
+
+  export type InputProps<TValue = string> = Props<typeof DEFAULT_INPUT_TAG, InputRenderPropArg, InputOwnProps<TValue>>
 </script>
 
 <script lang="ts" generics="TValue = string">

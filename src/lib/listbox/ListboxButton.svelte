@@ -29,16 +29,14 @@
   }
   type ButtonPropsWeControl = "aria-controls" | "aria-expanded" | "aria-haspopup" | "aria-labelledby" | "disabled"
 
-  export type ListboxButtonProps = Props<
-    typeof DEFAULT_BUTTON_TAG,
-    ButtonRenderPropArg,
-    {
-      element?: HTMLElement
-      id?: string
-      autofocus?: boolean
-      disabled?: boolean
-    }
-  >
+  export type ListboxButtonOwnProps = {
+    element?: HTMLElement
+    id?: string
+    autofocus?: boolean
+    disabled?: boolean
+  }
+
+  export type ListboxButtonProps = Props<typeof DEFAULT_BUTTON_TAG, ButtonRenderPropArg, ListboxButtonOwnProps>
 </script>
 
 <script lang="ts">

@@ -1,7 +1,6 @@
 <script lang="ts" module>
   import type { Props } from "$lib/utils/types.js"
   import { RenderFeatures, type PropsForFeatures } from "$lib/utils/render.js"
-  import type { SvelteHTMLElements } from "svelte/elements"
 
   export const DEFAULT_DIALOG_TAG = "div" as const
 
@@ -12,21 +11,19 @@
 
   export const DialogRenderFeatures = RenderFeatures.RenderStrategy | RenderFeatures.Static
 
-  export type DialogProps = Props<
-    typeof DEFAULT_DIALOG_TAG,
-    DialogRenderPropArg,
-    PropsForFeatures<typeof DialogRenderFeatures> & {
-      element?: HTMLElement
-      id?: string
-      open?: boolean
-      onclose(value: boolean): void
-      initialFocus?: HTMLElement
-      role?: "dialog" | "alertdialog"
-      autofocus?: boolean
-      transition?: boolean
-      __demoMode?: boolean
-    }
-  >
+  export type DialogOwnProps = PropsForFeatures<typeof DialogRenderFeatures> & {
+    element?: HTMLElement
+    id?: string
+    open?: boolean
+    onclose(value: boolean): void
+    initialFocus?: HTMLElement
+    role?: "dialog" | "alertdialog"
+    autofocus?: boolean
+    transition?: boolean
+    __demoMode?: boolean
+  }
+
+  export type DialogProps = Props<typeof DEFAULT_DIALOG_TAG, DialogRenderPropArg, DialogOwnProps>
 </script>
 
 <script lang="ts">

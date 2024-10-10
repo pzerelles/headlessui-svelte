@@ -5,14 +5,12 @@
 
   type FieldsetPropsWeControl = "aria-labelledby" | "aria-disabled" | "role"
 
-  export type FieldsetProps = Props<
-    typeof DEFAULT_FIELDSET_TAG,
-    {},
-    {
-      element?: HTMLElement
-      disabled?: boolean
-    }
-  >
+  export type FieldsetOwnProps = {
+    element?: HTMLElement
+    disabled?: boolean
+  }
+
+  export type FieldsetProps = Props<typeof DEFAULT_FIELDSET_TAG, {}, FieldsetOwnProps>
 </script>
 
 <script lang="ts">

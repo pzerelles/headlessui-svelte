@@ -16,22 +16,24 @@
     value: T
   }
 
+  export type ListboxOwnProps<TType = string, TActualType = TType extends (infer U)[] ? U : TType> = {
+    value?: TType
+    defaultValue?: TType
+    onchange?: (value: TType) => void
+    by?: ByComparator<TActualType>
+    disabled?: boolean
+    invalid?: boolean
+    horizontal?: boolean
+    form?: string
+    name?: string
+    multiple?: boolean
+    closeOnSelect?: boolean
+    __demoMode?: boolean
+  }
+
   export type ListboxProps<TType = string, TActualType = TType extends (infer U)[] ? U : TType> = PropsAsChild<
     ListboxRenderPropArg<TType>,
-    {
-      value?: TType
-      defaultValue?: TType
-      onchange?: (value: TType) => void
-      by?: ByComparator<TActualType>
-      disabled?: boolean
-      invalid?: boolean
-      horizontal?: boolean
-      form?: string
-      name?: string
-      multiple?: boolean
-      closeOnSelect?: boolean
-      __demoMode?: boolean
-    }
+    ListboxOwnProps<TType, TActualType>
   >
 
   export * from "./context.svelte.js"

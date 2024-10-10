@@ -4,13 +4,11 @@
 
   const DEFAULT_GROUP_TAG = "div" as const
 
-  export type PopoverGroupProps = Props<
-    typeof DEFAULT_GROUP_TAG,
-    {},
-    {
-      element?: HTMLElement
-    }
-  >
+  export type PopoverGroupOwnProps = {
+    element?: HTMLElement
+  }
+
+  export type PopoverGroupProps = Props<typeof DEFAULT_GROUP_TAG, {}, PopoverGroupOwnProps>
 </script>
 
 <script lang="ts">

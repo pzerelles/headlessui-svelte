@@ -8,14 +8,12 @@
   }
   type PopoverPropsWeControl = never
 
-  export type PopoverProps = Props<
-    typeof DEFAULT_POPOVER_TAG,
-    PopoverRenderPropArg,
-    {
-      element?: HTMLElement
-      __demoMode?: boolean
-    }
-  >
+  export type PopoverOwnProps = {
+    element?: HTMLElement
+    __demoMode?: boolean
+  }
+
+  export type PopoverProps = Props<typeof DEFAULT_POPOVER_TAG, PopoverRenderPropArg, PopoverOwnProps>
 </script>
 
 <script lang="ts">

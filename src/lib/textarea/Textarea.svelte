@@ -1,6 +1,5 @@
 <script lang="ts" module>
   import type { Props } from "$lib/utils/types.js"
-  import type { SvelteHTMLElements } from "svelte/elements"
 
   const DEFAULT_TEXTAREA_TAG = "textarea" as const
 
@@ -13,17 +12,19 @@
   }
   type TextareaPropsWeControl = "aria-labelledby" | "aria-describedby"
 
+  export type TextareaOwnProps<TValue = string> = {
+    element?: HTMLElement
+    id?: string
+    value?: TValue
+    disabled?: boolean
+    invalid?: boolean
+    autofocus?: boolean
+  }
+
   export type TextareaProps<TValue = string> = Props<
     typeof DEFAULT_TEXTAREA_TAG,
     TextareaRenderPropArg,
-    {
-      element?: HTMLElement
-      id?: string
-      value?: TValue
-      disabled?: boolean
-      invalid?: boolean
-      autofocus?: boolean
-    }
+    TextareaOwnProps<TValue>
   >
 </script>
 

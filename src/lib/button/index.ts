@@ -1,1 +1,6 @@
-export { default as Button, type ButtonProps, type ButtonRenderPropArg as ButtonSlot } from "./Button.svelte"
+export {
+  default as Button,
+  type ButtonProps,
+  type ButtonRenderPropArg as ButtonSlot,
+  type ButtonOwnProps,
+} from "./Button.svelte"

@@ -13,23 +13,21 @@
   }
   type SwitchPropsWeControl = "aria-checked" | "aria-describedby" | "aria-labelledby" | "role"
 
-  export type SwitchProps = Props<
-    typeof DEFAULT_SWITCH_TAG,
-    SwitchRenderPropArg,
-    {
-      element?: HTMLElement
-      id?: string
-      checked?: boolean
-      defaultChecked?: boolean
-      onchange?(checked: boolean): void
-      name?: string
-      value?: string
-      form?: string
-      autofocus?: boolean
-      disabled?: boolean
-      tabIndex?: number
-    }
-  >
+  export type SwitchOwnProps = {
+    element?: HTMLElement
+    id?: string
+    checked?: boolean
+    defaultChecked?: boolean
+    onchange?(checked: boolean): void
+    name?: string
+    value?: string
+    form?: string
+    autofocus?: boolean
+    disabled?: boolean
+    tabIndex?: number
+  }
+
+  export type SwitchProps = Props<typeof DEFAULT_SWITCH_TAG, SwitchRenderPropArg, SwitchOwnProps>
 </script>
 
 <script lang="ts">

@@ -5,12 +5,14 @@
 
   type TransitionChildPropsWeControl = never
 
+  export type TransitionChildOwnProps = PropsForFeatures<typeof TransitionChildRenderFeatures> &
+    TransitionClasses &
+    TransitionEvents & { transition?: boolean; appear?: boolean; element?: HTMLElement }
+
   export type TransitionChildProps = Props<
     typeof DEFAULT_TRANSITION_CHILD_TAG,
     TransitionChildRenderPropArg,
-    PropsForFeatures<typeof TransitionChildRenderFeatures> &
-      TransitionClasses &
-      TransitionEvents & { transition?: boolean; appear?: boolean; element?: HTMLElement }
+    TransitionChildOwnProps
   >
 
   export const DEFAULT_TRANSITION_CHILD_TAG = "div"

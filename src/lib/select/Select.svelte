@@ -13,17 +13,15 @@
   }
   type SelectPropsWeControl = "aria-labelledby" | "aria-describedby"
 
-  export type SelectProps = Props<
-    typeof DEFAULT_SELECT_TAG,
-    SelectRenderPropArg,
-    {
-      element?: HTMLElement
-      id?: string
-      disabled?: boolean
-      invalid?: boolean
-      autofocus?: boolean
-    }
-  >
+  export type SelectOwnProps = {
+    element?: HTMLElement
+    id?: string
+    disabled?: boolean
+    invalid?: boolean
+    autofocus?: boolean
+  }
+
+  export type SelectProps = Props<typeof DEFAULT_SELECT_TAG, SelectRenderPropArg, SelectOwnProps>
 </script>
 
 <script lang="ts">

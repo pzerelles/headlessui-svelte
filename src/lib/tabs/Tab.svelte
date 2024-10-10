@@ -12,16 +12,14 @@
   }
   type TabPropsWeControl = "aria-controls" | "aria-selected" | "role" | "tabIndex"
 
-  export type TabProps = Props<
-    typeof DEFAULT_TAB_TAG,
-    TabRenderPropArg,
-    {
-      element?: HTMLElement
-      id?: string
-      autofocus?: boolean
-      disabled?: boolean
-    }
-  >
+  export type TabOwnProps = {
+    element?: HTMLElement
+    id?: string
+    autofocus?: boolean
+    disabled?: boolean
+  }
+
+  export type TabProps = Props<typeof DEFAULT_TAB_TAG, TabRenderPropArg, TabOwnProps>
 </script>
 
 <script lang="ts">

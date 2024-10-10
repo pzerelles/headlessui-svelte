@@ -8,12 +8,11 @@
   }
   type MenuPropsWeControl = never
 
-  export type MenuProps = PropsAsChild<
-    MenuRenderPropArg,
-    {
-      __demoMode?: boolean
-    }
-  >
+  export type MenuOwnProps = {
+    __demoMode?: boolean
+  }
+
+  export type MenuProps = PropsAsChild<MenuRenderPropArg, MenuOwnProps>
 </script>
 
 <script lang="ts">

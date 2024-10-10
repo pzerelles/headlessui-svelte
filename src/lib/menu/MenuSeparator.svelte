@@ -5,13 +5,11 @@
 
   type SeparatorPropsWeControl = "role"
 
-  export type MenuSeparatorProps = Props<
-    typeof DEFAULT_SEPARATOR_TAG,
-    {},
-    {
-      element?: HTMLElement
-    }
-  >
+  export type MenuSeparatorOwnProps = {
+    element?: HTMLElement
+  }
+
+  export type MenuSeparatorProps = Props<typeof DEFAULT_SEPARATOR_TAG, {}, MenuSeparatorOwnProps>
 </script>
 
 <script lang="ts">

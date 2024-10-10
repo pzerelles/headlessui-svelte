@@ -9,18 +9,16 @@
   }
   type TabsPropsWeControl = never
 
-  export type TabGroupProps = Props<
-    typeof DEFAULT_TABS_TAG,
-    TabsRenderPropArg,
-    {
-      element?: HTMLElement
-      defaultIndex?: number
-      onchange?: (index: number) => void
-      selectedIndex?: number
-      vertical?: boolean
-      manual?: boolean
-    }
-  >
+  export type TabGroupOwnProps = {
+    element?: HTMLElement
+    defaultIndex?: number
+    onchange?: (index: number) => void
+    selectedIndex?: number
+    vertical?: boolean
+    manual?: boolean
+  }
+
+  export type TabGroupProps = Props<typeof DEFAULT_TABS_TAG, TabsRenderPropArg, TabGroupOwnProps>
 </script>
 
 <script lang="ts">

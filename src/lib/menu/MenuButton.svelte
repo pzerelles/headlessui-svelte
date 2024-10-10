@@ -13,17 +13,15 @@
   }
   type ButtonPropsWeControl = "aria-controls" | "aria-expanded" | "aria-haspopup"
 
-  export type MenuButtonProps = Props<
-    typeof DEFAULT_BUTTON_TAG,
-    ButtonRenderPropArg,
-    {
-      element?: HTMLElement
-      id?: string
-      disabled?: boolean
-      autofocus?: boolean
-      type?: string
-    }
-  >
+  export type MenuButtonOwnProps = {
+    element?: HTMLElement
+    id?: string
+    disabled?: boolean
+    autofocus?: boolean
+    type?: string
+  }
+
+  export type MenuButtonProps = Props<typeof DEFAULT_BUTTON_TAG, ButtonRenderPropArg, MenuButtonOwnProps>
 </script>
 
 <script lang="ts">

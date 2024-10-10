@@ -1,7 +1,16 @@
 <script lang="ts" module>
   import { State, useOpenClosed } from "$lib/internal/open-closed.js"
   import { setContext, untrack } from "svelte"
-  import { type TransitionChildProps, TransitionChildRenderFeatures } from "./TransitionChild.svelte"
+  import {
+    type TransitionChildOwnProps,
+    type TransitionChildProps,
+    TransitionChildRenderFeatures,
+  } from "./TransitionChild.svelte"
+
+  export type TransitionRootOwnProps = TransitionChildOwnProps & {
+    show?: boolean
+    appear?: boolean
+  }
 
   export type TransitionRootProps = TransitionChildProps & {
     show?: boolean

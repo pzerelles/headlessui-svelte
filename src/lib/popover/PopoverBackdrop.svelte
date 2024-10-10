@@ -10,15 +10,13 @@
 
   const BackdropRenderFeatures = RenderFeatures.RenderStrategy | RenderFeatures.Static
 
-  export type PopoverBackdropProps = Props<
-    typeof DEFAULT_BACKDROP_TAG,
-    BackdropRenderPropArg,
-    {
-      element?: HTMLElement
-      id?: string
-      transition?: boolean
-    } & PropsForFeatures<typeof BackdropRenderFeatures>
-  >
+  export type PopoverBackdropOwnProps = {
+    element?: HTMLElement
+    id?: string
+    transition?: boolean
+  } & PropsForFeatures<typeof BackdropRenderFeatures>
+
+  export type PopoverBackdropProps = Props<typeof DEFAULT_BACKDROP_TAG, BackdropRenderPropArg, PopoverBackdropOwnProps>
 
   export type PopoverOverlayProps = PopoverBackdropProps
 </script>

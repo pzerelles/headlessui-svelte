@@ -1,20 +1,17 @@
 <script lang="ts" module>
   import { onMount } from "svelte"
-  import type { SvelteHTMLElements } from "svelte/elements"
   import type { Props } from "$lib/utils/types.js"
 
   const DEFAULT_HEADING_TAG = "header" as const
 
   type HeadingPropsWeControl = "role"
 
-  export type MenuHeadingProps = Props<
-    typeof DEFAULT_HEADING_TAG,
-    {},
-    {
-      element?: HTMLElement
-      id?: string
-    }
-  >
+  export type MenuHeadingOwnProps = {
+    element?: HTMLElement
+    id?: string
+  }
+
+  export type MenuHeadingProps = Props<typeof DEFAULT_HEADING_TAG, {}, MenuHeadingOwnProps>
 </script>
 
 <script lang="ts">

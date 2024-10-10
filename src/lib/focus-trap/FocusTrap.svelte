@@ -41,20 +41,18 @@
 
   type FocusTrapPropsWeControl = never
 
-  export type FocusTrapProps = Props<
-    typeof DEFAULT_FOCUS_TRAP_TAG,
-    {},
-    {
-      element?: HTMLElement
-      initialFocus?: HTMLElement
-      // A fallback element to focus, but this element will be skipped when tabbing around. This is
-      // only done for focusing a fallback parent container (e.g.: A `Dialog`, but you want to tab
-      // *inside* the dialog excluding the dialog itself).
-      initialFocusFallback?: HTMLElement
-      features?: FocusTrapFeatures
-      containers?: Containers
-    }
-  >
+  export type FocusTrapOwnProps = {
+    element?: HTMLElement
+    initialFocus?: HTMLElement
+    // A fallback element to focus, but this element will be skipped when tabbing around. This is
+    // only done for focusing a fallback parent container (e.g.: A `Dialog`, but you want to tab
+    // *inside* the dialog excluding the dialog itself).
+    initialFocusFallback?: HTMLElement
+    features?: FocusTrapFeatures
+    containers?: Containers
+  }
+
+  export type FocusTrapProps = Props<typeof DEFAULT_FOCUS_TRAP_TAG, {}, FocusTrapOwnProps>
 
   function useRestoreElement(options?: { enabled: boolean }) {
     const { enabled } = $derived(options ?? { enabled: true })

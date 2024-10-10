@@ -1,1 +1,6 @@
-export { default as Checkbox, type CheckboxProps, type CheckboxRenderPropArg as CheckboxSlot } from "./Checkbox.svelte"
+export {
+  default as Checkbox,
+  type CheckboxProps,
+  type CheckboxRenderPropArg as CheckboxSlot,
+  type CheckboxOwnProps,
+} from "./Checkbox.svelte"

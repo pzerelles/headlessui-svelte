@@ -8,7 +8,9 @@
     selectedIndex: number
   }
 
-  export type TabPanelsProps = Props<typeof DEFAULT_PANELS_TAG, PanelsRenderPropArg, { element?: HTMLElement }>
+  export type TabPanelsOwnProps = { element?: HTMLElement }
+
+  export type TabPanelsProps = Props<typeof DEFAULT_PANELS_TAG, PanelsRenderPropArg, TabPanelsOwnProps>
 </script>
 
 <script lang="ts">

@@ -16,18 +16,16 @@
 
   let ItemsRenderFeatures = RenderFeatures.RenderStrategy | RenderFeatures.Static
 
-  export type MenuItemsProps = Props<
-    typeof DEFAULT_ITEMS_TAG,
-    ItemsRenderPropArg,
-    {
-      element?: HTMLElement
-      id?: string
-      anchor?: AnchorProps
-      portal?: boolean
-      modal?: boolean
-      transition?: boolean
-    } & PropsForFeatures<typeof ItemsRenderFeatures>
-  >
+  export type MenuItemsOwnProps = {
+    element?: HTMLElement
+    id?: string
+    anchor?: AnchorProps
+    portal?: boolean
+    modal?: boolean
+    transition?: boolean
+  } & PropsForFeatures<typeof ItemsRenderFeatures>
+
+  export type MenuItemsProps = Props<typeof DEFAULT_ITEMS_TAG, ItemsRenderPropArg, MenuItemsOwnProps>
 </script>
 
 <script lang="ts">

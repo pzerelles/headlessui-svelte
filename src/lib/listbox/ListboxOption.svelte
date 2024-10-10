@@ -13,15 +13,17 @@
   }
   type OptionPropsWeControl = "aria-disabled" | "aria-selected" | "role" | "tabIndex"
 
+  export type ListboxOptionOwnProps<TType = string> = {
+    element?: HTMLElement
+    id?: string
+    disabled?: boolean
+    value: TType
+  }
+
   export type ListboxOptionProps<TType = string> = Props<
     typeof DEFAULT_OPTION_TAG,
     OptionRenderPropArg,
-    {
-      element?: HTMLElement
-      id?: string
-      disabled?: boolean
-      value: TType
-    }
+    ListboxOptionOwnProps<TType>
   >
 </script>
 

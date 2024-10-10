@@ -1,1 +1,1 @@
-export { default as Field, type FieldProps } from "./Field.svelte"
+export { default as Field, type FieldProps, type FieldOwnProps } from "./Field.svelte"

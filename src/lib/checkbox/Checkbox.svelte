@@ -22,22 +22,24 @@
     | "role"
     | "tabIndex"
 
+  export type CheckboxOwnProps<TType = string> = {
+    element?: HTMLElement
+    id?: string
+    value?: TType
+    disabled?: boolean
+    indeterminate?: boolean
+    checked?: boolean
+    defaultChecked?: boolean
+    autofocus?: boolean
+    form?: string
+    name?: string
+    onchange?: (checked: boolean) => void
+  }
+
   export type CheckboxProps<TType = string> = Props<
     typeof DEFAULT_CHECKBOX_TAG,
     CheckboxRenderPropArg,
-    {
-      element?: HTMLElement
-      id?: string
-      value?: TType
-      disabled?: boolean
-      indeterminate?: boolean
-      checked?: boolean
-      defaultChecked?: boolean
-      autofocus?: boolean
-      form?: string
-      name?: string
-      onchange?: (checked: boolean) => void
-    }
+    CheckboxOwnProps<TType>
   >
 </script>
 

@@ -4,14 +4,12 @@
 
   const DEFAULT_LEGEND_TAG = "div" as const
 
-  export type LegendProps = Props<
-    typeof DEFAULT_LEGEND_TAG,
-    {},
-    {
-      element?: HTMLElement
-      class?: string
-    }
-  >
+  export type LegendOwnProps = {
+    element?: HTMLElement
+    class?: string
+  }
+
+  export type LegendProps = Props<typeof DEFAULT_LEGEND_TAG, {}, LegendOwnProps>
 </script>
 
 <script lang="ts">

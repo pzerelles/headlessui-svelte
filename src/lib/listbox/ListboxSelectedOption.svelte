@@ -8,14 +8,16 @@
   }
   type SelectedOptionPropsWeControl = never
 
+  export type ListboxSelectedOptionOwnProps = {
+    element?: HTMLElement
+    options: Snippet
+    placeholder?: Snippet
+  }
+
   export type ListboxSelectedOptionProps = Props<
     typeof DEFAULT_SELECTED_OPTION_TAG,
     SelectedOptionRenderPropArg,
-    {
-      element?: HTMLElement
-      options: Snippet
-      placeholder?: Snippet
-    }
+    ListboxSelectedOptionOwnProps
   >
 </script>
 

@@ -11,16 +11,14 @@
     autofocus: boolean
   }
 
-  export type ButtonProps = Props<
-    typeof DEFAULT_BUTTON_TAG,
-    ButtonRenderPropArg,
-    {
-      element?: HTMLElement
-      disabled?: boolean
-      autofocus?: boolean
-      type?: "button" | "submit" | "reset"
-    }
-  >
+  export type ButtonOwnProps = {
+    element?: HTMLElement
+    disabled?: boolean
+    autofocus?: boolean
+    type?: "button" | "submit" | "reset"
+  }
+
+  export type ButtonProps = Props<typeof DEFAULT_BUTTON_TAG, ButtonRenderPropArg, ButtonOwnProps>
 </script>
 
 <script lang="ts">

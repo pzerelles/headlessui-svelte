@@ -5,13 +5,11 @@
 
   type SectionPropsWeControl = "role" | "aria-labelledby"
 
-  export type MenuSectionProps = Props<
-    typeof DEFAULT_SECTION_TAG,
-    {},
-    {
-      element?: HTMLElement
-    }
-  >
+  export type MenuSectionOwnProps = {
+    element?: HTMLElement
+  }
+
+  export type MenuSectionProps = Props<typeof DEFAULT_SECTION_TAG, {}, MenuSectionOwnProps>
 </script>
 
 <script lang="ts">

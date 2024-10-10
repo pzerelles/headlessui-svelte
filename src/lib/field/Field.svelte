@@ -3,14 +3,12 @@
 
   let DEFAULT_FIELD_TAG = "div" as const
 
-  export type FieldProps = Props<
-    typeof DEFAULT_FIELD_TAG,
-    {},
-    {
-      element?: HTMLElement
-      disabled?: boolean
-    }
-  >
+  export type FieldOwnProps = {
+    element?: HTMLElement
+    disabled?: boolean
+  }
+
+  export type FieldProps = Props<typeof DEFAULT_FIELD_TAG, {}, FieldOwnProps>
 </script>
 
 <script lang="ts">

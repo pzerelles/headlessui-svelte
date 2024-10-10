@@ -6,11 +6,9 @@
     open: boolean
   }
 
-  export type DialogTitleProps = Props<
-    typeof DEFAULT_TITLE_TAG,
-    TitleRenderPropArg,
-    { id?: string; element?: HTMLElement }
-  >
+  export type DialogTitleOwnProps = { id?: string; element?: HTMLElement }
+
+  export type DialogTitleProps = Props<typeof DEFAULT_TITLE_TAG, TitleRenderPropArg, DialogTitleOwnProps>
 
   //
 </script>

@@ -23,18 +23,16 @@
 
   let OptionsRenderFeatures = RenderFeatures.RenderStrategy | RenderFeatures.Static
 
-  export type ListboxOptionsProps = Props<
-    typeof DEFAULT_OPTIONS_TAG,
-    OptionsRenderPropArg,
-    {
-      element?: HTMLElement
-      id?: string
-      anchor?: AnchorPropsWithSelection
-      portal?: boolean
-      modal?: boolean
-      transition?: boolean
-    } & PropsForFeatures<typeof OptionsRenderFeatures>
-  >
+  export type ListboxOptionsOwnProps = {
+    element?: HTMLElement
+    id?: string
+    anchor?: AnchorPropsWithSelection
+    portal?: boolean
+    modal?: boolean
+    transition?: boolean
+  } & PropsForFeatures<typeof OptionsRenderFeatures>
+
+  export type ListboxOptionsProps = Props<typeof DEFAULT_OPTIONS_TAG, OptionsRenderPropArg, ListboxOptionsOwnProps>
 </script>
 
 <script lang="ts">

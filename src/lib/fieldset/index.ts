@@ -1,1 +1,1 @@
-export { default as Fieldset, type FieldsetProps } from "./Fieldset.svelte"
+export { default as Fieldset, type FieldsetProps, type FieldsetOwnProps } from "./Fieldset.svelte"

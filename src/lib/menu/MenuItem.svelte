@@ -13,15 +13,13 @@
   }
   type ItemPropsWeControl = "aria-describedby" | "aria-disabled" | "aria-labelledby" | "role" | "tabIndex"
 
-  export type MenuItemProps = Props<
-    typeof DEFAULT_ITEM_TAG,
-    ItemRenderPropArg,
-    {
-      element?: HTMLElement
-      id?: string
-      disabled?: boolean
-    }
-  >
+  export type MenuItemOwnProps = {
+    element?: HTMLElement
+    id?: string
+    disabled?: boolean
+  }
+
+  export type MenuItemProps = Props<typeof DEFAULT_ITEM_TAG, ItemRenderPropArg, MenuItemOwnProps>
 </script>
 
 <script lang="ts">

@@ -1,6 +1,5 @@
 <script lang="ts" module>
   import type { Props } from "$lib/utils/types.js"
-  import type { SvelteHTMLElements } from "svelte/elements"
 
   const DEFAULT_PANEL_TAG = "div" as const
   export type PanelRenderPropArg = {
@@ -10,11 +9,13 @@
   type PanelPropsWeControl = "role" | "aria-labelledby"
   const PanelRenderFeatures = RenderFeatures.RenderStrategy | RenderFeatures.Static
 
-  export type TabPanelProps = Props<
-    typeof DEFAULT_PANEL_TAG,
-    PanelRenderPropArg,
-    PropsForFeatures<typeof PanelRenderFeatures> & { element?: HTMLElement; id?: string; tabIndex?: number }
-  >
+  export type TabPanelOwnProps = PropsForFeatures<typeof PanelRenderFeatures> & {
+    element?: HTMLElement
+    id?: string
+    tabIndex?: number
+  }
+
+  export type TabPanelProps = Props<typeof DEFAULT_PANEL_TAG, PanelRenderPropArg, TabPanelOwnProps>
 </script>
 
 <script lang="ts">

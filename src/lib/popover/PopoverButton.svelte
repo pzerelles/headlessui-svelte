@@ -12,16 +12,14 @@
   }
   export type PopoverButtonPropsWeControl = "aria-controls" | "aria-expanded"
 
-  export type PopoverButtonProps = Props<
-    typeof DEFAULT_BUTTON_TAG,
-    PopoverButtonSlot,
-    {
-      element?: HTMLElement
-      id?: string
-      disabled?: boolean
-      autofocus?: boolean
-    }
-  >
+  export type PopoverButtonOwnProps = {
+    element?: HTMLElement
+    id?: string
+    disabled?: boolean
+    autofocus?: boolean
+  }
+
+  export type PopoverButtonProps = Props<typeof DEFAULT_BUTTON_TAG, PopoverButtonSlot, PopoverButtonOwnProps>
 </script>
 
 <script lang="ts">
