@@ -1,5 +1,12 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.33
+
+### Patch Changes
+
+- f4a3715: refactor: remove "as" in favor of "asChild" to simplify types and avoid problems with typescript
+- f4a3715: feat: add support for components in "as"
+
 ## 2.1.2-next.32
 
 ### Patch Changes
