@@ -1,5 +1,12 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.39
+
+### Patch Changes
+
+- e347262: fix: remove svelte:fragment for Transition
+- e2f2e70: fix: disabled on Switch
+
 ## 2.1.2-next.38
 
 ### Patch Changes
