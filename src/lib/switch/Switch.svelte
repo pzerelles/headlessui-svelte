@@ -65,7 +65,7 @@
     tabIndex,
     ...theirProps
   }: SwitchProps = $props()
-  const disabled = $derived(providedDisabled.current ?? theirDisabled)
+  const disabled = $derived(theirDisabled || providedDisabled.current)
   const groupContext = getContext<GroupContext>("GroupContext")
   $effect(() => {
     if (groupContext) groupContext.switchElement = element ?? null
