@@ -112,7 +112,6 @@
     children,
   }}
   theirProps={{}}
-  defaultTag={"svelte:fragment"}
   features={TransitionChildRenderFeatures}
   visible={_state === TreeStates.Visible}
   name="Transition"

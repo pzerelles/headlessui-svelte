@@ -22,7 +22,7 @@
 
 <div class="flex h-screen w-full justify-center bg-black px-4 pt-24">
   <div class="mx-auto h-screen w-52 pt-20">
-    <div class="fixed top-24 w-52 text-right">
+    <div class="fixed top-24 flex w-52 flex-col gap-8 text-right">
       <Button
         onclick={() => (open = true)}
         class="rounded-md bg-black/20 px-4 py-2 text-sm font-medium text-white focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white"
@@ -102,6 +102,13 @@
           </div>
         </div>
       </Dialog>
+
+      <Button
+        onclick={() => (open = true)}
+        class="rounded-md bg-black/20 px-4 py-2 text-sm font-medium text-white focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white"
+      >
+        Open dialog
+      </Button>
     </div>
   </div>
 </div>
