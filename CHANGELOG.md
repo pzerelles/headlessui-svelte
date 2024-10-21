@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.38
+
+### Patch Changes
+
+- 4dd13bf: chore: upgrade to Svelte 5 release
+
 ## 2.1.2-next.37
 
 ### Patch Changes
