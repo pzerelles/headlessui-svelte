@@ -48,8 +48,6 @@
       e.preventDefault()
     }
 
-    console.log("click", providedHtmlFor)
-
     if (current instanceof HTMLLabelElement) {
       let target = document.getElementById(current.getAttribute("for") ?? "")
       if (target) {
