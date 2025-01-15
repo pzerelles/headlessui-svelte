@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.40
+
+### Patch Changes
+
+- a0db637: feat: add RadioGroup components
+
 ## 2.1.2-next.39
 
 ### Patch Changes
