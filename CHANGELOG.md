@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.41
+
+### Patch Changes
+
+- 59486a7: fix: make Select's value bindable
+
 ## 2.1.2-next.40
 
 ### Patch Changes
