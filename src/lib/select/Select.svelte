@@ -45,6 +45,7 @@
     disabled: theirDisabled = false,
     invalid = false,
     autofocus = false,
+    value = $bindable(),
     ...theirProps
   }: SelectProps = $props()
 
@@ -100,4 +101,12 @@
   } satisfies SelectRenderPropArg)
 </script>
 
-<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_SELECT_TAG} name="Select" bind:element />
+<ElementOrComponent
+  {ourProps}
+  {theirProps}
+  {slot}
+  defaultTag={DEFAULT_SELECT_TAG}
+  name="Select"
+  bind:element
+  bind:value
+/>
