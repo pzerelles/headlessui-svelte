@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.42
+
+### Patch Changes
+
+- 2978d05: fix: ListBox keyboard navigation
+
 ## 2.1.2-next.41
 
 ### Patch Changes
