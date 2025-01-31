@@ -329,6 +329,7 @@
       "aria-multiselectable": data.mode === ValueMode.Multi ? true : undefined,
       "aria-labelledby": labelledby,
       "aria-orientation": data.orientation,
+      onkeydown: handleKeyDown,
       role: "listbox",
       // When the `Listbox` is closed, it should not be focusable. This allows us
       // to skip focusing the `ListboxOptions` when pressing the tab key on an
