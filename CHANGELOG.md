@@ -1,5 +1,12 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.43
+
+### Patch Changes
+
+- 9098ddd: fix: effect loop in Popover and other warnings
+- 1249705: chore: update dependencies
+
 ## 2.1.2-next.42
 
 ### Patch Changes
