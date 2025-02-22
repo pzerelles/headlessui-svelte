@@ -7,15 +7,15 @@
     "preview": "vite preview",
     "package": "svelte-kit sync && svelte-package && publint",
     "package:watch": "svelte-package --watch",
-    "prepublishOnly": "npm run package",
-    "test": "npm run test:integration && npm run test:unit",
+    "prepublishOnly": "bun run package",
+    "test": "bun run test:integration && npm run test:unit",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "lint": "prettier --check . && eslint .",
     "format": "prettier --write .",
     "test:integration": "playwright test",
     "test:unit": "vitest",
-    "release": "pnpm package && changeset publish"
+    "release": "bun run package && changeset publish"
   },
   "exports": {
     ".": {
@@ -75,15 +75,5 @@
   },
   "svelte": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "type": "module",
-  "pnpm": {
-    "peerDependencyRules": {
-      "allowedVersions": {
-        "svelte": "^5.0.0"
-      }
-    },
-    "onlyBuiltDependencies": [
-      "esbuild"
-    ]
-  }
+  "type": "module"
 }
