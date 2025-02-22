@@ -2,7 +2,7 @@ import { untrack } from "svelte"
 
 export function useFrozenData<T>(options: { freeze: boolean; data: T }) {
   const { freeze, data } = $derived(options)
-  let frozenValue = $state(data)
+  let frozenValue = $state((() => data)())
 
   $effect(() => {
     // We should keep updating the frozen value, as long as we shouldn't freeze

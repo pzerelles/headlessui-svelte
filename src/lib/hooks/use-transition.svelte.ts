@@ -56,9 +56,11 @@ export function useTransition(options: {
   }
 }): { readonly visible: boolean; readonly data: TransitionData } {
   const { enabled, element, show, events } = $derived(options)
-  let visible = $state(show)
+  let visible = $state((() => show)())
 
-  let flags = $state(enabled && visible ? TransitionState.Enter | TransitionState.Closed : TransitionState.None)
+  let flags = $state(
+    (() => (enabled && visible ? TransitionState.Enter | TransitionState.Closed : TransitionState.None))()
+  )
   let inFlight = $state(false)
   let cancelled = $state(false)
 

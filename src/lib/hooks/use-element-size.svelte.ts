@@ -11,7 +11,7 @@ export function useElementSize(options: { element: HTMLElement | null; unit: boo
   // compute the correct size as soon as possible. However, once the element is
   // stable, we also want to watch for changes to the element. The `identity`
   // state can be used to recompute the size.
-  let size = $state(computeSize(element))
+  let size = $state((() => computeSize(element))())
 
   const observeSize = (element: HTMLElement | null) => {
     if (!element) return

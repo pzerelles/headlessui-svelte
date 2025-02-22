@@ -215,7 +215,7 @@ export function useInnerOffset(options: { context: FloatingRootContext; props: U
   const { open, elements } = $derived(context)
   const { enabled = true, overflowRef, scrollRef, onChange: unstable_onChange } = $derived(props)
 
-  const onChange = unstable_onChange
+  const onChange = (() => unstable_onChange)()
   const controlledScrollingRef = $state<MutableRefObject<boolean>>({ current: false })
   const prevScrollTopRef = $state<MutableRefObject<number | null>>({ current: null })
   const initialOverflowRef = $state<MutableRefObject<SideObject | null>>({ current: null })

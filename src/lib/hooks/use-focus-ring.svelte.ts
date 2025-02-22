@@ -4,7 +4,7 @@ export const useFocusRing = (options: { autofocus?: boolean; within?: boolean } 
   const { autofocus, within } = $derived(options)
 
   let focused = $state(false)
-  let _isFocusVisible = $state(autofocus || isFocusVisible())
+  let _isFocusVisible = $state((() => autofocus || isFocusVisible())())
 
   useFocusVisibleListener((isFocusVisible) => {
     _isFocusVisible = isFocusVisible

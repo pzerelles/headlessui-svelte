@@ -97,7 +97,6 @@
   }
 
   const handleKeyDown = (event: KeyboardEvent) => {
-    console.log("handleKeyDown", event, element)
     let container = element
     if (!container) return
 

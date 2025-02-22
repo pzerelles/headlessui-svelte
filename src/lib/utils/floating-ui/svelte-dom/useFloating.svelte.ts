@@ -34,17 +34,19 @@ export function useFloating<RT extends ReferenceType = ReferenceType>(
   } = $derived(options)
   const { reference: externalReference, floating: externalFloating } = $derived(externalElements)
 
-  let data = $state<UseFloatingData>({
-    x: 0,
-    y: 0,
-    strategy,
-    placement,
-    middlewareData: {},
-    isPositioned: false,
-  })
+  let data = $state<UseFloatingData>(
+    (() => ({
+      x: 0,
+      y: 0,
+      strategy,
+      placement,
+      middlewareData: {},
+      isPositioned: false,
+    }))()
+  )
   const setData = (value: UseFloatingData) => (data = value)
 
-  let latestMiddleware = $state(middleware)
+  let latestMiddleware = $state((() => middleware)())
 
   $effect(() => {
     if (!deepEqual(latestMiddleware, middleware)) {
@@ -74,9 +76,9 @@ export function useFloating<RT extends ReferenceType = ReferenceType>(
 
   const referenceRef = $state<MutableRefObject<RT | null>>({ current: null })
   const floatingRef = $state<MutableRefObject<HTMLElement | null>>({ current: null })
-  const dataRef = $state<MutableRefObject<typeof data>>({ current: data })
+  const dataRef = $state<MutableRefObject<typeof data>>((() => ({ current: data }))())
 
-  const hasWhileElementsMounted = whileElementsMounted != null
+  const hasWhileElementsMounted = $derived(whileElementsMounted != null)
   const whileElementsMountedRef = useLatestRef({
     get value() {
       return whileElementsMounted
@@ -144,6 +146,7 @@ export function useFloating<RT extends ReferenceType = ReferenceType>(
   })
 
   $effect(() => {
+    hasWhileElementsMounted
     if (referenceEl) referenceRef.current = referenceEl
     if (floatingEl) floatingRef.current = floatingEl
 

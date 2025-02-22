@@ -6,7 +6,7 @@ export function useControllable<T>(
   let internalValue = $state(defaultValue)
 
   const isControlled = $derived(input.controlledValue !== undefined)
-  let wasControlled = isControlled
+  let wasControlled = (() => isControlled)()
   let didWarnOnUncontrolledToControlled = false
   let didWarnOnControlledToUncontrolled = false
 

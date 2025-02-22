@@ -46,10 +46,10 @@ let hierarchyStores = new DefaultMap(() =>
  */
 export function useIsTopLayer(options: { readonly enabled: boolean; readonly scope: string }): { value: boolean } {
   const { enabled, scope } = $derived(options)
-  const hierarchyStore = hierarchyStores.get(scope)
+  const hierarchyStore = $derived(hierarchyStores.get(scope))
   const id = useId()
 
-  let hierarchy = $state(hierarchyStore.getSnapshot())
+  let hierarchy = $state((() => hierarchyStore.getSnapshot())())
 
   $effect(() => {
     const unsubscribe = hierarchyStore.subscribe(() => {

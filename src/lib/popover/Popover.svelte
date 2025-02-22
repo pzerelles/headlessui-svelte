@@ -114,7 +114,10 @@
     )
   }
 
-  $effect(() => registerPopover?.(registerBag))
+  $effect(() => {
+    registerBag
+    untrack(() => registerPopover?.(registerBag))
+  })
 
   const nestedPortals = useNestedPortals()
   const { portals } = $derived(nestedPortals)
