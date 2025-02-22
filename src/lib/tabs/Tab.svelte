@@ -171,7 +171,7 @@
     disabled,
   } satisfies TabRenderPropArg)
 
-  const resolvedType = useResolveButtonType({
+  const buttonType = useResolveButtonType({
     get props() {
       return { type: theirProps.type ?? undefined, as: element ? element.tagName.toLowerCase() : DEFAULT_TAB_TAG }
     },
@@ -188,7 +188,7 @@
         onclick: handleSelection,
         id,
         role: "tab",
-        type: resolvedType.type,
+        type: buttonType.type,
         "aria-controls": panels[myIndex]?.current?.id,
         "aria-selected": selected,
         tabIndex: selected ? 0 : -1,

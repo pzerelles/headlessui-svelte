@@ -228,7 +228,7 @@
     autofocus,
   } satisfies PopoverButtonSlot)
 
-  const type = useResolveButtonType({
+  const buttonType = useResolveButtonType({
     get props() {
       return { type: theirProps.type ?? undefined, as: element ? element.tagName.toLowerCase() : DEFAULT_BUTTON_TAG }
     },
@@ -240,7 +240,7 @@
     isWithinPanel
       ? mergeProps(
           {
-            type,
+            type: buttonType.type,
             onkeydown: handleKeyDown,
             onclick: handleClick,
             disabled: disabled || undefined,
@@ -253,7 +253,7 @@
       : mergeProps(
           {
             id: context.buttonId,
-            type,
+            type: buttonType.type,
             "aria-expanded": context.popoverState === PopoverStates.Open,
             "aria-controls": context.panel ? context.panelId : undefined,
             disabled: disabled || undefined,
