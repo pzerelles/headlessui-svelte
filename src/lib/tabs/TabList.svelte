@@ -30,4 +30,4 @@
   })
 </script>
 
-<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_LIST_TAG} name="TabList" bind:element />
+<ElementOrComponent {ourProps} {theirProps} slots={slot} defaultTag={DEFAULT_LIST_TAG} name="TabList" bind:element />

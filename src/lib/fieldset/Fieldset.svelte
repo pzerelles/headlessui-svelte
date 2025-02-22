@@ -46,4 +46,11 @@
   )
 </script>
 
-<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_FIELDSET_TAG} name="Fieldset" bind:element />
+<ElementOrComponent
+  {ourProps}
+  {theirProps}
+  slots={slot}
+  defaultTag={DEFAULT_FIELDSET_TAG}
+  name="Fieldset"
+  bind:element
+/>

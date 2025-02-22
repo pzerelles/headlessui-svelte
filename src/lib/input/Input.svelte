@@ -90,7 +90,7 @@
 <ElementOrComponent
   {ourProps}
   {theirProps}
-  {slot}
+  slots={slot}
   defaultTag={DEFAULT_INPUT_TAG}
   name="Input"
   bind:element

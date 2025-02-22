@@ -77,7 +77,7 @@
   <ElementOrComponent
     {ourProps}
     {theirProps}
-    {slot}
+    slots={slot}
     defaultTag={DEFAULT_PANEL_TAG}
     features={PanelRenderFeatures}
     name="TabPanel"

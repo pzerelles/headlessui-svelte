@@ -132,4 +132,11 @@
   } satisfies RadioRenderPropArg)
 </script>
 
-<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_RADIO_TAG} bind:element name="RadioOption" />
+<ElementOrComponent
+  {ourProps}
+  {theirProps}
+  slots={slot}
+  defaultTag={DEFAULT_RADIO_TAG}
+  bind:element
+  name="RadioOption"
+/>

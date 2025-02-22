@@ -22,4 +22,4 @@
   let { element = $bindable(), ...theirProps }: TabPanelsProps = $props()
 </script>
 
-<ElementOrComponent {theirProps} {slot} defaultTag={DEFAULT_PANELS_TAG} name="TabPanel" bind:element />
+<ElementOrComponent {theirProps} slots={slot} defaultTag={DEFAULT_PANELS_TAG} name="TabPanel" bind:element />

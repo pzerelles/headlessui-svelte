@@ -50,4 +50,4 @@
   const ourProps = $derived(mergeProps(focusProps, hoverProps, pressProps))
 </script>
 
-<ElementOrComponent {ourProps} {theirProps} {slot} name="DataInteractive" />
+<ElementOrComponent {ourProps} {theirProps} slots={slot} name="DataInteractive" />

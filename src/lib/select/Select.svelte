@@ -104,7 +104,7 @@
 <ElementOrComponent
   {ourProps}
   {theirProps}
-  {slot}
+  slots={slot}
   defaultTag={DEFAULT_SELECT_TAG}
   name="Select"
   bind:element

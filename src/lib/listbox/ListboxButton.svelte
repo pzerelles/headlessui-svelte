@@ -180,4 +180,11 @@
   )
 </script>
 
-<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_BUTTON_TAG} name="ListboxButton" bind:element />
+<ElementOrComponent
+  {ourProps}
+  {theirProps}
+  slots={slot}
+  defaultTag={DEFAULT_BUTTON_TAG}
+  name="ListboxButton"
+  bind:element
+/>

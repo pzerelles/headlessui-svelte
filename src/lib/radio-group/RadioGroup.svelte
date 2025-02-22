@@ -215,7 +215,7 @@
 <ElementOrComponent
   {ourProps}
   {theirProps}
-  {slot}
+  slots={slot}
   defaultTag={DEFAULT_RADIO_GROUP_TAG}
   bind:element
   name="RadioGroup"

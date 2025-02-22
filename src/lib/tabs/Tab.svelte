@@ -202,4 +202,4 @@
   )
 </script>
 
-<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_TAB_TAG} name="Tab" bind:element />
+<ElementOrComponent {ourProps} {theirProps} slots={slot} defaultTag={DEFAULT_TAB_TAG} name="Tab" bind:element />

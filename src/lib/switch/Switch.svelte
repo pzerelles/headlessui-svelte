@@ -196,4 +196,4 @@
   />
 {/if}
 
-<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_SWITCH_TAG} name="Switch" bind:element />
+<ElementOrComponent {ourProps} {theirProps} slots={slot} defaultTag={DEFAULT_SWITCH_TAG} name="Switch" bind:element />

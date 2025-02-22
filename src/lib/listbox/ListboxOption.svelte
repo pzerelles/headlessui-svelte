@@ -179,5 +179,12 @@
 </script>
 
 {#if selected || !usedInSelectedOption}
-  <ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_OPTION_TAG} name="Listbox" bind:element />
+  <ElementOrComponent
+    {ourProps}
+    {theirProps}
+    slots={slot}
+    defaultTag={DEFAULT_OPTION_TAG}
+    name="Listbox"
+    bind:element
+  />
 {/if}

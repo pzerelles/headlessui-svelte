@@ -144,4 +144,4 @@
   )
 </script>
 
-<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_ITEM_TAG} name="MenuItem" bind:element />
+<ElementOrComponent {ourProps} {theirProps} slots={slot} defaultTag={DEFAULT_ITEM_TAG} name="MenuItem" bind:element />

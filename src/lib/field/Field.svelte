@@ -48,7 +48,7 @@
 <ElementOrComponent
   {ourProps}
   theirProps={{ ...theirProps, children: wrapper }}
-  {slot}
+  slots={slot}
   defaultTag={DEFAULT_FIELD_TAG}
   name="Field"
   bind:element

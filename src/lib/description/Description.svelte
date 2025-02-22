@@ -30,14 +30,14 @@
   })
 
   const disabled = $derived(providedDisabled.current || false)
-  const slot = $derived({ disabled })
+  const slots = $derived({ disabled })
   const ourProps = $derived({ id })
 </script>
 
 <ElementOrComponent
   {ourProps}
   {theirProps}
-  slots={slot}
+  {slots}
   defaultTag={DEFAULT_DESCRIPTION_TAG}
   name="Description"
   bind:element

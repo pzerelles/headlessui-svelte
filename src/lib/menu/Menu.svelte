@@ -77,4 +77,4 @@
   })
 </script>
 
-<ElementOrComponent {theirProps} {slot} name="Menu" />
+<ElementOrComponent {theirProps} slots={slot} name="Menu" />

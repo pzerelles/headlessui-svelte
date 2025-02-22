@@ -196,7 +196,7 @@
 <ElementOrComponent
   {ourProps}
   {theirProps}
-  {slot}
+  slots={slot}
   defaultTag={DEFAULT_CHECKBOX_TAG}
   name="Checkbox"
   bind:element

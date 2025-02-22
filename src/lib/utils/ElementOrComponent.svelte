@@ -6,8 +6,7 @@
   let {
     ourProps,
     theirProps,
-    slots,
-    slot = slots,
+    slots: slot,
     defaultTag,
     features,
     visible = true,
@@ -18,7 +17,6 @@
   }: {
     ourProps?: Expand<Props<any, TSlot> & PropsForFeatures<TFeature>>
     theirProps: Expand<Props<any, TSlot, any>>
-    slot?: TSlot
     slots?: TSlot
     defaultTag?: string
     features?: TFeature

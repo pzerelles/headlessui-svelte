@@ -49,7 +49,7 @@
 
 <ElementOrComponent
   theirProps={{ ...theirProps, ...(theirProps.asChild ? {} : { children: option }) }}
-  slot={{ option }}
+  slots={{ option }}
   defaultTag={DEFAULT_SELECTED_OPTION_TAG}
   name="ListboxSelectedOption"
   bind:element

@@ -135,4 +135,11 @@
   } satisfies RadioOptionRenderPropArg)
 </script>
 
-<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_OPTION_TAG} bind:element name="RadioOption" />
+<ElementOrComponent
+  {ourProps}
+  {theirProps}
+  slots={slot}
+  defaultTag={DEFAULT_OPTION_TAG}
+  bind:element
+  name="RadioOption"
+/>

@@ -93,7 +93,7 @@
 <ElementOrComponent
   {ourProps}
   {theirProps}
-  {slot}
+  slots={slot}
   defaultTag={DEFAULT_TEXTAREA_TAG}
   name="Textarea"
   bind:element

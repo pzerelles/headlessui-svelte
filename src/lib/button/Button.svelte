@@ -63,7 +63,7 @@
     })
   )
 
-  const slot = $derived({
+  const slots = $derived({
     disabled,
     hover,
     focus,
@@ -85,4 +85,4 @@
   )
 </script>
 
-<ElementOrComponent {ourProps} {theirProps} {slot} defaultTag={DEFAULT_BUTTON_TAG} name="Button" bind:element />
+<ElementOrComponent {ourProps} {theirProps} {slots} defaultTag={DEFAULT_BUTTON_TAG} name="Button" bind:element />
