@@ -1,5 +1,12 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.44
+
+### Patch Changes
+
+- 64b25a3: fix: type of PopoverButton
+- 76b6aa6: fix: slot data attributes for some components
+
 ## 2.1.2-next.43
 
 ### Patch Changes
