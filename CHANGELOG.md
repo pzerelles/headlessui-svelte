@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.45
+
+### Patch Changes
+
+- 5d1de85: fix: removed unused import from inner.svelte.ts
+
 ## 2.1.2-next.44
 
 ### Patch Changes

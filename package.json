@@ -1,6 +1,6 @@
 {
   "name": "@pzerelles/headlessui-svelte",
-  "version": "2.1.2-next.44",
+  "version": "2.1.2-next.45",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build && npm run package",
