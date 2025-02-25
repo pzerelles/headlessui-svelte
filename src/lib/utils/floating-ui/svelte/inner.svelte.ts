@@ -1,5 +1,5 @@
 import { getUserAgent } from "./utils.js"
-import { evaluate, max, min, round } from "@floating-ui/utils"
+import { evaluate, max, round } from "@floating-ui/utils"
 import { detectOverflow, offset, type Derivable } from "../svelte-dom/index.js"
 
 import type {
