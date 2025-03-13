@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.46
+
+### Patch Changes
+
+- c12b0a5: feat: add Disclosure components
+
 ## 2.1.2-next.45
 
 ### Patch Changes
