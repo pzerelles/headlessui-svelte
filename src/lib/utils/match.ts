@@ -5,8 +5,8 @@ export function match<TValue extends string | number = string, TReturnValue = un
   ...args: any[]
 ): TReturnValue {
   if (value in lookup) {
-    const returnValue = lookup[value]
-    return typeof returnValue === "function" ? returnValue(...args) : returnValue
+    const returnValue: TReturnValue | ((...args: any[]) => TReturnValue) = lookup[value]
+    return typeof returnValue === "function" ? (returnValue as (...args: any[]) => TReturnValue)(...args) : returnValue
   }
 
   const error = new Error(
