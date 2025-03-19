@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.51
+
+### Patch Changes
+
+- 73bb982: feat: support TransitionChild inside components with useTransition()
+
 ## 2.1.2-next.50
 
 ### Patch Changes
