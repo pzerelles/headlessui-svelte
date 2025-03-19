@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.48
+
+### Patch Changes
+
+- 8d2b013: fix: prevent warning when using asChild without an element
+
 ## 2.1.2-next.47
 
 ### Patch Changes
