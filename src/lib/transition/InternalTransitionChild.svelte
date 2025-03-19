@@ -41,9 +41,7 @@
       // If we have any of the enter/leave classes
       Boolean(props.enter || props.enterFrom || props.enterTo || props.leave || props.leaveFrom || props.leaveTo) ||
       // If the `as` prop is not a Fragment
-      !props.asChild ||
-      // If we have a single child, then we can forward the ref directly
-      props.children !== undefined
+      !props.asChild
     )
   }
 </script>
@@ -118,7 +116,7 @@
     if (!requiresRef) return
 
     if (_state === TreeStates.Visible && container.current === null) {
-      throw new Error("Did you forget to passthrough the `ref` to the actual DOM node?")
+      throw new Error("Did you forget to passthrough the actual DOM node as `element`?")
     }
   })
 
