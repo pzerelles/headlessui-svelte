@@ -60,8 +60,9 @@ export function useTransition(options: {
     start?(show: boolean): void
     end?(show: boolean): void
   }
+  asChild?: boolean
 }): { readonly visible: boolean; readonly data: TransitionData } {
-  const { enabled, element, show, events } = $derived(options)
+  const { enabled, element, show, events, asChild } = $derived(options)
   let visible = $state((() => show)())
 
   let flags = $state(
@@ -88,7 +89,7 @@ export function useTransition(options: {
 
     if (!node) {
       // Retry if the DOM node isn't available yet
-      if (show) {
+      if (show && !asChild) {
         flags |= TransitionState.Enter | TransitionState.Closed
         return d.nextFrame(() => retry(enabled, show, node, d))
       }

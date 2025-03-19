@@ -68,6 +68,9 @@
         ? (usesOpenClosedState.value & State.Open) === State.Open
         : context.disclosureState === DisclosureStates.Open
     },
+    get asChild() {
+      return theirProps.asChild
+    },
   })
 
   const slot = $derived({
