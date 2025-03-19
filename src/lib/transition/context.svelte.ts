@@ -44,7 +44,7 @@ export function useTransitionContext() {
   const context = getContext<TransitionContextValues>("TransitionContext")
 
   if (!context) {
-    throw new Error("A <Transition.Child /> is used but it is missing a parent <Transition /> or <Transition.Root />.")
+    throw new Error("A <TransitionChild /> is used but it is missing a parent <Transition /> or <Transition.Root />.")
   }
 
   return context
@@ -54,7 +54,7 @@ export function useParentNesting() {
   const context = getContext<NestingContextValues>("NestingContext")
 
   if (!context) {
-    throw new Error("A <Transition.Child /> is used but it is missing a parent <Transition /> or <Transition.Root />.")
+    throw new Error("A <TransitionChild /> is used but it is missing a parent <Transition /> or <Transition.Root />.")
   }
 
   return context

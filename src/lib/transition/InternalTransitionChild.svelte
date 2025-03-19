@@ -27,8 +27,8 @@
    *
    * ```tsx
    * <Transition show={true}>
-   *   <Transition.Child enter="duration-100"><div>Child 1</div></Transition.Child>
-   *   <Transition.Child enter="duration-200"><div>Child 2</div></Transition.Child>
+   *   <TransitionChild enter="duration-100"><div>Child 1</div></TransitionChild>
+   *   <TransitionChild enter="duration-200"><div>Child 2</div></TransitionChild>
    * </Transition>
    * ```
    *
@@ -39,9 +39,17 @@
   export function shouldForwardRef(props: TransitionRootProps) {
     return (
       // If we have any of the enter/leave classes
-      Boolean(props.enter || props.enterFrom || props.enterTo || props.leave || props.leaveFrom || props.leaveTo) ||
+      Boolean(
+        props.enter ||
+          props.enterFrom ||
+          props.enterTo ||
+          props.leave ||
+          props.leaveFrom ||
+          props.leaveTo ||
+          props.class
+      ) ||
       // If the `as` prop is not a Fragment
-      !props.asChild
+      props.asChild
     )
   }
 </script>
@@ -86,7 +94,7 @@
   const { register, unregister } = $derived(parentNesting)
 
   onMount(() => {
-    if (requiresRef) {
+    if (requiresRef || element) {
       container.current = element ?? null
       containerElement = element
     }
@@ -113,7 +121,7 @@
   //[state, container, register, unregister, show, strategy]
 
   $effect(() => {
-    if (!requiresRef) return
+    if (!requiresRef && !element) return
 
     if (_state === TreeStates.Visible && container.current === null) {
       throw new Error("Did you forget to passthrough the actual DOM node as `element`?")
@@ -169,7 +177,7 @@
   }
 
   $effect(() => {
-    if (requiresRef && transition) return
+    if ((requiresRef || element) && transition) return
 
     // When we don't transition, then we can complete the transition
     // immediately.
@@ -183,7 +191,7 @@
     if (!transition) return false
 
     // If we don't require a ref, then we can't transition.
-    if (!requiresRef) return false
+    if (!requiresRef && !element) return false
 
     // If the server handoff isn't completed yet, we can't transition.
     //if (!ready) return false
@@ -219,7 +227,7 @@
         classNames(
           // Incoming classes if any
           // all components accept className (but all HTML elements do)
-          theirProps.asChild
+          theirProps.asChild || !requiresRef
             ? undefined
             : typeof theirProps.class === "function"
               ? theirProps.class({ element })
@@ -243,6 +251,7 @@
           !transitionData.transition && show && entered
         )?.trim() || undefined, // If `class` is an empty string, we can omit it
       ...transitionDataAttributes(transitionData),
+      ...(!theirProps.asChild && !requiresRef ? { asChild: true } : {}),
     })
   )
 
