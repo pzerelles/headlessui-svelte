@@ -1,6 +1,12 @@
+import {
+  hasChildren,
+  useNesting,
+  type NestingContextValues,
+  type TransitionContextValues,
+} from "$lib/transition/context.svelte.js"
 import { disposables, useDisposables, type Disposables } from "$lib/utils/disposables.js"
 import { once } from "$lib/utils/once.js"
-import { untrack } from "svelte"
+import { setContext, untrack } from "svelte"
 
 /**
  * ```
@@ -65,6 +71,13 @@ export function useTransition(options: {
   let cancelled = $state(false)
 
   const d = useDisposables()
+
+  const nestingBag = useNesting({
+    done: () => {
+      if (show) return
+      visible = false
+    },
+  })
 
   function retry(enabled: boolean, show: boolean, node: HTMLElement | null | undefined, d: Disposables) {
     if (!enabled) return
@@ -142,7 +155,7 @@ export function useTransition(options: {
 
         flags = 0
 
-        if (!show) {
+        if (!show && !hasChildren(nestingBag)) {
           visible = false
         }
 
@@ -162,6 +175,24 @@ export function useTransition(options: {
     enter: enabled ? !!(flags & TransitionState.Enter) : undefined,
     leave: enabled ? !!(flags & TransitionState.Leave) : undefined,
     transition: enabled ? !!(flags & (TransitionState.Enter | TransitionState.Leave)) : undefined,
+  })
+
+  $effect(() => {
+    if (enabled)
+      untrack(() => {
+        setContext<NestingContextValues>("NestingContext", nestingBag)
+        setContext<TransitionContextValues>("TransitionContext", {
+          get show() {
+            return show
+          },
+          get appear() {
+            return false
+          },
+          get initial() {
+            return false
+          },
+        })
+      })
   })
 
   return {

@@ -21,8 +21,6 @@
 <script lang="ts">
   import { useId } from "$lib/hooks/use-id.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
-  import { mergeProps } from "$lib/utils/render.js"
-  import TransitionChild from "$lib/transition/TransitionChild.svelte"
   import {
     createDisclosurePanelContext,
     DisclosureStates,
