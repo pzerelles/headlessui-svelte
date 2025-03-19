@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.47
+
+### Patch Changes
+
+- 224860c: feat: support Svelte 5.16+ enhanced class attribute
+
 ## 2.1.2-next.46
 
 ### Patch Changes
