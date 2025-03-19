@@ -1,6 +1,5 @@
 <script lang="ts" generics="T">
   import * as Headless from "$lib/index.js"
-  import clsx from "clsx"
   import type { Snippet } from "svelte"
 
   let {
@@ -31,7 +30,7 @@
     {autofocus}
     data-slot="control"
     aria-label={ariaLabel}
-    class={clsx([
+    class={[
       className,
       // Basic layout
       "group relative block w-full",
@@ -45,12 +44,12 @@
       "after:pointer-events-none after:absolute after:inset-0 after:rounded-lg after:ring-inset after:ring-transparent after:data-[focus]:ring-2 after:data-[focus]:ring-blue-500",
       // Disabled state
       "data-[disabled]:opacity-50 before:data-[disabled]:bg-zinc-950/5 before:data-[disabled]:shadow-none",
-    ])}
+    ]}
   >
     <Headless.ListboxSelectedOption
       {options}
       placeholder={placeholder ? _placeholder : undefined}
-      class={clsx([
+      class={[
         // Basic layout
         "relative block w-full appearance-none rounded-lg py-[calc(theme(spacing[2.5])-1px)] sm:py-[calc(theme(spacing[1.5])-1px)]",
         // Set minimum height for when no value is selected
@@ -67,7 +66,7 @@
         "group-data-[invalid]:border-red-500 group-data-[invalid]:group-data-[hover]:border-red-500 group-data-[invalid]:dark:border-red-600 group-data-[invalid]:data-[hover]:dark:border-red-600",
         // Disabled state
         "group-data-[disabled]:border-zinc-950/20 group-data-[disabled]:opacity-100 group-data-[disabled]:dark:border-white/15 group-data-[disabled]:dark:bg-white/[2.5%] dark:data-[hover]:group-data-[disabled]:border-white/15",
-      ])}
+      ]}
     />
     <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
       <svg
@@ -84,7 +83,7 @@
   <Headless.ListboxOptions
     transition
     anchor="selection start"
-    class={clsx(
+    class={[
       // Anchor positioning
       "[--anchor-offset:-1.625rem] [--anchor-padding:theme(spacing.4)] sm:[--anchor-offset:-1.375rem]",
       // Base styles
@@ -98,8 +97,8 @@
       // Shadows
       "shadow-lg ring-1 ring-zinc-950/10 dark:ring-inset dark:ring-white/10",
       // Transitions
-      "transition-opacity duration-100 ease-in data-[transition]:pointer-events-none data-[closed]:data-[leave]:opacity-0"
-    )}
+      "transition-opacity duration-100 ease-in data-[transition]:pointer-events-none data-[closed]:data-[leave]:opacity-0",
+    ]}
   >
     {@render options()}
   </Headless.ListboxOptions>

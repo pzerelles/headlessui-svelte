@@ -2,7 +2,6 @@
   import Button from "$lib/button/Button.svelte"
   import Transition from "$lib/transition/Transition.svelte"
   import { ArrowPathIcon } from "@pzerelles/heroicons-svelte/16/solid"
-  import clsx from "clsx"
 
   let isShowing = $state(true)
   let element = $state<HTMLElement>()
@@ -18,12 +17,12 @@
               <div
                 bind:this={element}
                 {...props}
-                class={clsx(
+                class={[
                   "size-full rounded-xl bg-white shadow-lg transition duration-500",
                   "data-[closed]:rotate-[-120deg] data-[closed]:scale-50 data-[closed]:opacity-0",
                   "data-[leave]:duration-200 data-[leave]:ease-in-out",
-                  "data-[leave]:data-[closed]:rotate-[0deg] data-[leave]:data-[closed]:scale-95"
-                )}
+                  "data-[leave]:data-[closed]:rotate-[0deg] data-[leave]:data-[closed]:scale-95",
+                ]}
               ></div>
             {/snippet}
           </Transition>

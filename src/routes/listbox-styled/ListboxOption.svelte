@@ -1,15 +1,15 @@
 <script lang="ts" generics="T">
   import * as Headless from "$lib/index.js"
-  import clsx from "clsx"
   import type { Snippet } from "svelte"
+  import type { ClassValue } from "svelte/elements"
 
   const {
     children: theirChildren,
     class: className,
     ...theirProps
-  }: { class?: string; children: Snippet } & Omit<Headless.ListboxOptionProps<T>, "class" | "children"> = $props()
+  }: { class?: ClassValue; children: Snippet } & Omit<Headless.ListboxOptionProps<T>, "class" | "children"> = $props()
 
-  const sharedClasses = clsx(
+  const sharedClasses = [
     // Base
     "flex min-w-0 items-center",
     // Icons
@@ -17,8 +17,8 @@
     "[&>[data-slot=icon]]:text-zinc-500 [&>[data-slot=icon]]:group-data-[focus]/option:text-white [&>[data-slot=icon]]:dark:text-zinc-400",
     "forced-colors:[&>[data-slot=icon]]:text-[CanvasText] forced-colors:[&>[data-slot=icon]]:group-data-[focus]/option:text-[Canvas]",
     // Avatars
-    "[&>[data-slot=avatar]]:-mx-0.5 [&>[data-slot=avatar]]:size-6 sm:[&>[data-slot=avatar]]:size-5"
-  )
+    "[&>[data-slot=avatar]]:-mx-0.5 [&>[data-slot=avatar]]:size-6 sm:[&>[data-slot=avatar]]:size-5",
+  ]
 
   let element = $state<HTMLElement>()
 </script>
@@ -26,11 +26,11 @@
 <Headless.ListboxOption asChild {...theirProps} {element}>
   {#snippet children({ selectedOption, props })}
     {#if selectedOption}
-      <div bind:this={element} class={clsx(className, sharedClasses)} {...props}>{@render theirChildren()}</div>
+      <div bind:this={element} class={[className, sharedClasses]} {...props}>{@render theirChildren()}</div>
     {:else}
       <div
         bind:this={element}
-        class={clsx(
+        class={[
           // Basic layout
           "group/option grid cursor-default grid-cols-[theme(spacing.5),1fr] items-baseline gap-x-2 rounded-lg py-2.5 pl-2 pr-3.5 sm:grid-cols-[theme(spacing.4),1fr] sm:py-1.5 sm:pl-1.5 sm:pr-3",
           // Typography
@@ -40,8 +40,8 @@
           // Forced colors mode
           "forced-color-adjust-none forced-colors:data-[focus]:bg-[Highlight] forced-colors:data-[focus]:text-[HighlightText]",
           // Disabled
-          "data-[disabled]:opacity-50"
-        )}
+          "data-[disabled]:opacity-50",
+        ]}
         {...props}
       >
         <svg
@@ -52,7 +52,7 @@
         >
           <path d="M4 8.5l3 3L12 4" stroke-width={1.5} stroke-linecap="round" stroke-linejoin="round" />
         </svg>
-        <span class={clsx(className, sharedClasses, "col-start-2")}>{@render theirChildren()}</span>
+        <span class={[className, sharedClasses, "col-start-2"]}>{@render theirChildren()}</span>
       </div>
     {/if}
   {/snippet}

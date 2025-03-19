@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Snippet } from "svelte"
-import type { SvelteHTMLElements } from "svelte/elements"
+import type { ClassValue, SvelteHTMLElements } from "svelte/elements"
 
 export type Expand<T> = T extends infer O ? { [K in keyof O]: O[K] } : never
 
@@ -14,7 +14,7 @@ export type Props<
 > = Omit<TTag extends string ? SvelteHTMLElements[TTag] : TTag, "asChild" | "children" | "class" | keyof Overrides> & {
   asChild?: boolean
   children?: Snippet<[TSlot & { props?: Record<string, any> }]>
-  class?: string | null | ((bag: TSlot) => string)
+  class?: ClassValue | null | ((bag: TSlot) => string)
 } & Overrides
 
 export type PropsAsChild<TSlot extends Record<string, any> = {}, Overrides = {}> = {

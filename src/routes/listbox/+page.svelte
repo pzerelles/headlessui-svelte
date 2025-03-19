@@ -4,7 +4,6 @@
   import ListboxOption from "$lib/listbox/ListboxOption.svelte"
   import ListboxOptions from "$lib/listbox/ListboxOptions.svelte"
   import { CheckIcon, ChevronDownIcon } from "@pzerelles/heroicons-svelte/20/solid"
-  import clsx from "clsx"
 
   const people = [
     { id: 1, name: "Tom Cook" },
@@ -23,10 +22,10 @@
     <div class="flex gap-8">
       <Listbox value={selected} onchange={(value) => (selected = value)}>
         <ListboxButton
-          class={clsx(
+          class={[
             "relative block w-full rounded-lg bg-white/5 py-1.5 pl-3 pr-8 text-left text-sm/6 text-white",
-            "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
-          )}
+            "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25",
+          ]}
         >
           {selected.name}
           <ChevronDownIcon
@@ -37,10 +36,10 @@
         <ListboxOptions
           transition
           anchor="bottom end"
-          class={clsx(
+          class={[
             "w-[var(--button-width)] rounded-xl border border-white/5 bg-white/5 p-1 [--anchor-gap:var(--spacing-1)] focus:outline-none",
-            "transition duration-100 ease-in data-[leave]:data-[closed]:opacity-0"
-          )}
+            "transition duration-100 ease-in data-[leave]:data-[closed]:opacity-0",
+          ]}
         >
           {#each people as person (person.name)}
             <ListboxOption
@@ -56,10 +55,10 @@
 
       <Listbox value={multiSelected} onchange={(value) => (multiSelected = value)} multiple>
         <ListboxButton
-          class={clsx(
+          class={[
             "relative block w-full rounded-lg bg-white/5 py-1.5 pl-3 pr-8 text-left text-sm/6 text-white",
-            "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
-          )}
+            "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25",
+          ]}
         >
           Select multiple
           <ChevronDownIcon
@@ -70,10 +69,10 @@
         <ListboxOptions
           transition
           anchor="bottom end"
-          class={clsx(
+          class={[
             "w-[var(--button-width)] rounded-xl border border-white/5 bg-white/5 p-1 [--anchor-gap:var(--spacing-1)] focus:outline-none",
-            "transition duration-100 ease-in data-[leave]:data-[closed]:opacity-0"
-          )}
+            "transition duration-100 ease-in data-[leave]:data-[closed]:opacity-0",
+          ]}
         >
           {#each people as person (person.name)}
             <ListboxOption
