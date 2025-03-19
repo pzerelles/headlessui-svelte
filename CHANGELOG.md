@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.49
+
+### Patch Changes
+
+- b177d65: fix: only render Transition as <div> if it has class or enter/leave classes
+
 ## 2.1.2-next.48
 
 ### Patch Changes
