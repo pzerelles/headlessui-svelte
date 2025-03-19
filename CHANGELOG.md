@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.50
+
+### Patch Changes
+
+- f634816: fix: add ClassValue support to Legend and Listbox
+
 ## 2.1.2-next.49
 
 ### Patch Changes
