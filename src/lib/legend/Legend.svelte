@@ -1,12 +1,13 @@
 <script lang="ts" module>
   import { Label } from "$lib/index.js"
   import type { Props } from "$lib/utils/types.js"
+  import type { ClassValue } from "svelte/elements"
 
   const DEFAULT_LEGEND_TAG = "div" as const
 
   export type LegendOwnProps = {
     element?: HTMLElement
-    class?: string
+    class?: ClassValue
   }
 
   export type LegendProps = Props<typeof DEFAULT_LEGEND_TAG, {}, LegendOwnProps>

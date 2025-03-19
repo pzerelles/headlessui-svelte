@@ -1,6 +1,7 @@
 <script lang="ts" generics="T">
   import * as Headless from "$lib/index.js"
   import type { Snippet } from "svelte"
+  import type { ClassValue } from "svelte/elements"
 
   let {
     class: className,
@@ -10,7 +11,7 @@
     children: options,
     ...props
   }: {
-    class?: string
+    class?: ClassValue
     placeholder?: string
     autofocus?: boolean
     "aria-label"?: string
