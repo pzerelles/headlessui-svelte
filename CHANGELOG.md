@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.52
+
+### Patch Changes
+
+- d22f791: fix: allow useTransition() with asChild
+
 ## 2.1.2-next.51
 
 ### Patch Changes
