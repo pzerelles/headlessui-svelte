@@ -178,23 +178,22 @@ export function useTransition(options: {
     transition: enabled ? !!(flags & (TransitionState.Enter | TransitionState.Leave)) : undefined,
   })
 
-  $effect(() => {
-    if (enabled)
-      untrack(() => {
-        setContext<NestingContextValues>("NestingContext", nestingBag)
-        setContext<TransitionContextValues>("TransitionContext", {
-          get show() {
-            return show
-          },
-          get appear() {
-            return false
-          },
-          get initial() {
-            return false
-          },
-        })
+  ;(() => {
+    if (enabled) {
+      setContext<NestingContextValues>("NestingContext", nestingBag)
+      setContext<TransitionContextValues>("TransitionContext", {
+        get show() {
+          return show
+        },
+        get appear() {
+          return false
+        },
+        get initial() {
+          return false
+        },
       })
-  })
+    }
+  })()
 
   return {
     get visible() {
