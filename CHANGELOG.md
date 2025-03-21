@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.53
+
+### Patch Changes
+
+- 0dd1065: fix: set TransitionContext earlier
+
 ## 2.1.2-next.52
 
 ### Patch Changes
