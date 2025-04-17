@@ -45,7 +45,7 @@
   let {
     element = $bindable(),
     id = `headlessui-radiogroup-${internalId}`,
-    value: controlledValue,
+    value: controlledValue = $bindable(),
     form,
     name,
     onchange: controlledOnChange,
