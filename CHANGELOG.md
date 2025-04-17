@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.54
+
+### Patch Changes
+
+- e405842: fix: correctly merge disabled prop with disabled provider value for RadioGroup and Select
+
 ## 2.1.2-next.53
 
 ### Patch Changes
