@@ -49,7 +49,7 @@
     ...theirProps
   }: SelectProps = $props()
 
-  const disabled = $derived(providedDisabled.current ?? theirDisabled)
+  const disabled = $derived(providedDisabled.current || theirDisabled)
   const labelledBy = useLabelledBy()
   const describedBy = useDescribedBy()
 

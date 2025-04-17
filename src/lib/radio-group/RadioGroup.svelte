@@ -59,7 +59,7 @@
   let _state = createState<TType>()
   const options = $derived(_state.options)
 
-  const disabled = $derived(providedDisabled.current ?? theirDisabled)
+  const disabled = $derived(providedDisabled.current || theirDisabled)
   const labelledBy = useLabelledBy()
   const describedBy = useDescribedBy()
 
