@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.55
+
+### Patch Changes
+
+- 300319c: fix: make RadioGroup value bindable
+
 ## 2.1.2-next.54
 
 ### Patch Changes
