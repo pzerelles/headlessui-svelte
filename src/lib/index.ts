@@ -23,3 +23,5 @@ export * from "./utils/index.js"
 
 export * from "./hooks/use-id.js"
 export * from "./hooks/use-disabled.js"
+export * from "./hooks/use-outside-click.svelte.js"
+export * from "./hooks/use-escape.svelte.js"
