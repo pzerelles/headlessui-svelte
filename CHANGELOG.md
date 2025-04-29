@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.56
+
+### Patch Changes
+
+- c036919: feat: export useOutsideClick and useEscape hooks
+
 ## 2.1.2-next.55
 
 ### Patch Changes
