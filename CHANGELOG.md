@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.57
+
+### Patch Changes
+
+- 80a8e37: fix: leave data-closed at end of transition to work with coordinated transitions and varying durations
+
 ## 2.1.2-next.56
 
 ### Patch Changes
