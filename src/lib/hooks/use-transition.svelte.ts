@@ -154,7 +154,8 @@ export function useTransition(options: {
 
         inFlight = false
 
-        flags = 0
+        // keep closed state if show is false for data-closed to work correctly
+        flags = show ? 0 : TransitionState.Closed
 
         if (!show && !hasChildren(nestingBag)) {
           visible = false
