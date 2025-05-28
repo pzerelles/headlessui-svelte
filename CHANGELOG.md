@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.58
+
+### Patch Changes
+
+- 6fdece1: feat: export hooks useActivePress, useFocusRing and useHover
+
 ## 2.1.2-next.57
 
 ### Patch Changes
