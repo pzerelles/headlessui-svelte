@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.59
+
+### Patch Changes
+
+- 0e88a27: fix: add PortalWrapper to apply nested portal context only to children
+
 ## 2.1.2-next.58
 
 ### Patch Changes
