@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.60
+
+### Patch Changes
+
+- 73b186c: fix: remove debug $inspect from use-root-containers
+
 ## 2.1.2-next.59
 
 ### Patch Changes
