@@ -9,7 +9,6 @@ export function useRootContainers(
     mainTreeNode?: HTMLElement | undefined | null
   } = {}
 ) {
-  $inspect(options)
   const {
     defaultContainers = [],
     portals,
