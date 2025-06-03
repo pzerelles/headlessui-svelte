@@ -9,6 +9,7 @@ export function useRootContainers(
     mainTreeNode?: HTMLElement | undefined | null
   } = {}
 ) {
+  $inspect(options)
   const {
     defaultContainers = [],
     portals,
@@ -25,7 +26,7 @@ export function useRootContainers(
     // Resolve default containers
     for (const container of defaultContainers) {
       if (!container) continue
-      containers.push(container)
+      if (container instanceof HTMLElement) containers.push(container)
     }
 
     // Resolve portal containers

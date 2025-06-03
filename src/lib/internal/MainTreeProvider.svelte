@@ -93,6 +93,6 @@
 </script>
 
 {#if children}{@render children()}{/if}
-{#if resolvedMainTreeNode === null}
+{#if resolvedMainTreeNode.node === null}
   <Hidden features={HiddenFeatures.Hidden} bind:element={el} />
 {/if}

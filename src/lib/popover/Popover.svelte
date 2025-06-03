@@ -38,6 +38,7 @@
   import { createCloseContext } from "$lib/internal/close-provider.js"
   import { createOpenClosedContext, State } from "$lib/internal/open-closed.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
+  import PortalWrapper from "$lib/portal/PortalWrapper.svelte"
 
   let { element = $bindable(), __demoMode = false, ...theirProps }: PopoverProps = $props()
 
@@ -224,5 +225,7 @@
 </script>
 
 <MainTreeProvider node={mainTreeNode.node}>
-  <ElementOrComponent {theirProps} slots={slot} defaultTag={DEFAULT_POPOVER_TAG} name="Popover" bind:element />
+  <PortalWrapper context={nestedPortals}>
+    <ElementOrComponent {theirProps} slots={slot} defaultTag={DEFAULT_POPOVER_TAG} name="Popover" bind:element />
+  </PortalWrapper>
 </MainTreeProvider>

@@ -32,6 +32,13 @@
   const _state = useDialogContext("Dialog.Panel")
   const { dialogState, unmount } = $derived(_state)
 
+  $effect(() => {
+    _state.panelRef = element ?? null
+    return () => {
+      _state.panelRef = null
+    }
+  })
+
   const slot = $derived({ open: dialogState === DialogStates.Open } satisfies PanelRenderPropArg)
 
   // Prevent the click events inside the Dialog.Panel from bubbling through the React Tree which

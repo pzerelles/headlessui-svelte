@@ -56,7 +56,7 @@
 
   // ---
 
-  type PortalParentContext = {
+  export type PortalParentContext = {
     register: (portal: HTMLElement) => () => void
     unregister: (portal: HTMLElement) => void
     readonly portals: HTMLElement[]
@@ -85,7 +85,6 @@
         return portals
       },
     }
-    setContext("PortalParentContext", context)
 
     return context
   }
