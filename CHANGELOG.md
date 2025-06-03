@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.61
+
+### Patch Changes
+
+- 6d8941b: fix: add missing default to exports
+
 ## 2.1.2-next.60
 
 ### Patch Changes
