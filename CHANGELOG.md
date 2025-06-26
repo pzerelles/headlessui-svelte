@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.62
+
+### Patch Changes
+
+- 768f168: fix: hidden inputs for form fields
+
 ## 2.1.2-next.61
 
 ### Patch Changes
