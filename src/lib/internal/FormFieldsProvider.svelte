@@ -1,17 +1,23 @@
-<script lang="ts">
-  import type { Snippet } from "svelte"
-  import Hidden, { HiddenFeatures } from "./Hidden.svelte"
-  import { createFormFieldsContext } from "./form-fields.svelte.js"
-
-  const { children }: { children?: Snippet } = $props()
-
-  const context = createFormFieldsContext()
-  const { fields } = $derived(context)
+<script lang="ts" module>
+  export type FormFieldsContext = {
+    target: HTMLElement | undefined
+  }
 </script>
 
-{#if children}{@render children()}{/if}
-<Hidden features={HiddenFeatures.Hidden}>
-  {#each fields as field}
-    {@render field()}
-  {/each}
-</Hidden>
+<script lang="ts">
+  import { setContext, type Snippet } from "svelte"
+  import Hidden, { HiddenFeatures } from "./Hidden.svelte"
+
+  const { children }: { children: Snippet } = $props()
+
+  let target = $state<HTMLElement>()
+  const context: FormFieldsContext = {
+    get target() {
+      return target
+    },
+  }
+  setContext("FormFieldsContext", context)
+</script>
+
+{@render children()}
+<Hidden features={HiddenFeatures.Hidden} bind:element={target} />

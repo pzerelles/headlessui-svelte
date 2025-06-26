@@ -2,9 +2,9 @@
   import { disposables } from "../utils/disposables.js"
   import { objectToFormEntries } from "../utils/form.js"
   import FormResolver from "./FormResolver.svelte"
-  import { hoistFormFields } from "./form-fields.svelte.js"
   import Hidden, { HiddenFeatures } from "./Hidden.svelte"
   import { compact } from "../utils/object.js"
+  import HoistFormFields from "./HoistFormFields.svelte"
 
   let {
     data,
@@ -20,7 +20,7 @@
     onReset?: (e: Event) => void
   } = $props()
 
-  let form = $state<HTMLFormElement | null>(null)
+  let form = $state<HTMLFormElement>()
   const d = disposables()
 
   $effect(() => {
@@ -29,30 +29,25 @@
 
     return d.addEventListener(form, "reset", onReset)
   })
+</script>
 
-  const fields = $derived(
-    objectToFormEntries(data).map(([name, value]) =>
-      compact({
+<HoistFormFields>
+  <FormResolver setForm={(value) => (form = value)} {formId} />
+  {#each objectToFormEntries(data) as [name, value]}
+    <Hidden
+      features={HiddenFeatures.Hidden}
+      {...compact({
         key: name,
         as: "input",
         type: "hidden",
+        hidden: true,
+        readOnly: true,
         form: formId,
         disabled,
         name,
         value,
         ...overrides,
-      })
-    )
-  )
-
-  const hoisted = hoistFormFields(formFields)
-</script>
-
-{#snippet formFields()}
-  <FormResolver setForm={(value) => (form = value)} {formId} />
-  {#each fields as props}
-    <Hidden features={HiddenFeatures.Hidden} {...props} />
+      })}
+    />
   {/each}
-{/snippet}
-
-{#if !hoisted}{@render formFields()}{/if}
+</HoistFormFields>

@@ -12,6 +12,13 @@
   let checked = $state(true)
 
   let buttonElement = $state<HTMLButtonElement>()
+
+  const handleSubmit = (event: Event) => {
+    event.preventDefault()
+    const formData = new FormData(event.target as HTMLFormElement) // Get form data
+    const values = Object.fromEntries(formData) // Convert to object
+    console.log(values) // Access form values like values.name, values.email, etc.
+  }
 </script>
 
 <div class="flex h-screen w-screen items-center justify-center gap-4">
@@ -26,15 +33,16 @@
     class="rounded bg-sky-600 px-4 py-2 text-sm text-white data-[hover]:bg-sky-500 data-[hover]:data-[active]:bg-sky-700"
     onclick={() => (checked = !checked)}>Toggle</Button
   >
-  <div class="flex flex-col gap-4">
+  <form class="flex flex-col gap-4" onsubmit={handleSubmit}>
     <DisabledProvider {disabled}>
       <Field class="border border-black p-8 disabled:bg-gray-400">
         <Label class="data-[disabled]:text-gray-400">Enable beta features (bind)</Label>
         <Description>This will give you early access to new features we're developing.</Description>
         <Checkbox
-          name="test"
+          name="test1"
+          value="accept"
           bind:checked
-          class="group block size-4 rounded border bg-white data-[disabled]:cursor-not-allowed data-[checked]:bg-blue-500 data-[checked]:data-[disabled]:bg-gray-500 data-[disabled]:opacity-50"
+          class="group block size-4 rounded border bg-white data-[checked]:bg-blue-500 data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50 data-[checked]:data-[disabled]:bg-gray-500"
         >
           <CheckIcon class="size-3.5 stroke-white stroke-2 opacity-0 group-data-[checked]:opacity-100" />
         </Checkbox>
@@ -43,10 +51,10 @@
         <Label class="data-[disabled]:text-gray-400">Enable beta features (controlled)</Label>
         <Description>This will give you early access to new features we're developing.</Description>
         <Checkbox
-          name="test"
+          name="test2"
           {checked}
           onchange={(value) => {}}
-          class="group block size-4 rounded border bg-white data-[disabled]:cursor-not-allowed data-[checked]:bg-blue-500 data-[checked]:data-[disabled]:bg-gray-500 data-[disabled]:opacity-50"
+          class="group block size-4 rounded border bg-white data-[checked]:bg-blue-500 data-[disabled]:cursor-not-allowed data-[disabled]:opacity-50 data-[checked]:data-[disabled]:bg-gray-500"
         >
           <CheckIcon class="size-3.5 stroke-white stroke-2 opacity-0 group-data-[checked]:opacity-100" />
         </Checkbox>
@@ -55,7 +63,7 @@
         <Label class="data-[disabled]:text-gray-400">Enable beta features (bind)</Label>
         <Description>This will give you early access to new features we're developing.</Description>
         <Switch
-          name="test"
+          name="test3"
           bind:checked
           class="group relative flex h-7 w-14 cursor-pointer rounded-full bg-white/10 p-1 outline outline-gray-400 transition-colors duration-200 ease-in-out focus:outline-none data-[checked]:bg-white/10 data-[focus]:outline-1 data-[focus]:outline-white"
         >
@@ -69,7 +77,7 @@
         <Label class="data-[disabled]:text-gray-400">Enable beta features (controlled)</Label>
         <Description>This will give you early access to new features we're developing.</Description>
         <Switch
-          name="test"
+          name="test4"
           {checked}
           onchange={(value) => {}}
           class="group relative flex h-7 w-14 cursor-pointer rounded-full bg-white/10 p-1 outline outline-gray-400 transition-colors duration-200 ease-in-out focus:outline-none data-[checked]:bg-white/10 data-[focus]:outline-1 data-[focus]:outline-white"
@@ -80,7 +88,12 @@
           ></span>
         </Switch>
       </Field>
+      <Button
+        type="submit"
+        class="rounded bg-sky-600 px-4 py-2 text-sm text-white data-[hover]:bg-sky-500 data-[hover]:data-[active]:bg-sky-700"
+        >Submit</Button
+      >
     </DisabledProvider>
-  </div>
+  </form>
   {disabled}
 </div>

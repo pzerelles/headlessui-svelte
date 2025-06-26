@@ -21,9 +21,5 @@
 </script>
 
 {#if !formId}
-  <Hidden asChild features={HiddenFeatures.Hidden}>
-    {#snippet children({ props })}
-      <input {...props} type="hidden" hidden readonly bind:this={element} />
-    {/snippet}
-  </Hidden>
+  <Hidden features={HiddenFeatures.Hidden} as="input" type="hidden" hidden readonly bind:element />
 {/if}
