@@ -9,14 +9,14 @@
   <PopoverGroup class="flex gap-8">
     <Popover>
       <PopoverButton
-        class="block text-sm/6 font-semibold text-white/50 focus:outline-none data-[active]:text-white data-[hover]:text-white data-[focus]:outline-1 data-[focus]:outline-white"
+        class="block text-sm/6 font-semibold text-white/50 focus:outline-none data-[active]:text-white data-[focus]:outline-1 data-[focus]:outline-white data-[hover]:text-white"
       >
         Products
       </PopoverButton>
       <PopoverPanel
         transition
         anchor="bottom"
-        class="divide-y divide-white/5 rounded-xl bg-white/5 text-sm/6 transition duration-200 ease-in-out [--anchor-gap:theme(spacing.2)] [--anchor-padding:theme(spacing.1)] data-[closed]:-translate-y-1 data-[closed]:opacity-0 data-[anchor~=start]:[--anchor-offset:-6px] data-[anchor~=end]:[--anchor-offset:6px] sm:data-[anchor~=start]:[--anchor-offset:-4px] sm:data-[anchor~=end]:[--anchor-offset:4px]"
+        class="divide-y divide-white/5 rounded-xl bg-white/5 text-sm/6 transition duration-200 ease-in-out [--anchor-gap:theme(spacing.2)] [--anchor-padding:theme(spacing.1)] data-[anchor~=end]:[--anchor-offset:6px] data-[anchor~=start]:[--anchor-offset:-6px] data-[closed]:-translate-y-1 data-[closed]:opacity-0 sm:data-[anchor~=end]:[--anchor-offset:4px] sm:data-[anchor~=start]:[--anchor-offset:-4px]"
       >
         <div class="p-3">
           <a class="block rounded-lg px-3 py-2 transition hover:bg-white/5" href="/">
@@ -42,14 +42,14 @@
     </Popover>
     <Popover>
       <PopoverButton
-        class="block text-sm/6 font-semibold text-white/50 focus:outline-none data-[active]:text-white data-[hover]:text-white data-[focus]:outline-1 data-[focus]:outline-white"
+        class="block text-sm/6 font-semibold text-white/50 focus:outline-none data-[active]:text-white data-[focus]:outline-1 data-[focus]:outline-white data-[hover]:text-white"
       >
         Solutions
       </PopoverButton>
       <PopoverPanel
         transition
         anchor="bottom"
-        class="divide-y divide-white/5 rounded-xl bg-white/5 text-sm/6 transition duration-200 ease-in-out [--anchor-gap:var(--spacing.2)] data-[closed]:-translate-y-1 data-[closed]:opacity-0"
+        class="divide-y divide-white/5 rounded-xl bg-white/5 text-sm/6 transition duration-200 ease-in-out [--anchor-gap:var(--spacing-2)] data-[closed]:-translate-y-1 data-[closed]:opacity-0"
       >
         <div class="p-3">
           <a class="block rounded-lg px-3 py-2 transition hover:bg-white/5" href="/">
