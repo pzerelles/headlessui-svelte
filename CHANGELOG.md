@@ -1,5 +1,12 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.63
+
+### Patch Changes
+
+- e747414: chore: update dependencies
+- da9b933: fix: disabled propagation in Fieldset
+
 ## 2.1.2-next.62
 
 ### Patch Changes
