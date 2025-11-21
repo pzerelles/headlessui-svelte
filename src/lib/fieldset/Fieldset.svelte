@@ -15,20 +15,14 @@
 
 <script lang="ts">
   import { setContext } from "svelte"
-  import { useDisabled } from "../hooks/use-disabled.js"
+  import { provideDisabled, useDisabled } from "../hooks/use-disabled.js"
   import { useLabels } from "$lib/label/context.svelte.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 
   let { element = $bindable(), disabled: ownDisabled = false, ...theirProps }: FieldsetProps = $props()
 
-  const providedDisabled = useDisabled()
-  const disabled = $derived(providedDisabled.current || ownDisabled)
-
-  setContext("DisabledContext", {
-    get value() {
-      return disabled
-    },
-  })
+  const disabledContext = provideDisabled(() => ownDisabled)
+  const { current: disabled } = $derived(disabledContext)
 
   const labelledBy = useLabels()
   const slot = $derived({ disabled })
