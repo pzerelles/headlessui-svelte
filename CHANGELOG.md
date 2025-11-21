@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.64
+
+### Patch Changes
+
+- bb6b239: fix: spacing in popover example page
+
 ## 2.1.2-next.63
 
 ### Patch Changes
