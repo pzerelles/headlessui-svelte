@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.66
+
+### Patch Changes
+
+- ea6a82b: fix: useClose() can return undefined
+
 ## 2.1.2-next.65
 
 ### Patch Changes
