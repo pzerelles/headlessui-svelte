@@ -15,7 +15,7 @@
   import Portal from "$lib/portal/Portal.svelte"
   import PortalGroup from "$lib/portal/PortalGroup.svelte"
   import ForcePortalRoot from "$lib/internal/ForcePortalRoot.svelte"
-  import { createCloseContext } from "$lib/internal/close-provider.js"
+  import { createCloseContext } from "$lib/hooks/use-close.svelte.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
   import { DialogStates, type DialogContext, type StateDefinition } from "./context.svelte.js"
   import { useDescriptions } from "$lib/description/context.svelte.js"

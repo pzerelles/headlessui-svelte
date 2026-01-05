@@ -35,7 +35,7 @@
   import { useEventListener } from "$lib/hooks/use-event-listener.svelte.js"
   import { useOutsideClick } from "$lib/hooks/use-outside-click.svelte.js"
   import { useFloatingProvider } from "$lib/internal/floating-provider.svelte.js"
-  import { createCloseContext } from "$lib/internal/close-provider.js"
+  import { createCloseContext } from "$lib/hooks/use-close.svelte.js"
   import { createOpenClosedContext, State } from "$lib/internal/open-closed.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
   import PortalWrapper from "$lib/portal/PortalWrapper.svelte"

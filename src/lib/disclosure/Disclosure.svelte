@@ -21,7 +21,7 @@
   import { createDisclosureAPIContext, createDisclosureContext, DisclosureStates } from "./context.svelte.js"
   import { getOwnerDocument } from "$lib/utils/owner.js"
   import { createOpenClosedContext, State } from "$lib/internal/open-closed.js"
-  import { createCloseContext } from "$lib/internal/close-provider.js"
+  import { createCloseContext } from "$lib/hooks/use-close.svelte.js"
 
   let { defaultOpen = false, ...theirProps }: DisclosureProps = $props()
 

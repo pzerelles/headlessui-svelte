@@ -22,6 +22,7 @@ export * from "./transition/index.js"
 export * from "./utils/index.js"
 
 export * from "./hooks/use-active-press.svelte.js"
+export * from "./hooks/use-close.svelte.js"
 export * from "./hooks/use-disabled.js"
 export * from "./hooks/use-escape.svelte.js"
 export * from "./hooks/use-focus-ring.svelte.js"
