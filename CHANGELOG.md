@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.65
+
+### Patch Changes
+
+- b36a115: fix: export close context
+
 ## 2.1.2-next.64
 
 ### Patch Changes
