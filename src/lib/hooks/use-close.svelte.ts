@@ -3,7 +3,7 @@ import { getContext, setContext } from "svelte"
 export type CloseContext = { close: () => void }
 
 export function useClose() {
-  return getContext<CloseContext>("CloseContext")
+  return getContext<CloseContext | undefined>("CloseContext")
 }
 
 export function createCloseContext(options: { readonly close: () => void }) {
