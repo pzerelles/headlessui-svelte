@@ -6,6 +6,7 @@ on:
       - main
 
 permissions:
+  id-token: write
   contents: write
   pull-requests: write
 
@@ -19,6 +20,11 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v4
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          registry-url: "https://registry.npmjs.org"
+
       - uses: oven-sh/setup-bun@v2
         name: Install bun
 
@@ -31,4 +37,3 @@ jobs:
           publish: bun run release
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
