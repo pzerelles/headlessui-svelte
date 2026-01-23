@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.68
+
+### Patch Changes
+
+- 5c7025e: feat: add PopupHoverArea
+
 ## 2.1.2-next.67
 
 ### Patch Changes
