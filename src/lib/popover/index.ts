@@ -23,4 +23,10 @@ export {
   type PanelRenderPropArg as PopoverPanelSlot,
   type PopoverPanelOwnProps,
 } from "./PopoverPanel.svelte"
+export {
+  default as PopoverHoverArea,
+  type PopoverHoverAreaProps,
+  type PopoverHoverAreaSlot,
+  type PopoverHoverAreaOwnProps,
+} from "./PopoverHoverArea.svelte"
 export { usePopoverContext } from "./context.svelte.js"
