@@ -141,13 +141,20 @@
         )
   )
 
+  let timeout: NodeJS.Timeout | undefined
+
   $effect(() => {
     if (hover && !visible) {
-      setTimeout(() => {
+      timeout = setTimeout(() => {
+        timeout = undefined
         context.togglePopover()
       }, delay)
-    } else if (!hover && visible) {
-      context.closePopover()
+    } else if (!hover) {
+      if (timeout) {
+        clearTimeout(timeout)
+        timeout = undefined
+      }
+      if (visible) context.closePopover()
     }
   })
 </script>
