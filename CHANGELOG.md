@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.69
+
+### Patch Changes
+
+- 5287cad: fix: clear delay timeout when PopupHoverArea is not hovered anymore
+
 ## 2.1.2-next.68
 
 ### Patch Changes
