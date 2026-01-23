@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.67
+
+### Patch Changes
+
+- 3ffd3ef: feat: export usePopoverContext to use popover as tooltip
+
 ## 2.1.2-next.66
 
 ### Patch Changes
