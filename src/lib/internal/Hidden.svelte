@@ -8,7 +8,6 @@
   const DEFAULT_VISUALLY_HIDDEN_TAG = "span" as const
 
   export type HiddenRenderPropArg = {}
-  type HiddenPropsWeControl = never
   export type HiddenProps = Props<
     "input",
     HiddenRenderPropArg,
@@ -24,7 +23,7 @@
     ...theirProps
   }: HiddenProps = $props()
 
-  let ourProps = {
+  let ourProps = $derived({
     "aria-hidden":
       (features & HiddenFeatures.Focusable) === HiddenFeatures.Focusable
         ? true
@@ -47,7 +46,7 @@
         ? ["display: none"]
         : []),
     ].join("; "),
-  }
+  })
 </script>
 
 <ElementOrComponent {ourProps} {theirProps} defaultTag={as} name="Hidden" bind:element />

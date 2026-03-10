@@ -4,7 +4,11 @@
 
   let { force, children }: { force: boolean; children: Snippet } = $props()
 
-  createPortalRoot({ force })
+  createPortalRoot({
+    get force() {
+      return force
+    },
+  })
 </script>
 
 {#if children}{@render children()}{/if}

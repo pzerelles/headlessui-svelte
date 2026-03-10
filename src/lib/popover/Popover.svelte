@@ -44,8 +44,12 @@
 
   let buttons = $state([])
   const context = createPopoverContext({
-    __demoMode,
-    popoverState: __demoMode ? PopoverStates.Open : PopoverStates.Closed,
+    get __demoMode() {
+      return __demoMode
+    },
+    get popoverState() {
+      return __demoMode ? PopoverStates.Open : PopoverStates.Closed
+    },
     buttons,
   })
   const {

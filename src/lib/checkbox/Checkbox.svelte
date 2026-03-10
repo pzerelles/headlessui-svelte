@@ -77,7 +77,7 @@
     ...theirProps
   }: CheckboxProps<TType> = $props()
 
-  const defaultChecked = _defaultChecked
+  const defaultChecked = $derived(_defaultChecked)
   const controllable = useControllable(
     {
       get controlledValue() {
@@ -87,8 +87,8 @@
         controlledChecked = checked
       },
     },
-    controlledOnChange,
-    defaultChecked ?? false
+    (() => controlledOnChange)(),
+    (() => defaultChecked)() ?? false
   )
   const { value: checked, onchange } = $derived(controllable)
 

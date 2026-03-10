@@ -25,7 +25,7 @@
 
   let { defaultOpen = false, ...theirProps }: DisclosureProps = $props()
 
-  const context = createDisclosureContext(defaultOpen)
+  const context = createDisclosureContext((() => defaultOpen)())
   const { buttonId, disclosureState } = $derived(context)
 
   const close = (focusableElement?: HTMLElement) => {

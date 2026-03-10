@@ -313,7 +313,7 @@
   const providedDisabled = useDisabled()
   const disabled = $derived(providedDisabled.current || ownDisabled)
 
-  const orientation = horizontal ? "horizontal" : "vertical"
+  const orientation = $derived(horizontal ? "horizontal" : "vertical")
   const controllable = useControllable<any>(
     {
       get controlledValue() {
@@ -323,12 +323,12 @@
         controlledValue = value
       },
     },
-    controlledOnChange,
-    defaultValue
+    (() => controlledOnChange)(),
+    (() => defaultValue)()
   )
-  const { value = multiple ? [] : undefined, onchange: theirOnChange } = $derived(controllable)
+  const { value = (() => multiple)() ? [] : undefined, onchange: theirOnChange } = $derived(controllable)
 
-  const _state = stateReducer({
+  const _state = stateReducer((() => ({
     listboxState: __demoMode ? ListboxStates.Open : ListboxStates.Closed,
     options: [],
     searchQuery: "",
@@ -336,7 +336,7 @@
     activationTrigger: ActivationTrigger.Other,
     optionsVisible: false,
     __demoMode,
-  } as StateDefinition<TActualType>)
+  } as StateDefinition<TActualType>))())
 
   type _Data = ListboxDataContext<TActualType>
 
@@ -346,7 +346,7 @@
   let optionsElement = $state<_Data["optionsElement"]>(null)
   const listElements = new SvelteMap<string, HTMLElement | null>()
 
-  const compare = useByComparator(by)
+  const compare = useByComparator((() => by)())
 
   const isSelected = (compareValue: TActualType): boolean =>
     match(data.mode, {

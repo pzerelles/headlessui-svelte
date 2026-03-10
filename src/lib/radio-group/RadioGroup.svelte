@@ -55,15 +55,15 @@
     ...theirProps
   }: RadioGroupProps<TType> = $props()
 
-  const compare = useByComparator(by)
-  let _state = createState<TType>()
+  const compare = useByComparator((() => by)())
+  let _state = createState()
   const options = $derived(_state.options)
 
   const disabled = $derived(providedDisabled.current || theirDisabled)
   const labelledBy = useLabelledBy()
   const describedBy = useDescribedBy()
 
-  const controllable = useControllable<any>(
+  const controllable = useControllable(
     {
       get controlledValue() {
         return controlledValue
@@ -72,8 +72,8 @@
         controlledValue = value
       },
     },
-    controlledOnChange,
-    defaultValue
+    (() => controlledOnChange)(),
+    (() => defaultValue)()
   )
   const { value, onchange } = $derived(controllable)
 
@@ -120,7 +120,7 @@
 
           if (result === FocusResult.Success) {
             let activeOption = options.find((option) => option.element === ownerDocument?.activeElement)
-            if (activeOption) triggerChange(activeOption.propsRef.value)
+            if (activeOption) triggerChange(activeOption.propsRef.value as TType)
           }
         }
         break
@@ -135,7 +135,7 @@
 
           if (result === FocusResult.Success) {
             let activeOption = options.find((option) => option.element === ownerDocument?.activeElement)
-            if (activeOption) triggerChange(activeOption.propsRef.value)
+            if (activeOption) triggerChange(activeOption.propsRef.value as TType)
           }
         }
         break
@@ -146,7 +146,7 @@
           event.stopPropagation()
 
           let activeOption = options.find((option) => option.element === ownerDocument?.activeElement)
-          if (activeOption) triggerChange(activeOption.propsRef.value)
+          if (activeOption) triggerChange(activeOption.propsRef.value as TType)
         }
         break
     }

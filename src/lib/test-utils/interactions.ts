@@ -1,6 +1,5 @@
 import { act, fireEvent } from "@testing-library/svelte"
 import { pointer } from "./fake-pointer.js"
-import type { Awaitable } from "vitest"
 
 function nextFrame(cb: Function): void {
   setImmediate(() => {
@@ -78,7 +77,7 @@ let cancellations: Record<string | typeof Default, Record<string, Set<string>>> 
 
 let order: Record<
   string | typeof Default,
-  ((element: Element, event: Partial<KeyboardEvent | MouseEvent>) => Awaitable<boolean | typeof Ignore | Element>)[]
+  ((element: Element, event: Partial<KeyboardEvent | MouseEvent>) => Promise<boolean | typeof Ignore | Element> | boolean | typeof Ignore | Element)[]
 > = {
   [Default]: [
     function keydown(element, event) {

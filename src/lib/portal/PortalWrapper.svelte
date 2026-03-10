@@ -4,7 +4,7 @@
 
   const { context, children }: { context: PortalParentContext; children: Snippet } = $props()
 
-  setContext("PortalParentContext", context)
+  setContext("PortalParentContext", (() => context)())
 </script>
 
 {@render children()}

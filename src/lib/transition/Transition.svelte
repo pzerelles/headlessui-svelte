@@ -34,15 +34,15 @@
 
   const usesOpenClosedState = useOpenClosed()
 
-  if (show === undefined && usesOpenClosedState !== null) {
+  if ((() => show)() === undefined && usesOpenClosedState !== null) {
     show = (usesOpenClosedState.value & State.Open) === State.Open
   }
 
-  if (show === undefined) {
+  if ((() => show)() === undefined) {
     throw new Error("A <Transition /> is used but it is missing a `show={true | false}` prop.")
   }
 
-  let _state = $state(show ? TreeStates.Visible : TreeStates.Hidden)
+  let _state = $state((() => (show ? TreeStates.Visible : TreeStates.Hidden))())
 
   const nestingBag = useNesting({
     done: () => {
@@ -54,7 +54,7 @@
   let initial = $state(true)
 
   // Change the `initial` value
-  let changes = $state([show])
+  let changes = $state([(() => show)()])
   $effect(() => {
     // We can skip this effect
     if (untrack(() => initial) === false) {
@@ -91,7 +91,7 @@
   setContext<NestingContextValues>("NestingContext", nestingBag)
   setContext<TransitionContextValues>("TransitionContext", {
     get show() {
-      return show
+      return show ?? false
     },
     get appear() {
       return appear
