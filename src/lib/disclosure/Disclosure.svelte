@@ -12,8 +12,6 @@
   }
 
   export type DisclosureProps = Props<typeof DEFAULT_DISCLOSURE_TAG, DisclosureRenderPropArg, DisclosureOwnProps>
-
-  export * from "./context.svelte.js"
 </script>
 
 <script lang="ts">

@@ -36,7 +36,7 @@
     useData,
     ValueMode,
     type ListboxOptionDataRef,
-  } from "./Listbox.svelte"
+  } from "./context.svelte.js"
   import { disposables } from "$lib/utils/disposables.js"
   import { Focus } from "$lib/utils/calculate-active-index.js"
   import { getContext, onMount } from "svelte"

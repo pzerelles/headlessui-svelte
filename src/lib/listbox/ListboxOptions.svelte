@@ -37,7 +37,7 @@
 
 <script lang="ts">
   import { useId } from "$lib/hooks/use-id.js"
-  import { ListboxStates, useActions, useData, ValueMode, type ListboxDataContext } from "./Listbox.svelte"
+  import { ListboxStates, useActions, useData, ValueMode, type ListboxDataContext } from "./context.svelte.js"
   import { getOwnerDocument } from "$lib/utils/owner.js"
   import { State, useOpenClosed } from "$lib/internal/open-closed.js"
   import { transitionDataAttributes, useTransition } from "$lib/hooks/use-transition.svelte.js"

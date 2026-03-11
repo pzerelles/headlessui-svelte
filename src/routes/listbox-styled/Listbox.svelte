@@ -1,5 +1,8 @@
 <script lang="ts" generics="T">
-  import * as Headless from "$lib/index.js"
+  import Listbox, { type ListboxProps } from "$lib/listbox/Listbox.svelte"
+  import ListboxButton from "$lib/listbox/ListboxButton.svelte"
+  import ListboxSelectedOption from "$lib/listbox/ListboxSelectedOption.svelte"
+  import ListboxOptions from "$lib/listbox/ListboxOptions.svelte"
   import type { Snippet } from "svelte"
   import type { ClassValue } from "svelte/elements"
 
@@ -16,18 +19,15 @@
     autofocus?: boolean
     "aria-label"?: string
     children: Snippet
-  } & Omit<
-    Headless.ListboxProps<T>,
-    "multiple" | "class" | "placeholder" | "autofocus" | "aria-label" | "children"
-  > = $props()
+  } & Omit<ListboxProps<T>, "multiple" | "class" | "placeholder" | "autofocus" | "aria-label" | "children"> = $props()
 </script>
 
 {#snippet _placeholder()}
   <span class="block truncate text-zinc-500">{placeholder}</span>
 {/snippet}
 
-<Headless.Listbox {...props} multiple={false}>
-  <Headless.ListboxButton
+<Listbox {...props} multiple={false}>
+  <ListboxButton
     {autofocus}
     data-slot="control"
     aria-label={ariaLabel}
@@ -42,12 +42,12 @@
       // Hide default focus styles
       "focus:outline-none",
       // Focus ring
-      "after:pointer-events-none after:absolute after:inset-0 after:rounded-lg after:ring-inset after:ring-transparent after:data-[focus]:ring-2 after:data-[focus]:ring-blue-500",
+      "after:pointer-events-none after:absolute after:inset-0 after:rounded-lg after:ring-transparent after:ring-inset after:data-[focus]:ring-2 after:data-[focus]:ring-blue-500",
       // Disabled state
       "data-[disabled]:opacity-50 before:data-[disabled]:bg-zinc-950/5 before:data-[disabled]:shadow-none",
     ]}
   >
-    <Headless.ListboxSelectedOption
+    <ListboxSelectedOption
       {options}
       placeholder={placeholder ? _placeholder : undefined}
       class={[
@@ -56,7 +56,7 @@
         // Set minimum height for when no value is selected
         "min-h-11 sm:min-h-9",
         // Horizontal padding
-        "pl-[calc(theme(spacing[3.5])-1px)] pr-[calc(theme(spacing.7)-1px)] sm:pl-[calc(theme(spacing.3)-1px)]",
+        "pr-[calc(theme(spacing.7)-1px)] pl-[calc(theme(spacing[3.5])-1px)] sm:pl-[calc(theme(spacing.3)-1px)]",
         // Typography
         "text-left text-base/6 text-zinc-950 placeholder:text-zinc-500 sm:text-sm/6 dark:text-white forced-colors:text-[CanvasText]",
         // Border
@@ -80,15 +80,15 @@
         <path d="M10.25 5.25L8 3L5.75 5.25" stroke-width={1.5} stroke-linecap="round" stroke-linejoin="round" />
       </svg>
     </span>
-  </Headless.ListboxButton>
-  <Headless.ListboxOptions
+  </ListboxButton>
+  <ListboxOptions
     transition
     anchor="selection start"
     class={[
       // Anchor positioning
       "[--anchor-offset:-1.625rem] [--anchor-padding:theme(spacing.4)] sm:[--anchor-offset:-1.375rem]",
       // Base styles
-      "isolate w-max min-w-[calc(var(--button-width)+1.75rem)] select-none scroll-py-1 rounded-xl p-1",
+      "isolate w-max min-w-[calc(var(--button-width)+1.75rem)] scroll-py-1 rounded-xl p-1 select-none",
       // Invisible border that is only visible in `forced-colors` mode for accessibility purposes
       "outline outline-1 outline-transparent focus:outline-none",
       // Handle scrolling when menu won't fit in viewport
@@ -96,11 +96,11 @@
       // Popover background
       "bg-white/75 backdrop-blur-xl dark:bg-zinc-800/75",
       // Shadows
-      "shadow-lg ring-1 ring-zinc-950/10 dark:ring-inset dark:ring-white/10",
+      "shadow-lg ring-1 ring-zinc-950/10 dark:ring-white/10 dark:ring-inset",
       // Transitions
-      "transition-opacity duration-100 ease-in data-[transition]:pointer-events-none data-[closed]:data-[leave]:opacity-0",
+      "transition-opacity duration-100 ease-in data-[closed]:data-[leave]:opacity-0 data-[transition]:pointer-events-none",
     ]}
   >
     {@render options()}
-  </Headless.ListboxOptions>
-</Headless.Listbox>
+  </ListboxOptions>
+</Listbox>

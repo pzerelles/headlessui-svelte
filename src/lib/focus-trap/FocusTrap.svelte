@@ -37,7 +37,7 @@
 
   const DEFAULT_FOCUS_TRAP_TAG = "div" as const
 
-  export * from "./FocusTrapFeatures.js"
+  export { FocusTrapFeatures } from "./FocusTrapFeatures.js"
 
   type FocusTrapPropsWeControl = never
 
