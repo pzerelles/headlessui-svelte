@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.2-next.71
+
+### Patch Changes
+
+- 3be0086: fix: portal not being removed after update to Svelte 5.53.10
+
 ## 2.1.2-next.70
 
 ### Patch Changes
