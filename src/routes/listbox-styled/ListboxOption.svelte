@@ -1,5 +1,5 @@
 <script lang="ts" generics="T">
-  import * as Headless from "$lib/index.js"
+  import ListboxOption, { type ListboxOptionProps } from "$lib/listbox/ListboxOption.svelte"
   import type { Snippet } from "svelte"
   import type { ClassValue } from "svelte/elements"
 
@@ -7,7 +7,7 @@
     children: theirChildren,
     class: className,
     ...theirProps
-  }: { class?: ClassValue; children: Snippet } & Omit<Headless.ListboxOptionProps<T>, "class" | "children"> = $props()
+  }: { class?: ClassValue; children: Snippet } & Omit<ListboxOptionProps<T>, "class" | "children"> = $props()
 
   const sharedClasses = [
     // Base
@@ -23,7 +23,7 @@
   let element = $state<HTMLElement>()
 </script>
 
-<Headless.ListboxOption asChild {...theirProps} {element}>
+<ListboxOption asChild {...theirProps} {element}>
   {#snippet children({ selectedOption, props })}
     {#if selectedOption}
       <div bind:this={element} class={[className, sharedClasses]} {...props}>{@render theirChildren()}</div>
@@ -32,7 +32,7 @@
         bind:this={element}
         class={[
           // Basic layout
-          "group/option grid cursor-default grid-cols-[theme(spacing.5),1fr] items-baseline gap-x-2 rounded-lg py-2.5 pl-2 pr-3.5 sm:grid-cols-[theme(spacing.4),1fr] sm:py-1.5 sm:pl-1.5 sm:pr-3",
+          "group/option grid cursor-default grid-cols-[theme(spacing.5),1fr] items-baseline gap-x-2 rounded-lg py-2.5 pr-3.5 pl-2 sm:grid-cols-[theme(spacing.4),1fr] sm:py-1.5 sm:pr-3 sm:pl-1.5",
           // Typography
           "text-base/6 text-zinc-950 sm:text-sm/6 dark:text-white forced-colors:text-[CanvasText]",
           // Focus
@@ -56,4 +56,4 @@
       </div>
     {/if}
   {/snippet}
-</Headless.ListboxOption>
+</ListboxOption>

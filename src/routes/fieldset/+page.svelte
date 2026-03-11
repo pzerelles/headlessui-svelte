@@ -1,19 +1,17 @@
 <script lang="ts">
-  import {
-    Fieldset,
-    Legend,
-    Field,
-    Label,
-    Input,
-    Description,
-    Select,
-    Textarea,
-    Listbox,
-    ListboxButton,
-    ListboxOptions,
-    ListboxOption,
-  } from "$lib/index.js"
+  import Legend from "$lib/legend/Legend.svelte"
+  import Field from "$lib/field/Field.svelte"
+  import Label from "$lib/label/Label.svelte"
+  import Input from "$lib/input/Input.svelte"
+  import Description from "$lib/description/Description.svelte"
+  import Select from "$lib/select/Select.svelte"
+  import Textarea from "$lib/textarea/Textarea.svelte"
+  import Listbox from "$lib/listbox/Listbox.svelte"
   import { ChevronDownIcon, CheckIcon } from "@pzerelles/heroicons-svelte/16/solid"
+  import Fieldset from "$lib/fieldset/Fieldset.svelte"
+  import ListboxButton from "$lib/listbox/ListboxButton.svelte"
+  import ListboxOptions from "$lib/listbox/ListboxOptions.svelte"
+  import ListboxOption from "$lib/listbox/ListboxOption.svelte"
 
   const people = [
     { id: 1, name: "Durward Reynolds" },
@@ -57,7 +55,7 @@
               <option>United States</option>
             </Select>
             <ChevronDownIcon
-              class="group pointer-events-none absolute right-2.5 top-2.5 size-4 fill-white/60"
+              class="group pointer-events-none absolute top-2.5 right-2.5 size-4 fill-white/60"
               aria-hidden="true"
             />
           </div>
@@ -68,13 +66,13 @@
           <Listbox value={selected} onchange={setSelected} name="person">
             <ListboxButton
               class={[
-                "relative mt-3 block w-full rounded-lg bg-white/5 py-1.5 pl-3 pr-8 text-left text-sm/6 text-white",
+                "relative mt-3 block w-full rounded-lg bg-white/5 py-1.5 pr-8 pl-3 text-left text-sm/6 text-white",
                 "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25",
               ]}
             >
               {people.find(({ id }) => id === selected)?.name}
               <ChevronDownIcon
-                class="group pointer-events-none absolute right-2.5 top-2.5 size-4 fill-white/60"
+                class="group pointer-events-none absolute top-2.5 right-2.5 size-4 fill-white/60"
                 aria-hidden="true"
               />
             </ListboxButton>
@@ -89,7 +87,7 @@
               {#each people as person (person.id)}
                 <ListboxOption
                   value={person.id}
-                  class="group flex cursor-default select-none items-center gap-2 rounded-lg px-3 py-1.5 data-[focus]:bg-white/10"
+                  class="group flex cursor-default items-center gap-2 rounded-lg px-3 py-1.5 select-none data-[focus]:bg-white/10"
                 >
                   <CheckIcon class="invisible size-4 fill-white group-data-[selected]:visible" />
                   <div class="text-sm/6 text-white">{person.name}</div>

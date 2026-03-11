@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Disclosure, DisclosureButton, DisclosurePanel, Transition } from "$lib/index.js"
+  import { Disclosure, DisclosureButton, DisclosurePanel } from "$lib/disclosure/index.js"
   import TransitionChild from "$lib/transition/TransitionChild.svelte"
   import { ChevronDownIcon } from "@pzerelles/heroicons-svelte/20/solid"
 
@@ -13,7 +13,7 @@
         <span class="text-sm/6 font-medium text-white group-data-[hover]:text-white/80">
           What is your refund policy?
         </span>
-        <ChevronDownIcon class="size-5 fill-white/60 group-data-[open]:rotate-180 group-data-[hover]:fill-white/50" />
+        <ChevronDownIcon class="size-5 fill-white/60 group-data-[hover]:fill-white/50 group-data-[open]:rotate-180" />
       </DisclosureButton>
       <DisclosurePanel class="mt-2 text-sm/5 text-white/50">
         If you're unhappy with your purchase, we'll refund you in full.
@@ -24,7 +24,7 @@
         <span class="text-sm/6 font-medium text-white group-data-[hover]:text-white/80">
           Do you offer technical support?
         </span>
-        <ChevronDownIcon class="size-5 fill-white/60 group-data-[open]:rotate-180 group-data-[hover]:fill-white/50" />
+        <ChevronDownIcon class="size-5 fill-white/60 group-data-[hover]:fill-white/50 group-data-[open]:rotate-180" />
       </DisclosureButton>
       <DisclosurePanel
         transition
@@ -37,7 +37,7 @@
         <span class="text-sm/6 font-medium text-white group-data-[hover]:text-white/80">
           Do you offer technical support?
         </span>
-        <ChevronDownIcon class="size-5 fill-white/60 group-data-[open]:rotate-180 group-data-[hover]:fill-white/50" />
+        <ChevronDownIcon class="size-5 fill-white/60 group-data-[hover]:fill-white/50 group-data-[open]:rotate-180" />
       </DisclosureButton>
       <DisclosurePanel transition asChild>
         <TransitionChild

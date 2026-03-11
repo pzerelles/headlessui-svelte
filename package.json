@@ -1,6 +1,6 @@
 {
   "name": "@pzerelles/headlessui-svelte",
-  "version": "2.1.2-next.71",
+  "version": "2.1.3-next.0",
   "repository": {
     "url": "https://github.com/pzerelles/headlessui-svelte"
   },
@@ -25,6 +25,266 @@
       "types": "./dist/index.d.ts",
       "svelte": "./dist/index.js",
       "default": "./dist/index.js"
+    },
+    "./button": {
+      "types": "./dist/button/index.d.ts",
+      "svelte": "./dist/button/index.js",
+      "default": "./dist/button/index.js"
+    },
+    "./button/*.svelte": {
+      "types": "./dist/button/*.svelte.d.ts",
+      "svelte": "./dist/button/*.svelte",
+      "default": "./dist/button/*.svelte"
+    },
+    "./checkbox": {
+      "types": "./dist/checkbox/index.d.ts",
+      "svelte": "./dist/checkbox/index.js",
+      "default": "./dist/checkbox/index.js"
+    },
+    "./checkbox/*.svelte": {
+      "types": "./dist/checkbox/*.svelte.d.ts",
+      "svelte": "./dist/checkbox/*.svelte",
+      "default": "./dist/checkbox/*.svelte"
+    },
+    "./close-button": {
+      "types": "./dist/close-button/index.d.ts",
+      "svelte": "./dist/close-button/index.js",
+      "default": "./dist/close-button/index.js"
+    },
+    "./close-button/*.svelte": {
+      "types": "./dist/close-button/*.svelte.d.ts",
+      "svelte": "./dist/close-button/*.svelte",
+      "default": "./dist/close-button/*.svelte"
+    },
+    "./data-interactive": {
+      "types": "./dist/data-interactive/index.d.ts",
+      "svelte": "./dist/data-interactive/index.js",
+      "default": "./dist/data-interactive/index.js"
+    },
+    "./data-interactive/*.svelte": {
+      "types": "./dist/data-interactive/*.svelte.d.ts",
+      "svelte": "./dist/data-interactive/*.svelte",
+      "default": "./dist/data-interactive/*.svelte"
+    },
+    "./description": {
+      "types": "./dist/description/index.d.ts",
+      "svelte": "./dist/description/index.js",
+      "default": "./dist/description/index.js"
+    },
+    "./description/*.svelte": {
+      "types": "./dist/description/*.svelte.d.ts",
+      "svelte": "./dist/description/*.svelte",
+      "default": "./dist/description/*.svelte"
+    },
+    "./dialog": {
+      "types": "./dist/dialog/index.d.ts",
+      "svelte": "./dist/dialog/index.js",
+      "default": "./dist/dialog/index.js"
+    },
+    "./dialog/*.svelte": {
+      "types": "./dist/dialog/*.svelte.d.ts",
+      "svelte": "./dist/dialog/*.svelte",
+      "default": "./dist/dialog/*.svelte"
+    },
+    "./disclosure": {
+      "types": "./dist/disclosure/index.d.ts",
+      "svelte": "./dist/disclosure/index.js",
+      "default": "./dist/disclosure/index.js"
+    },
+    "./disclosure/*.svelte": {
+      "types": "./dist/disclosure/*.svelte.d.ts",
+      "svelte": "./dist/disclosure/*.svelte",
+      "default": "./dist/disclosure/*.svelte"
+    },
+    "./field": {
+      "types": "./dist/field/index.d.ts",
+      "svelte": "./dist/field/index.js",
+      "default": "./dist/field/index.js"
+    },
+    "./field/*.svelte": {
+      "types": "./dist/field/*.svelte.d.ts",
+      "svelte": "./dist/field/*.svelte",
+      "default": "./dist/field/*.svelte"
+    },
+    "./fieldset": {
+      "types": "./dist/fieldset/index.d.ts",
+      "svelte": "./dist/fieldset/index.js",
+      "default": "./dist/fieldset/index.js"
+    },
+    "./fieldset/*.svelte": {
+      "types": "./dist/fieldset/*.svelte.d.ts",
+      "svelte": "./dist/fieldset/*.svelte",
+      "default": "./dist/fieldset/*.svelte"
+    },
+    "./input": {
+      "types": "./dist/input/index.d.ts",
+      "svelte": "./dist/input/index.js",
+      "default": "./dist/input/index.js"
+    },
+    "./input/*.svelte": {
+      "types": "./dist/input/*.svelte.d.ts",
+      "svelte": "./dist/input/*.svelte",
+      "default": "./dist/input/*.svelte"
+    },
+    "./label": {
+      "types": "./dist/label/index.d.ts",
+      "svelte": "./dist/label/index.js",
+      "default": "./dist/label/index.js"
+    },
+    "./label/*.svelte": {
+      "types": "./dist/label/*.svelte.d.ts",
+      "svelte": "./dist/label/*.svelte",
+      "default": "./dist/label/*.svelte"
+    },
+    "./legend": {
+      "types": "./dist/legend/index.d.ts",
+      "svelte": "./dist/legend/index.js",
+      "default": "./dist/legend/index.js"
+    },
+    "./legend/*.svelte": {
+      "types": "./dist/legend/*.svelte.d.ts",
+      "svelte": "./dist/legend/*.svelte",
+      "default": "./dist/legend/*.svelte"
+    },
+    "./listbox": {
+      "types": "./dist/listbox/index.d.ts",
+      "svelte": "./dist/listbox/index.js",
+      "default": "./dist/listbox/index.js"
+    },
+    "./listbox/*.svelte": {
+      "types": "./dist/listbox/*.svelte.d.ts",
+      "svelte": "./dist/listbox/*.svelte",
+      "default": "./dist/listbox/*.svelte"
+    },
+    "./menu": {
+      "types": "./dist/menu/index.d.ts",
+      "svelte": "./dist/menu/index.js",
+      "default": "./dist/menu/index.js"
+    },
+    "./menu/*.svelte": {
+      "types": "./dist/menu/*.svelte.d.ts",
+      "svelte": "./dist/menu/*.svelte",
+      "default": "./dist/menu/*.svelte"
+    },
+    "./popover": {
+      "types": "./dist/popover/index.d.ts",
+      "svelte": "./dist/popover/index.js",
+      "default": "./dist/popover/index.js"
+    },
+    "./popover/*.svelte": {
+      "types": "./dist/popover/*.svelte.d.ts",
+      "svelte": "./dist/popover/*.svelte",
+      "default": "./dist/popover/*.svelte"
+    },
+    "./radio-group": {
+      "types": "./dist/radio-group/index.d.ts",
+      "svelte": "./dist/radio-group/index.js",
+      "default": "./dist/radio-group/index.js"
+    },
+    "./radio-group/*.svelte": {
+      "types": "./dist/radio-group/*.svelte.d.ts",
+      "svelte": "./dist/radio-group/*.svelte",
+      "default": "./dist/radio-group/*.svelte"
+    },
+    "./select": {
+      "types": "./dist/select/index.d.ts",
+      "svelte": "./dist/select/index.js",
+      "default": "./dist/select/index.js"
+    },
+    "./select/*.svelte": {
+      "types": "./dist/select/*.svelte.d.ts",
+      "svelte": "./dist/select/*.svelte",
+      "default": "./dist/select/*.svelte"
+    },
+    "./switch": {
+      "types": "./dist/switch/index.d.ts",
+      "svelte": "./dist/switch/index.js",
+      "default": "./dist/switch/index.js"
+    },
+    "./switch/*.svelte": {
+      "types": "./dist/switch/*.svelte.d.ts",
+      "svelte": "./dist/switch/*.svelte",
+      "default": "./dist/switch/*.svelte"
+    },
+    "./tabs": {
+      "types": "./dist/tabs/index.d.ts",
+      "svelte": "./dist/tabs/index.js",
+      "default": "./dist/tabs/index.js"
+    },
+    "./tabs/*.svelte": {
+      "types": "./dist/tabs/*.svelte.d.ts",
+      "svelte": "./dist/tabs/*.svelte",
+      "default": "./dist/tabs/*.svelte"
+    },
+    "./textarea": {
+      "types": "./dist/textarea/index.d.ts",
+      "svelte": "./dist/textarea/index.js",
+      "default": "./dist/textarea/index.js"
+    },
+    "./textarea/*.svelte": {
+      "types": "./dist/textarea/*.svelte.d.ts",
+      "svelte": "./dist/textarea/*.svelte",
+      "default": "./dist/textarea/*.svelte"
+    },
+    "./transition": {
+      "types": "./dist/transition/index.d.ts",
+      "svelte": "./dist/transition/index.js",
+      "default": "./dist/transition/index.js"
+    },
+    "./transition/*.svelte": {
+      "types": "./dist/transition/*.svelte.d.ts",
+      "svelte": "./dist/transition/*.svelte",
+      "default": "./dist/transition/*.svelte"
+    },
+    "./utils": {
+      "types": "./dist/utils/index.d.ts",
+      "svelte": "./dist/utils/index.js",
+      "default": "./dist/utils/index.js"
+    },
+    "./utils/*.svelte": {
+      "types": "./dist/utils/*.svelte.d.ts",
+      "svelte": "./dist/utils/*.svelte",
+      "default": "./dist/utils/*.svelte"
+    },
+    "./hooks/use-active-press": {
+      "types": "./dist/hooks/use-active-press.d.ts",
+      "svelte": "./dist/hooks/use-active-press.svelte.js",
+      "default": "./dist/hooks/use-active-press.svelte.js"
+    },
+    "./hooks/use-close": {
+      "types": "./dist/hooks/use-close.svelte.d.ts",
+      "svelte": "./dist/hooks/use-close.svelte.js",
+      "default": "./dist/hooks/use-close.svelte.js"
+    },
+    "./hooks/use-disabled": {
+      "types": "./dist/hooks/use-disabled.d.ts",
+      "svelte": "./dist/hooks/use-disabled.js",
+      "default": "./dist/hooks/use-disabled.js"
+    },
+    "./hooks/use-escape": {
+      "types": "./dist/hooks/use-escape.svelte.d.ts",
+      "svelte": "./dist/hooks/use-escape.svelte.js",
+      "default": "./dist/hooks/use-escape.svelte.js"
+    },
+    "./hooks/use-focus-ring": {
+      "types": "./dist/hooks/use-focus-ring.svelte.d.ts",
+      "svelte": "./dist/hooks/use-focus-ring.svelte.js",
+      "default": "./dist/hooks/use-focus-ring.svelte.js"
+    },
+    "./hooks/use-hover": {
+      "types": "./dist/hooks/use-hover.svelte.d.ts",
+      "svelte": "./dist/hooks/use-hover.svelte.js",
+      "default": "./dist/hooks/use-hover.svelte.js"
+    },
+    "./hooks/use-id": {
+      "types": "./dist/hooks/use-id.d.ts",
+      "svelte": "./dist/hooks/use-id.js",
+      "default": "./dist/hooks/use-id.js"
+    },
+    "./hooks/use-outside-click": {
+      "types": "./dist/hooks/use-outside-click.svelte.d.ts",
+      "svelte": "./dist/hooks/use-outside-click.svelte.js",
+      "default": "./dist/hooks/use-outside-click.svelte.js"
     }
   },
   "files": [

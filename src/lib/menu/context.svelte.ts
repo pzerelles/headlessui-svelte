@@ -117,6 +117,7 @@ export const createMenuContext = (initialState: StateDefinition) => {
       /* We can turn off demo mode once we re-open the `Menu` */
       _state.__demoMode = false
       _state.menuState = MenuStates.Open
+      console.log("openMenu", _state.menuState, MenuStates.Open)
       return _state
     },
     goToItem(

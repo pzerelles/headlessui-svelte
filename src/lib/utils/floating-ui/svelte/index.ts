@@ -1,4 +1,3 @@
-export * from "./types.js"
 export { useFloating } from "./hooks/useFloating.svelte.js"
 export { useInteractions } from "./hooks/useInteractions.svelte.js"
 export {
@@ -16,5 +15,6 @@ export {
   platform,
   shift,
   size,
-} from "../svelte-dom/index.js"
+  type UseFloatingReturn,
+} from "../svelte-dom/types.js"
 export { inner, useInnerOffset, type InnerProps, type UseInnerOffsetProps } from "./inner.svelte.js"
