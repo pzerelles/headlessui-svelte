@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.3-next.1
+
+### Patch Changes
+
+- 44841f8: refactor: remove global barrel export and add individual exports
+
 ## 2.1.2-next.71
 
 ### Patch Changes
