@@ -1,5 +1,5 @@
 <script lang="ts" module>
-  import { Label } from "$lib/index.js"
+  import Label from "$lib/label/Label.svelte"
   import type { Props } from "$lib/utils/types.js"
   import type { ClassValue } from "svelte/elements"
 

@@ -27,12 +27,8 @@
   let { __demoMode = false, ...theirProps }: MenuProps = $props()
 
   const context = createMenuContext({
-    get __demoMode() {
-      return __demoMode
-    },
-    get menuState() {
-      return __demoMode ? MenuStates.Open : MenuStates.Closed
-    },
+    __demoMode: (() => __demoMode)(),
+    menuState: (() => (__demoMode ? MenuStates.Open : MenuStates.Closed))(),
     buttonElement: null,
     itemsElement: null,
     items: [],

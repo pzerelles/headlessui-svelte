@@ -2,7 +2,7 @@
   import { useId } from "$lib/hooks/use-id.js"
   import { useProvidedId } from "$lib/utils/id.js"
   import type { Props } from "$lib/utils/types.js"
-  import { ListboxStates, useActions, useData } from "./Listbox.svelte"
+  import { ListboxStates, useActions, useData } from "./context.svelte.js"
   import { attemptSubmit } from "$lib/utils/form.js"
   import { Focus } from "$lib/utils/calculate-active-index.js"
   import { useFocusRing } from "$lib/hooks/use-focus-ring.svelte.js"
