@@ -93,7 +93,6 @@
 
   export const DEFAULT_PORTAL_TAG = "div"
   export type PortalRenderPropArg = {}
-  type PortalPropsWeControl = never
 
   export type PortalProps = Props<
     typeof DEFAULT_PORTAL_TAG,
@@ -118,9 +117,12 @@
   const { target } = $derived(portalTarget)
   const parent = getContext<PortalParentContext>("PortalParentContext")
   //const ready = useServerHandoffComplete()
+  let currentElement = $state<HTMLElement | null>(null)
 
   $effect(() => {
     if (!target || !element) return
+
+    currentElement = element
 
     // Element already exists in target, always calling target.appendChild(element) will cause a
     // brief unmount/remount.
@@ -131,13 +133,13 @@
   })
 
   onMount(() => {
-    if (parent) parent.register(element!)
+    if (parent && currentElement) parent.register(currentElement)
 
     return () => {
-      if (!target || !element) return
+      if (!target || !currentElement) return
 
-      if (element instanceof Node && target.contains(element)) {
-        target.removeChild(element)
+      if (currentElement instanceof Node && target.contains(currentElement)) {
+        target.removeChild(currentElement)
       }
 
       if (target.childNodes.length <= 0) {
@@ -148,5 +150,11 @@
 </script>
 
 {#if target}
-  <ElementOrComponent {theirProps} defaultTag={DEFAULT_PORTAL_TAG} name="InternalPortal" bind:element />
+  <ElementOrComponent
+    {theirProps}
+    ourProps={{ "data-test": "1" }}
+    defaultTag={DEFAULT_PORTAL_TAG}
+    name="InternalPortal"
+    bind:element
+  />
 {/if}

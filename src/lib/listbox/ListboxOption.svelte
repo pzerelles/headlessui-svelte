@@ -75,17 +75,20 @@
       return getTextValue()
     },
   })
+  let currentElement = $state<HTMLElement | null>(null)
 
   $effect(() => {
     if (usedInSelectedOption) return
     if (!element) {
       data.listElements.delete(id)
+      currentElement = null
     } else {
       data.listElements.set(id, element)
+      currentElement = element
     }
 
     return () => {
-      if (element) data.listElements.delete(id)
+      if (currentElement) data.listElements.delete(id)
     }
   })
 
