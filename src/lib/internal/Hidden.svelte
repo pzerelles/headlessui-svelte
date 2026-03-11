@@ -3,7 +3,7 @@
   import type { Props } from "$lib/utils/types.js"
   import { HiddenFeatures } from "./HiddenFeatures.js"
 
-  export * from "./HiddenFeatures.js"
+  export { HiddenFeatures }
 
   const DEFAULT_VISUALLY_HIDDEN_TAG = "span" as const
 

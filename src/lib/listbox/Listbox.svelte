@@ -35,8 +35,6 @@
     ListboxRenderPropArg<TType>,
     ListboxOwnProps<TType, TActualType>
   >
-
-  export * from "./context.svelte.js"
 </script>
 
 <script lang="ts" generics="TType = string, TActualType = TType extends (infer U)[] ? U : TType">
@@ -328,15 +326,18 @@
   )
   const { value = (() => multiple)() ? [] : undefined, onchange: theirOnChange } = $derived(controllable)
 
-  const _state = stateReducer((() => ({
-    listboxState: __demoMode ? ListboxStates.Open : ListboxStates.Closed,
-    options: [],
-    searchQuery: "",
-    activeOptionIndex: null,
-    activationTrigger: ActivationTrigger.Other,
-    optionsVisible: false,
-    __demoMode,
-  } as StateDefinition<TActualType>))())
+  const _state = stateReducer(
+    (() =>
+      ({
+        listboxState: __demoMode ? ListboxStates.Open : ListboxStates.Closed,
+        options: [],
+        searchQuery: "",
+        activeOptionIndex: null,
+        activationTrigger: ActivationTrigger.Other,
+        optionsVisible: false,
+        __demoMode,
+      }) as StateDefinition<TActualType>)()
+  )
 
   type _Data = ListboxDataContext<TActualType>
 

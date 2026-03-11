@@ -45,7 +45,7 @@
         "vitest": "^4.0.18",
       },
       "peerDependencies": {
-        "svelte": "^5.53.9",
+        "svelte": "^5.53.10",
       },
     },
   },

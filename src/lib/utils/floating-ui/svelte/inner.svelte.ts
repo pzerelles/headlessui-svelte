@@ -1,6 +1,6 @@
 import { getUserAgent } from "./utils.js"
 import { evaluate, max, round } from "@floating-ui/utils"
-import { detectOverflow, offset, type Derivable } from "../svelte-dom/index.js"
+import { detectOverflow, offset, type Derivable } from "../svelte-dom/types.js"
 
 import type {
   DetectOverflowOptions,
