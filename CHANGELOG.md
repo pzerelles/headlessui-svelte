@@ -1,5 +1,11 @@
 # @pzerelles/headlessui-svelte
 
+## 2.1.3-next.2
+
+### Patch Changes
+
+- 0f3b89e: fix: remove openMenu debug print
+
 ## 2.1.3-next.1
 
 ### Patch Changes
