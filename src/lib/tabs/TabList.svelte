@@ -16,7 +16,7 @@
 
 <script lang="ts">
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
-  import { useTabs } from "./context.svelte.js"
+  import { useTabs } from "$lib/tabs/context.svelte.js"
 
   const context = useTabs("TabList")
   const { orientation, selectedIndex } = $derived(context)

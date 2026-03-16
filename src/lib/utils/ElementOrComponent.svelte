@@ -1,7 +1,7 @@
 <script lang="ts" generics="TFeature extends RenderFeatures, TSlot extends Record<string, any>, TValue">
-  import type { Props } from "./types.js"
-  import { mergePropsAdvanced, RenderFeatures, type PropsForFeatures } from "./render.js"
-  import { stateFromSlot } from "./state.js"
+  import type { Props } from "$lib/utils/types.js"
+  import { mergePropsAdvanced, RenderFeatures, type PropsForFeatures } from "$lib/utils/render.js"
+  import { stateFromSlot } from "$lib/utils/state.js"
 
   let {
     ourProps,

@@ -1,6 +1,6 @@
-import { DefaultMap } from "../utils/default-map.js"
-import { createStore } from "../utils/store.js"
-import { useId } from "./use-id.js"
+import { DefaultMap } from "$lib/utils/default-map.js"
+import { createStore } from "$lib/utils/store.js"
+import { useId } from "$lib/hooks/use-id.js"
 
 /**
  * Map of stable hierarchy stores based on a given scope.

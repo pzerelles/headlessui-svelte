@@ -1,7 +1,7 @@
 <script lang="ts" module>
   import type { Props } from "$lib/utils/types.js"
   import { RenderFeatures, type PropsForFeatures } from "$lib/utils/render.js"
-  import type { TransitionEvents, TransitionClasses } from "./context.svelte.js"
+  import type { TransitionEvents, TransitionClasses } from "$lib/transition/context.svelte.js"
 
   type TransitionChildPropsWeControl = never
 
@@ -23,8 +23,8 @@
 <script lang="ts">
   import { useOpenClosed } from "$lib/internal/open-closed.js"
   import { getContext } from "svelte"
-  import InternalTransitionChild from "./InternalTransitionChild.svelte"
-  import Transition from "./Transition.svelte"
+  import InternalTransitionChild from "$lib/transition/InternalTransitionChild.svelte"
+  import Transition from "$lib/transition/Transition.svelte"
 
   const hasTransitionContext = !!getContext("TransitionContext")
   const hasOpenClosedContext = useOpenClosed() !== null

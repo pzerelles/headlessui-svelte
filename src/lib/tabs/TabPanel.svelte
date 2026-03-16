@@ -27,7 +27,7 @@
   import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
   import { onMount } from "svelte"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
-  import { useTabs } from "./context.svelte.js"
+  import { useTabs } from "$lib/tabs/context.svelte.js"
 
   const internalId = useId()
   let {

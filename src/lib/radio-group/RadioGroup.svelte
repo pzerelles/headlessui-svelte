@@ -27,7 +27,11 @@
 </script>
 
 <script lang="ts" generics="TType = string">
-  import { createState, type RadioGroupActionsContext, type RadioGroupDataContext } from "./contest.svelte.js"
+  import {
+    createState,
+    type RadioGroupActionsContext,
+    type RadioGroupDataContext,
+  } from "$lib/radio-group/context.svelte.js"
   import { useId } from "$lib/hooks/use-id.js"
   import { useDisabled } from "$lib/hooks/use-disabled.js"
   import { useLabelledBy } from "$lib/label/context.svelte.js"

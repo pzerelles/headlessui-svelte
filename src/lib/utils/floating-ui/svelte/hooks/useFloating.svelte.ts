@@ -1,9 +1,14 @@
-import { useFloating as usePosition } from "../../svelte-dom/index.js"
+import { useFloating as usePosition } from "$lib/utils/floating-ui/svelte-dom/index.js"
 import { isElement } from "@floating-ui/utils/dom"
 
-import { useFloatingTree } from "../components/FloatingTree.svelte"
-import type { NarrowedElement, ReferenceType, UseFloatingOptions, UseFloatingReturn } from "../types.js"
-import { useFloatingRootContext } from "./useFloatingRootContext.svelte.js"
+import { useFloatingTree } from "$lib/utils/floating-ui/svelte/components/context.svelte.js"
+import type {
+  NarrowedElement,
+  ReferenceType,
+  UseFloatingOptions,
+  UseFloatingReturn,
+} from "$lib/utils/floating-ui/svelte/types.js"
+import { useFloatingRootContext } from "$lib/utils/floating-ui/svelte/hooks/useFloatingRootContext.svelte.js"
 import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
 
 /**

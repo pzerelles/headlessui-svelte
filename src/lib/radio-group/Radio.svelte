@@ -22,8 +22,8 @@
 </script>
 
 <script lang="ts" generics="TType = ComponentProps<typeof RadioGroup>['value']">
-  import { default as RadioGroup } from "./RadioGroup.svelte"
-  import { useActions, useData } from "./contest.svelte.js"
+  import { default as RadioGroup } from "$lib/radio-group/RadioGroup.svelte"
+  import { useActions, useData } from "$lib/radio-group/context.svelte.js"
   import { useId } from "$lib/hooks/use-id.js"
   import { useLabelledBy } from "$lib/label/context.svelte.js"
   import { useDescribedBy } from "$lib/description/context.svelte.js"

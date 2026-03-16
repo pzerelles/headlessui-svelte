@@ -10,13 +10,13 @@
     type NestingContextValues,
     type TransitionDirection,
   } from "./context.svelte.js"
-  import type { TransitionRootProps } from "./Transition.svelte"
+  import type { TransitionRootProps } from "$lib/transition/Transition.svelte"
   import { match } from "$lib/utils/match.js"
   import { transitionDataAttributes, useTransition } from "$lib/hooks/use-transition.svelte.js"
   import { classNames } from "$lib/utils/class-names.js"
   import { createOpenClosedContext, State } from "$lib/internal/open-closed.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
-  import { DEFAULT_TRANSITION_CHILD_TAG, type TransitionChildProps } from "./TransitionChild.svelte"
+  import { DEFAULT_TRANSITION_CHILD_TAG, type TransitionChildProps } from "$lib/transition/TransitionChild.svelte"
 
   /**
    * Check if we should forward the ref to the child element or not. This is to
@@ -41,12 +41,12 @@
       // If we have any of the enter/leave classes
       Boolean(
         props.enter ||
-          props.enterFrom ||
-          props.enterTo ||
-          props.leave ||
-          props.leaveFrom ||
-          props.leaveTo ||
-          props.class
+        props.enterFrom ||
+        props.enterTo ||
+        props.leave ||
+        props.leaveFrom ||
+        props.leaveTo ||
+        props.class
       ) ||
       // If the `as` prop is not a Fragment
       props.asChild

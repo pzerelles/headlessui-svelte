@@ -35,7 +35,7 @@
   import { useDisabled } from "$lib/hooks/use-disabled.js"
   import { useProvidedId } from "$lib/utils/id.js"
   import { getContext, tick } from "svelte"
-  import type { GroupContext } from "./SwitchGroup.svelte"
+  import type { GroupContext } from "$lib/switch/SwitchGroup.svelte"
   import { attemptSubmit } from "$lib/utils/form.js"
   import { useLabelledBy } from "$lib/label/context.svelte.js"
   import { useDescribedBy } from "$lib/description/context.svelte.js"

@@ -1,7 +1,7 @@
 <script lang="ts" module>
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
   import type { Props } from "$lib/utils/types.js"
-  import { useTabs } from "./context.svelte.js"
+  import { useTabs } from "$lib/tabs/context.svelte.js"
 
   let DEFAULT_PANELS_TAG = "div" as const
   export type PanelsRenderPropArg = {

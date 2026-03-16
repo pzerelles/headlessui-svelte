@@ -12,7 +12,7 @@
 </script>
 
 <script lang="ts">
-  import { DialogStates, useDialogContext } from "./context.svelte.js"
+  import { DialogStates, useDialogContext } from "$lib/dialog/context.svelte.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
   import { mergeProps } from "$lib/utils/render.js"
   import TransitionChild from "$lib/transition/TransitionChild.svelte"

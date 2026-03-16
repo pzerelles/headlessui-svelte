@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { disposables } from "../utils/disposables.js"
-  import { objectToFormEntries } from "../utils/form.js"
-  import FormResolver from "./FormResolver.svelte"
-  import Hidden, { HiddenFeatures } from "./Hidden.svelte"
-  import { compact } from "../utils/object.js"
-  import HoistFormFields from "./HoistFormFields.svelte"
+  import { disposables } from "$lib/utils/disposables.js"
+  import { objectToFormEntries } from "$lib/utils/form.js"
+  import FormResolver from "$lib/internal/FormResolver.svelte"
+  import Hidden, { HiddenFeatures } from "$lib/internal/Hidden.svelte"
+  import { compact } from "$lib/utils/object.js"
+  import HoistFormFields from "$lib/internal/HoistFormFields.svelte"
 
   let {
     data,

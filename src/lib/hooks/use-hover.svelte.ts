@@ -1,6 +1,6 @@
 // let { isHovered: hover, hoverProps } = useHover({ isDisabled: disabled })
 
-import { disposables } from "../utils/disposables.js"
+import { disposables } from "$lib/utils/disposables.js"
 
 let globalIgnoreEmulatedMouseEvents = false
 let hoverCount = 0

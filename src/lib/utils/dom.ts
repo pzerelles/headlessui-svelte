@@ -1,4 +1,4 @@
-import { getOwnerDocument } from "./owner.js"
+import { getOwnerDocument } from "$lib/utils/owner.js"
 
 export const getOwnerWindow = (el: (Window & typeof global) | Element | null | undefined): Window & typeof global => {
   if (el && "window" in el && el.window === el) {

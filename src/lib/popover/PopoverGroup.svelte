@@ -12,7 +12,7 @@
 </script>
 
 <script lang="ts">
-  import type { PopoverGroupContext, PopoverRegisterBag } from "./context.svelte"
+  import type { PopoverGroupContext, PopoverRegisterBag } from "$lib/popover/context.svelte.js"
   import MainTreeProvider from "$lib/internal/MainTreeProvider.svelte"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
   import { getOwnerDocument } from "$lib/utils/owner.js"

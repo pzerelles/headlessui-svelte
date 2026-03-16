@@ -30,7 +30,7 @@
   import { useOpenClosed } from "$lib/internal/open-closed.js"
   import MainTreeProvider from "$lib/internal/MainTreeProvider.svelte"
   import Transition from "$lib/transition/Transition.svelte"
-  import InternalDialog from "./InternalDialog.svelte"
+  import InternalDialog from "$lib/dialog/InternalDialog.svelte"
 
   let { element = $bindable(), transition = false, open, ...rest }: DialogProps = $props()
 

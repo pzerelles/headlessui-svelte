@@ -43,7 +43,7 @@
   import { useElementSize } from "$lib/hooks/use-element-size.svelte.js"
   import { tick, untrack } from "svelte"
   import Portal from "$lib/portal/Portal.svelte"
-  import { MenuStates, useMenuContext } from "./context.svelte.js"
+  import { MenuStates, useMenuContext } from "$lib/menu/context.svelte.js"
   import { useTreeWalker } from "$lib/hooks/use-tree-walker.svelte.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 

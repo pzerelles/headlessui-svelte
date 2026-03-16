@@ -1,5 +1,5 @@
-import { focusableSelector } from "./focus-management.js"
-import { onDocumentReady } from "./on-document-ready.js"
+import { focusableSelector } from "$lib/utils/focus-management.js"
+import { onDocumentReady } from "$lib/utils/on-document-ready.js"
 
 export let history: HTMLElement[] = []
 onDocumentReady(() => {

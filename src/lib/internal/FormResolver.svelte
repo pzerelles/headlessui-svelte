@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte"
-  import Hidden, { HiddenFeatures } from "./Hidden.svelte"
+  import Hidden, { HiddenFeatures } from "$lib/internal/Hidden.svelte"
 
   let { setForm, formId }: { setForm: (form: HTMLFormElement) => void; formId?: string } = $props()
 

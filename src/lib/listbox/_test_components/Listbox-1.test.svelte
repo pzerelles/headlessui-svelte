@@ -1,8 +1,8 @@
 <script lang="ts">
-  import Listbox from "../Listbox.svelte"
-  import ListboxButton from "../ListboxButton.svelte"
-  import ListboxOption from "../ListboxOption.svelte"
-  import ListboxOptions from "../ListboxOptions.svelte"
+  import Listbox from "$lib/listbox/Listbox.svelte"
+  import ListboxButton from "$lib/listbox/ListboxButton.svelte"
+  import ListboxOption from "$lib/listbox/ListboxOption.svelte"
+  import ListboxOptions from "$lib/listbox/ListboxOptions.svelte"
 </script>
 
 <Listbox value={undefined} onchange={(x) => console.log(x)}>

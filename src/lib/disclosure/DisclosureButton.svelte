@@ -23,7 +23,7 @@
 
 <script lang="ts">
   import { useId } from "$lib/hooks/use-id.js"
-  import { DisclosureStates, useDisclosureContext, useDisclosurePanelContext } from "./context.svelte.js"
+  import { DisclosureStates, useDisclosureContext, useDisclosurePanelContext } from "$lib/disclosure/context.svelte.js"
   import { onMount, untrack } from "svelte"
   import { useHover } from "$lib/hooks/use-hover.svelte.js"
   import { useActivePress } from "$lib/hooks/use-active-press.svelte.js"

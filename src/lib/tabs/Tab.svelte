@@ -37,7 +37,7 @@
   import { useHover } from "$lib/hooks/use-hover.svelte.js"
   import { mergeProps } from "$lib/utils/render.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
-  import { useTabs } from "./context.svelte.js"
+  import { useTabs } from "$lib/tabs/context.svelte.js"
 
   const internalId = useId()
   let {

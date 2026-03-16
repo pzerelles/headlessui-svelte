@@ -13,8 +13,8 @@
    * @see https://floating-ui.com/docs/FloatingTree
    */
   import { setContext } from "svelte"
-  import type { FloatingNodeType } from "../types.js"
-  import { useFloatingParentNodeId } from "./FloatingTree.svelte"
+  import type { FloatingNodeType } from "$lib/utils/floating-ui/svelte/types.js"
+  import { useFloatingParentNodeId } from "$lib/utils/floating-ui/svelte/components/context.svelte.js"
 
   const { children, id }: FloatingNodeProps = $props()
 

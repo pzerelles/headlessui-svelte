@@ -33,7 +33,7 @@
   import { useFloatingReference, useFloatingReferenceProps } from "$lib/internal/floating.svelte.js"
   import { useHover } from "$lib/hooks/use-hover.svelte.js"
   import { mergeProps } from "$lib/utils/render.js"
-  import { MenuStates, useMenuContext } from "./context.svelte.js"
+  import { MenuStates, useMenuContext } from "$lib/menu/context.svelte.js"
   import { untrack } from "svelte"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 

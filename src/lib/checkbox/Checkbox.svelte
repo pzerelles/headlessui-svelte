@@ -45,12 +45,12 @@
 
 <script lang="ts" generics="TType">
   import { tick } from "svelte"
-  import { attemptSubmit } from "../utils/form.js"
-  import { useProvidedId, htmlid } from "../utils/id.js"
-  import { useActivePress } from "../hooks/use-active-press.svelte.js"
-  import { useFocusRing } from "../hooks/use-focus-ring.svelte.js"
-  import FormFields from "../internal/FormFields.svelte"
-  import { useDisabled } from "../hooks/use-disabled.js"
+  import { attemptSubmit } from "$lib/utils/form.js"
+  import { useProvidedId, htmlid } from "$lib/utils/id.js"
+  import { useActivePress } from "$lib/hooks/use-active-press.svelte.js"
+  import { useFocusRing } from "$lib/hooks/use-focus-ring.svelte.js"
+  import FormFields from "$lib/internal/FormFields.svelte"
+  import { useDisabled } from "$lib/hooks/use-disabled.js"
   import { useLabelledBy } from "$lib/label/context.svelte.js"
   import { useDescribedBy } from "$lib/description/context.svelte.js"
   import { useHover } from "$lib/hooks/use-hover.svelte.js"

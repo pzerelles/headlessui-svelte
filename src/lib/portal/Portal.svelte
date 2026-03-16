@@ -1,5 +1,5 @@
 <script lang="ts">
-  import InternalPortal, { type PortalProps } from "./InternalPortal.svelte"
+  import InternalPortal, { type PortalProps } from "$lib/portal/InternalPortal.svelte"
 
   let { element = $bindable(), enabled = true, ...theirProps }: PortalProps = $props()
 </script>

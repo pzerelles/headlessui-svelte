@@ -1,5 +1,5 @@
-import { disposables } from "../utils/disposables.js"
-import { getOwnerDocument } from "../utils/owner.js"
+import { disposables } from "$lib/utils/disposables.js"
+import { getOwnerDocument } from "$lib/utils/owner.js"
 
 // Only the necessary props from a DOMRect
 type Rect = { left: number; right: number; top: number; bottom: number }

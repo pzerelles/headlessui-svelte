@@ -24,7 +24,7 @@
 
 <script lang="ts">
   import { useId } from "$lib/hooks/use-id.js"
-  import { ActivationTrigger, MenuStates, useMenuContext, type MenuItemDataRef } from "./context.svelte.js"
+  import { ActivationTrigger, MenuStates, useMenuContext, type MenuItemDataRef } from "$lib/menu/context.svelte.js"
   import { disposables } from "$lib/utils/disposables.js"
   import { useTextValue } from "$lib/hooks/use-text-value.svelte.js"
   import { restoreFocusIfNecessary } from "$lib/utils/focus-management.js"

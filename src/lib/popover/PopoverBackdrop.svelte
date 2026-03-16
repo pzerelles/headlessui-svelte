@@ -24,7 +24,7 @@
 <script lang="ts">
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
   import { useId } from "$lib/hooks/use-id.js"
-  import { PopoverStates, usePopoverContext } from "./context.svelte.js"
+  import { PopoverStates, usePopoverContext } from "$lib/popover/context.svelte.js"
   import { State, useOpenClosed } from "$lib/internal/open-closed.js"
   import { transitionDataAttributes, useTransition } from "$lib/hooks/use-transition.svelte.js"
 

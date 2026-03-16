@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 
-import { isAndroid } from "./platform.js"
+import { isAndroid } from "$lib/utils/platform.js"
 
 // Original licensing for the following method can be found in the
 // NOTICE file in the root directory of this source tree.

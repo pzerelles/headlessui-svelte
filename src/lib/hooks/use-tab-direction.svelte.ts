@@ -1,4 +1,4 @@
-import { useWindowEvent } from "./use-window-event.svelte.js"
+import { useWindowEvent } from "$lib/hooks/use-window-event.svelte.js"
 
 export enum Direction {
   Forwards,

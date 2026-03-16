@@ -19,7 +19,7 @@
 </script>
 
 <script lang="ts">
-  import InternalTransitionChild from "./InternalTransitionChild.svelte"
+  import InternalTransitionChild from "$lib/transition/InternalTransitionChild.svelte"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
   import {
     hasChildren,
@@ -27,7 +27,7 @@
     useNesting,
     type NestingContextValues,
     type TransitionContextValues,
-  } from "./context.svelte.js"
+  } from "$lib/transition/context.svelte.js"
 
   let { element = $bindable(), show, ..._props }: TransitionRootProps = $props()
   const { appear = false, unmount = true, ...theirProps } = $derived(_props)

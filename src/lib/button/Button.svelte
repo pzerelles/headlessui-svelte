@@ -22,9 +22,9 @@
 </script>
 
 <script lang="ts">
-  import { useActivePress } from "../hooks/use-active-press.svelte.js"
-  import { useFocusRing } from "../hooks/use-focus-ring.svelte.js"
-  import { useDisabled } from "../hooks/use-disabled.js"
+  import { useActivePress } from "$lib/hooks/use-active-press.svelte.js"
+  import { useFocusRing } from "$lib/hooks/use-focus-ring.svelte.js"
+  import { useDisabled } from "$lib/hooks/use-disabled.js"
   import { useHover } from "$lib/hooks/use-hover.svelte.js"
   import { mergeProps } from "$lib/utils/render.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"

@@ -1,6 +1,6 @@
 import type { HTMLAttributes } from "svelte/elements"
-import type { ElementProps } from "../types.js"
-import { FOCUSABLE_ATTRIBUTE } from "../utils/getFloatingFocusElement.js"
+import type { ElementProps } from "$lib/utils/floating-ui/svelte/types.js"
+import { FOCUSABLE_ATTRIBUTE } from "$lib/utils/floating-ui/svelte/utils/getFloatingFocusElement.js"
 
 const ACTIVE_KEY = "active"
 const SELECTED_KEY = "selected"

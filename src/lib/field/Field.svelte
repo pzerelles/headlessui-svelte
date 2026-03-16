@@ -12,8 +12,8 @@
 </script>
 
 <script lang="ts">
-  import { provideDisabled } from "../hooks/use-disabled.js"
-  import { createIdContext } from "../utils/id.js"
+  import { provideDisabled } from "$lib/hooks/use-disabled.js"
+  import { createIdContext } from "$lib/utils/id.js"
   import { nanoid } from "nanoid"
   import { useLabels } from "$lib/label/context.svelte.js"
   import { useDescriptions } from "$lib/description/context.svelte.js"

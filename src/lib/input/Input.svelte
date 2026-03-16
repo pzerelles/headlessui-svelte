@@ -26,8 +26,8 @@
 </script>
 
 <script lang="ts" generics="TValue = string">
-  import { htmlid } from "../utils/id.js"
-  import { useDisabled } from "../hooks/use-disabled.js"
+  import { htmlid } from "$lib/utils/id.js"
+  import { useDisabled } from "$lib/hooks/use-disabled.js"
   import { useProvidedId } from "$lib/utils/id.js"
   import { useLabelledBy } from "$lib/label/context.svelte.js"
   import { useDescribedBy } from "$lib/description/context.svelte.js"

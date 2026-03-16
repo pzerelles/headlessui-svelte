@@ -1,4 +1,4 @@
-import { isFocusVisible, useFocusVisibleListener } from "../utils/focusVisible.svelte.js"
+import { isFocusVisible, useFocusVisibleListener } from "$lib/utils/focusVisible.svelte.js"
 
 export const useFocusRing = (options: { autofocus?: boolean; within?: boolean } = {}) => {
   const { autofocus, within } = $derived(options)

@@ -15,7 +15,7 @@
 
 <script lang="ts">
   import { setContext } from "svelte"
-  import { provideDisabled, useDisabled } from "../hooks/use-disabled.js"
+  import { provideDisabled, useDisabled } from "$lib/hooks/use-disabled.js"
   import { useLabels } from "$lib/label/context.svelte.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 

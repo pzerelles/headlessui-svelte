@@ -1,5 +1,5 @@
 import { act, fireEvent } from "@testing-library/svelte"
-import { pointer } from "./fake-pointer.js"
+import { pointer } from "$lib/test-utils/fake-pointer.js"
 
 function nextFrame(cb: Function): void {
   setImmediate(() => {

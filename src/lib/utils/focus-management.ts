@@ -1,6 +1,6 @@
-import { disposables } from "./disposables.js"
-import { match } from "./match.js"
-import { getOwnerDocument } from "./owner.js"
+import { disposables } from "$lib/utils/disposables.js"
+import { match } from "$lib/utils/match.js"
+import { getOwnerDocument } from "$lib/utils/owner.js"
 
 // Credit:
 //  - https://stackoverflow.com/a/30753870

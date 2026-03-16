@@ -1,6 +1,6 @@
-import { disposables } from "../utils/disposables.js"
-import { getOwnerDocument } from "../utils/owner.js"
-import { useIsTopLayer } from "./use-is-top-layer.svelte.js"
+import { disposables } from "$lib/utils/disposables.js"
+import { getOwnerDocument } from "$lib/utils/owner.js"
+import { useIsTopLayer } from "$lib/hooks/use-is-top-layer.svelte.js"
 
 const originals = new Map<HTMLElement, { "aria-hidden": string | null; inert: boolean }>()
 const counts = new Map<HTMLElement, number>()

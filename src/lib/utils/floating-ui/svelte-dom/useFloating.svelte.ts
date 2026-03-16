@@ -7,10 +7,10 @@ import type {
   UseFloatingOptions,
   UseFloatingReturn,
 } from "./types.js"
-import { deepEqual } from "./utils/deepEqual.js"
-import { getDPR } from "./utils/getDPR.js"
-import { roundByDPR } from "./utils/roundByDPR.js"
-import { useLatestRef } from "./utils/useLatestRef.js"
+import { deepEqual } from "$lib/utils/floating-ui/svelte-dom/utils/deepEqual.js"
+import { getDPR } from "$lib/utils/floating-ui/svelte-dom/utils/getDPR.js"
+import { roundByDPR } from "$lib/utils/floating-ui/svelte-dom/utils/roundByDPR.js"
+import { useLatestRef } from "$lib/utils/floating-ui/svelte-dom/utils/useLatestRef.js"
 import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
 import { tick, untrack } from "svelte"
 import { stylePropsToString } from "$lib/utils/style.js"

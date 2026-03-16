@@ -1,6 +1,6 @@
 /* eslint-disable prefer-const */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { Props } from "./types.js"
+import type { Expand, Props } from "$lib/utils/types.js"
 
 export enum RenderFeatures {
   /** No features at all */

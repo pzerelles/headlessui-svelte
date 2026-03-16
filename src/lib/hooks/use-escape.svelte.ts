@@ -1,5 +1,5 @@
-import { useEventListener } from "./use-event-listener.svelte.js"
-import { useIsTopLayer } from "./use-is-top-layer.svelte.js"
+import { useEventListener } from "$lib/hooks/use-event-listener.svelte.js"
+import { useIsTopLayer } from "$lib/hooks/use-is-top-layer.svelte.js"
 
 export function useEscape(options: {
   enabled: boolean

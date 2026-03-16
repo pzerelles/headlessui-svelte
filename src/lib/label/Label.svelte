@@ -15,11 +15,11 @@
 
 <script lang="ts">
   import { onMount } from "svelte"
-  import { useProvidedId, htmlid } from "../utils/id.js"
-  import { useDisabled } from "../hooks/use-disabled.js"
-  import { stateFromSlot } from "../utils/state.js"
+  import { useProvidedId, htmlid } from "$lib/utils/id.js"
+  import { useDisabled } from "$lib/hooks/use-disabled.js"
+  import { stateFromSlot } from "$lib/utils/state.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
-  import { useLabelContext } from "./context.svelte.js"
+  import { useLabelContext } from "$lib/label/context.svelte.js"
 
   const internalId = htmlid()
   const context = useLabelContext()

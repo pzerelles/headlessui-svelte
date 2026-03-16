@@ -13,8 +13,8 @@
 
 <script lang="ts">
   import { useId } from "$lib/hooks/use-id.js"
-  import { useDisabled } from "../hooks/use-disabled.js"
-  import { useDescriptionContext } from "./context.svelte.js"
+  import { useDisabled } from "$lib/hooks/use-disabled.js"
+  import { useDescriptionContext } from "$lib/description/context.svelte.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
   import { untrack } from "svelte"
 

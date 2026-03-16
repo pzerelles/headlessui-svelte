@@ -1,4 +1,4 @@
-import { FocusableMode, isFocusableElement } from "../utils/focus-management.js"
+import { FocusableMode, isFocusableElement } from "$lib/utils/focus-management.js"
 
 function assertNever(x: never): never {
   throw new Error("Unexpected object: " + x)

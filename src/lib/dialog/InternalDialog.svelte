@@ -17,10 +17,15 @@
   import ForcePortalRoot from "$lib/internal/ForcePortalRoot.svelte"
   import { createCloseContext } from "$lib/hooks/use-close.svelte.js"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
-  import { DialogStates, type DialogContext, type StateDefinition } from "./context.svelte.js"
+  import { DialogStates, type DialogContext, type StateDefinition } from "$lib/dialog/context.svelte.js"
   import { useDescriptions } from "$lib/description/context.svelte.js"
   import { BROWSER } from "esm-env"
-  import { DEFAULT_DIALOG_TAG, DialogRenderFeatures, type DialogProps, type DialogRenderPropArg } from "./Dialog.svelte"
+  import {
+    DEFAULT_DIALOG_TAG,
+    DialogRenderFeatures,
+    type DialogProps,
+    type DialogRenderPropArg,
+  } from "$lib/dialog/Dialog.svelte"
   import PortalWrapper from "$lib/portal/PortalWrapper.svelte"
 
   const internalId = useId()

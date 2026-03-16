@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte"
-  import Hidden, { HiddenFeatures } from "./Hidden.svelte"
+  import Hidden, { HiddenFeatures } from "$lib/internal/Hidden.svelte"
 
   interface FocusSentinelProps {
     onfocus: () => boolean

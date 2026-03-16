@@ -16,7 +16,7 @@
 </script>
 
 <script lang="ts">
-  import { ActivationTrigger, createMenuContext, MenuStates, type StateDefinition } from "./context.svelte.js"
+  import { ActivationTrigger, createMenuContext, MenuStates, type StateDefinition } from "$lib/menu/context.svelte.js"
   import { useOutsideClick } from "$lib/hooks/use-outside-click.svelte.js"
   import { useFloatingProvider } from "$lib/internal/floating-provider.svelte.js"
   import { createOpenClosedContext, State } from "$lib/internal/open-closed.js"

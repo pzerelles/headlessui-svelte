@@ -7,7 +7,7 @@
   import { match } from "$lib/utils/match.js"
   import type { EnsureArray, PropsAsChild } from "$lib/utils/types.js"
   import { setContext } from "svelte"
-  import { ActivationTrigger, ListboxStates, ValueMode } from "./context.svelte.js"
+  import { ActivationTrigger, ListboxStates, ValueMode } from "$lib/listbox/context.svelte.js"
 
   export type ListboxRenderPropArg<T> = {
     open: boolean

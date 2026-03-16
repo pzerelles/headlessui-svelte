@@ -22,7 +22,7 @@
 
 <script lang="ts">
   import { setContext, type Snippet } from "svelte"
-  import Hidden, { HiddenFeatures } from "./Hidden.svelte"
+  import Hidden, { HiddenFeatures } from "$lib/internal/Hidden.svelte"
   import { getOwnerDocument } from "$lib/utils/owner.js"
   /**
    * A provider for the main tree node.

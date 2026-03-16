@@ -1,10 +1,10 @@
 <script lang="ts" module>
   import { usePortalRoot } from "$lib/internal/portal-force-root.svelte.js"
   import { getOwnerDocument } from "$lib/utils/owner.js"
-  import { getContext, onMount, setContext } from "svelte"
-  import { env } from "../utils/env.js"
+  import { getContext, onMount } from "svelte"
+  import { env } from "$lib/utils/env.js"
   import type { Props } from "$lib/utils/types.js"
-  import type { PortalGroupContext } from "./PortalGroup.svelte"
+  import type { PortalGroupContext } from "$lib/portal/PortalGroup.svelte"
 
   function usePortalTarget(options: { element: HTMLElement | null }): { readonly target: HTMLElement | null } {
     const { element } = $derived(options)

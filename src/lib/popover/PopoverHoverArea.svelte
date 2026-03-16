@@ -25,7 +25,7 @@
 
 <script lang="ts">
   import { useId } from "$lib/hooks/use-id.js"
-  import { PopoverStates, usePopoverContext, usePopoverPanelContext } from "./context.svelte.js"
+  import { PopoverStates, usePopoverContext, usePopoverPanelContext } from "$lib/popover/context.svelte.js"
   import { useFloatingReference } from "$lib/internal/floating.svelte.js"
   import { untrack } from "svelte"
   import { useHover } from "$lib/hooks/use-hover.svelte.js"

@@ -3,7 +3,7 @@
 
 <script lang="ts">
   import type { Snippet } from "svelte"
-  import { useFloatingProvider } from "./floating-provider.svelte.js"
+  import { useFloatingProvider } from "$lib/internal/floating-provider.svelte.js"
 
   const { children, enabled = true }: { children: Snippet; enabled?: boolean } = $props()
 

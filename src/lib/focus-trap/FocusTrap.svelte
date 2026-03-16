@@ -13,7 +13,7 @@
   import { useDisposables } from "$lib/utils/disposables.js"
   import Hidden, { HiddenFeatures } from "$lib/internal/Hidden.svelte"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
-  import { FocusTrapFeatures } from "./FocusTrapFeatures.js"
+  import { FocusTrapFeatures } from "$lib/focus-trap/FocusTrapFeatures.js"
 
   type Containers =
     // Lazy resolved containers

@@ -1,7 +1,7 @@
 <script lang="ts" module>
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
   import type { Props } from "$lib/utils/types.js"
-  import { HiddenFeatures } from "./HiddenFeatures.js"
+  import { HiddenFeatures } from "$lib/internal/HiddenFeatures.js"
 
   export { HiddenFeatures }
 

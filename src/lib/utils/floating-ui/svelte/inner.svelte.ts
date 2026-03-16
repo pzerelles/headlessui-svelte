@@ -1,6 +1,6 @@
-import { getUserAgent } from "./utils.js"
+import { getUserAgent } from "$lib/utils/floating-ui/svelte/utils.js"
 import { evaluate, max, round } from "@floating-ui/utils"
-import { detectOverflow, offset, type Derivable } from "../svelte-dom/types.js"
+import { detectOverflow, offset, type Derivable } from "$lib/utils/floating-ui/svelte-dom/types.js"
 
 import type {
   DetectOverflowOptions,
@@ -9,8 +9,8 @@ import type {
   Middleware,
   MiddlewareState,
   SideObject,
-} from "./types.js"
-import { warn } from "./utils/log.js"
+} from "$lib/utils/floating-ui/svelte/types.js"
+import { warn } from "$lib/utils/floating-ui/svelte/utils/log.js"
 import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
 import { DEV } from "esm-env"
 import { tick, untrack } from "svelte"

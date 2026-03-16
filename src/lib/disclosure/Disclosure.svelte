@@ -16,7 +16,11 @@
 
 <script lang="ts">
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
-  import { createDisclosureAPIContext, createDisclosureContext, DisclosureStates } from "./context.svelte.js"
+  import {
+    createDisclosureAPIContext,
+    createDisclosureContext,
+    DisclosureStates,
+  } from "$lib/disclosure/context.svelte.js"
   import { getOwnerDocument } from "$lib/utils/owner.js"
   import { createOpenClosedContext, State } from "$lib/internal/open-closed.js"
   import { createCloseContext } from "$lib/hooks/use-close.svelte.js"

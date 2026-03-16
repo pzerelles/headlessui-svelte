@@ -1,5 +1,5 @@
-import { useInteractions, type InnerProps, type UseFloatingReturn } from "../utils/floating-ui/svelte/index.js"
-import { useDisposables } from "../utils/disposables.js"
+import { useInteractions, type InnerProps, type UseFloatingReturn } from "$lib/utils/floating-ui/svelte/index.js"
+import { useDisposables } from "$lib/utils/disposables.js"
 import { getContext, untrack } from "svelte"
 
 export type Align = "start" | "end"

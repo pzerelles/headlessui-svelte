@@ -22,7 +22,7 @@
 </script>
 
 <script lang="ts">
-  import { useData, ValueMode } from "./context.svelte.js"
+  import { useData, ValueMode } from "$lib/listbox/context.svelte.js"
   import { setContext } from "svelte"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
 

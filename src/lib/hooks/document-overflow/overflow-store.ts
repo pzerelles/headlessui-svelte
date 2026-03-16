@@ -1,8 +1,8 @@
-import { disposables, type Disposables } from "../../utils/disposables.js"
-import { createStore } from "../../utils/store.js"
-import { adjustScrollbarPadding } from "./adjust-scrollbar-padding.js"
-import { handleIOSLocking } from "./handle-ios-locking.js"
-import { preventScroll } from "./prevent-scroll.js"
+import { disposables, type Disposables } from "$lib/utils/disposables.js"
+import { createStore } from "$lib/utils/store.js"
+import { adjustScrollbarPadding } from "$lib/hooks/document-overflow/adjust-scrollbar-padding.js"
+import { handleIOSLocking } from "$lib/hooks/document-overflow/handle-ios-locking.js"
+import { preventScroll } from "$lib/hooks/document-overflow/prevent-scroll.js"
 
 interface DocEntry {
   doc: Document

@@ -1,4 +1,4 @@
-import { overflows } from "./overflow-store.js"
+import { overflows } from "$lib/hooks/document-overflow/overflow-store.js"
 
 export function useDocumentOverflowLockedEffect(options: {
   shouldBeLocked: boolean

@@ -24,7 +24,7 @@
 <script lang="ts">
   import StableCollection from "$lib/utils/StableCollection.svelte"
   import ElementOrComponent from "$lib/utils/ElementOrComponent.svelte"
-  import { createTabContext } from "./context.svelte.js"
+  import { createTabContext } from "$lib/tabs/context.svelte.js"
   import { untrack } from "svelte"
 
   let {

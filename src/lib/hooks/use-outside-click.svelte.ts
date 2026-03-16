@@ -1,8 +1,8 @@
 import { disposables } from "$lib/utils/disposables.js"
 import type { MutableRefObject } from "$lib/utils/ref.svelte.js"
-import { FocusableMode, isFocusableElement } from "../utils/focus-management.js"
-import { isMobile } from "../utils/platform.js"
-import { useIsTopLayer } from "./use-is-top-layer.svelte.js"
+import { FocusableMode, isFocusableElement } from "$lib/utils/focus-management.js"
+import { isMobile } from "$lib/utils/platform.js"
+import { useIsTopLayer } from "$lib/hooks/use-is-top-layer.svelte.js"
 
 type Container = MutableRefObject<HTMLElement | null> | HTMLElement | null
 type ContainerCollection = Container[] | Set<Container>

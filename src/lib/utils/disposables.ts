@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { microTask } from "./microTask.js"
+import { microTask } from "$lib/utils/microTask.js"
 
 export type Disposables = {
   addEventListener: <TEventName extends keyof WindowEventMap>(

@@ -1,4 +1,4 @@
-import { getTextValue } from "../utils/get-text-value.js"
+import { getTextValue } from "$lib/utils/get-text-value.js"
 
 export function useTextValue(options: { element: HTMLElement | null }) {
   const { element } = $derived(options)

@@ -15,10 +15,10 @@
 // NOTICE file in the root directory of this source tree.
 // See https://github.com/facebook/react/tree/cc7c1aece46a6b69b41958d731e0fd27c94bfc6c/packages/react-interactions
 
-import { getOwnerWindow } from "./dom.js"
-import { isVirtualClick } from "./isVirtualEvent.js"
-import { getOwnerDocument } from "./owner.js"
-import { isMac } from "./platform.js"
+import { getOwnerWindow } from "$lib/utils/dom.js"
+import { isVirtualClick } from "$lib/utils/isVirtualEvent.js"
+import { getOwnerDocument } from "$lib/utils/owner.js"
+import { isMac } from "$lib/utils/platform.js"
 
 export type Modality = "keyboard" | "pointer" | "virtual"
 type HandlerEvent = PointerEvent | MouseEvent | KeyboardEvent | FocusEvent | null

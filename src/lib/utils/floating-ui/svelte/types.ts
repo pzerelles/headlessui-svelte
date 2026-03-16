@@ -7,7 +7,7 @@ import type {
   VirtualElement,
 } from "../svelte-dom/types.js"
 
-import type { ExtendedUserProps } from "./hooks/useInteractions.svelte.js"
+import type { ExtendedUserProps } from "$lib/utils/floating-ui/svelte/hooks/useInteractions.svelte.js"
 
 export type {
   ReferenceElement,
